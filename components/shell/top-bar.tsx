@@ -94,7 +94,7 @@ export function TopBar() {
           ⌘K
         </kbd>
       </button>
-      <span style={{ flex: 1 }} />
+      <span className="topbar-spacer" style={{ flex: 1 }} />
       <button
         onClick={() => setResumeOpen(true)}
         aria-label="View résumé"

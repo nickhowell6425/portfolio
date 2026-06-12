@@ -303,6 +303,10 @@ input::placeholder {
   .topbar-search {
     height: 38px !important;
     border-radius: 10px !important;
+    max-width: none !important;
+  }
+  .topbar-spacer {
+    display: none;
   }
 }
 
@@ -312,15 +316,14 @@ input::placeholder {
   margin: 0 44px 0 0;
 }
 @media (max-width: 700px) {
-  /* stack the hero: photo on top, text full-width below */
+  /* stack the hero: centered photo on top, text full-width below */
   .portrait-hero {
     flex-direction: column;
-    align-items: flex-start;
   }
   .portrait-figure {
     width: 132px;
     height: 132px;
-    margin: 26px 0 0 34px;
+    margin: 28px 0 0;
     order: -1;
   }
 }
