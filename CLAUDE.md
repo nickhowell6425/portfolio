@@ -18,7 +18,12 @@ pnpm dev          # dev server (Turbopack)
 pnpm build        # production build — also the type-check gate
 pnpm start -p N   # serve the production build
 pnpm lint         # eslint (also runs per-file via a PostToolUse hook on every edit)
+pnpm typecheck    # tsc --noEmit
 ```
+
+CI (`.github/workflows/ci.yml`) runs lint + typecheck → build → route/API smoke +
+Lighthouse budgets on every push/PR. Vercel deploys via its git integration — CI does
+not deploy.
 
 There is no unit-test suite. Verification is browser-driven:
 - `/pixel-check` skill — screenshots key routes and compares against approved references.

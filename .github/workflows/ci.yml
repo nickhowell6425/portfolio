@@ -1,0 +1,179 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+
+  typecheck:
+    name: Type check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+
+  build:
+    name: Build
+    needs: [lint, typecheck]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Restore Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.ts', '**/*.tsx', '**/*.css') }}
+          restore-keys: nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
+      - run: pnpm build
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          retention-days: 1
+          include-hidden-files: true
+          path: |
+            .next
+            !.next/cache
+
+  smoke:
+    name: Smoke test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: .next
+      - name: Start server
+        run: |
+          pnpm start -p 3000 &
+          for i in $(seq 1 30); do
+            curl -sf -o /dev/null http://localhost:3000/ && break
+            sleep 1
+          done
+      - name: Routes respond
+        run: |
+          set -euo pipefail
+          check() {
+            code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:3000$1")
+            echo "$1 -> $code (want $2)"
+            [ "$code" = "$2" ]
+          }
+          check /                        200
+          check /paradox/overview        200
+          check /shiftsum/admin          200
+          check /clients/booking-widget  200
+          check /home/component-library  200
+          check /uploads/Resume.pdf      200
+          check /sitemap.xml             200
+          check /robots.txt              200
+          check /llms.txt                200
+          check /opengraph-image.png     200
+          check /nope                    404
+          check /paradox                 307
+      - name: Contact API validates
+        run: |
+          set -euo pipefail
+          ok=$(curl -s -X POST http://localhost:3000/api/contact \
+            -H 'Content-Type: application/json' \
+            -d '{"firstName":"CI","email":"ci@example.com","message":"smoke"}')
+          echo "valid -> $ok"; echo "$ok" | grep -q '"ok":true'
+          bad=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://localhost:3000/api/contact \
+            -H 'Content-Type: application/json' -d '{"firstName":"","email":"x","message":""}')
+          echo "invalid -> $bad"; [ "$bad" = "400" ]
+      - name: SSR markers present
+        run: |
+          set -euo pipefail
+          html=$(curl -s http://localhost:3000/)
+          echo "$html" | grep -q 'Nicholas Howell'
+          echo "$html" | grep -q 'rel="canonical"'
+          echo "$html" | grep -q 'application/ld+json'
+
+  lighthouse:
+    name: Lighthouse
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: .next
+      - name: Start server
+        run: |
+          pnpm start -p 3000 &
+          for i in $(seq 1 30); do
+            curl -sf -o /dev/null http://localhost:3000/ && break
+            sleep 1
+          done
+      - name: Run Lighthouse (mobile)
+        run: |
+          npx --yes lighthouse@latest http://localhost:3000/ --quiet \
+            --chrome-flags="--headless --no-sandbox" \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --output=json --output-path=./lighthouse-report.json
+      - name: Assert score budgets
+        run: |
+          node -e '
+            const r = require("./lighthouse-report.json");
+            // CI runners are slower than the recorded local baselines; budgets leave headroom.
+            const budgets = { performance: 75, accessibility: 95, "best-practices": 95, seo: 100 };
+            let failed = false;
+            for (const [cat, min] of Object.entries(budgets)) {
+              const score = Math.round(r.categories[cat].score * 100);
+              const ok = score >= min;
+              console.log(`${ok ? "PASS" : "FAIL"} ${cat}: ${score} (budget ${min})`);
+              if (!ok) failed = true;
+            }
+            process.exit(failed ? 1 : 0);
+          '
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: lighthouse-report.json
+          retention-days: 7
