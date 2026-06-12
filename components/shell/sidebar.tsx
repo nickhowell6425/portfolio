@@ -39,7 +39,9 @@ export function Sidebar() {
     >
       <div style={{ padding: "16px 16px 14px", borderBottom: "1px solid var(--border)" }}>
         <div style={{ fontWeight: 800, fontSize: 16.5, letterSpacing: "-.01em" }}>{W.name}</div>
-        <div style={{ color: "var(--dim)", fontSize: 12.5, marginTop: 1, textWrap: "pretty" }}>{W.desc}</div>
+        <div style={{ color: "var(--dim)", fontSize: 12.5, marginTop: 1, textWrap: "pretty" }}>
+          {W.desc}
+        </div>
         <div
           style={{
             display: "inline-block",
@@ -113,7 +115,9 @@ export function Sidebar() {
                 borderRadius: 8,
                 cursor: "pointer",
                 textAlign: "left",
-                background: active ? `color-mix(in srgb, ${W.accent} 16%, transparent)` : "transparent",
+                background: active
+                  ? `color-mix(in srgb, ${W.accent} 16%, transparent)`
+                  : "transparent",
                 color: active ? "var(--text)" : "var(--dim)",
                 fontWeight: active ? 700 : 500,
                 fontSize: 14,

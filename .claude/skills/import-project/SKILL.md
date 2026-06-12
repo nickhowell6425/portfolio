@@ -26,6 +26,7 @@ find /tmp/design-import -type f
 ## 2. Read for intent, not just pixels
 
 In order:
+
 1. The bundle `README.md` — handoff instructions.
 2. **All chat transcripts** in `chats/` — this is where the user's intent and final
    decisions live; the HTML is only the output.
@@ -36,6 +37,7 @@ In order:
 ## 3. Decide the workspace shape (ask the user)
 
 Confirm before building — these are content decisions, not code decisions:
+
 - **Workspace**: id, name, one-line desc, and an honest status chip
   (existing patterns: `concept · 2026`, `acquired 2023`, `3 of 9 shown`).
 - **Accent**: one distinctive color, ideally from the design's own palette. Taken hues:
@@ -55,6 +57,7 @@ portfolio's card scale (`w` 360–560) and density. Read
 registry, `FragmentId` + `FRAGMENTS` meta with a code sample, sidebar item).
 
 Workspace-level touchpoints on top of those:
+
 1. `components/fragments/<ws>.tsx` — new file; define the project's mini design-system
    constants at the top (see `PX` in `paradox.tsx`).
 2. `lib/content.ts` — new `WORKSPACES` entry with groups

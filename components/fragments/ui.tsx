@@ -355,7 +355,9 @@ export function FDone({
       <div style={{ fontSize: 12.5, color: "var(--dim)", marginTop: 4, textWrap: "pretty" }}>
         {sub}
       </div>
-      {onReset && resetLabel ? <FLink label={resetLabel} onClick={onReset} accent={accent} /> : null}
+      {onReset && resetLabel ? (
+        <FLink label={resetLabel} onClick={onReset} accent={accent} />
+      ) : null}
     </div>
   );
 }

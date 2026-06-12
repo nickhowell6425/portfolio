@@ -33,7 +33,15 @@ export function PageChrome() {
           minWidth: 0,
         }}
       >
-        <h1 style={{ margin: 0, fontWeight: 800, fontSize: 16.5, letterSpacing: "-.01em", flex: "0 0 auto" }}>
+        <h1
+          style={{
+            margin: 0,
+            fontWeight: 800,
+            fontSize: 16.5,
+            letterSpacing: "-.01em",
+            flex: "0 0 auto",
+          }}
+        >
           {item.label}
         </h1>
         <div
@@ -49,7 +57,15 @@ export function PageChrome() {
         </div>
       </div>
       {isLibrary ? (
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", padding: "10px 24px 2px", flex: "0 0 auto" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 6,
+            flexWrap: "wrap",
+            padding: "10px 24px 2px",
+            flex: "0 0 auto",
+          }}
+        >
           {KINDS.map((k) => {
             const on = k === libFilter;
             return (

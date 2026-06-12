@@ -68,7 +68,9 @@ export function OverviewHero({ hero, wsName }: { hero: HeroData; wsName: string 
           >
             {wsName} · {hero.kicker}
           </div>
-          <div style={{ fontWeight: 800, fontSize: 23, letterSpacing: "-.01em", margin: "5px 0 6px" }}>
+          <div
+            style={{ fontWeight: 800, fontSize: 23, letterSpacing: "-.01em", margin: "5px 0 6px" }}
+          >
             The real screen, running
           </div>
           <p

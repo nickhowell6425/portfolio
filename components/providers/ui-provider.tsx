@@ -118,10 +118,13 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [chatOpen, resumeOpen, searchOpen, closeChat]);
 
-  useEffect(() => () => {
-    clearTimeout(chatT.current);
-    clearTimeout(toastT.current);
-  }, []);
+  useEffect(
+    () => () => {
+      clearTimeout(chatT.current);
+      clearTimeout(toastT.current);
+    },
+    [],
+  );
 
   const value = useMemo(
     () => ({
@@ -142,7 +145,21 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
       showToast,
       goWorkspace,
     }),
-    [navOpen, searchOpen, openSearch, closeSearch, resumeOpen, chatOpen, chatClosing, openChat, closeChat, libFilter, toast, showToast, goWorkspace],
+    [
+      navOpen,
+      searchOpen,
+      openSearch,
+      closeSearch,
+      resumeOpen,
+      chatOpen,
+      chatClosing,
+      openChat,
+      closeChat,
+      libFilter,
+      toast,
+      showToast,
+      goWorkspace,
+    ],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

@@ -74,7 +74,13 @@ export function BookingWidget() {
               >
                 {d[0]}
               </div>
-              <div style={{ fontWeight: 800, fontSize: 14.5, color: st.day === i ? "var(--text)" : "var(--dim)" }}>
+              <div
+                style={{
+                  fontWeight: 800,
+                  fontSize: 14.5,
+                  color: st.day === i ? "var(--text)" : "var(--dim)",
+                }}
+              >
                 {d[1]}
               </div>
             </button>
@@ -235,7 +241,11 @@ export function IdentityCheck() {
                 )}
               </div>
               {ok ? null : (
-                <FGhostButton label={busy ? "Checking…" : "Upload"} onClick={() => start(key)} small />
+                <FGhostButton
+                  label={busy ? "Checking…" : "Upload"}
+                  onClick={() => start(key)}
+                  small
+                />
               )}
             </div>
           );
@@ -262,7 +272,11 @@ export function IdentityCheck() {
               </div>
             </div>
             <span style={{ flex: 1 }} />
-            <FGhostButton label="reset" onClick={() => set({ done: {}, busy: null, pct: 0 })} small />
+            <FGhostButton
+              label="reset"
+              onClick={() => set({ done: {}, busy: null, pct: 0 })}
+              small
+            />
           </div>
         ) : null}
       </div>
@@ -317,7 +331,15 @@ export function StatusPage() {
   return (
     <FCard w={480} accent={A} name="Veridia Status">
       <div>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 4 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            flexWrap: "wrap",
+            marginBottom: 4,
+          }}
+        >
           <span
             aria-hidden="true"
             style={{
@@ -341,8 +363,16 @@ export function StatusPage() {
             }}
           >
             <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 }}>
-              <span style={{ fontWeight: 700, fontSize: 12.5, width: 84, flex: "0 0 auto" }}>{svc[0]}</span>
-              <span style={{ fontFamily: MONO, fontSize: 10.5, color: svc[1] === 100 ? A : "var(--dim)" }}>
+              <span style={{ fontWeight: 700, fontSize: 12.5, width: 84, flex: "0 0 auto" }}>
+                {svc[0]}
+              </span>
+              <span
+                style={{
+                  fontFamily: MONO,
+                  fontSize: 10.5,
+                  color: svc[1] === 100 ? A : "var(--dim)",
+                }}
+              >
                 {svc[1].toFixed(2)}% uptime
               </span>
             </div>
@@ -375,11 +405,15 @@ export function StatusPage() {
               animation: rm ? "none" : "fadeUp .25s",
             }}
           >
-            <div style={{ fontFamily: MONO, fontSize: 10, color: "var(--faint)" }}>May 19 · 14:02–14:31 UTC</div>
-            <div style={{ fontWeight: 700, fontSize: 12.5, margin: "3px 0 2px" }}>Webhooks delayed up to 4 min</div>
+            <div style={{ fontFamily: MONO, fontSize: 10, color: "var(--faint)" }}>
+              May 19 · 14:02–14:31 UTC
+            </div>
+            <div style={{ fontWeight: 700, fontSize: 12.5, margin: "3px 0 2px" }}>
+              Webhooks delayed up to 4 min
+            </div>
             <div style={{ fontSize: 11.5, color: "var(--dim)", lineHeight: 1.5 }}>
-              A queue backed up after a deploy. We rolled back in 9 minutes and replayed every missed event.
-              Written by a human — honesty included.
+              A queue backed up after a deploy. We rolled back in 9 minutes and replayed every
+              missed event. Written by a human — honesty included.
             </div>
           </div>
         ) : null}

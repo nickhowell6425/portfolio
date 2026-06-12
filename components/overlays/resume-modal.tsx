@@ -59,7 +59,13 @@ export function ResumeModal() {
         >
           <span
             aria-hidden="true"
-            style={{ width: 9, height: 9, borderRadius: 3, background: "var(--accent)", flex: "0 0 auto" }}
+            style={{
+              width: 9,
+              height: 9,
+              borderRadius: 3,
+              background: "var(--accent)",
+              flex: "0 0 auto",
+            }}
           />
           <span style={{ fontWeight: 800, fontSize: 14.5 }}>Résumé</span>
           <span

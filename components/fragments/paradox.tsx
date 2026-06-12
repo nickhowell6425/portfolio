@@ -49,7 +49,9 @@ function PCard({ w, children, sub }: { w: number; children: ReactNode; sub?: str
             flex: "0 0 auto",
           }}
         />
-        <span style={{ fontFamily: SERIF, fontSize: 14.5, letterSpacing: ".34em", fontWeight: 600 }}>
+        <span
+          style={{ fontFamily: SERIF, fontSize: 14.5, letterSpacing: ".34em", fontWeight: 600 }}
+        >
           PARADOX
         </span>
         {sub ? (
@@ -111,15 +113,53 @@ const BRANCHES = [
 ];
 
 const NODES: SceneNode[] = [
-  { s: 2, x: 120, kind: "Branch point", title: "The Signal Was Answered", meta: "9,140 variants growing from this fork", ring: true },
-  { s: 2, x: 300, kind: "Sacred Timeline", title: "The Ninth Signal", meta: "2.4M readers · 18,422 branches · 3,822 events", big: true },
-  { s: 2, x: 500, kind: "Event", title: "The Signal Arrives", meta: "The Ninth Signal · chapter event" },
+  {
+    s: 2,
+    x: 120,
+    kind: "Branch point",
+    title: "The Signal Was Answered",
+    meta: "9,140 variants growing from this fork",
+    ring: true,
+  },
+  {
+    s: 2,
+    x: 300,
+    kind: "Sacred Timeline",
+    title: "The Ninth Signal",
+    meta: "2.4M readers · 18,422 branches · 3,822 events",
+    big: true,
+  },
+  {
+    s: 2,
+    x: 500,
+    kind: "Event",
+    title: "The Signal Arrives",
+    meta: "The Ninth Signal · chapter event",
+  },
   { s: 1, x: 180, kind: "Timeline", title: "Neon Exodus", meta: "1.3M readers · 9,840 branches" },
-  { s: 3, x: 400, kind: "Timeline", title: "The Infinite Machine", meta: "1.9M readers · 14,260 branches" },
+  {
+    s: 3,
+    x: 400,
+    kind: "Timeline",
+    title: "The Infinite Machine",
+    meta: "1.9M readers · 14,260 branches",
+  },
   { s: 0, x: 260, kind: "Event", title: "The City Falls", meta: "Neon Exodus · chapter event" },
   { s: 4, x: 460, kind: "Event", title: "First Contact", meta: "Children of Sol · chapter event" },
-  { br: 0, kind: "Variant", title: "What if the reply was human", meta: "variant · 312 echoes", gold: true },
-  { br: 2, kind: "Variant", title: "What if it chose to dream", meta: "variant · 188 echoes", gold: true },
+  {
+    br: 0,
+    kind: "Variant",
+    title: "What if the reply was human",
+    meta: "variant · 312 echoes",
+    gold: true,
+  },
+  {
+    br: 2,
+    kind: "Variant",
+    title: "What if it chose to dream",
+    meta: "variant · 188 echoes",
+    gold: true,
+  },
 ];
 
 interface Hit {
@@ -134,7 +174,8 @@ interface Selected {
   meta: string;
 }
 
-const mvY = (s: Strand, x: number, t: number) => s.y + Math.sin(x * 0.012 + s.ph + t * s.sp) * s.amp;
+const mvY = (s: Strand, x: number, t: number) =>
+  s.y + Math.sin(x * 0.012 + s.ph + t * s.sp) * s.amp;
 
 export function MultiverseTimeline() {
   const rm = useReducedMotion();
@@ -420,7 +461,9 @@ export function MultiverseTimeline() {
             >
               {sel.kind}
             </div>
-            <div style={{ fontFamily: SERIF, fontSize: 17.5, lineHeight: 1.12, margin: "4px 0 3px" }}>
+            <div
+              style={{ fontFamily: SERIF, fontSize: 17.5, lineHeight: 1.12, margin: "4px 0 3px" }}
+            >
               {sel.title}
             </div>
             <div style={{ fontFamily: MONO, fontSize: 9.5, color: PX.DIM, lineHeight: 1.5 }}>
@@ -457,7 +500,14 @@ export function MultiverseTimeline() {
 // ---------- sign-in gateway ----------
 
 function forgeName() {
-  const a = ["strandkeeper", "voidwalker", "threadbinder", "nexusborn", "emberkeeper", "loomwarden"];
+  const a = [
+    "strandkeeper",
+    "voidwalker",
+    "threadbinder",
+    "nexusborn",
+    "emberkeeper",
+    "loomwarden",
+  ];
   const hx = () => "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16));
   return `${a[Math.floor(Math.random() * a.length)]}_${hx()}${hx()}${hx()}${hx()}`;
 }
@@ -495,7 +545,15 @@ export function SignInGateway() {
   );
 
   const serifH = (pre: string, em: string) => (
-    <div style={{ fontFamily: SERIF, fontSize: 26, fontWeight: 500, lineHeight: 1.1, margin: "6px 0 4px" }}>
+    <div
+      style={{
+        fontFamily: SERIF,
+        fontSize: 26,
+        fontWeight: 500,
+        lineHeight: 1.1,
+        margin: "6px 0 4px",
+      }}
+    >
       {pre}
       <em style={{ color: PX.A }}>{em}</em>
     </div>
@@ -645,7 +703,10 @@ export function SignInGateway() {
           animation: rm ? "none" : "popIn .25s cubic-bezier(.3,1.3,.5,1)",
         }}
       >
-        <div aria-hidden="true" style={{ width: 64, height: 64, margin: "4px auto 14px", position: "relative" }}>
+        <div
+          aria-hidden="true"
+          style={{ width: 64, height: 64, margin: "4px auto 14px", position: "relative" }}
+        >
           {[26, 44, 64].map((d2, i) => (
             <span
               key={i}
@@ -687,8 +748,8 @@ export function SignInGateway() {
             textWrap: "pretty",
           }}
         >
-          A one-time magic link is travelling to <span style={{ color: PX.A }}>{st.email}</span>. Open it
-          on this device to step through.
+          A one-time magic link is travelling to <span style={{ color: PX.A }}>{st.email}</span>.
+          Open it on this device to step through.
         </div>
         <button
           onClick={() => set({ step: "in", name: forgeName(), guest: false })}
@@ -707,7 +768,9 @@ export function SignInGateway() {
         >
           simulate opening the link →
         </button>
-        <div style={{ marginTop: 10 }}>{mini("use a different email", () => set({ step: "gate", email: "" }))}</div>
+        <div style={{ marginTop: 10 }}>
+          {mini("use a different email", () => set({ step: "gate", email: "" }))}
+        </div>
       </div>
     );
   } else {
@@ -893,11 +956,27 @@ export function CommandPalette() {
 
   const icon = (ic: string) =>
     ic === "dot" ? (
-      <span style={{ width: 8, height: 8, borderRadius: "50%", background: PX.A, boxShadow: `0 0 8px ${PX.A}` }} />
+      <span
+        style={{
+          width: 8,
+          height: 8,
+          borderRadius: "50%",
+          background: PX.A,
+          boxShadow: `0 0 8px ${PX.A}`,
+        }}
+      />
     ) : ic === "ring" ? (
       <span style={{ width: 8, height: 8, borderRadius: "50%", border: `1.5px solid ${PX.A}` }} />
     ) : (
-      <span style={{ width: 7, height: 7, borderRadius: "50%", background: PX.GOLD, boxShadow: `0 0 8px ${PX.GOLD}` }} />
+      <span
+        style={{
+          width: 7,
+          height: 7,
+          borderRadius: "50%",
+          background: PX.GOLD,
+          boxShadow: `0 0 8px ${PX.GOLD}`,
+        }}
+      />
     );
 
   let idx = -1;
@@ -990,7 +1069,10 @@ export function CommandPalette() {
                   }}
                 >
                   {g.g}
-                  <span aria-hidden="true" style={{ flex: 1, height: 1, background: "rgba(62,219,166,.1)" }} />
+                  <span
+                    aria-hidden="true"
+                    style={{ flex: 1, height: 1, background: "rgba(62,219,166,.1)" }}
+                  />
                 </div>
                 {g.items.map((it) => {
                   idx++;

@@ -17,9 +17,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path // .tool_response.filePath // empty' | { read -r f; case \"$f\" in *.ts|*.tsx) cd \"$CLAUDE_PROJECT_DIR\" && out=$(pnpm exec eslint --max-warnings 0 \"$f\" 2>&1) || { echo \"$out\" >&2; exit 2; } ;; esac; }",
+            "command": "jq -r '.tool_input.file_path // .tool_response.filePath // empty' | { read -r f; [ -n \"$f\" ] || exit 0; cd \"$CLAUDE_PROJECT_DIR\"; pnpm exec prettier --write --ignore-unknown \"$f\" >/dev/null 2>&1 || true; case \"$f\" in *.ts|*.tsx) out=$(pnpm exec eslint --max-warnings 0 \"$f\" 2>&1) || { echo \"$out\" >&2; exit 2; } ;; esac; }",
             "timeout": 60,
-            "statusMessage": "Linting edited file…"
+            "statusMessage": "Formatting + linting edited file…"
           }
         ]
       }

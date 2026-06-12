@@ -13,15 +13,18 @@ build against those references.
 ## Steps
 
 1. **Build and serve** (skip the build if `.next/` is already current):
+
    ```bash
    pnpm build
    pnpm start -p 4123 &   # run in background, give it ~3s
    ```
 
 2. **Capture current screenshots** using the bundled script:
+
    ```bash
    bash .claude/skills/pixel-check/shots.sh http://localhost:4123 /tmp/pixel-check
    ```
+
    This produces 8 shots: `{home,paradox,admin,library}-{desktop,mobile}.png`.
 
 3. **Compare each pair visually.** For every capture, Read both the new shot

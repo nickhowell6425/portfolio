@@ -137,7 +137,14 @@ function PaletteDialog() {
             </button>
           ))}
           {noResults ? (
-            <div style={{ padding: "22px 16px", textAlign: "center", color: "var(--dim)", fontSize: 13.5 }}>
+            <div
+              style={{
+                padding: "22px 16px",
+                textAlign: "center",
+                color: "var(--dim)",
+                fontSize: 13.5,
+              }}
+            >
               Nothing here — yet. That&apos;s usually where I come in.
             </div>
           ) : null}

@@ -18,7 +18,15 @@ export function ContentArea({ children }: { children: React.ReactNode }) {
       className="anim-swap"
       style={{ flex: 1, overflowY: "auto", overflowX: "hidden", padding: "20px 24px 44px" }}
     >
-      <div style={{ maxWidth: 880, margin: "0 auto", display: "flex", flexDirection: "column", gap: 4 }}>
+      <div
+        style={{
+          maxWidth: 880,
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          gap: 4,
+        }}
+      >
         {children}
       </div>
     </div>

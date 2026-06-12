@@ -63,7 +63,9 @@ function Message({
             </span>
           ) : null}
         </div>
-        <p style={{ margin: "2px 0 0", fontSize: 13, lineHeight: 1.5, textWrap: "pretty" }}>{text}</p>
+        <p style={{ margin: "2px 0 0", fontSize: 13, lineHeight: 1.5, textWrap: "pretty" }}>
+          {text}
+        </p>
       </div>
     </div>
   );
@@ -120,7 +122,15 @@ export function MessageDrawer() {
         avText={youInit}
       />
     ) : (
-      <Message key={i} name={PH.FIRST} time={m.t} auto text={m.text} avStyle={ME_AVATAR} avText="" />
+      <Message
+        key={i}
+        name={PH.FIRST}
+        time={m.t}
+        auto
+        text={m.text}
+        avStyle={ME_AVATAR}
+        avText=""
+      />
     );
 
   return (
@@ -222,7 +232,13 @@ export function MessageDrawer() {
           />
           {thread.map(renderMsg)}
         </div>
-        <div style={{ padding: "10px 16px 14px", flex: "0 0 auto", borderTop: "1px solid var(--border)" }}>
+        <div
+          style={{
+            padding: "10px 16px 14px",
+            flex: "0 0 auto",
+            borderTop: "1px solid var(--border)",
+          }}
+        >
           <div
             style={{
               display: "flex",
@@ -288,7 +304,9 @@ export function MessageDrawer() {
                 color: emailErr ? "#ff7a6b" : "var(--text)",
               }}
             />
-            <div style={{ display: "flex", gap: 8, alignItems: "center", padding: "5px 5px 5px 14px" }}>
+            <div
+              style={{ display: "flex", gap: 8, alignItems: "center", padding: "5px 5px 5px 14px" }}
+            >
               <input
                 ref={inputRef}
                 onKeyDown={(e) => {

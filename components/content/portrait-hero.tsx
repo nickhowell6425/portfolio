@@ -46,7 +46,9 @@ export function PortraitHero() {
           pointerEvents: "none",
         }}
       />
-      <div style={{ position: "relative", zIndex: 2, padding: "30px 30px 30px 34px", maxWidth: 580 }}>
+      <div
+        style={{ position: "relative", zIndex: 2, padding: "30px 30px 30px 34px", maxWidth: 580 }}
+      >
         <div
           style={{
             fontFamily: MONO,
@@ -59,7 +61,15 @@ export function PortraitHero() {
         >
           The person behind the products
         </div>
-        <div style={{ margin: "9px 0 0", fontSize: 32, fontWeight: 800, letterSpacing: "-.022em", lineHeight: 1.04 }}>
+        <div
+          style={{
+            margin: "9px 0 0",
+            fontSize: 32,
+            fontWeight: 800,
+            letterSpacing: "-.022em",
+            lineHeight: 1.04,
+          }}
+        >
           {PH.NAME}
         </div>
         <p
@@ -72,9 +82,9 @@ export function PortraitHero() {
             textWrap: "pretty",
           }}
         >
-          CTO · founding engineer · senior full-stack. Greenfield build or an existing codebase, running
-          solo with AI agents or embedded in your team — I ship products that reach real customers and
-          multi-million-dollar valuations, and make them hold up.
+          CTO · founding engineer · senior full-stack. Greenfield build or an existing codebase,
+          running solo with AI agents or embedded in your team — I ship products that reach real
+          customers and multi-million-dollar valuations, and make them hold up.
         </p>
         <div style={{ display: "flex", gap: 7, flexWrap: "wrap", marginTop: 15 }}>
           <span

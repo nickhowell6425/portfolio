@@ -106,7 +106,13 @@ export function ComponentCard({
         >
           <span
             aria-hidden="true"
-            style={{ width: 9, height: 9, borderRadius: 3, background: frag.accent, flex: "0 0 auto" }}
+            style={{
+              width: 9,
+              height: 9,
+              borderRadius: 3,
+              background: frag.accent,
+              flex: "0 0 auto",
+            }}
           />
           <span style={{ fontWeight: 700, fontSize: 13 }}>{frag.title}</span>
           <span style={{ fontFamily: MONO, fontSize: 10.5, color: "var(--faint)" }}>

@@ -1,0 +1,12 @@
+# build output & deps
+.next
+node_modules
+pnpm-lock.yaml
+
+# design prototype reference — keep byte-identical to the handoff bundle
+docs/design
+
+# binary/reference assets
+public
+.claude/skills/pixel-check/references
+.vercel

@@ -31,19 +31,20 @@ You audit this Next.js portfolio for performance/accessibility/SEO regressions.
 
 ## Baselines (2026-06-12)
 
-| | Desktop | Mobile |
-|---|---|---|
-| Performance | 80 | 90 |
-| Accessibility | 96 | 96 |
-| Best practices | 100 | 100 |
-| SEO | 100 | 100 |
+|                | Desktop | Mobile |
+| -------------- | ------- | ------ |
+| Performance    | 80      | 90     |
+| Accessibility  | 96      | 96     |
+| Best practices | 100     | 100    |
+| SEO            | 100     | 100    |
 
 Observed (un-throttled): LCP ~150 ms, CLS 0, TBT < 10 ms.
 
 Known accepted flags (do NOT report as regressions):
+
 - `color-contrast` on muted micro-labels (`--faint` token) — intentional design choice,
   mitigated via a `prefers-contrast: more` override in `app/globals.css`.
-- High *simulated* LCP (~3.5 s) with tiny *observed* LCP — Lighthouse lantern artifact
+- High _simulated_ LCP (~3.5 s) with tiny _observed_ LCP — Lighthouse lantern artifact
   for the priority-hinted hero image; judge by the observed value.
 - `unused-javascript` / `legacy-javascript` on the framework chunk.
 

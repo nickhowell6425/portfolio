@@ -26,6 +26,7 @@ Lighthouse budgets on every push/PR. Vercel deploys via its git integration — 
 not deploy.
 
 There is no unit-test suite. Verification is browser-driven:
+
 - `/pixel-check` skill — screenshots key routes and compares against approved references.
 - `audit-runner` agent — Lighthouse vs recorded baselines (see `.claude/agents/audit-runner.md`).
 - For interaction flows, drive real Chrome via Playwright (`.mcp.json` configures the
@@ -47,6 +48,7 @@ the root layout and never remounts across navigation. Overlays (message drawer, 
 résumé modal, toast) are siblings of the shell; the shell gets `inert` while any is open.
 
 **Fragments** (`components/fragments/`) are the live component miniatures. Conventions:
+
 - No `"use client"` directive — they sit inside the client graph; the boundary is
   `component-card.tsx` / `overview-hero.tsx` / `library-grid.tsx`.
 - State via `useFragState(fid, defaults)` (provider-backed map) so a fragment keeps state
@@ -61,6 +63,7 @@ thread + POST to `/api/contact` (zod-validated, rate-limited, honeypot; Resend w
 `RESEND_API_KEY` is set, otherwise logs).
 
 **Animation choreography** is remount-driven, defined in `app/globals.css`:
+
 - Content items (`.anim-item`) replay on every visit because `ContentArea` keys by pathname.
 - Stage/sidebar swap animations play **only on workspace change**: `useWsSticky`/`useNavSwap`
   (`hooks/use-ws-transition.ts`) set `data-swap`/`data-side-swap`, and components key by

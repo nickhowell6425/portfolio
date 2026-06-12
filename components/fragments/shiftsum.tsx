@@ -125,10 +125,18 @@ export function Onboarding() {
         <div style={{ fontWeight: 800, fontSize: 16.5, margin: "3px 0 12px" }}>{cur.q}</div>
         {cur.body}
         <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-          {st.step > 0 ? <FGhostButton label="← Back" onClick={() => set({ step: st.step - 1 })} /> : null}
+          {st.step > 0 ? (
+            <FGhostButton label="← Back" onClick={() => set({ step: st.step - 1 })} />
+          ) : null}
           <span style={{ flex: 1 }} />
           <FButton
-            label={st.step === 2 ? (st.emails.trim() ? "Send invites & finish" : "Skip & finish") : "Next →"}
+            label={
+              st.step === 2
+                ? st.emails.trim()
+                  ? "Send invites & finish"
+                  : "Skip & finish"
+                : "Next →"
+            }
             onClick={() => {
               if (st.step === 2) set({ done: true });
               else set({ step: st.step + 1 });
@@ -181,7 +189,12 @@ export function NotificationPrefs() {
         <div style={{ fontWeight: 700, fontSize: 13 }}>{title}</div>
         <div style={{ fontSize: 11.5, color: "var(--dim)" }}>{sub}</div>
       </div>
-      <FToggle on={st[key]} onClick={() => set({ [key]: !st[key] } as Partial<NotificationsState>)} accent={A} label={title} />
+      <FToggle
+        on={st[key]}
+        onClick={() => set({ [key]: !st[key] } as Partial<NotificationsState>)}
+        accent={A}
+        label={title}
+      />
     </div>
   );
 
@@ -221,9 +234,16 @@ export function NotificationPrefs() {
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 700, fontSize: 13 }}>Quiet hours</div>
-              <div style={{ fontSize: 11.5, color: "var(--dim)" }}>Nothing pings while you sleep</div>
+              <div style={{ fontSize: 11.5, color: "var(--dim)" }}>
+                Nothing pings while you sleep
+              </div>
             </div>
-            <FToggle on={st.quiet} onClick={() => set({ quiet: !st.quiet })} accent={A} label="Quiet hours" />
+            <FToggle
+              on={st.quiet}
+              onClick={() => set({ quiet: !st.quiet })}
+              accent={A}
+              label="Quiet hours"
+            />
           </div>
           {st.quiet ? (
             <div
@@ -255,7 +275,12 @@ export function NotificationPrefs() {
           }}
         >
           <span style={{ fontWeight: 700, fontSize: 13, flex: 1 }}>Digest frequency</span>
-          <FSeg opts={["Daily", "Weekly", "Off"]} cur={st.freq} onPick={(v) => set({ freq: v })} accent={A} />
+          <FSeg
+            opts={["Daily", "Weekly", "Off"]}
+            cur={st.freq}
+            onPick={(v) => set({ freq: v })}
+            accent={A}
+          />
         </div>
       </div>
     </FCard>
@@ -291,7 +316,13 @@ export function RosterAdmin() {
   });
 
   const roles = ["All", "Front desk", "Kitchen", "Delivery"];
-  const rows = ROSTER.map((r, i) => ({ i, name: r[0], role: r[1], sched: r[2], ok: !!st.approved[i] })).filter(
+  const rows = ROSTER.map((r, i) => ({
+    i,
+    name: r[0],
+    role: r[1],
+    sched: r[2],
+    ok: !!st.approved[i],
+  })).filter(
     (r) =>
       (st.filter === "All" || r.role === st.filter) &&
       `${r.name} ${r.role}`.toLowerCase().includes(st.q.toLowerCase()),
@@ -301,7 +332,15 @@ export function RosterAdmin() {
   return (
     <FCard w={560} accent={A} name="Shiftsum">
       <div>
-        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginBottom: 10 }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            alignItems: "center",
+            flexWrap: "wrap",
+            marginBottom: 10,
+          }}
+        >
           <div style={{ fontWeight: 800, fontSize: 15, flex: "1 0 auto" }}>Roster · next week</div>
           <FInput
             accent={A}
@@ -334,7 +373,14 @@ export function RosterAdmin() {
         </div>
         <div style={{ border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
           {rows.length === 0 ? (
-            <div style={{ padding: "22px 14px", textAlign: "center", color: "var(--dim)", fontSize: 12.5 }}>
+            <div
+              style={{
+                padding: "22px 14px",
+                textAlign: "center",
+                color: "var(--dim)",
+                fontSize: 12.5,
+              }}
+            >
               Nobody matches — even the search forgives typos, but not that one.
             </div>
           ) : (
@@ -370,7 +416,9 @@ export function RosterAdmin() {
                 >
                   {r.name}
                 </span>
-                <span style={{ fontSize: 11.5, color: "var(--dim)", width: 80, flex: "0 0 auto" }}>{r.role}</span>
+                <span style={{ fontSize: 11.5, color: "var(--dim)", width: 80, flex: "0 0 auto" }}>
+                  {r.role}
+                </span>
                 <span
                   style={{
                     fontFamily: MONO,
