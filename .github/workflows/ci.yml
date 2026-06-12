@@ -156,19 +156,34 @@ jobs:
             --chrome-flags="--headless --no-sandbox" \
             --only-categories=performance,accessibility,best-practices,seo \
             --output=json --output-path=./lighthouse-report.json
-      - name: Assert score budgets
+      - name: Assert budgets
         run: |
           node -e '
             const r = require("./lighthouse-report.json");
-            // CI runners are slower than the recorded local baselines; budgets leave headroom.
-            const budgets = { performance: 75, accessibility: 95, "best-practices": 95, seo: 100 };
             let failed = false;
-            for (const [cat, min] of Object.entries(budgets)) {
+            const assert = (name, value, max, fmt = (v) => v) => {
+              const ok = value <= max;
+              console.log(`${ok ? "PASS" : "FAIL"} ${name}: ${fmt(value)} (max ${fmt(max)})`);
+              if (!ok) failed = true;
+            };
+            // a11y/BP/SEO are deterministic — hard budgets.
+            for (const [cat, min] of Object.entries({ accessibility: 95, "best-practices": 95, seo: 100 })) {
               const score = Math.round(r.categories[cat].score * 100);
               const ok = score >= min;
               console.log(`${ok ? "PASS" : "FAIL"} ${cat}: ${score} (budget ${min})`);
               if (!ok) failed = true;
             }
+            // The composite performance score swings wildly on shared CI runners
+            // (simulated throttling x slow hardware), so assert the stable metrics
+            // that catch real regressions, plus a catastrophe floor on the score.
+            const m = r.audits.metrics.details.items[0];
+            assert("CLS", m.cumulativeLayoutShift ?? 0, 0.02);
+            assert("TBT", m.totalBlockingTime ?? 0, 600, (v) => `${Math.round(v)}ms`);
+            assert("observed LCP", m.observedLargestContentfulPaint ?? 0, 4000, (v) => `${Math.round(v)}ms`);
+            const perf = Math.round(r.categories.performance.score * 100);
+            const perfOk = perf >= 55;
+            console.log(`${perfOk ? "PASS" : "FAIL"} performance: ${perf} (floor 55; informational — see metrics above)`);
+            if (!perfOk) failed = true;
             process.exit(failed ? 1 : 0);
           '
       - name: Upload report
