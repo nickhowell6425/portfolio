@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Spline+Sans+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; height:100%; background:#0f141f; }
+  * { box-sizing:border-box; }
+  #wsroot {
+    --bg0:#0a0d14; --bg1:#121927; --bg2:#0f141f; --surface:#161d2c; --surface2:#1c2435;
+    --border:rgba(151,173,214,.13); --border2:rgba(151,173,214,.24);
+    --text:#e8edf7; --dim:#93a1ba; --faint:#5e6b84;
+    --accent:#5b8def; --accent-soft:rgba(91,141,239,.13);
+    --shadow:0 16px 44px -14px rgba(2,6,16,.55), 0 2px 8px rgba(2,6,16,.35);
+    --nav-pos:static; --nav-tx:none; --scrim-d:none; --burger:none; --sbw:276px;
+  }
+  #wsroot[data-theme="light"] {
+    --bg0:#11161f; --bg1:#edf0f6; --bg2:#f6f8fc; --surface:#ffffff; --surface2:#eef1f8;
+    --border:rgba(40,56,88,.12); --border2:rgba(40,56,88,.22);
+    --text:#1a2130; --dim:#5d6a82; --faint:#94a0b8;
+    --accent:#3d6be0; --accent-soft:rgba(61,107,224,.1);
+    --shadow:0 16px 40px -16px rgba(30,44,82,.18), 0 2px 8px rgba(30,44,82,.08);
+  }
+  @media (max-width: 800px) {
+    #wsroot { --nav-pos:fixed; --nav-tx:translateX(-105%); --burger:inline-flex; --sbw:262px; }
+    #wsroot[data-drawer="open"] { --nav-tx:translateX(0); --scrim-d:block; }
+  }
+  #wsroot ::selection { background:rgba(91,141,239,.3); }
+  #wsroot :focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:6px; }
+  #wsroot ::-webkit-scrollbar { width:10px; height:10px; }
+  #wsroot ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:8px; border:3px solid transparent; background-clip:content-box; }
+  #wsroot ::-webkit-scrollbar-track { background:transparent; }
+  input, button, select, textarea { font:inherit; color:inherit; }
+  #wsroot input::placeholder { color:var(--faint); }
+  @keyframes msgInA { from { opacity:0; transform:translateY(12px) translateZ(-30px); } to { opacity:1; transform:none; } }
+  @keyframes msgInB { from { opacity:0; transform:translateY(12px) translateZ(-30px); } to { opacity:1; transform:none; } }
+  @keyframes swapA { from { opacity:0; transform:translateY(16px) scale(.99); } to { opacity:1; transform:none; } }
+  @keyframes swapB { from { opacity:0; transform:translateY(16px) scale(.99); } to { opacity:1; transform:none; } }
+  @keyframes sideA { from { opacity:0; transform:translateX(-14px); } to { opacity:1; transform:none; } }
+  @keyframes sideB { from { opacity:0; transform:translateX(-14px); } to { opacity:1; transform:none; } }
+  @keyframes itemA { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+  @keyframes itemB { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+  @keyframes popIn { from { transform:scale(.92); opacity:0; } to { transform:scale(1); opacity:1; } }
+  @keyframes drawerIn { from { transform:translateX(100%); } to { transform:translateX(0); } }
+  @keyframes drawerOut { from { transform:translateX(0); } to { transform:translateX(100%); } }
+  @keyframes scrimIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes scrimOut { from { opacity:1; } to { opacity:0; } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  @keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</helmet>
+<div id="wsroot" data-screen-label="The Workspace v2" data-theme="{{ themeAttr }}" data-drawer="{{ drawerAttr }}" style="position:fixed; inset:0; display:flex; overflow:hidden; background:var(--bg2); color:var(--text); font-family:'Schibsted Grotesk', system-ui, sans-serif; font-size:15px; line-height:1.5; perspective:1500px; -webkit-font-smoothing:antialiased">
+
+  <canvas ref="{{ canvasRef }}" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none"></canvas>
+
+  <div onClick="{{ closeDrawer }}" style="display:var(--scrim-d); position:fixed; inset:0; z-index:30; background:rgba(4,8,16,.55)"></div>
+
+  <nav aria-label="Projects and components" style="position:var(--nav-pos); z-index:40; top:0; bottom:0; left:0; display:flex; align-items:stretch; transform:{{ navBoot }}; opacity:{{ navOp }}; transition:transform .55s cubic-bezier(.2,.8,.25,1), opacity .5s ease">
+
+    <div role="tablist" aria-label="Projects" style="width:62px; background:var(--bg0); display:flex; flex-direction:column; align-items:center; gap:10px; padding:12px 0; flex:0 0 auto">
+      <sc-for list="{{ rail }}" as="w" hint-placeholder-count="4">
+        <sc-if value="{{ w.divider }}" hint-placeholder-val="{{ false }}">
+          <span aria-hidden="true" style="width:28px; height:1px; background:var(--border2); margin:3px 0 1px; flex:0 0 auto"></span>
+          <span aria-hidden="true" style="font-family:'Spline Sans Mono', monospace; font-size:8px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); margin-bottom:1px">work</span>
+        </sc-if>
+        <button onClick="{{ w.onPick }}" title="{{ w.name }}" aria-label="{{ w.name }}" style="position:relative; width:40px; height:40px; border-radius:{{ w.radius }}; border:none; cursor:pointer; background:{{ w.bg }}; color:{{ w.fg }}; font-weight:800; font-size:13px; letter-spacing:.02em; box-shadow:{{ w.glow }}; transition:border-radius .25s, transform .2s, box-shadow .25s, background-color .3s, color .3s; font-family:'Spline Sans Mono', monospace" style-hover="transform:translateY(-2px)">
+          {{ w.initials }}
+          <sc-if value="{{ w.active }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute; left:-11px; top:50%; margin-top:-11px; width:4px; height:22px; border-radius:0 4px 4px 0; background:#e8edf7"></span>
+          </sc-if>
+        </button>
+      </sc-for>
+      <div style="flex:1"></div>
+      <button onClick="{{ cycleTheme }}" title="Theme: {{ themeName }}" aria-label="Theme: {{ themeName }}" style="width:36px; height:36px; border-radius:12px; border:1px solid rgba(151,173,214,.18); background:transparent; color:#93a1ba; cursor:pointer; font-size:15px">{{ themeGlyph }}</button>
+    </div>
+
+    <div style="width:var(--sbw); background:var(--bg1); border-right:1px solid var(--border); display:flex; flex-direction:column; min-width:0; flex:0 0 auto; animation:{{ sideAnim }}">
+      <div style="padding:16px 16px 14px; border-bottom:1px solid var(--border)">
+        <div style="font-weight:800; font-size:16.5px; letter-spacing:-.01em">{{ wsName }}</div>
+        <div style="color:var(--dim); font-size:12.5px; margin-top:1px; text-wrap:pretty">{{ wsDesc }}</div>
+        <div style="display:inline-block; margin-top:9px; font-family:'Spline Sans Mono', monospace; font-size:10.5px; font-weight:600; letter-spacing:.02em; color:{{ wsAccent }}; background:color-mix(in srgb, {{ wsAccent }} 12%, transparent); border:1px solid color-mix(in srgb, {{ wsAccent }} 30%, transparent); border-radius:999px; padding:3px 9px">{{ wsStatus }}</div>
+        <sc-if value="{{ hasTags }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:10px">
+            <sc-for list="{{ wsTags }}" as="t" hint-placeholder-count="4">
+              <span style="font-family:'Spline Sans Mono', monospace; font-size:10px; font-weight:500; color:var(--dim); border:1px solid var(--border2); border-radius:6px; padding:2px 7px; background:var(--surface)">{{ t }}</span>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="flex:1; overflow-y:auto; padding:10px 8px 14px">
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+          <div style="font-family:'Spline Sans Mono', monospace; font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); padding:12px 10px 5px; animation:{{ g.anim }}">{{ g.title }}</div>
+          <sc-for list="{{ g.items }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.onPick }}" aria-current="{{ c.aria }}" style="display:flex; width:100%; align-items:center; gap:9px; padding:6px 10px; border:none; border-radius:8px; cursor:pointer; text-align:left; background:{{ c.bg }}; color:{{ c.fg }}; font-weight:{{ c.weight }}; font-size:14px; margin:1px 0; animation:{{ c.anim }}; transition:background .2s, color .2s" style-hover="background:var(--accent-soft)">
+              <span style="width:16px; text-align:center; color:{{ c.iconColor }}; font-family:'Spline Sans Mono', monospace; font-size:12.5px; flex:0 0 auto">{{ c.icon }}</span>
+              <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ c.label }}</span>
+            </button>
+          </sc-for>
+        </sc-for>
+      </div>
+      <div style="padding:12px 16px; border-top:1px solid var(--border); color:var(--faint); font-size:10.5px; font-family:'Spline Sans Mono', monospace; line-height:1.55; text-wrap:pretty">{{ footerLine }}</div>
+    </div>
+  </nav>
+
+  <main style="flex:1; min-width:0; display:flex; flex-direction:column; position:relative; z-index:1; transform:{{ mainBoot }}; opacity:{{ mainOp }}; transition:transform .6s cubic-bezier(.2,.8,.25,1) .07s, opacity .55s ease .07s">
+
+    <div style="height:52px; flex:0 0 auto; display:flex; align-items:center; gap:10px; padding:0 14px; border-bottom:1px solid var(--border); background:var(--bg1)">
+      <button onClick="{{ openDrawer }}" aria-label="Open project navigation" style="display:var(--burger); align-items:center; justify-content:center; width:38px; height:38px; border:1px solid var(--border2); border-radius:10px; background:transparent; color:var(--dim); cursor:pointer; font-size:16px">☰</button>
+      <button onClick="{{ openSearch }}" style="flex:1; max-width:520px; display:flex; align-items:center; gap:9px; height:34px; padding:0 12px; border:1px solid var(--border2); border-radius:9px; background:var(--surface); color:var(--faint); cursor:pointer; font-size:13.5px" style-hover="border-color:var(--accent)">
+        <span aria-hidden="true" style="font-size:12px">⌕</span>
+        <span style="flex:1; text-align:left">Jump to a project or component…</span>
+        <kbd style="font-family:'Spline Sans Mono', monospace; font-size:10.5px; border:1px solid var(--border2); border-radius:5px; padding:1px 5px; color:var(--faint)">⌘K</kbd>
+      </button>
+      <span style="flex:1"></span>
+      <button onClick="{{ openResume }}" aria-label="View résumé" style="display:inline-flex; align-items:center; gap:7px; height:34px; padding:0 14px; border-radius:9px; border:1px solid var(--border2); background:var(--surface); color:var(--text); font-weight:600; font-size:13.5px; cursor:pointer" style-hover="border-color:var(--accent)"><span aria-hidden="true" style="font-family:'Spline Sans Mono', monospace; font-size:12px; color:var(--accent)">▤</span>Résumé</button>
+      <a href="{{ bookHref }}" onClick="{{ onBook }}" style="display:inline-flex; align-items:center; height:34px; padding:0 16px; border-radius:9px; background:var(--accent); color:#fff; font-weight:700; font-size:13.5px; text-decoration:none; box-shadow:0 6px 16px -6px var(--accent)" style-hover="filter:brightness(1.08)">Send a message</a>
+    </div>
+
+    <div style="padding:13px 24px 11px; flex:0 0 auto; border-bottom:1px solid var(--border); display:flex; align-items:baseline; gap:10px; min-width:0; animation:{{ swapAnim }}">
+      <div style="font-weight:800; font-size:16.5px; letter-spacing:-.01em; flex:0 0 auto">{{ chTitle }}</div>
+      <div style="color:var(--dim); font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ chDesc }}</div>
+    </div>
+
+    <sc-if value="{{ isLibrary }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; gap:6px; flex-wrap:wrap; padding:10px 24px 2px; flex:0 0 auto">
+        <sc-for list="{{ libChips }}" as="f" hint-placeholder-count="3">
+          <button onClick="{{ f.onPick }}" aria-pressed="{{ f.ariaSel }}" style="border:1px solid {{ f.bd }}; background:{{ f.bg }}; color:{{ f.fg }}; border-radius:999px; padding:4px 13px; font-size:12.5px; font-weight:600; cursor:pointer">{{ f.label }}</button>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <div ref="{{ scrollRef }}" data-screen-label="{{ screenLabel }}" style="flex:1; overflow-y:auto; overflow-x:hidden; padding:20px 24px 44px; animation:{{ swapAnim }}">
+      <div style="max-width:880px; margin:0 auto; display:flex; flex-direction:column; gap:4px">
+
+        <sc-if value="{{ hasHero }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:2px 0 14px; animation:{{ swapAnim }}">{{ heroEl }}</div>
+        </sc-if>
+
+        <sc-if value="{{ hasPortrait }}" hint-placeholder-val="{{ false }}">
+          <div style="position:relative; overflow:hidden; border:1px solid var(--border2); border-radius:18px; box-shadow:var(--shadow); background:linear-gradient(105deg, var(--surface) 0%, color-mix(in srgb, var(--accent) 9%, var(--surface)) 46%, color-mix(in srgb, var(--accent) 22%, var(--surface)) 100%); min-height:252px; display:flex; align-items:center; margin:2px 0 18px; animation:{{ swapAnim }}">
+            <div aria-hidden="true" style="position:absolute; inset:0; background-image:radial-gradient(var(--border) 1px, transparent 1px); background-size:18px 18px; opacity:.5; pointer-events:none"></div>
+            <div aria-hidden="true" style="position:absolute; right:48px; bottom:-30px; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent) 46%, transparent), transparent 66%); pointer-events:none"></div>
+            <div style="position:relative; z-index:2; padding:30px 30px 30px 34px; max-width:580px">
+              <div style="font-family:'Spline Sans Mono', monospace; font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)">The person behind the products</div>
+              <div style="margin:9px 0 0; font-size:32px; font-weight:800; letter-spacing:-.022em; line-height:1.04">Nicholas Howell</div>
+              <p style="margin:11px 0 0; font-size:14.5px; line-height:1.6; color:var(--dim); max-width:460px; text-wrap:pretty">CTO · founding engineer · senior full-stack. Greenfield build or an existing codebase, running solo with AI agents or embedded in your team — I ship products that reach real customers and multi-million-dollar valuations, and make them hold up.</p>
+              <div style="display:flex; gap:7px; flex-wrap:wrap; margin-top:15px">
+                <span style="display:inline-flex; align-items:center; gap:6px; font-family:'Spline Sans Mono', monospace; font-size:10.5px; font-weight:600; color:var(--accent); background:var(--accent-soft); border:1px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius:999px; padding:3px 10px">CTO · founding engineer</span>
+                <span style="font-family:'Spline Sans Mono', monospace; font-size:10.5px; font-weight:600; color:var(--dim); border:1px solid var(--border2); border-radius:999px; padding:3px 10px; background:var(--surface)">multi-million exits</span>
+                <span style="font-family:'Spline Sans Mono', monospace; font-size:10.5px; font-weight:600; color:var(--dim); border:1px solid var(--border2); border-radius:999px; padding:3px 10px; background:var(--surface)">0 abandoned codebases</span>
+              </div>
+            </div>
+            <span style="flex:1"></span>
+            <img src="uploads/avatar-front.png" alt="Illustrated full-body portrait of Nicholas Howell" style="position:relative; z-index:3; height:300px; width:auto; margin:0 40px -1px 0; align-self:flex-end; pointer-events:none; filter:drop-shadow(0 18px 26px rgba(0,0,0,.5))">
+          </div>
+        </sc-if>
+
+        <sc-for list="{{ sections }}" as="sec" hint-placeholder-count="2">
+          <section style="animation:{{ sec.anim }}; padding:4px 0">
+            <sc-if value="{{ sec.hasHeading }}" hint-placeholder-val="{{ false }}">
+              <h2 style="margin:16px 0 4px; font-size:17px; font-weight:800; letter-spacing:-.01em; display:flex; align-items:baseline; gap:10px; text-wrap:pretty">
+                <span aria-hidden="true" style="font-family:'Spline Sans Mono', monospace; font-size:11px; font-weight:700; color:{{ wsAccent }}; flex:0 0 auto">{{ sec.num }}</span>
+                <span>{{ sec.heading }}</span>
+              </h2>
+            </sc-if>
+            <sc-for list="{{ sec.paras }}" as="p" hint-placeholder-count="1">
+              <p style="margin:7px 0; max-width:680px; font-size:14.5px; line-height:1.62; text-wrap:pretty; color:var(--text)">{{ p }}</p>
+            </sc-for>
+            <sc-if value="{{ sec.hasCta }}" hint-placeholder-val="{{ false }}">
+              <a href="{{ bookHref }}" onClick="{{ sec.onCta }}" style="display:inline-flex; align-items:center; margin:8px 0 4px; height:40px; padding:0 20px; border-radius:10px; background:var(--accent); color:#fff; font-weight:700; font-size:14px; text-decoration:none; box-shadow:0 8px 20px -8px var(--accent)" style-hover="filter:brightness(1.08)">{{ sec.ctaLabel }}</a>
+            </sc-if>
+          </section>
+        </sc-for>
+
+        <div style="{{ cardsWrapStyle }}">
+        <sc-for list="{{ cards }}" as="m" hint-placeholder-count="1">
+          <div style="animation:{{ m.anim }}; padding:4px 0 10px">
+            <sc-if value="{{ m.hasNote }}" hint-placeholder-val="{{ false }}">
+              <sc-for list="{{ m.paras }}" as="p" hint-placeholder-count="1">
+                <p style="margin:6px 0 12px; max-width:680px; font-size:14.5px; line-height:1.62; text-wrap:pretty">{{ p }}</p>
+              </sc-for>
+            </sc-if>
+            <div onPointerMove="{{ m.tiltMove }}" onPointerLeave="{{ m.tiltLeave }}" style="max-width:840px; border:1px solid var(--border2); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; will-change:transform; transition:transform .25s ease">
+              <div style="display:flex; align-items:center; gap:9px; padding:9px 12px; border-bottom:1px solid var(--border); flex-wrap:wrap; background:var(--surface)">
+                <span aria-hidden="true" style="width:9px; height:9px; border-radius:3px; background:{{ m.fragAccent }}; flex:0 0 auto"></span>
+                <span style="font-weight:700; font-size:13px">{{ m.cardTitle }}</span>
+                <span style="font-family:'Spline Sans Mono', monospace; font-size:10.5px; color:var(--faint)">{{ m.cardMeta }}</span>
+                <span style="flex:1"></span>
+                <div role="tablist" aria-label="Card view" style="display:flex; gap:2px; background:var(--surface2); border:1px solid var(--border); border-radius:9px; padding:2px">
+                  <button role="tab" aria-selected="{{ m.tabPrevSel }}" onClick="{{ m.onTabPreview }}" style="border:none; cursor:pointer; border-radius:7px; padding:3px 11px; font-size:12px; font-weight:600; background:{{ m.tabPrevBg }}; color:{{ m.tabPrevFg }}">Preview</button>
+                  <button role="tab" aria-selected="{{ m.tabCodeSel }}" onClick="{{ m.onTabCode }}" style="border:none; cursor:pointer; border-radius:7px; padding:3px 11px; font-size:12px; font-weight:600; background:{{ m.tabCodeBg }}; color:{{ m.tabCodeFg }}; font-family:'Spline Sans Mono', monospace">Code</button>
+                </div>
+              </div>
+              <div style="position:relative">{{ m.cardBody }}</div>
+            </div>
+          </div>
+        </sc-for>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeChat }}" aria-hidden="true" style="position:fixed; inset:0; z-index:72; background:rgba(5,9,18,.5); animation:{{ scrimAnim }}"></div>
+    <aside role="dialog" aria-modal="true" aria-label="Message {{ chatFirst }}" style="position:fixed; z-index:73; top:0; bottom:0; right:0; width:420px; max-width:100%; display:flex; flex-direction:column; min-height:0; background:var(--bg1); border-left:1px solid var(--border2); box-shadow:-24px 0 60px -24px rgba(2,6,16,.6); animation:{{ drawerAnim }}">
+      <div style="display:flex; align-items:center; gap:8px; padding:13px 12px 13px 18px; border-bottom:1px solid var(--border); flex:0 0 auto">
+        <span style="font-weight:800; font-size:14.5px">Message {{ chatFirst }}</span>
+        <span style="flex:1"></span>
+        <button onClick="{{ closeChat }}" aria-label="Close message panel" style="display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:9px; border:1px solid var(--border2); background:var(--surface); cursor:pointer; font-size:15px; color:var(--dim); flex:0 0 auto">✕</button>
+      </div>
+      <div style="padding:9px 18px 0; flex:0 0 auto">
+        <span style="display:inline-block; font-family:'Spline Sans Mono', monospace; font-size:10px; color:var(--dim); border:1px solid var(--border2); border-radius:999px; padding:2px 9px">not a live chat — replies come by email</span>
+      </div>
+      <div ref="{{ chatScrollRef }}" role="log" aria-label="Your messages" style="flex:1; overflow-y:auto; padding:12px 18px; min-height:0">
+        <sc-for list="{{ chatMsgs }}" as="cm" hint-placeholder-count="1">
+          <div style="display:flex; gap:10px; padding:6px 0; animation:fadeUp .25s both">
+            <div aria-hidden="true" style="width:30px; height:30px; border-radius:9px; background:{{ cm.avBg }}; color:{{ cm.avFg }}; display:grid; place-items:center; font-weight:800; font-size:12px; flex:0 0 auto">{{ cm.avText }}</div>
+            <div style="flex:1; min-width:0">
+              <div style="display:flex; align-items:baseline; gap:7px; flex-wrap:wrap">
+                <span style="font-weight:800; font-size:12.5px">{{ cm.name }}</span>
+                <span style="font-family:'Spline Sans Mono', monospace; font-size:9.5px; color:var(--faint)">{{ cm.time }}</span>
+                <sc-if value="{{ cm.auto }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-family:'Spline Sans Mono', monospace; font-size:9px; color:var(--faint); border:1px solid var(--border2); border-radius:4px; padding:0 5px">auto-reply</span>
+                </sc-if>
+              </div>
+              <p style="margin:2px 0 0; font-size:13px; line-height:1.5; text-wrap:pretty">{{ cm.text }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:10px 16px 14px; flex:0 0 auto; border-top:1px solid var(--border)">
+        <div style="display:flex; flex-direction:column; border:1px solid var(--border2); background:var(--surface); border-radius:12px; box-shadow:var(--shadow); overflow:hidden">
+          <div style="display:flex; border-bottom:1px solid var(--border)">
+            <input ref="{{ chatFirstRef }}" value="{{ guestFirst }}" onChange="{{ onGuestFirst }}" placeholder="First name" aria-label="First name" style="flex:1; min-width:0; border:none; outline:none; background:transparent; height:34px; padding:0 14px; font-size:12.5px; border-right:1px solid var(--border)">
+            <input value="{{ guestLast }}" onChange="{{ onGuestLast }}" placeholder="Last name" aria-label="Last name" style="flex:1; min-width:0; border:none; outline:none; background:transparent; height:34px; padding:0 14px; font-size:12.5px">
+          </div>
+          <input ref="{{ chatEmailRef }}" value="{{ guestEmail }}" onChange="{{ onGuestEmail }}" placeholder="your@email.com — so I can reply" aria-label="Your email" style="border:none; outline:none; background:transparent; height:34px; padding:0 14px; font-size:12.5px; border-bottom:1px solid var(--border); font-family:'Spline Sans Mono', monospace; color:{{ emailColor }}">
+          <div style="display:flex; gap:8px; align-items:center; padding:5px 5px 5px 14px">
+            <input ref="{{ chatInputRef }}" onKeyDown="{{ chatKey }}" placeholder="What are you building?" aria-label="Your message" style="flex:1; border:none; outline:none; background:transparent; min-width:0; height:34px; font-size:13.5px">
+            <button onClick="{{ chatSend }}" style="border:none; cursor:pointer; height:32px; padding:0 15px; border-radius:9px; background:var(--accent); color:#fff; font-weight:700; font-size:12.5px">Send</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </sc-if>
+
+  <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="Jump to" onClick="{{ closeSearch }}" style="position:fixed; inset:0; z-index:60; background:rgba(5,9,18,.55); display:flex; align-items:flex-start; justify-content:center; padding:11vh 16px 0">
+      <div onClick="{{ swallow }}" style="width:560px; max-width:100%; background:var(--bg1); border:1px solid var(--border2); border-radius:14px; box-shadow:var(--shadow); overflow:hidden; animation:popIn .16s ease">
+        <input ref="{{ searchRef }}" value="{{ query }}" onChange="{{ onQuery }}" onKeyDown="{{ searchKey }}" placeholder="Jump to a project or component…" aria-label="Search" style="width:100%; padding:15px 18px; border:none; outline:none; background:transparent; font-size:15.5px; border-bottom:1px solid var(--border)">
+        <div style="max-height:330px; overflow-y:auto; padding:6px">
+          <sc-for list="{{ results }}" as="r" hint-placeholder-count="3">
+            <button onClick="{{ r.onPick }}" style="display:flex; width:100%; gap:11px; align-items:center; padding:9px 12px; border:none; border-radius:9px; cursor:pointer; text-align:left; background:{{ r.bg }}" style-hover="background:var(--accent-soft)">
+              <span style="font-family:'Spline Sans Mono', monospace; color:var(--accent); font-size:12px; width:16px; text-align:center; flex:0 0 auto">{{ r.icon }}</span>
+              <span style="font-weight:600; font-size:14px; flex:0 0 auto">{{ r.label }}</span>
+              <span style="color:var(--faint); font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ r.sub }}</span>
+            </button>
+          </sc-for>
+          <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:22px 16px; text-align:center; color:var(--dim); font-size:13.5px">Nothing here — yet. That's usually where I come in.</div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ resumeOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="Résumé" onClick="{{ closeResume }}" style="position:fixed; inset:0; z-index:65; background:rgba(5,9,18,.62); display:flex; align-items:center; justify-content:center; padding:5vh 16px; animation:fadeUp .2s ease">
+      <div onClick="{{ swallow }}" style="width:880px; max-width:100%; height:90vh; max-height:90vh; display:flex; flex-direction:column; background:var(--bg1); border:1px solid var(--border2); border-radius:16px; box-shadow:var(--shadow); overflow:hidden; animation:popIn .18s ease">
+        <div style="display:flex; align-items:center; gap:10px; padding:11px 12px 11px 16px; border-bottom:1px solid var(--border); flex:0 0 auto; flex-wrap:wrap">
+          <span aria-hidden="true" style="width:9px; height:9px; border-radius:3px; background:var(--accent); flex:0 0 auto"></span>
+          <span style="font-weight:800; font-size:14.5px">Résumé</span>
+          <span style="font-family:'Spline Sans Mono', monospace; font-size:10.5px; color:var(--faint); overflow:hidden; text-overflow:ellipsis; white-space:nowrap">Nicholas Howell · Senior Full-Stack / CTO</span>
+          <span style="flex:1; min-width:8px"></span>
+          <a href="uploads/Resume.pdf" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; height:32px; padding:0 13px; border-radius:8px; border:1px solid var(--border2); background:var(--surface); color:var(--text); font-weight:600; font-size:12.5px; text-decoration:none" style-hover="border-color:var(--accent)">Open in tab</a>
+          <a href="uploads/Resume.pdf" download="Nicholas-Howell-Resume.pdf" style="display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 14px; border-radius:8px; background:var(--accent); color:#fff; font-weight:700; font-size:12.5px; text-decoration:none; box-shadow:0 6px 16px -6px var(--accent)" style-hover="filter:brightness(1.08)"><span aria-hidden="true" style="font-family:'Spline Sans Mono', monospace; font-size:12px">↓</span>Download</a>
+          <button onClick="{{ closeResume }}" aria-label="Close résumé" style="width:32px; height:32px; border-radius:8px; border:1px solid var(--border2); background:transparent; color:var(--dim); cursor:pointer; font-size:14px; flex:0 0 auto" style-hover="border-color:var(--accent); color:var(--text)">✕</button>
+        </div>
+        <div style="flex:1; min-height:0; background:var(--bg0)">
+          <iframe src="uploads/Resume.pdf#view=FitH&navpanes=0" title="Nicholas Howell résumé" style="width:100%; height:100%; border:none; display:block"></iframe>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position:fixed; left:50%; bottom:26px; transform:translateX(-50%); z-index:70; background:var(--surface); border:1px solid var(--border2); color:var(--text); border-radius:12px; padding:11px 18px; box-shadow:var(--shadow); animation:fadeUp .25s; font-size:13.5px; max-width:min(90vw, 480px); text-align:center; text-wrap:pretty">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    ready: false, ws: "home", ch: "about", theme: "system", sysDark: true, rm: false,
+    drawer: false, boot: true, searchOpen: false, resumeOpen: false, query: "", sel: 0,
+    visited: {}, chTick: 0, swapTick: 0,
+    cards: {}, frag: {}, toast: null, libFilter: "All",
+    chatH: 260, guestEmail: "", guestFirst: "", guestLast: "", emailErr: false, chatThread: [], chatOpen: false, chatClosing: false,
+  };
+
+  canvasRef = React.createRef();
+  searchRef = React.createRef();
+  scrollRef = React.createRef();
+  chatScrollRef = React.createRef();
+  chatInputRef = React.createRef();
+  chatEmailRef = React.createRef();
+  chatFirstRef = React.createRef();
+  xRot = {}; xNodes = {}; lastCh = {}; codeRefs = [];
+
+  componentDidMount() {
+    import("./content-v2.js").then((m) => {
+      this.C = m;
+      const rmq = matchMedia("(prefers-reduced-motion: reduce)");
+      const dkq = matchMedia("(prefers-color-scheme: dark)");
+      try {
+        rmq.addEventListener("change", (e) => this.setState({ rm: e.matches }));
+        dkq.addEventListener("change", (e) => this.setState({ sysDark: e.matches }));
+      } catch (err) {}
+      const rm = rmq.matches;
+      this.setState({
+        ready: true, rm, sysDark: dkq.matches, boot: !rm,
+        visited: { "home/about": 1 }, chTick: 1,
+      });
+      this.lastCh.home = "about";
+      if (!rm) this._bT = setTimeout(() => this.setState({ boot: false }), 90);
+      this.startAmbient();
+    });
+    this._key = (e) => {
+      const tag = (e.target.tagName || "").toLowerCase();
+      const inField = tag === "input" || tag === "textarea" || tag === "select";
+      if ((e.metaKey || e.ctrlKey) && String(e.key).toLowerCase() === "k") { e.preventDefault(); this.state.searchOpen ? this.closeSearch() : this.openSearch(); return; }
+      if (e.key === "/" && !inField && !this.state.searchOpen) { e.preventDefault(); this.openSearch(); return; }
+      if (e.key === "Escape") {
+        if (this.state.chatOpen) this.closeChat();
+        else if (this.state.resumeOpen) this.setState({ resumeOpen: false });
+        else if (this.state.searchOpen) this.closeSearch();
+        else if (this.state.drawer) this.setState({ drawer: false });
+      }
+    };
+    window.addEventListener("keydown", this._key);
+    this._rs = () => this.sizeCanvas();
+    window.addEventListener("resize", this._rs);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this._key);
+    window.removeEventListener("resize", this._rs);
+    clearTimeout(this._bT); clearTimeout(this._toT);
+    cancelAnimationFrame(this._raf);
+    if (this._mvRaf) { cancelAnimationFrame(this._mvRaf); this._mvRaf = null; }
+  }
+
+  // ---------- navigation ----------
+  resolvedTheme() { const s = this.state; return s.theme === "system" ? (s.sysDark ? "dark" : "light") : s.theme; }
+
+  visit(ws, ch) {
+    const key = ws + "/" + ch;
+    this.lastCh[ws] = ch;
+    this.setState((p) => ({
+      ws, ch, drawer: false, searchOpen: false, query: "", sel: 0,
+      swapTick: ws !== p.ws ? p.swapTick + 1 : p.swapTick,
+      chTick: p.chTick + 1,
+      visited: Object.assign({}, p.visited, { [key]: 1 }),
+      toast: null,
+    }));
+    requestAnimationFrame(() => { const sc = this.scrollRef.current; if (sc) sc.scrollTop = 0; });
+  }
+
+  go(wsId) {
+    if (!this.C) return;
+    const w = this.C.WORKSPACES.find((x) => x.id === wsId);
+    this.visit(wsId, this.lastCh[wsId] || w.groups[0].items[0]);
+  }
+
+  goMessage() {
+    clearTimeout(this._chatT);
+    this.setState({ chatOpen: true, chatClosing: false });
+    setTimeout(() => { const el = this.chatEmailRef.current; if (el) el.focus(); }, 320);
+  }
+
+  closeChat() {
+    if (this.state.chatClosing) return;
+    this.setState({ chatClosing: true });
+    this._chatT = setTimeout(() => this.setState({ chatOpen: false, chatClosing: false }), 240);
+  }
+
+  cycleTheme() {
+    this.setState((p) => ({ theme: p.theme === "system" ? "light" : p.theme === "light" ? "dark" : "system" }));
+  }
+
+  openSearch() { this.setState({ searchOpen: true, query: "", sel: 0 }); setTimeout(() => { const el = this.searchRef.current; if (el) el.focus(); }, 30); }
+  closeSearch() { this.setState({ searchOpen: false }); }
+
+  toast_(msg) { clearTimeout(this._toT); this.setState({ toast: msg }); this._toT = setTimeout(() => this.setState({ toast: null }), 3600); }
+
+  // ---------- message panel ----------
+  nowStr() {
+    const d = new Date(); let hh = d.getHours();
+    const mm = ("0" + d.getMinutes()).slice(-2), ap = hh >= 12 ? "PM" : "AM";
+    hh = hh % 12 || 12; return hh + ":" + mm + " " + ap;
+  }
+
+  splitDown(e) {
+    e.preventDefault();
+    const move = (ev) => {
+      const h = Math.max(170, Math.min(Math.round(window.innerHeight * 0.65), window.innerHeight - ev.clientY - 5));
+      this.setState({ chatH: Math.round(h) });
+    };
+    const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }
+
+  scrollChat() { requestAnimationFrame(() => { const sc = this.chatScrollRef.current; if (sc) sc.scrollTop = sc.scrollHeight; }); }
+
+  chatSend() {
+    if (!this.C) return;
+    const el = this.chatInputRef.current; if (!el) return;
+    const v = el.value.trim(); if (!v) return;
+    const fn = (this.state.guestFirst || "").trim();
+    if (!fn) {
+      const ff = this.chatFirstRef.current; if (ff) ff.focus();
+      this.toast_("Add your name so I know who I'm talking to.");
+      return;
+    }
+    const email = (this.state.guestEmail || "").trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      this.setState({ emailErr: true });
+      const em = this.chatEmailRef.current; if (em) em.focus();
+      this.toast_("Add your email first — it's the only way I can reply.");
+      return;
+    }
+    el.value = "";
+    const first = !this.state.chatThread.some((m) => m.who === "auto");
+    this.setState((p) => ({ chatThread: p.chatThread.concat([{ who: "you", t: this.nowStr(), text: v }]) }));
+    this.scrollChat();
+    if (first) {
+      setTimeout(() => {
+        this.setState((p) => ({ chatThread: p.chatThread.concat([{ who: "auto", t: this.nowStr(), text: "Thanks, " + fn + " — your note just landed in my real inbox. I'll reply to " + email + ", usually same day. (This is the only automated message you'll see.)" }]) }));
+        this.scrollChat();
+      }, 900);
+    }
+  }
+
+  // ---------- cards & fragments ----------
+  cardOf(fid) { return this.state.cards[fid] || { tab: "preview", x: false }; }
+  setCard(fid, patch) { this.setState((p) => ({ cards: Object.assign({}, p.cards, { [fid]: Object.assign({}, p.cards[fid] || { tab: "preview", x: false }, patch) }) })); }
+  fragSt(fid, defaults) { return this.state.frag[fid] || defaults; }
+  setFrag(fid, patch) { this.setState((p) => ({ frag: Object.assign({}, p.frag, { [fid]: Object.assign({}, p.frag[fid] || {}, patch) }) })); }
+
+  fragInner(fid) {
+    const h = React.createElement;
+    const fn = this["b_" + fid];
+    if (fn) return fn.call(this);
+    return h("div", { style: { padding: "30px 36px", fontFamily: "'Spline Sans Mono',monospace", fontSize: 12, color: "var(--dim)", background: "var(--surface)", border: "1px solid var(--border2)", borderRadius: 12 } }, "component loading…");
+  }
+
+  previewEl(fid) {
+    const h = React.createElement;
+    return h("div", { style: { padding: "32px 20px", display: "grid", placeItems: "center", backgroundImage: "radial-gradient(var(--border) 1px, transparent 1px)", backgroundSize: "18px 18px" } }, this.fragInner(fid));
+  }
+
+  codeEl(fid) {
+    const h = React.createElement, f = this.C.FRAGMENTS[fid];
+    const code = f.code || { file: fid + ".tsx", lang: "tsx", src: "// source coming soon" };
+    const lines = code.src.replace(/\n+$/, "").split("\n");
+    return h("div", { style: { background: "#0b0f1a", fontFamily: this.MONO } },
+      h("div", { style: { display: "flex", alignItems: "center", gap: 9, padding: "9px 14px", borderBottom: "1px solid rgba(151,173,214,.12)", background: "#0e1322" } },
+        h("span", { "aria-hidden": "true", style: { display: "flex", gap: 6 } },
+          ["#ff5f57", "#febc2e", "#28c840"].map((c, i) => h("span", { key: i, style: { width: 10, height: 10, borderRadius: "50%", background: c } }))),
+        h("span", { style: { fontSize: 11.5, color: "#aeb9d4", marginLeft: 4 } }, code.file),
+        h("span", { style: { flex: 1 } }),
+        h("span", { style: { fontSize: 9.5, fontWeight: 600, letterSpacing: ".08em", textTransform: "uppercase", color: f.accent, border: "1px solid color-mix(in srgb, " + f.accent + " 40%, transparent)", borderRadius: 5, padding: "2px 7px" } }, code.lang)),
+      h("pre", { style: { margin: 0, padding: "14px 6px 16px 0", overflowX: "auto", fontSize: 12.5, lineHeight: 1.65, color: "#cdd6ea" } },
+        lines.map((ln, i) => h("div", { key: i, style: { display: "flex", whiteSpace: "pre" } },
+          h("span", { "aria-hidden": "true", style: { display: "inline-block", width: 44, textAlign: "right", paddingRight: 16, color: "#3c4660", flex: "0 0 auto" } }, i + 1),
+          h("span", { style: { flex: 1, minWidth: 0 } }, this.hl(ln, f.accent))))));
+  }
+
+  hl(line, accent) {
+    const h = React.createElement;
+    const KW = /\b(const|let|var|function|return|if|else|for|while|export|import|from|default|class|extends|new|await|async|type|interface|of|in|null|true|false|void|useState|useRef|useMemo)\b/g;
+    const out = []; let key = 0;
+    let code = line, comment = null;
+    const ci = line.indexOf("//");
+    if (ci >= 0) { code = line.slice(0, ci); comment = line.slice(ci); }
+    const pushPlain = (txt) => {
+      let l2 = 0, mm; KW.lastIndex = 0;
+      while ((mm = KW.exec(txt))) {
+        if (mm.index > l2) out.push(txt.slice(l2, mm.index));
+        out.push(h("span", { key: key++, style: { color: "#c9a6ff" } }, mm[0]));
+        l2 = mm.index + mm[0].length;
+      }
+      if (l2 < txt.length) out.push(txt.slice(l2));
+    };
+    const re = /(`[^`]*`|'[^']*'|"[^"]*")/g;
+    let last = 0, m;
+    while ((m = re.exec(code))) {
+      if (m.index > last) pushPlain(code.slice(last, m.index));
+      out.push(h("span", { key: key++, style: { color: accent } }, m[0]));
+      last = m.index + m[0].length;
+    }
+    if (last < code.length) pushPlain(code.slice(last));
+    if (comment) out.push(h("span", { key: key++, style: { color: "#5e6b84", fontStyle: "italic" } }, comment));
+    return out;
+  }
+
+  buildHero(hero, W) {
+    const h = React.createElement, f = this.C.FRAGMENTS[hero.frag];
+    return h("div", { style: { position: "relative", borderRadius: 16, overflow: "hidden", border: "1px solid var(--border2)", boxShadow: "var(--shadow)", background: "var(--bg1)" } },
+      h("div", { style: { position: "relative", display: "grid", placeItems: "center", padding: "34px 22px 138px", minHeight: 360, backgroundImage: "radial-gradient(var(--border) 1px, transparent 1px)", backgroundSize: "18px 18px" } }, this.fragInner(hero.frag)),
+      h("div", { "aria-hidden": "true", style: { position: "absolute", left: 0, right: 0, bottom: 0, height: "64%", background: "linear-gradient(to top, var(--bg1) 16%, color-mix(in srgb, var(--bg1) 76%, transparent) 48%, transparent)", pointerEvents: "none" } }),
+      h("div", { style: { position: "absolute", left: 0, right: 0, bottom: 0, padding: "20px 24px 22px", pointerEvents: "none" } },
+        h("div", { style: { fontFamily: this.MONO, fontSize: 10.5, fontWeight: 600, letterSpacing: ".14em", textTransform: "uppercase", color: f.accent } }, W.name + " · " + hero.kicker),
+        h("div", { style: { fontWeight: 800, fontSize: 23, letterSpacing: "-.01em", margin: "5px 0 6px" } }, "The real screen, running"),
+        h("p", { style: { margin: 0, maxWidth: 580, fontSize: 14.5, lineHeight: 1.55, color: "var(--text)", textWrap: "pretty" } }, hero.lead)),
+      h("div", { style: { position: "absolute", top: 13, right: 13, display: "flex", alignItems: "center", gap: 6, fontFamily: this.MONO, fontSize: 10, fontWeight: 600, letterSpacing: ".05em", color: "var(--dim)", background: "color-mix(in srgb, var(--bg0) 65%, transparent)", border: "1px solid var(--border2)", borderRadius: 999, padding: "4px 10px", backdropFilter: "blur(6px)", pointerEvents: "none", whiteSpace: "nowrap" } },
+        h("span", { style: { width: 7, height: 7, borderRadius: "50%", background: f.accent, boxShadow: "0 0 8px " + f.accent } }), "live — interact with it"));
+  }
+
+  callEl(fid) {
+    const h = React.createElement, f = this.C.FRAGMENTS[fid];
+    return h("div", { style: { padding: "20px 22px", maxWidth: 640 } },
+      h("div", { style: { borderLeft: "3px solid " + f.accent, paddingLeft: 15, fontSize: 14.5, lineHeight: 1.65, textWrap: "pretty" } }, f.call),
+      h("div", { style: { marginTop: 13, fontFamily: "'Spline Sans Mono',monospace", fontSize: 11, color: "var(--dim)" } },
+        "→ this call lives in the \u201C" + f.callLayer + "\u201D layer — hit explode to see it"));
+  }
+
+  // ---------- exploded view ----------
+  plateContent(fid, i) {
+    const h = React.createElement, f = this.C.FRAGMENTS[fid];
+    if (i === 0) {
+      const sc = Math.min(1, 268 / f.w);
+      return h("div", { style: { position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%) scale(" + sc + ")", pointerEvents: "none", filter: "drop-shadow(0 20px 28px rgba(3,8,18,.4))" } }, this.fragInner(fid));
+    }
+    if (i === 1) {
+      return h("div", { style: { position: "absolute", inset: 18, display: "flex", flexDirection: "column", gap: 11, justifyContent: "center" } },
+        h("div", { style: { height: 26, borderRadius: 8, border: "1.5px dashed " + f.accent + "88" } }),
+        h("div", { style: { height: 26, borderRadius: 8, border: "1.5px dashed " + f.accent + "88" } }),
+        h("div", { style: { height: 30, width: "46%", borderRadius: 8, border: "1.5px dashed " + f.accent, background: f.accent + "22" } }));
+    }
+    if (i === 2) {
+      const words = f.layers[2].label.split(/[ &]+/).filter(Boolean);
+      return h("div", { style: { position: "absolute", inset: 0, display: "grid", placeItems: "center" } },
+        h("div", { style: { display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", padding: "0 18px" } },
+          words.map((wd, k) => h("span", { key: k, style: { fontFamily: "'Spline Sans Mono',monospace", fontSize: 10.5, color: f.accent, border: "1px solid " + f.accent + "66", borderRadius: 999, padding: "3px 10px", background: f.accent + "14" } }, wd.toLowerCase()))));
+    }
+    return h("div", { style: { position: "absolute", inset: 20, display: "flex", flexDirection: "column", gap: 10, justifyContent: "center" } },
+      [0, 1, 2, 3].map((k) => h("div", { key: k, style: { height: 2, borderRadius: 2, background: "color-mix(in srgb, " + f.accent + " 45%, transparent)", width: (88 - k * 16) + "%" } })));
+  }
+
+  xEl(fid) {
+    const h = React.createElement, f = this.C.FRAGMENTS[fid];
+    if (this.state.rm) {
+      return h("div", { style: { padding: "18px 20px", display: "flex", flexDirection: "column", gap: 10 } },
+        f.layers.map((L, i) => h("div", { key: i, style: { border: "1px solid " + (L.label === f.callLayer ? f.accent : "var(--border2)"), borderRadius: 10, padding: "10px 14px", background: "var(--surface2)", display: "flex", gap: 11, alignItems: "baseline", flexWrap: "wrap" } },
+          h("span", { style: { fontFamily: "'Spline Sans Mono',monospace", fontSize: 11, color: f.accent, fontWeight: 700 } }, "0" + (i + 1)),
+          h("span", { style: { fontWeight: 700, fontSize: 13.5 } }, L.label),
+          h("span", { style: { fontSize: 12.5, color: "var(--dim)" } }, L.sub))));
+    }
+    const rot = this.xRot[fid] || { x: 56, z: -34 };
+    const n = f.layers.length, pw = 290, ph = 182, gap = 56;
+    const down = (e) => {
+      e.preventDefault();
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+      const cur = this.xRot[fid] || { x: 56, z: -34 };
+      this._xd = { fid, sx: e.clientX, sy: e.clientY, x: cur.x, z: cur.z };
+      e.currentTarget.style.cursor = "grabbing";
+    };
+    const move = (e) => {
+      const d = this._xd; if (!d || d.fid !== fid) return;
+      const nx = Math.max(12, Math.min(86, d.x + (e.clientY - d.sy) * 0.3));
+      const nz = d.z - (e.clientX - d.sx) * 0.35;
+      this.xRot[fid] = { x: nx, z: nz };
+      const node = this.xNodes[fid];
+      if (node) { node.style.transition = "none"; node.style.transform = "rotateX(" + nx + "deg) rotateZ(" + nz + "deg)"; }
+    };
+    const up = (e) => { this._xd = null; e.currentTarget.style.cursor = "grab"; };
+    const plates = f.layers.map((L, i) => {
+      const z = (n - 1 - i) * gap - ((n - 1) * gap) / 2;
+      const isCall = L.label === f.callLayer;
+      return h("div", { key: i, style: {
+        position: "absolute", inset: 0, transform: "translateZ(" + z + "px)", borderRadius: 14,
+        border: "1px solid " + (isCall ? f.accent : "color-mix(in srgb, " + f.accent + " 36%, transparent)"),
+        background: i === 0 ? "transparent" : "color-mix(in srgb, var(--surface) 60%, transparent)",
+        animation: "fadeUp .5s " + (0.06 * i) + "s both", overflow: i === 0 ? "visible" : "hidden",
+      } },
+        this.plateContent(fid, i),
+        h("span", { style: { position: "absolute", left: 0, top: 0, transform: "translate(-40%,-40%)", fontFamily: "'Spline Sans Mono',monospace", fontSize: 10.5, fontWeight: 700, color: "#fff", background: isCall ? f.accent : "var(--faint)", borderRadius: 6, padding: "2px 6px" } }, "0" + (i + 1)));
+    });
+    return h("div", { style: { display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center", justifyContent: "center", padding: "8px 14px 16px" } },
+      h("div", { style: { width: 340, height: 350, perspective: "1150px", touchAction: "none", cursor: "grab", position: "relative", flex: "0 0 auto" }, onPointerDown: down, onPointerMove: move, onPointerUp: up, onPointerCancel: up },
+        h("div", { ref: (nd) => { this.xNodes[fid] = nd; }, style: { position: "absolute", left: "50%", top: "52%", width: pw, height: ph, margin: (-ph / 2) + "px 0 0 " + (-pw / 2) + "px", transformStyle: "preserve-3d", transform: "rotateX(" + rot.x + "deg) rotateZ(" + rot.z + "deg)", transition: "transform .5s cubic-bezier(.2,.8,.25,1)" } }, plates),
+        h("div", { style: { position: "absolute", bottom: 0, left: 0, right: 0, textAlign: "center", fontFamily: "'Spline Sans Mono',monospace", fontSize: 10.5, color: "var(--faint)" } }, "drag to rotate")),
+      h("div", { style: { flex: "1 1 230px", minWidth: 220, maxWidth: 330, display: "flex", flexDirection: "column", gap: 7, padding: "6px 4px" } },
+        f.layers.map((L, i) => {
+          const isCall = L.label === f.callLayer;
+          return h("div", { key: i, style: { display: "flex", gap: 10, alignItems: "baseline", padding: "7px 11px", borderRadius: 10, border: "1px solid " + (isCall ? f.accent : "var(--border)"), background: isCall ? f.accent + "14" : "transparent", animation: "fadeUp .4s " + (0.08 * i + 0.15) + "s both" } },
+            h("span", { style: { fontFamily: "'Spline Sans Mono',monospace", fontSize: 10.5, color: isCall ? f.accent : "var(--faint)", fontWeight: 700, flex: "0 0 auto" } }, "0" + (i + 1)),
+            h("div", null,
+              h("div", { style: { fontWeight: 700, fontSize: 12.5 } }, L.label,
+                isCall ? h("span", { style: { marginLeft: 8, fontFamily: "'Spline Sans Mono',monospace", fontWeight: 400, fontSize: 9.5, color: f.accent } }, "← the call lives here") : null),
+              h("div", { style: { fontSize: 11.5, color: "var(--dim)", lineHeight: 1.45, textWrap: "pretty" } }, L.sub)));
+        })));
+  }
+
+  // ---------- fragment UI kit ----------
+  MONO = "'Spline Sans Mono',monospace";
+
+  fCard(w, accent, name, children) {
+    const h = React.createElement;
+    return h("div", { style: { width: "min(100%, " + w + "px)", background: "var(--surface)", border: "1px solid var(--border2)", borderRadius: 14, boxShadow: "0 12px 32px -14px rgba(3,8,18,.4)", overflow: "hidden", textAlign: "left" } },
+      h("div", { style: { display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", borderBottom: "1px solid var(--border)", background: "var(--surface2)" } },
+        h("span", { "aria-hidden": "true", style: { width: 18, height: 18, borderRadius: 5, background: accent, color: "#fff", display: "grid", placeItems: "center", fontSize: 10, fontWeight: 800, fontFamily: this.MONO } }, name.charAt(0)),
+        h("span", { style: { fontWeight: 700, fontSize: 12.5 } }, name)),
+      h("div", { style: { padding: "14px 16px 16px" } }, children));
+  }
+
+  fLb(t) {
+    return React.createElement("div", { style: { fontFamily: this.MONO, fontSize: 10, fontWeight: 600, letterSpacing: ".07em", textTransform: "uppercase", color: "var(--faint)", margin: "10px 0 5px" } }, t);
+  }
+
+  fIn(props, accent) {
+    const st = Object.assign({
+      width: "100%", height: 38, borderRadius: 9, border: "1.5px solid " + (props.error ? "#ff7a6b" : "var(--border2)"),
+      background: "var(--surface2)", padding: "0 12px", fontSize: 13.5, outline: "none",
+    }, props.styleX || {});
+    const p = Object.assign({}, props); delete p.styleX; delete p.error;
+    p.style = st;
+    p.onFocus = (e) => { e.target.style.borderColor = accent || "var(--accent)"; };
+    p.onBlur = (e) => { e.target.style.borderColor = props.error ? "#ff7a6b" : "var(--border2)"; };
+    return React.createElement("input", p);
+  }
+
+  fBtn(label, onClick, accent, opts) {
+    const o = opts || {};
+    return React.createElement("button", { onClick, disabled: !!o.disabled, style: Object.assign({
+      width: o.full ? "100%" : "auto", height: o.small ? 32 : 40, padding: o.small ? "0 13px" : "0 18px",
+      border: "none", borderRadius: 9, background: accent, color: "#fff", fontWeight: 700,
+      fontSize: o.small ? 12.5 : 13.5, cursor: o.disabled ? "default" : "pointer",
+      opacity: o.disabled ? 0.55 : 1, boxShadow: "0 8px 18px -8px " + accent,
+      display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+    }, o.styleX || {}) }, label);
+  }
+
+  fGhostBtn(label, onClick, accent, small) {
+    return React.createElement("button", { onClick, style: {
+      height: small ? 32 : 40, padding: small ? "0 13px" : "0 16px", borderRadius: 9,
+      border: "1.5px solid var(--border2)", background: "transparent", color: "var(--dim)",
+      fontWeight: 600, fontSize: small ? 12.5 : 13.5, cursor: "pointer",
+    } }, label);
+  }
+
+  fLink(label, onClick, accent) {
+    return React.createElement("button", { onClick, style: { display: "block", margin: "10px auto 0", border: "none", background: "transparent", color: accent, fontSize: 12.5, fontWeight: 600, cursor: "pointer" } }, label);
+  }
+
+  fSeg(opts, cur, onPick, accent) {
+    const h = React.createElement;
+    return h("div", { role: "tablist", style: { display: "inline-flex", gap: 2, background: "var(--surface2)", border: "1px solid var(--border)", borderRadius: 9, padding: 2 } },
+      opts.map((o) => h("button", { key: o, role: "tab", "aria-selected": String(o === cur), onClick: () => onPick(o), style: {
+        border: "none", cursor: "pointer", borderRadius: 7, padding: "4px 11px", fontSize: 11.5, fontWeight: 700,
+        fontFamily: this.MONO, background: o === cur ? accent : "transparent", color: o === cur ? "#fff" : "var(--dim)",
+      } }, o)));
+  }
+
+  fToggle(on, onClick, accent, label) {
+    const h = React.createElement;
+    return h("button", { role: "switch", "aria-checked": String(!!on), "aria-label": label || "toggle", onClick, style: {
+      width: 40, height: 23, borderRadius: 999, border: "none", cursor: "pointer", position: "relative",
+      background: on ? accent : "var(--border2)", transition: "background .2s", flex: "0 0 auto",
+    } }, h("span", { style: {
+      position: "absolute", top: 2.5, left: on ? 19.5 : 2.5, width: 18, height: 18, borderRadius: "50%",
+      background: "#fff", transition: "left .2s cubic-bezier(.3,1.4,.5,1)", boxShadow: "0 1px 3px rgba(0,0,0,.3)",
+    } }));
+  }
+
+  fDone(accent, title, sub, resetLabel, onReset) {
+    const h = React.createElement;
+    return h("div", { style: { textAlign: "center", padding: "14px 6px 6px", animation: this.state.rm ? "none" : "popIn .3s cubic-bezier(.3,1.3,.5,1)" } },
+      h("div", { "aria-hidden": "true", style: { width: 52, height: 52, borderRadius: "50%", background: accent + "1e", border: "2px solid " + accent, color: accent, display: "grid", placeItems: "center", fontSize: 24, fontWeight: 800, margin: "0 auto 12px" } }, "✓"),
+      h("div", { style: { fontWeight: 800, fontSize: 16 } }, title),
+      h("div", { style: { fontSize: 12.5, color: "var(--dim)", marginTop: 4, textWrap: "pretty" } }, sub),
+      onReset ? this.fLink(resetLabel, onReset, accent) : null);
+  }
+
+  fSpin(accent) {
+    return React.createElement("span", { "aria-hidden": "true", style: { width: 14, height: 14, borderRadius: "50%", border: "2px solid rgba(255,255,255,.4)", borderTopColor: "#fff", display: "inline-block", animation: "spin .7s linear infinite" } });
+  }
+
+  // ---------- fragments: Paradox ----------
+  PX = { A: "#3edba6", GOLD: "#e8c468", VOID: "#081210", LINE: "rgba(62,219,166,.2)", SOFT: "#eaf4ee", DIM: "#8fab9e", SERIF: "'Cormorant Garamond', Georgia, serif" };
+
+  pCard(w, children, sub) {
+    const h = React.createElement, P = this.PX;
+    return h("div", { style: { width: "min(100%, " + w + "px)", background: P.VOID, border: "1px solid " + P.LINE, borderRadius: 14, boxShadow: "0 18px 44px -16px rgba(1,10,6,.75), 0 0 38px rgba(62,219,166,.08)", overflow: "hidden", textAlign: "left", color: P.SOFT } },
+      h("div", { style: { display: "flex", alignItems: "center", gap: 9, padding: "9px 14px", borderBottom: "1px solid rgba(62,219,166,.12)" } },
+        h("span", { "aria-hidden": "true", style: { width: 13, height: 13, borderRadius: "50%", border: "1.4px solid " + P.A, boxShadow: "0 0 10px rgba(62,219,166,.55)", background: "radial-gradient(circle, rgba(62,219,166,.8), transparent 70%)", flex: "0 0 auto" } }),
+        h("span", { style: { fontFamily: P.SERIF, fontSize: 14.5, letterSpacing: ".34em", fontWeight: 600 } }, "PARADOX"),
+        sub ? h("span", { style: { marginLeft: "auto", fontFamily: this.MONO, fontSize: 9.5, letterSpacing: ".07em", color: P.DIM } }, sub) : null),
+      children);
+  }
+
+  mvScene() {
+    if (this._mvScene) return this._mvScene;
+    const strands = [
+      { y: 64, amp: 7, ph: 1.7, sp: 0.22, w: 1, al: 0.3 },
+      { y: 106, amp: 9, ph: 4.1, sp: 0.17, w: 1.2, al: 0.42 },
+      { y: 150, amp: 6, ph: 0.4, sp: 0.26, w: 2.4, al: 1, sacred: true },
+      { y: 196, amp: 8, ph: 2.9, sp: 0.19, w: 1.2, al: 0.42 },
+      { y: 238, amp: 7, ph: 5.3, sp: 0.23, w: 1, al: 0.3 },
+    ];
+    const branches = [
+      { s: 2, x: 120, len: 150, dy: -34, hot: true },
+      { s: 1, x: 330, len: 130, dy: -30 },
+      { s: 3, x: 240, len: 140, dy: 32, hot: true },
+      { s: 2, x: 420, len: 120, dy: 30 },
+    ];
+    const nodes = [
+      { s: 2, x: 120, kind: "Branch point", title: "The Signal Was Answered", meta: "9,140 variants growing from this fork", ring: true },
+      { s: 2, x: 300, kind: "Sacred Timeline", title: "The Ninth Signal", meta: "2.4M readers · 18,422 branches · 3,822 events", big: true },
+      { s: 2, x: 500, kind: "Event", title: "The Signal Arrives", meta: "The Ninth Signal · chapter event" },
+      { s: 1, x: 180, kind: "Timeline", title: "Neon Exodus", meta: "1.3M readers · 9,840 branches" },
+      { s: 3, x: 400, kind: "Timeline", title: "The Infinite Machine", meta: "1.9M readers · 14,260 branches" },
+      { s: 0, x: 260, kind: "Event", title: "The City Falls", meta: "Neon Exodus · chapter event" },
+      { s: 4, x: 460, kind: "Event", title: "First Contact", meta: "Children of Sol · chapter event" },
+      { br: 0, kind: "Variant", title: "What if the reply was human", meta: "variant · 312 echoes", gold: true },
+      { br: 2, kind: "Variant", title: "What if it chose to dream", meta: "variant · 188 echoes", gold: true },
+    ];
+    this._mvScene = { strands, branches, nodes };
+    return this._mvScene;
+  }
+
+  mvY(s, x, t) { return s.y + Math.sin(x * 0.012 + s.ph + t * s.sp) * s.amp; }
+
+  mvDraw(nd, t) {
+    const ctx = nd.getContext("2d");
+    const W = 560, H = 300;
+    ctx.setTransform(2, 0, 0, 2, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    const P = this.PX, sc = this.mvScene();
+    const off = nd.__off || 0;
+    const WW = 760;
+    const wrap = (x) => ((x - off) % WW + WW) % WW - 100;
+    const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, 300);
+    g.addColorStop(0, "rgba(62,219,166,.07)"); g.addColorStop(1, "rgba(62,219,166,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    sc.strands.forEach((s) => {
+      ctx.beginPath();
+      for (let x = -8; x <= W + 8; x += 8) {
+        const y = this.mvY(s, x + off, t);
+        if (x === -8) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = s.sacred ? P.A : "rgba(62,219,166," + (s.al * 0.5).toFixed(2) + ")";
+      ctx.lineWidth = s.w;
+      ctx.shadowColor = s.sacred ? P.A : "transparent";
+      ctx.shadowBlur = s.sacred ? 12 : 0;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    });
+    const tips = [];
+    sc.branches.forEach((b, bi) => {
+      const s = sc.strands[b.s];
+      const sx = wrap(b.x);
+      const y0 = this.mvY(s, sx + off, t);
+      const tipX = sx + b.len, tipY = y0 + b.dy + Math.sin(t * 0.6 + bi) * 2;
+      ctx.beginPath();
+      ctx.moveTo(sx, y0);
+      ctx.quadraticCurveTo(sx + b.len * 0.45, y0 + b.dy * 0.15, tipX, tipY);
+      ctx.strokeStyle = "rgba(62,219,166," + (b.hot ? 0.66 : 0.4) + ")";
+      ctx.lineWidth = b.hot ? 1.4 : 1;
+      ctx.stroke();
+      tips[bi] = [tipX, tipY];
+    });
+    nd.__hits = [];
+    sc.nodes.forEach((n, i) => {
+      let x, y;
+      if (n.br != null) {
+        const tp = tips[n.br]; if (!tp) return;
+        x = tp[0]; y = tp[1];
+      } else {
+        x = wrap(n.x);
+        y = this.mvY(sc.strands[n.s], x + off, t);
+      }
+      if (x < -20 || x > W + 20) return;
+      const pulse = this.state.rm ? 0 : Math.sin(t * 2.2 + i * 1.7) * 0.7;
+      ctx.beginPath();
+      if (n.ring) {
+        ctx.arc(x, y, 6 + pulse, 0, 7);
+        ctx.strokeStyle = P.A; ctx.lineWidth = 1.5;
+        ctx.shadowColor = P.A; ctx.shadowBlur = 8;
+        ctx.stroke();
+      } else {
+        ctx.arc(x, y, (n.big ? 5 : 3.2) + pulse, 0, 7);
+        ctx.fillStyle = n.gold ? P.GOLD : P.A;
+        ctx.shadowColor = n.gold ? P.GOLD : P.A; ctx.shadowBlur = n.big ? 14 : 9;
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+      nd.__hits.push({ x, y, n });
+    });
+  }
+
+  mvAttach(nd) {
+    if (!nd) return;
+    this._mvSet = this._mvSet || new Set();
+    if (this._mvSet.has(nd)) return;
+    this._mvSet.add(nd);
+    if (this.state.rm) { this.mvDraw(nd, 0); return; }
+    if (!this._mvRaf) {
+      const step = (ts) => {
+        this._mvRaf = requestAnimationFrame(step);
+        if (document.hidden) return;
+        let any = false;
+        this._mvSet.forEach((c) => {
+          if (!c.isConnected) { this._mvSet.delete(c); return; }
+          any = true; this.mvDraw(c, ts / 1000);
+        });
+        if (!any) { cancelAnimationFrame(this._mvRaf); this._mvRaf = null; }
+      };
+      this._mvRaf = requestAnimationFrame(step);
+    }
+  }
+
+  mvDown(e) {
+    const nd = e.currentTarget;
+    nd.__drag = { x: e.clientX, off: nd.__off || 0, moved: false };
+    try { nd.setPointerCapture(e.pointerId); } catch (err) {}
+    nd.style.cursor = "grabbing";
+  }
+
+  mvMove(e) {
+    const nd = e.currentTarget, d = nd.__drag; if (!d) return;
+    const dx = e.clientX - d.x;
+    if (Math.abs(dx) > 3) d.moved = true;
+    const rect = nd.getBoundingClientRect();
+    nd.__off = d.off - dx * (560 / rect.width);
+    if (this.state.rm) this.mvDraw(nd, 0);
+  }
+
+  mvUp(e) {
+    const nd = e.currentTarget, d = nd.__drag;
+    nd.__drag = null; nd.style.cursor = "grab";
+    if (!d || d.moved) return;
+    const rect = nd.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * 560 / rect.width;
+    const y = (e.clientY - rect.top) * 300 / rect.height;
+    let best = null, bd = 18;
+    (nd.__hits || []).forEach((hh) => {
+      const dd = Math.hypot(hh.x - x, hh.y - y);
+      if (dd < bd) { bd = dd; best = hh.n; }
+    });
+    this.setFrag("multiverse", { sel: best ? { kind: best.kind, title: best.title, meta: best.meta } : null });
+  }
+
+  b_multiverse() {
+    const h = React.createElement, P = this.PX;
+    const st = this.fragSt("multiverse", { sel: null });
+    const sel = st.sel;
+    const leg = (color, label, ring) => h("span", { key: label, style: { display: "inline-flex", alignItems: "center", gap: 5 } },
+      h("span", { style: { width: 7, height: 7, borderRadius: "50%", background: ring ? "transparent" : color, border: ring ? "1.5px solid " + color : "none", boxShadow: ring ? "none" : "0 0 6px " + color, flex: "0 0 auto" } }), label);
+    return this.pCard(560, h("div", { style: { position: "relative", background: P.VOID } },
+      h("canvas", { width: 1120, height: 600, ref: (nd) => this.mvAttach(nd),
+        onPointerDown: (e) => this.mvDown(e), onPointerMove: (e) => this.mvMove(e), onPointerUp: (e) => this.mvUp(e), onPointerCancel: (e) => { e.currentTarget.__drag = null; },
+        "aria-label": "The living timeline — drag to traverse, click a node",
+        style: { display: "block", width: "100%", height: "auto", aspectRatio: "56 / 30", cursor: "grab", touchAction: "none" } }),
+      h("div", { style: { position: "absolute", left: 16, top: 13, pointerEvents: "none" } },
+        h("div", { style: { fontFamily: this.MONO, fontSize: 8.5, letterSpacing: ".24em", textTransform: "uppercase", color: P.GOLD } }, "a living multiverse of stories"),
+        h("div", { style: { fontFamily: P.SERIF, fontSize: 21, marginTop: 2 } }, "You are looking at the ", h("em", { style: { color: P.A } }, "Sacred Timeline"))),
+      h("div", { style: { position: "absolute", left: 16, bottom: 11, display: "flex", gap: 13, pointerEvents: "none", fontFamily: this.MONO, fontSize: 9, color: P.DIM } },
+        leg(P.A, "Timeline"), leg(P.A, "Branch", true), leg(P.GOLD, "Event · Variant")),
+      h("div", { style: { position: "absolute", right: 14, bottom: 11, pointerEvents: "none", fontFamily: this.MONO, fontSize: 9, color: P.DIM } }, "drag to traverse · click a node"),
+      sel ? h("div", { style: { position: "absolute", right: 12, top: 12, width: 212, background: "rgba(8,18,16,.96)", border: "1px solid " + P.LINE, borderRadius: 10, padding: "11px 13px 12px", boxShadow: "0 16px 38px rgba(1,8,6,.65)", animation: this.state.rm ? "none" : "popIn .18s" } },
+        h("button", { onClick: () => this.setFrag("multiverse", { sel: null }), "aria-label": "Close", style: { position: "absolute", top: 5, right: 9, border: "none", background: "transparent", color: P.DIM, cursor: "pointer", fontSize: 14, padding: 2 } }, "×"),
+        h("div", { style: { fontFamily: this.MONO, fontSize: 8.5, letterSpacing: ".2em", textTransform: "uppercase", color: P.GOLD } }, sel.kind),
+        h("div", { style: { fontFamily: P.SERIF, fontSize: 17.5, lineHeight: 1.12, margin: "4px 0 3px" } }, sel.title),
+        h("div", { style: { fontFamily: this.MONO, fontSize: 9.5, color: P.DIM, lineHeight: 1.5 } }, sel.meta),
+        h("button", { onClick: () => this.toast_("In the full concept this warps you inside — timeline, event and branch views are all designed."), style: { marginTop: 9, border: "1px solid " + P.A, background: "rgba(62,219,166,.12)", color: P.A, borderRadius: 8, padding: "5px 10px", fontSize: 10.5, fontWeight: 700, cursor: "pointer", fontFamily: this.MONO } }, "enter this reality →")) : null),
+      "the homepage · miniature");
+  }
+
+  forgeName() {
+    const a = ["strandkeeper", "voidwalker", "threadbinder", "nexusborn", "emberkeeper", "loomwarden"];
+    const hx = () => "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16));
+    return a[Math.floor(Math.random() * a.length)] + "_" + hx() + hx() + hx() + hx();
+  }
+
+  b_gateway() {
+    const h = React.createElement, P = this.PX;
+    const st = this.fragSt("gateway", { step: "gate", email: "", err: false, name: "", guest: false });
+    const set = (p) => this.setFrag("gateway", p);
+    const kicker = (txt) => h("div", { style: { fontFamily: this.MONO, fontSize: 8.5, letterSpacing: ".26em", textTransform: "uppercase", color: P.GOLD } }, txt);
+    const serifH = (pre, em) => h("div", { style: { fontFamily: P.SERIF, fontSize: 26, fontWeight: 500, lineHeight: 1.1, margin: "6px 0 4px" } }, pre, h("em", { style: { color: P.A } }, em));
+    const methodBtn = (label, bold, tag, onClick) => h("button", { onClick, style: { display: "flex", alignItems: "center", gap: 10, width: "100%", border: "1px solid " + P.LINE, background: "rgba(24,46,38,.35)", color: P.SOFT, borderRadius: 8, padding: "10px 13px", fontSize: 12.5, cursor: "pointer", textAlign: "left" } },
+      h("span", null, label, " ", h("b", null, bold)),
+      h("span", { style: { flex: 1 } }),
+      tag ? h("span", { style: { fontFamily: this.MONO, fontSize: 8.5, letterSpacing: ".08em", color: P.GOLD, border: "1px solid rgba(232,196,104,.4)", borderRadius: 999, padding: "2px 8px", flex: "0 0 auto" } }, tag) : h("span", { style: { color: P.DIM } }, "→"));
+    const mini = (label, onClick) => h("button", { onClick, style: { border: "none", background: "transparent", color: P.DIM, fontSize: 11, cursor: "pointer", padding: 0, textDecoration: "underline", textUnderlineOffset: 3 } }, label);
+    let body;
+    if (st.step === "in") {
+      body = h("div", { style: { textAlign: "center", padding: "10px 0 2px", animation: this.state.rm ? "none" : "popIn .25s cubic-bezier(.3,1.3,.5,1)" } },
+        h("div", { "aria-hidden": "true", style: { width: 52, height: 52, margin: "0 auto 12px", borderRadius: "50%", border: "1px solid rgba(232,196,104,.45)", display: "grid", placeItems: "center" } },
+          h("span", { style: { width: 14, height: 14, borderRadius: "50%", background: P.GOLD, boxShadow: "0 0 18px " + P.GOLD } })),
+        kicker(st.guest ? "wandering as a guest" : "the multiverse knows you"),
+        serifH("Welcome, ", st.name),
+        h("div", { style: { fontSize: 11.5, color: P.DIM, lineHeight: 1.55, maxWidth: 250, margin: "4px auto 0", textWrap: "pretty" } },
+          st.guest ? "Explore freely. You'll only be asked to claim a name the moment you branch a reality of your own." : "Your keeper name was forged for you — keep it, or roll another."),
+        st.guest ? null : h("button", { onClick: () => set({ name: this.forgeName() }), style: { marginTop: 10, border: "1px solid " + P.LINE, background: "transparent", color: P.A, borderRadius: 8, padding: "6px 12px", fontSize: 10.5, fontWeight: 600, cursor: "pointer", fontFamily: this.MONO } }, "⟳ forge another name"),
+        h("div", { style: { marginTop: 10 } }, mini("sign out & start over", () => set({ step: "gate", email: "", err: false, name: "", guest: false }))));
+    } else if (st.step === "sent") {
+      body = h("div", { style: { textAlign: "center", padding: "6px 0 2px", animation: this.state.rm ? "none" : "popIn .25s cubic-bezier(.3,1.3,.5,1)" } },
+        h("div", { "aria-hidden": "true", style: { width: 64, height: 64, margin: "4px auto 14px", position: "relative" } },
+          [26, 44, 64].map((d2, i) => h("span", { key: i, style: { position: "absolute", left: "50%", top: "50%", width: d2, height: d2, marginLeft: -d2 / 2, marginTop: -d2 / 2, borderRadius: "50%", border: "1px solid rgba(62,219,166," + (0.55 - i * 0.16).toFixed(2) + ")" } })),
+          h("span", { style: { position: "absolute", left: "50%", top: "50%", width: 12, height: 12, margin: "-6px 0 0 -6px", borderRadius: "50%", background: P.A, boxShadow: "0 0 16px " + P.A } })),
+        h("div", { style: { fontFamily: P.SERIF, fontSize: 24, fontWeight: 500 } }, "Check your timeline"),
+        h("div", { style: { fontSize: 11.5, color: P.DIM, lineHeight: 1.55, maxWidth: 250, margin: "6px auto 0", textWrap: "pretty" } },
+          "A one-time magic link is travelling to ", h("span", { style: { color: P.A } }, st.email), ". Open it on this device to step through."),
+        h("button", { onClick: () => set({ step: "in", name: this.forgeName(), guest: false }), style: { marginTop: 14, border: "1px solid " + P.A, background: "rgba(62,219,166,.12)", color: P.A, borderRadius: 8, padding: "8px 14px", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: this.MONO } }, "simulate opening the link →"),
+        h("div", { style: { marginTop: 10 } }, mini("use a different email", () => set({ step: "gate", email: "" }))));
+    } else {
+      body = h("div", null,
+        kicker("a living multiverse of stories"),
+        serifH("Enter the ", "Multiverse"),
+        h("div", { style: { display: "flex", gap: 10, fontFamily: this.MONO, fontSize: 8.5, letterSpacing: ".06em", color: P.DIM, margin: "2px 0 14px" } },
+          h("span", null, "Every Story."), h("span", null, "Every Choice."), h("span", null, "Every Reality.")),
+        h("div", { style: { display: "flex", flexDirection: "column", gap: 8 } },
+          methodBtn("Continue with", "Google", "Recommended", () => set({ step: "in", name: this.forgeName(), guest: false })),
+          methodBtn("Continue with", "Discord", null, () => set({ step: "in", name: this.forgeName(), guest: false }))),
+        h("div", { style: { display: "flex", alignItems: "center", gap: 10, margin: "14px 0 10px", fontFamily: this.MONO, fontSize: 9, letterSpacing: ".1em", textTransform: "uppercase", color: P.DIM } },
+          h("span", { style: { flex: 1, height: 1, background: "rgba(62,219,166,.14)" } }), "or with your email", h("span", { style: { flex: 1, height: 1, background: "rgba(62,219,166,.14)" } })),
+        h("div", { style: { display: "flex", gap: 8 } },
+          h("input", { value: st.email, placeholder: "you@reality.now", "aria-label": "Email",
+            onChange: (e) => set({ email: e.target.value, err: false }),
+            style: { flex: 1, minWidth: 0, height: 38, borderRadius: 8, border: "1px solid " + (st.err ? "#ff8d7a" : P.LINE), background: "rgba(10,24,19,.7)", color: P.SOFT, padding: "0 12px", fontSize: 12.5, outline: "none" } }),
+          h("button", { onClick: () => { if (/@/.test(st.email)) set({ step: "sent", err: false }); else set({ err: true }); }, style: { border: "none", background: P.A, color: "#06231a", borderRadius: 8, padding: "0 15px", fontSize: 12, fontWeight: 700, cursor: "pointer", flex: "0 0 auto" } }, "Send link")),
+        st.err ? h("div", { style: { color: "#ff8d7a", fontSize: 10.5, marginTop: 6, fontFamily: this.MONO } }, "that address exists in no reality — needs an @") :
+          h("div", { style: { fontSize: 10.5, color: P.DIM, marginTop: 6 } }, "A one-time magic link — no password to remember."),
+        h("div", { style: { marginTop: 12, fontSize: 11, color: P.DIM } }, "Just exploring? ",
+          h("button", { onClick: () => set({ step: "in", name: "wanderer_" + Math.floor(1000 + Math.random() * 9000), guest: true }), style: { border: "none", background: "transparent", color: P.A, fontSize: 11, fontWeight: 600, cursor: "pointer", padding: 0 } }, "Continue as guest →")));
+    }
+    return this.pCard(360, h("div", { style: { padding: "16px 18px 18px" } }, body), "sign in · miniature");
+  }
+
+  b_palette() {
+    const h = React.createElement, P = this.PX;
+    const st = this.fragSt("palette", { q: "", sel: 0 });
+    const set = (p) => this.setFrag("palette", p);
+    const GROUPS = [
+      { g: "Timelines", ic: "dot", items: [["The Ninth Signal", "2.4M readers · 18,422 branches"], ["The Hollow Crown", "1.6M readers · 12,380 branches"], ["The Infinite Machine", "1.9M readers · 14,260 branches"], ["Neon Exodus", "1.3M readers · 9,840 branches"]] },
+      { g: "Branches", ic: "ring", items: [["The Signal Was Answered", "9,140 variants · hot"], ["The Machine Became Conscious", "6,680 variants · hot"], ["What If The Sun Never Returned", "4,120 variants"]] },
+      { g: "Events", ic: "gold", items: [["The Signal Arrives", "The Ninth Signal"], ["The City Falls", "Neon Exodus"], ["First Contact", "Children of Sol"]] },
+    ];
+    const q = st.q.toLowerCase().trim();
+    const groups = GROUPS.map((g) => ({ g: g.g, ic: g.ic, items: g.items.filter((it) => !q || it[0].toLowerCase().includes(q)) })).filter((g) => g.items.length);
+    const flat = groups.flatMap((g) => g.items.map((it) => it[0]));
+    const sel = Math.min(st.sel, Math.max(0, flat.length - 1));
+    const enter = (t) => this.toast_("⌘K is the only menu in Paradox — this would warp you straight into \u201C" + t + "\u201D.");
+    const icon = (ic) => ic === "dot" ? h("span", { style: { width: 8, height: 8, borderRadius: "50%", background: P.A, boxShadow: "0 0 8px " + P.A } })
+      : ic === "ring" ? h("span", { style: { width: 8, height: 8, borderRadius: "50%", border: "1.5px solid " + P.A } })
+      : h("span", { style: { width: 7, height: 7, borderRadius: "50%", background: P.GOLD, boxShadow: "0 0 8px " + P.GOLD } });
+    let idx = -1;
+    return this.pCard(430, h("div", null,
+      h("div", { style: { display: "flex", alignItems: "center", gap: 11, padding: "12px 16px", borderBottom: "1px solid rgba(62,219,166,.12)" } },
+        h("span", { "aria-hidden": "true", style: { color: P.A, fontSize: 13 } }, "⌕"),
+        h("input", { value: st.q, placeholder: "Search the multiverse…", "aria-label": "Search the multiverse",
+          onChange: (e) => set({ q: e.target.value, sel: 0 }),
+          onKeyDown: (e) => {
+            if (e.key === "ArrowDown") { e.preventDefault(); set({ sel: Math.min(sel + 1, flat.length - 1) }); }
+            else if (e.key === "ArrowUp") { e.preventDefault(); set({ sel: Math.max(sel - 1, 0) }); }
+            else if (e.key === "Enter" && flat[sel]) enter(flat[sel]);
+            else if (e.key === "Escape") { e.stopPropagation(); set({ q: "", sel: 0 }); }
+          },
+          style: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent", color: P.SOFT, fontSize: 13.5 } }),
+        h("kbd", { style: { fontFamily: this.MONO, fontSize: 9, letterSpacing: ".08em", color: P.DIM, border: "1px solid " + P.LINE, borderRadius: 4, padding: "2px 6px" } }, "ESC")),
+      h("div", { style: { maxHeight: 248, overflowY: "auto", padding: "2px 0 6px" } },
+        flat.length === 0 ? h("div", { style: { padding: "26px 16px", textAlign: "center", color: P.DIM, fontSize: 11.5, fontFamily: this.MONO } }, "nothing in this reality — yet") :
+        groups.map((g) => h("div", { key: g.g },
+          h("div", { style: { display: "flex", alignItems: "center", gap: 8, padding: "10px 16px 4px", fontFamily: this.MONO, fontSize: 8.5, letterSpacing: ".22em", textTransform: "uppercase", color: P.DIM } }, g.g,
+            h("span", { "aria-hidden": "true", style: { flex: 1, height: 1, background: "rgba(62,219,166,.1)" } })),
+          g.items.map((it) => {
+            idx++;
+            const me = idx, on = me === sel;
+            return h("div", { key: it[0], onMouseEnter: () => set({ sel: me }), onClick: () => enter(it[0]), style: { display: "flex", alignItems: "center", gap: 11, padding: "7px 16px 7px 14px", cursor: "pointer", borderLeft: "2px solid " + (on ? P.A : "transparent"), background: on ? "rgba(62,219,166,.09)" : "transparent" } },
+              h("span", { "aria-hidden": "true", style: { width: 22, height: 22, borderRadius: "50%", border: "1px solid " + P.LINE, display: "grid", placeItems: "center", flex: "0 0 auto" } }, icon(g.ic)),
+              h("span", { style: { fontFamily: P.SERIF, fontSize: 15.5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, it[0]),
+              h("span", { style: { marginLeft: "auto", fontFamily: this.MONO, fontSize: 9, color: P.DIM, flex: "0 0 auto", paddingLeft: 8 } }, it[1]));
+          })))),
+      h("div", { style: { display: "flex", gap: 12, padding: "8px 16px", borderTop: "1px solid rgba(62,219,166,.1)", fontFamily: this.MONO, fontSize: 9, color: P.DIM } },
+        h("span", null, "↑↓ navigate"), h("span", null, "↵ enter reality"), h("span", null, "esc clear"),
+        h("span", { style: { marginLeft: "auto" } }, flat.length + " found"))),
+      "⌘K · miniature");
+  }
+
+  // ---------- fragments: Shiftsum ----------
+  b_onboarding() {
+    const h = React.createElement, A = "#e3a84e";
+    const st = this.fragSt("onboarding", { step: 0, size: "", pattern: "", emails: "", done: false });
+    const set = (p) => this.setFrag("onboarding", p);
+    if (st.done) {
+      return this.fCard(400, A, "Shiftsum", this.fDone(A, "Your team is set up", "Sensible defaults applied — change anything later, when you actually care.", "run it again", () => set({ step: 0, size: "", pattern: "", emails: "", done: false })));
+    }
+    const chipRow = (opts, cur, key) => h("div", { style: { display: "flex", gap: 8, flexWrap: "wrap", marginTop: 4 } },
+      opts.map((o) => h("button", { key: o, "aria-pressed": String(cur === o), onClick: () => set({ [key]: o }), style: {
+        height: 44, padding: "0 16px", borderRadius: 10, cursor: "pointer", fontSize: 13.5, fontWeight: 600,
+        border: "1.5px solid " + (cur === o ? A : "var(--border2)"),
+        background: cur === o ? A + "1e" : "transparent", color: cur === o ? "var(--text)" : "var(--dim)",
+      } }, o)));
+    const steps = [
+      { q: "How big is the team?", body: chipRow(["Just me", "2–10", "11–50", "50+"], st.size, "size"), ok: !!st.size },
+      { q: "What's the shift pattern?", body: chipRow(["Same every week", "Rotating", "Chaos, honestly"], st.pattern, "pattern"), ok: !!st.pattern },
+      { q: "Invite your managers", body: h("div", null,
+          this.fIn({ value: st.emails, placeholder: "maria@team.com, sam@team.com", "aria-label": "Manager emails", onChange: (e) => set({ emails: e.target.value }) }, A),
+          h("div", { style: { fontFamily: this.MONO, fontSize: 10.5, color: "var(--faint)", marginTop: 7 } }, "or skip — everything works without it")), ok: true },
+    ];
+    const cur = steps[st.step];
+    return this.fCard(400, A, "Shiftsum", h("div", null,
+      h("div", { style: { display: "flex", gap: 5, marginBottom: 14 } },
+        steps.map((x, i) => h("span", { key: i, style: { flex: 1, height: 4, borderRadius: 2, background: i <= st.step ? A : "var(--surface2)", transition: "background .3s" } }))),
+      h("div", { style: { fontFamily: this.MONO, fontSize: 10, letterSpacing: ".07em", textTransform: "uppercase", color: "var(--faint)" } }, "step " + (st.step + 1) + " of 3"),
+      h("div", { style: { fontWeight: 800, fontSize: 16.5, margin: "3px 0 12px" } }, cur.q),
+      cur.body,
+      h("div", { style: { display: "flex", gap: 8, marginTop: 16 } },
+        st.step > 0 ? this.fGhostBtn("← Back", () => set({ step: st.step - 1 }), A) : null,
+        h("span", { style: { flex: 1 } }),
+        this.fBtn(st.step === 2 ? (st.emails.trim() ? "Send invites & finish" : "Skip & finish") : "Next →",
+          () => { st.step === 2 ? set({ done: true }) : set({ step: st.step + 1 }); }, A, { disabled: !cur.ok }))));
+  }
+
+  b_notifications() {
+    const h = React.createElement, A = "#e3a84e";
+    const st = this.fragSt("notifications", { shift: true, swap: true, digest: true, market: false, quiet: true, from: "22:00", to: "07:00", freq: "Daily" });
+    const set = (p) => this.setFrag("notifications", p);
+    const row = (key, title, sub) => h("div", { style: { display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderTop: "1px solid var(--border)" } },
+      h("div", { style: { flex: 1, minWidth: 0 } },
+        h("div", { style: { fontWeight: 700, fontSize: 13 } }, title),
+        h("div", { style: { fontSize: 11.5, color: "var(--dim)" } }, sub)),
+      this.fToggle(st[key], () => set({ [key]: !st[key] }), A, title));
+    const timeSel = (key) => h("select", { value: st[key], "aria-label": key === "from" ? "Quiet from" : "Quiet until", onChange: (e) => set({ [key]: e.target.value }), style: {
+      height: 32, borderRadius: 8, border: "1.5px solid var(--border2)", background: "var(--surface2)", padding: "0 8px", fontSize: 12.5, fontFamily: this.MONO, outline: "none",
+    } }, ["20:00", "21:00", "22:00", "23:00", "06:00", "07:00", "08:00"].map((t) => h("option", { key: t, value: t }, t)));
+    return this.fCard(380, A, "Shiftsum", h("div", null,
+      h("div", { style: { fontWeight: 800, fontSize: 15, marginBottom: 8 } }, "Notifications"),
+      row("shift", "Your shift changed", "The one that's always loud"),
+      row("swap", "Swap requests", "Someone wants your Tuesday"),
+      row("digest", "Weekly digest", "One email, Sunday evening"),
+      row("market", "Product news", "Off by default — on purpose"),
+      h("div", { style: { padding: "10px 0 4px", borderTop: "1px solid var(--border)", marginTop: 2 } },
+        h("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
+          h("div", { style: { flex: 1 } },
+            h("div", { style: { fontWeight: 700, fontSize: 13 } }, "Quiet hours"),
+            h("div", { style: { fontSize: 11.5, color: "var(--dim)" } }, "Nothing pings while you sleep")),
+          this.fToggle(st.quiet, () => set({ quiet: !st.quiet }), A, "Quiet hours")),
+        st.quiet ? h("div", { style: { display: "flex", alignItems: "center", gap: 8, marginTop: 9, fontFamily: this.MONO, fontSize: 11.5, color: "var(--dim)" } },
+          timeSel("from"), h("span", null, "→"), timeSel("to"),
+          h("span", { style: { color: "var(--faint)" } }, "local time")) : null),
+      h("div", { style: { display: "flex", alignItems: "center", gap: 10, paddingTop: 12, borderTop: "1px solid var(--border)", marginTop: 8 } },
+        h("span", { style: { fontWeight: 700, fontSize: 13, flex: 1 } }, "Digest frequency"),
+        this.fSeg(["Daily", "Weekly", "Off"], st.freq, (v) => set({ freq: v }), A))));
+  }
+
+  b_admin() {
+    const h = React.createElement, A = "#e3a84e";
+    const BASE = [
+      ["Maria Santos", "Front desk", "Mon–Fri · 32h"], ["Jules Okafor", "Kitchen", "Rotating · 40h"],
+      ["Sam Whitfield", "Front desk", "Weekends · 16h"], ["Priya Nair", "Kitchen", "Mon–Wed · 24h"],
+      ["Tom Eriksen", "Delivery", "Evenings · 28h"], ["Ana Kovač", "Front desk", "Rotating · 36h"],
+      ["Leo Martín", "Delivery", "Weekends · 12h"], ["Dana Brooks", "Kitchen", "Mon–Fri · 40h"],
+    ];
+    const st = this.fragSt("admin", { q: "", filter: "All", sel: {}, approved: { 0: 1, 3: 1, 7: 1 } });
+    const set = (p) => this.setFrag("admin", p);
+    const roles = ["All", "Front desk", "Kitchen", "Delivery"];
+    const rows = BASE.map((r, i) => ({ i, name: r[0], role: r[1], sched: r[2], ok: !!st.approved[i] }))
+      .filter((r) => (st.filter === "All" || r.role === st.filter) && (r.name + " " + r.role).toLowerCase().includes(st.q.toLowerCase()));
+    const selCount = Object.keys(st.sel).filter((k) => st.sel[k]).length;
+    return this.fCard(560, A, "Shiftsum", h("div", null,
+      h("div", { style: { display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginBottom: 10 } },
+        h("div", { style: { fontWeight: 800, fontSize: 15, flex: "1 0 auto" } }, "Roster · next week"),
+        this.fIn({ value: st.q, placeholder: "⌕ search people…", "aria-label": "Search roster", onChange: (e) => set({ q: e.target.value }), styleX: { width: 170, height: 32, fontSize: 12.5 } }, A),
+        h("select", { value: st.filter, "aria-label": "Filter by role", onChange: (e) => set({ filter: e.target.value }), style: { height: 32, borderRadius: 8, border: "1.5px solid var(--border2)", background: "var(--surface2)", padding: "0 8px", fontSize: 12.5, outline: "none" } },
+          roles.map((r) => h("option", { key: r, value: r }, r)))),
+      h("div", { style: { border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" } },
+        rows.length === 0 ? h("div", { style: { padding: "22px 14px", textAlign: "center", color: "var(--dim)", fontSize: 12.5 } }, "Nobody matches — even the search forgives typos, but not that one.") :
+        rows.map((r, k) => h("div", { key: r.i, style: { display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", borderTop: k ? "1px solid var(--border)" : "none", background: st.sel[r.i] ? A + "10" : "transparent" } },
+          h("input", { type: "checkbox", checked: !!st.sel[r.i], "aria-label": "Select " + r.name, onChange: () => set({ sel: Object.assign({}, st.sel, { [r.i]: !st.sel[r.i] }) }), style: { width: 15, height: 15, accentColor: A, cursor: "pointer" } }),
+          h("span", { style: { fontWeight: 700, fontSize: 12.5, width: 110, flex: "0 0 auto", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, r.name),
+          h("span", { style: { fontSize: 11.5, color: "var(--dim)", width: 80, flex: "0 0 auto" } }, r.role),
+          h("span", { style: { fontFamily: this.MONO, fontSize: 10.5, color: "var(--faint)", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, r.sched),
+          h("span", { style: { fontFamily: this.MONO, fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 999, flex: "0 0 auto",
+            color: r.ok ? A : "var(--dim)", background: r.ok ? A + "1c" : "var(--surface2)", border: "1px solid " + (r.ok ? A + "55" : "var(--border2)") } },
+            r.ok ? "approved" : "pending")))),
+      h("div", { style: { display: "flex", alignItems: "center", gap: 10, marginTop: 10 } },
+        h("span", { style: { fontFamily: this.MONO, fontSize: 10.5, color: "var(--faint)", flex: 1 } }, rows.length + " of " + BASE.length + " shown"),
+        this.fBtn("Approve selected" + (selCount ? " (" + selCount + ")" : ""), () => {
+          if (!selCount) return;
+          const ap = Object.assign({}, st.approved);
+          Object.keys(st.sel).forEach((k) => { if (st.sel[k]) ap[k] = 1; });
+          set({ approved: ap, sel: {} });
+        }, A, { small: true, disabled: !selCount }))));
+  }
+
+  // ---------- fragments: client builds ----------
+  b_booking() {
+    const h = React.createElement, A = "#a98bf5";
+    const st = this.fragSt("booking", { day: 2, slot: null, booked: false });
+    const set = (p) => this.setFrag("booking", p);
+    const days = [["Mon", "15"], ["Tue", "16"], ["Wed", "17"], ["Thu", "18"], ["Fri", "19"], ["Sat", "20"]];
+    const slots = ["9:00", "9:45", "10:30", "11:15", "13:00", "13:45", "14:30", "15:15"];
+    const taken = (d, i) => ((d * 7 + i * 3) % 5) === 0;
+    if (st.booked) {
+      return this.fCard(360, A, "Northside Physio", this.fDone(A, "You're booked", days[st.day][0] + " " + days[st.day][1] + " June at " + slots[st.slot] + " · 45 min with Dr. Hale. Confirmation texted to you.", "book another", () => set({ booked: false, slot: null })));
+    }
+    return this.fCard(360, A, "Northside Physio", h("div", null,
+      h("div", { style: { fontWeight: 800, fontSize: 15 } }, "Book a session"),
+      h("div", { style: { fontSize: 12, color: "var(--dim)", marginTop: 1 } }, "45 min · physiotherapy · no login needed"),
+      h("div", { style: { display: "flex", gap: 6, margin: "13px 0 4px" } },
+        days.map((d, i) => h("button", { key: i, "aria-pressed": String(st.day === i), onClick: () => set({ day: i, slot: null }), style: {
+          flex: 1, padding: "7px 0 6px", borderRadius: 10, cursor: "pointer", textAlign: "center",
+          border: "1.5px solid " + (st.day === i ? A : "var(--border2)"),
+          background: st.day === i ? A + "1e" : "transparent",
+        } },
+          h("div", { style: { fontFamily: this.MONO, fontSize: 9.5, textTransform: "uppercase", color: st.day === i ? A : "var(--faint)" } }, d[0]),
+          h("div", { style: { fontWeight: 800, fontSize: 14.5, color: st.day === i ? "var(--text)" : "var(--dim)" } }, d[1])))),
+      this.fLb("Available times"),
+      h("div", { style: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6 } },
+        slots.map((t, i) => {
+          const off = taken(st.day, i);
+          return h("button", { key: t, disabled: off, "aria-pressed": String(st.slot === i), onClick: () => set({ slot: i }), style: {
+            height: 34, borderRadius: 8, cursor: off ? "default" : "pointer", fontFamily: this.MONO, fontSize: 11.5, fontWeight: 600,
+            border: "1.5px solid " + (st.slot === i ? A : "var(--border2)"),
+            background: st.slot === i ? A : "transparent",
+            color: off ? "var(--faint)" : st.slot === i ? "#fff" : "var(--dim)",
+            textDecoration: off ? "line-through" : "none", opacity: off ? 0.55 : 1,
+          } }, t);
+        })),
+      h("div", { style: { height: 14 } }),
+      this.fBtn(st.slot == null ? "Pick a time" : "Confirm · " + days[st.day][0] + " " + slots[st.slot], () => { if (st.slot != null) set({ booked: true }); }, A, { full: true, disabled: st.slot == null })));
+  }
+
+  b_kyc() {
+    const h = React.createElement, A = "#a98bf5";
+    const st = this.fragSt("kyc", { done: {}, busy: null, pct: 0 });
+    const set = (p) => this.setFrag("kyc", p);
+    const steps = [["id", "Government ID", "Passport or driving licence"], ["selfie", "Quick selfie", "Matched against the ID by the vendor"], ["address", "Proof of address", "Utility bill or bank statement"]];
+    const allDone = steps.every((s) => st.done[s[0]]);
+    const start = (key) => {
+      if (st.busy || st.done[key]) return;
+      set({ busy: key, pct: 8 });
+      let p = 8;
+      const tick = () => {
+        p += 18 + Math.random() * 22;
+        if (p >= 100) {
+          this.setFrag("kyc", { busy: null, pct: 0, done: Object.assign({}, this.fragSt("kyc", st).done, { [key]: 1 }) });
+        } else { this.setFrag("kyc", { pct: Math.min(96, p) }); setTimeout(tick, 220); }
+      };
+      setTimeout(tick, 220);
+    };
+    return this.fCard(380, A, "Veridia", h("div", null,
+      h("div", { style: { fontWeight: 800, fontSize: 15 } }, "Verify your identity"),
+      h("div", { style: { fontSize: 12, color: "var(--dim)", margin: "1px 0 12px" } }, "Takes about 2 minutes · bank-grade checks"),
+      steps.map((s2, i) => {
+        const key = s2[0], ok = !!st.done[key], busy = st.busy === key;
+        return h("div", { key: key, style: { display: "flex", alignItems: "center", gap: 11, padding: "10px 0", borderTop: "1px solid var(--border)" } },
+          h("span", { "aria-hidden": "true", style: { width: 26, height: 26, borderRadius: "50%", flex: "0 0 auto", display: "grid", placeItems: "center", fontSize: 12, fontWeight: 800,
+            border: "2px solid " + (ok ? A : "var(--border2)"), color: ok ? "#fff" : "var(--faint)", background: ok ? A : "transparent", transition: "background .3s, border-color .3s", fontFamily: this.MONO } }, ok ? "✓" : i + 1),
+          h("div", { style: { flex: 1, minWidth: 0 } },
+            h("div", { style: { fontWeight: 700, fontSize: 13 } }, s2[1]),
+            busy ? h("div", { style: { height: 4, borderRadius: 2, background: "var(--surface2)", marginTop: 6, overflow: "hidden" } },
+              h("div", { style: { height: "100%", width: st.pct + "%", background: A, borderRadius: 2, transition: "width .2s" } })) :
+              h("div", { style: { fontSize: 11.5, color: "var(--dim)" } }, ok ? "Verified by vendor · receipt logged" : s2[2])),
+          ok ? null : this.fGhostBtn(busy ? "Checking…" : "Upload", () => start(key), A, true));
+      }),
+      allDone ? h("div", { style: { marginTop: 12, padding: "10px 14px", borderRadius: 10, background: A + "1a", border: "1px solid " + A, display: "flex", alignItems: "center", gap: 10, animation: this.state.rm ? "none" : "popIn .3s" } },
+        h("span", { style: { fontSize: 16 } }, "🛡️"),
+        h("div", null,
+          h("div", { style: { fontWeight: 800, fontSize: 13 } }, "Identity verified"),
+          h("div", { style: { fontSize: 11, color: "var(--dim)" } }, "Audit trail saved. Compliance gets its receipts.")),
+        h("span", { style: { flex: 1 } }),
+        this.fGhostBtn("reset", () => set({ done: {}, busy: null, pct: 0 }), A, true)) : null));
+  }
+
+  b_status() {
+    const h = React.createElement, A = "#a98bf5";
+    const st = this.fragSt("status", { range: "90d", open: null });
+    const set = (p) => this.setFrag("status", p);
+    const n = st.range === "30d" ? 30 : 60;
+    const services = [["API", 99.98, [22]], ["Dashboard", 100, []], ["Webhooks", 99.91, [12, 13]]];
+    const bar = (svc, idx) => {
+      const bad = svc[2];
+      return h("div", { style: { display: "flex", gap: 2, flex: 1, minWidth: 0 } },
+        Array.from({ length: n }, (x, i) => {
+          const isBad = bad.includes(n - 1 - i);
+          return h("span", { key: i, title: isBad ? "partial outage" : "operational", style: {
+            flex: 1, height: 22, borderRadius: 2, minWidth: 2,
+            background: isBad ? "#ff7a6b" : A, opacity: isBad ? 1 : 0.32 + (((i * 7 + idx * 3) % 5) * 0.02),
+          } });
+        }));
+    };
+    return this.fCard(480, A, "Veridia Status", h("div", null,
+      h("div", { style: { display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 4 } },
+        h("span", { "aria-hidden": "true", style: { width: 9, height: 9, borderRadius: "50%", background: "#3ddc97", boxShadow: "0 0 10px #3ddc97" } }),
+        h("span", { style: { fontWeight: 800, fontSize: 15, flex: 1 } }, "All systems operational"),
+        this.fSeg(["30d", "90d"], st.range, (r) => set({ range: r }), A)),
+      services.map((svc, i) => h("div", { key: svc[0], style: { padding: "9px 0", borderTop: i ? "1px solid var(--border)" : "none", marginTop: i ? 2 : 6 } },
+        h("div", { style: { display: "flex", alignItems: "baseline", gap: 8, marginBottom: 6 } },
+          h("span", { style: { fontWeight: 700, fontSize: 12.5, width: 84, flex: "0 0 auto" } }, svc[0]),
+          h("span", { style: { fontFamily: this.MONO, fontSize: 10.5, color: svc[1] === 100 ? A : "var(--dim)" } }, svc[1].toFixed(2) + "% uptime")),
+        bar(svc, i))),
+      h("button", { onClick: () => set({ open: st.open ? null : 1 }), style: { marginTop: 10, border: "none", background: "transparent", color: A, fontSize: 12, fontWeight: 600, cursor: "pointer", padding: 0 } },
+        st.open ? "hide incident history ▴" : "incident history (1) ▾"),
+      st.open ? h("div", { style: { marginTop: 8, padding: "10px 13px", borderRadius: 10, border: "1px solid var(--border2)", background: "var(--surface2)", animation: this.state.rm ? "none" : "fadeUp .25s" } },
+        h("div", { style: { fontFamily: this.MONO, fontSize: 10, color: "var(--faint)" } }, "May 19 · 14:02–14:31 UTC"),
+        h("div", { style: { fontWeight: 700, fontSize: 12.5, margin: "3px 0 2px" } }, "Webhooks delayed up to 4 min"),
+        h("div", { style: { fontSize: 11.5, color: "var(--dim)", lineHeight: 1.5 } }, "A queue backed up after a deploy. We rolled back in 9 minutes and replayed every missed event. Written by a human — honesty included.")) : null));
+  }
+
+  // ---------- tilt ----------
+  tiltMove(fid) {
+    return (e) => {
+      if (this.state.rm || e.pointerType !== "mouse") return;
+      if (fid && this.cardOf(fid).x) return;
+      const el = e.currentTarget, r = el.getBoundingClientRect();
+      const ry = ((e.clientX - r.left) / r.width - 0.5) * 3.4;
+      const rx = ((e.clientY - r.top) / r.height - 0.5) * -2.6;
+      el.style.transform = "perspective(1000px) rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg)";
+    };
+  }
+
+  // ---------- search ----------
+  searchItems() {
+    if (this._sItems) return this._sItems;
+    const out = [];
+    this.C.WORKSPACES.forEach((w) => {
+      w.groups.forEach((g) => g.items.forEach((id) => {
+        const it = w.items[id];
+        if (it.type === "ws") return;
+        if (it.type === "library" && w.id !== "home") return;
+        out.push({
+          icon: it.type === "page" ? "#" : "▣",
+          label: it.label,
+          sub: it.type === "comp" ? w.name + " · live component" : w.name,
+          ws: w.id, ch: id,
+        });
+      }));
+    });
+    this._sItems = out;
+    return out;
+  }
+
+  curResults() {
+    const q = this.state.query.toLowerCase().trim();
+    const all = this.searchItems();
+    return (q ? all.filter((i) => (i.label + " " + i.sub).toLowerCase().includes(q)) : all).slice(0, 9);
+  }
+
+  // ---------- ambient ----------
+  sizeCanvas() {
+    const cv = this.canvasRef.current; if (!cv) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(window.innerWidth * dpr);
+    cv.height = Math.round(window.innerHeight * dpr);
+  }
+
+  drawAmbient() {
+    const cv = this.canvasRef.current; if (!cv || !this._pts) return;
+    const ctx = cv.getContext("2d");
+    const w = cv.width, hh = cv.height;
+    ctx.clearRect(0, 0, w, hh);
+    const dark = this.resolvedTheme() === "dark";
+    const col = dark ? "140,172,238" : "82,116,200";
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    for (const p of this._pts) {
+      p.x = (p.x + p.vx + 1) % 1;
+      p.y = (p.y + p.vy + 1) % 1;
+      ctx.beginPath();
+      ctx.arc(p.x * w, p.y * hh, p.z * 2.3 * dpr, 0, 7);
+      ctx.fillStyle = "rgba(" + col + "," + (p.z * (dark ? 0.2 : 0.14)).toFixed(3) + ")";
+      ctx.fill();
+    }
+  }
+
+  startAmbient() {
+    this.sizeCanvas();
+    this._pts = Array.from({ length: 36 }, () => ({
+      x: Math.random(), y: Math.random(), z: 0.3 + Math.random() * 0.7,
+      vx: (Math.random() - 0.5) * 0.00022, vy: (Math.random() - 0.5) * 0.00016,
+    }));
+    if (this.state.rm) { this.drawAmbient(); return; }
+    const loop = () => { this._raf = requestAnimationFrame(loop); if (!document.hidden) this.drawAmbient(); };
+    loop();
+  }
+
+  // ---------- render ----------
+  renderVals() {
+    const s = this.state;
+    const swallow = (e) => e.stopPropagation();
+    const base = {
+      canvasRef: this.canvasRef, searchRef: this.searchRef, scrollRef: this.scrollRef, swallow,
+      closeDrawer: () => this.setState({ drawer: false }),
+      openDrawer: () => this.setState({ drawer: true }),
+      cycleTheme: () => this.cycleTheme(),
+      openSearch: () => this.openSearch(),
+      closeSearch: () => this.closeSearch(),
+      onQuery: (e) => this.setState({ query: e.target.value, sel: 0 }),
+      searchKey: (e) => {
+        const res = this.C ? this.curResults() : [];
+        if (e.key === "ArrowDown") { e.preventDefault(); this.setState((p) => ({ sel: Math.min(p.sel + 1, res.length - 1) })); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); this.setState((p) => ({ sel: Math.max(p.sel - 1, 0) })); }
+        else if (e.key === "Enter") { const r = res[this.state.sel]; if (r) this.visit(r.ws, r.ch); }
+        else if (e.key === "Escape") this.closeSearch();
+      },
+      onBook: (e) => { e.preventDefault(); this.goMessage(); },
+      bookHref: "#message",
+      chatScrollRef: this.chatScrollRef, chatInputRef: this.chatInputRef, chatEmailRef: this.chatEmailRef, chatFirstRef: this.chatFirstRef,
+      closeChat: () => this.closeChat(),
+      chatSend: () => this.chatSend(),
+      chatKey: (e) => { if (e.key === "Enter") this.chatSend(); },
+      onGuestEmail: (e) => this.setState({ guestEmail: e.target.value, emailErr: false }),
+      onGuestFirst: (e) => this.setState({ guestFirst: e.target.value }),
+      onGuestLast: (e) => this.setState({ guestLast: e.target.value }),
+      openResume: () => this.setState({ resumeOpen: true }),
+      closeResume: () => this.setState({ resumeOpen: false }),
+      resumeOpen: s.resumeOpen,
+    };
+    if (!this.C) {
+      return Object.assign(base, {
+        themeAttr: "dark", drawerAttr: "closed", navBoot: "none", navOp: 1, mainBoot: "none", mainOp: 1,
+        rail: [], groups: [], sections: [], cards: [], cardsWrapStyle: "display:flex; flex-direction:column; gap:4px", hasHero: false, heroEl: null, libChips: [], results: [],
+        wsName: "", wsDesc: "", wsStatus: "", wsAccent: "#5b8def", wsTags: [], hasTags: false,
+        chTitle: "", chDesc: "", screenLabel: "loading", isLibrary: false,
+        searchOpen: false, noResults: false, query: "", toast: null, footerLine: "",
+        themeGlyph: "◐", themeName: "system", swapAnim: "none", sideAnim: "none",
+        hasChat: false, chatMsgs: [], chatOpen: false, scrimAnim: "scrimIn .2s ease", drawerAnim: "drawerIn .28s cubic-bezier(.2,.85,.3,1)", guestEmail: "", guestFirst: "", guestLast: "", emailColor: "var(--text)", chatFirst: "",
+      });
+    }
+    const { WORKSPACES, FRAGMENTS, PH, KINDS, LIBRARY_INTRO } = this.C;
+    const W = WORKSPACES.find((w) => w.id === s.ws) || WORKSPACES[0];
+    const IT = W.items[s.ch] || W.items[W.groups[0].items[0]];
+    const theme = this.resolvedTheme();
+    const rm = s.rm;
+
+    const rail = WORKSPACES.map((w, i) => {
+      const active = w.id === s.ws;
+      const isHome = w.id === "home";
+      return {
+        initials: isHome ? "" : w.initials, name: w.name, active,
+        divider: i === 1,
+        bg: isHome ? "url('uploads/avatar-circle.png') center/cover no-repeat, #1c2435" : (active ? w.accent : "color-mix(in srgb, " + w.accent + " 13%, var(--surface2))"),
+        fg: active ? "#fff" : w.accent,
+        radius: active ? "12px" : "15px",
+        glow: active ? "0 6px 18px -4px " + w.accent + "77" : "none",
+        onPick: () => this.go(w.id),
+      };
+    });
+
+    let si = 0;
+    const sideItemAnim = () => rm || !s.swapTick ? "none" : (s.swapTick % 2 ? "itemB" : "itemA") + " .42s cubic-bezier(.2,.8,.3,1) both " + (70 + si++ * 26) + "ms";
+    const groups = W.groups.map((g) => ({
+      title: g.title,
+      anim: sideItemAnim(),
+      items: g.items.map((id) => {
+        const it = W.items[id];
+        const active = id === s.ch;
+        const tgt = it.type === "ws" ? WORKSPACES.find((x) => x.id === it.ws) : null;
+        const itemAccent = tgt ? tgt.accent : it.type === "library" ? W.accent : null;
+        return {
+          label: it.label,
+          icon: it.type === "page" ? "#" : it.type === "ws" ? "→" : "▣",
+          aria: active ? "page" : "",
+          bg: active ? "color-mix(in srgb, " + W.accent + " 16%, transparent)" : "transparent",
+          fg: active ? "var(--text)" : "var(--dim)",
+          weight: active ? 700 : 500,
+          iconColor: active ? W.accent : itemAccent || "var(--faint)",
+          onPick: it.type === "ws" ? () => this.go(it.ws) : () => this.visit(s.ws, id),
+          anim: sideItemAnim(),
+        };
+      }),
+    }));
+
+    const isLibrary = IT.type === "library";
+    const libChips = isLibrary ? KINDS.map((k) => ({
+      label: k, ariaSel: String(k === s.libFilter),
+      bg: k === s.libFilter ? W.accent : "transparent",
+      fg: k === s.libFilter ? "#fff" : "var(--dim)",
+      bd: k === s.libFilter ? W.accent : "var(--border2)",
+      onPick: () => this.setState((p) => ({ libFilter: k, chTick: p.chTick + 1 })),
+    })) : [];
+
+    let ai = 0;
+    const anim = () => rm ? "none" : (s.chTick % 2 ? "msgInB" : "msgInA") + " .38s cubic-bezier(.2,.8,.3,1) both " + Math.min(ai++ * 70, 420) + "ms";
+
+    let secList = [], cardFids = [], noteMap = {};
+    if (isLibrary) {
+      secList = [];
+      cardFids = Object.keys(FRAGMENTS).filter((fid) => s.libFilter === "All" || FRAGMENTS[fid].kind === s.libFilter);
+    } else if (IT.type === "comp") {
+      cardFids = [IT.frag];
+      noteMap[IT.frag] = IT.paras || [];
+    } else {
+      secList = IT.sections || [];
+    }
+
+    let hn = 0;
+    const sections = secList.map((sec) => {
+      const hasHeading = !!sec.heading;
+      if (hasHeading) hn++;
+      return {
+        hasHeading, heading: sec.heading || "", num: hasHeading ? "0" + hn : "",
+        paras: sec.paras || [],
+        hasCta: !!sec.cta, ctaLabel: sec.ctaLabel || "Leave a message →",
+        onCta: (e) => {
+          e.preventDefault();
+          if (sec.cta === "message") this.goMessage();
+          else this.toast_("Placeholder — wire your real booking link in content-v2.js (PH.BOOKING). Email: " + PH.EMAIL);
+        },
+        anim: anim(),
+      };
+    });
+
+    const selBg = "var(--bg2)", unsel = "transparent";
+    const cards = cardFids.map((fid) => {
+      const f = FRAGMENTS[fid];
+      const card = this.cardOf(fid);
+      const codeSel = card.tab === "code";
+      const prevSel = !codeSel;
+      const paras = noteMap[fid] || [];
+      return {
+        anim: anim(),
+        hasNote: paras.length > 0, paras,
+        cardTitle: f.title, fragAccent: f.accent,
+        cardMeta: f.product + " · " + f.year + (f.prod ? " · in production" : ""),
+        tabPrevSel: String(prevSel), tabCodeSel: String(codeSel),
+        tabPrevBg: prevSel ? selBg : unsel, tabPrevFg: prevSel ? "var(--text)" : "var(--dim)",
+        tabCodeBg: codeSel ? selBg : unsel, tabCodeFg: codeSel ? "var(--text)" : "var(--dim)",
+        onTabPreview: () => this.setCard(fid, { tab: "preview" }),
+        onTabCode: () => this.setCard(fid, { tab: "code" }),
+        cardBody: codeSel ? this.codeEl(fid) : this.previewEl(fid),
+        tiltMove: this.tiltMove(fid),
+        tiltLeave: (e) => { e.currentTarget.style.transform = ""; },
+      };
+    });
+
+    const heroData = IT.type === "page" && IT.hero ? IT.hero : null;
+    const heroEl = heroData ? this.buildHero(heroData, W) : null;
+
+    const meAv = { avBg: "url('uploads/avatar-circle.png') center/cover no-repeat, #1c2435", avFg: "#fff", avText: "" };
+    const youName = ((s.guestFirst || "").trim() + " " + (s.guestLast || "").trim()).trim() || "You";
+    const youInit = (((s.guestFirst || "").trim()[0] || "") + ((s.guestLast || "").trim()[0] || "")).toUpperCase() || "Y";
+    const chatMsgs = [Object.assign({
+      name: PH.FIRST, time: "pinned", auto: false,
+      text: "Heads-up before you type: this isn't a live chat — nobody's lurking behind it. Leave a note with your email and it lands in my real inbox. I reply personally, usually same day.",
+    }, meAv)].concat(s.chatThread.map((m) => m.who === "you"
+      ? { name: youName, time: m.t, auto: false, avBg: "var(--surface2)", avFg: "var(--dim)", avText: youInit, text: m.text }
+      : Object.assign({ name: PH.FIRST, time: m.t, auto: true, text: m.text }, meAv)));
+
+    const res = s.searchOpen ? this.curResults() : [];
+    const results = res.map((r, i) => ({
+      icon: r.icon, label: r.label, sub: r.sub,
+      bg: i === s.sel ? "var(--accent-soft)" : "transparent",
+      onPick: () => this.visit(r.ws, r.ch),
+    }));
+
+    const boot = s.boot && !rm;
+    return Object.assign(base, {
+      themeAttr: theme,
+      drawerAttr: s.drawer ? "open" : "closed",
+      navBoot: boot ? "translateX(-44px) translateZ(-150px) rotateY(7deg)" : "var(--nav-tx)",
+      navOp: boot ? 0 : 1,
+      mainBoot: boot ? "translateY(28px) translateZ(-190px)" : "none",
+      mainOp: boot ? 0 : 1,
+      rail, groups,
+      wsName: W.name, wsDesc: W.desc, wsStatus: W.status, wsAccent: W.accent, wsTags: W.tags || [], hasTags: !!(W.tags && W.tags.length),
+      chTitle: IT.label,
+      chDesc: IT.desc || "",
+      screenLabel: IT.label + " — " + W.name,
+      isLibrary, libChips,
+      cardsWrapStyle: isLibrary
+        ? "display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; align-items:start; margin-top:6px"
+        : "display:flex; flex-direction:column; gap:4px",
+      sections, cards, hasHero: !!heroEl, heroEl,
+      hasPortrait: s.ws === "home" && s.ch === "about",
+      chatMsgs, chatOpen: s.chatOpen,
+      scrimAnim: s.chatClosing ? "scrimOut .22s ease forwards" : "scrimIn .2s ease",
+      drawerAnim: s.chatClosing ? "drawerOut .24s cubic-bezier(.4,0,1,1) forwards" : "drawerIn .28s cubic-bezier(.2,.85,.3,1)",
+      guestEmail: s.guestEmail, guestFirst: s.guestFirst, guestLast: s.guestLast,
+      emailColor: s.emailErr ? "#ff7a6b" : "var(--text)", chatFirst: PH.FIRST,
+      searchOpen: s.searchOpen, query: s.query, results,
+      noResults: s.searchOpen && !!s.query.trim() && res.length === 0,
+      toast: s.toast,
+      footerLine: PH.FOOTER,
+      themeGlyph: s.theme === "system" ? "◐" : s.theme === "light" ? "○" : "●",
+      themeName: s.theme,
+      swapAnim: rm || !s.swapTick ? "none" : (s.swapTick % 2 ? "swapB" : "swapA") + " .5s cubic-bezier(.16,.84,.28,1) both .06s",
+      sideAnim: rm || !s.swapTick ? "none" : (s.swapTick % 2 ? "sideB" : "sideA") + " .45s cubic-bezier(.16,.84,.28,1) both",
+    });
+  }
+}
+</script>
+</body>
+</html>
