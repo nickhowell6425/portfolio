@@ -21,7 +21,7 @@
 - /home/how-i-work: How an engagement actually looks
 - /home/straight-answers: Honest FAQ
 - /home/off-clock: The human running the agents
-- /paradox/overview: Paradox — storytelling-multiverse product concept (live canvas timeline)
+- /paradox/overview: Paradox — storytelling-multiverse product concept (live canvas timeline, branch & event views, passwordless sign-in)
 - /shiftsum/overview: Shiftsum — shift scheduling product, built and acquired in 2023
 - /clients/overview: Selected client builds (booking widget, identity verification, status page)
 - /home/component-library: Every live component from every project, filterable

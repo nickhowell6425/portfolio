@@ -27,8 +27,10 @@ export type Kind = (typeof KINDS)[number];
 
 export type FragmentId =
   | "multiverse"
+  | "spine"
+  | "ribbon"
   | "gateway"
-  | "palette"
+  | "divergence"
   | "onboarding"
   | "notifications"
   | "admin"
@@ -118,33 +120,105 @@ export interface Workspace {
 
 export const FRAGMENTS: Record<FragmentId, FragmentMeta> = {
   multiverse: {
-    title: "The living timeline",
+    title: "The Sacred Timeline",
     kind: "Discovery",
     product: "Paradox",
     year: "2026",
     prod: false,
     accent: "#3edba6",
     code: {
-      file: "MultiverseTimeline.tsx",
+      file: "timeline-engine.ts",
       lang: "tsx",
       src: `// The homepage is the graph itself — no feed, no grid.
-export function MultiverseTimeline({ graph }: { graph: Graph }) {
-  const canvas = useRef<HTMLCanvasElement>(null)
-  const [selected, setSelected] = useState<Node | null>(null)
+// One canvas, additive blending, a beating core at the origin.
+function frame(t: number) {
+  drawVoid(ctx)                          // radial green-black, brighter at the core
+  ctx.globalCompositeOperation = 'lighter'
+  for (const s of strands) drawStrand(s, t)     // glow halo pass + bright core pass
+  for (const s of strands) drawParticles(s, t)  // light flowing toward the future
+  drawCore(t)                            // 26 woven fibers round a pulsing nucleus
+  for (const n of nodes) drawNode(n, t)  // emerald = canon, gold = divergence
+  ctx.globalCompositeOperation = 'source-over'
+}
 
-  useRaf((t) => {
-    const ctx = canvas.current!.getContext('2d')!
-    drawStrands(ctx, graph.timelines, t)
-    drawBranches(ctx, graph.branches, t)
-    drawNodes(ctx, graph.nodes, t)
-  })
+// ten timelines fan out from a tight band around the core, then
+// grow organically — each limb forks into smaller and dimmer kids
+function grow(origin: Pt, ang: number, len: number, depth: number) {
+  const end = reach(origin, ang, len)
+  strands.push(bowedBezier(origin, end, {
+    w: 3.4 - depth * 0.7,
+    bright: 0.62 - depth * 0.1,
+  }))
+  for (const spread of spreads(depth)) grow(end, ang + spread, len * 0.6, depth + 1)
+  return end
+}`,
+    },
+  },
+  spine: {
+    title: "Timeline View",
+    kind: "Dashboards",
+    product: "Paradox",
+    year: "2026",
+    prod: false,
+    accent: "#3edba6",
+    code: {
+      file: "tlv2-spine.ts",
+      lang: "tsx",
+      src: `// "Forget everything and reimagine it." One universe, full-bleed:
+// canon flows left → right, branches fork off their divergence point.
+const GAP = 460                              // px between canon events
 
+// hero framing: open punchy and centered on the great divergence —
+// whole-canon orientation lives in the minimap, not the first frame
+const heroScale = () => clamp(Math.min(0.95, W / (2.6 * GAP)))
+const heroNode = () => nodes.find((n) => n.type === 'event' && n.gold)
+
+// the bottom scrubber is the same world at 1:1 — a draggable window
+function syncMinimap() {
+  const cw = content.maxX - content.minX
+  win.style.left = \`\${((cam.x - W / 2 - content.minX) / cw) * 100}%\`
+  win.style.width = \`\${(W / cw) * 100}%\`
+}
+
+function scrubTo(f: number) {
+  cam.tx = content.minX + f * (content.maxX - content.minX)
+}
+
+// guided tour: fly the camera down the canon, one chapter at a time,
+// the inspector following — first interaction hands control back
+const tour = setInterval(() => focusEvent(chronology[i++ % 8]), 3600)`,
+    },
+  },
+  ribbon: {
+    title: "Reality ribbon",
+    kind: "Dashboards",
+    product: "Paradox",
+    year: "2026",
+    prod: false,
+    accent: "#3edba6",
+    code: {
+      file: "BranchHero.tsx",
+      lang: "tsx",
+      src: `// A branch is a fork of the canon. The hero says it in one strip:
+// shared chapters → gold divergence diamond → this reality, unfolding.
+type Phase = 'canon' | 'split' | 'reality' | 'live'
+
+function phaseOf(node: RibbonNode, divergence: Divergence): Phase {
+  if (node.chapter < divergence.chapter) return 'canon'   // dashed jade — shared
+  if (node.chapter === divergence.chapter) return 'split' // the 02:09 diamond
+  return node.live ? 'live' : 'reality'                   // emerald — ours now
+}
+
+export function RealityRibbon({ nodes, divergence }: Props) {
   return (
-    <canvas
-      ref={canvas}
-      onPointerDown={beginTraverse}
-      onClick={(e) => setSelected(hitTest(graph, e))}
-    />
+    <ol className='ribbon'>
+      {nodes.map((n) => (
+        <li key={n.id} data-phase={phaseOf(n, divergence)}>
+          <Knob />          {/* jade dot · gold diamond · emerald glow */}
+          <Chapter n={n} />
+        </li>
+      ))}
+    </ol>
   )
 }`,
     },
@@ -182,33 +256,41 @@ export function SignInGateway() {
 }`,
     },
   },
-  palette: {
-    title: "Command palette",
+  divergence: {
+    title: "Branch cards",
     kind: "Discovery",
     product: "Paradox",
     year: "2026",
     prod: false,
     accent: "#3edba6",
     code: {
-      file: "CommandPalette.tsx",
+      file: "BranchCard.tsx",
       lang: "tsx",
-      src: `// One Cmd-K index carries the whole navigation.
-export function CommandPalette({ index }: { index: Entry[] }) {
-  const [q, setQ] = useState('')
-  const [sel, setSel] = useState(0)
-  const groups = useMemo(() => groupByKind(search(index, q)), [index, q])
+      src: `// Design rule: every branch answers "what changed?" — it is never optional.
+interface Branch {
+  title: string
+  divergence: string      // one sentence, serif, emerald-railed
+  log: string
+  stats: { readers: number; events: number; variants: number }
+  hot?: boolean           // the data decides what's trending, not the layout
+}
 
-  useHotkey('cmd+k', open)
+export function BranchCard({ b, onOpen }: { b: Branch; onOpen: () => void }) {
   return (
-    <Dialog>
-      <Input value={q} onChange={setQ} placeholder='Search the multiverse' />
-      {groups.map((g) => (
-        <Group key={g.kind} label={g.kind}>
-          {g.items.map((it) => <Result key={it.id} entry={it} active={it === sel} />)}
-        </Group>
-      ))}
-    </Dialog>
+    <Card hot={b.hot} onClick={onOpen}>
+      <Origin from='The Ninth Signal' trending={b.hot} />
+      <Title>{b.title}</Title>
+      <Divergence>{b.divergence}</Divergence>   {/* the load-bearing line */}
+      <Logline>{b.log}</Logline>
+      <Stats {...b.stats} creator={<Sigil seed={b.creator} />} />
+    </Card>
   )
+}
+
+const sorters = {
+  popular: (a, b) => b.stats.readers - a.stats.readers,
+  newest: (a, b) => b.forkedAt - a.forkedAt,
+  active: (a, b) => b.stats.contributors - a.stats.contributors,
 }`,
     },
   },
@@ -583,10 +665,13 @@ export const WORKSPACES: Workspace[] = [
     desc: "A living multiverse of stories",
     status: "concept · 2026",
     accent: "#3edba6",
-    tags: ["Product concept", "Canvas 2D", "Vanilla JS", "6 screens", "Design system"],
+    tags: ["Product concept", "Canvas 2D", "Vanilla JS", "7 screens", "Design system"],
     groups: [
       { title: "Project", items: ["overview"] },
-      { title: "Components", items: ["living-timeline", "gateway-comp", "palette-comp"] },
+      {
+        title: "Components",
+        items: ["timeline-view", "reality-ribbon", "branch-cards", "gateway-comp"],
+      },
       { title: "Library", items: ["component-library"] },
     ],
     items: {
@@ -603,19 +688,37 @@ export const WORKSPACES: Workspace[] = [
           {
             paras: [
               "Paradox is a product concept: collaborative storytelling as a multiverse. Every story is a Sacred Timeline; every “what if” forks it into a branch; every branch is an alternate reality written by its readers.",
-              "Six screens deep — homepage, sign-in, explore, timeline, event and branch views — all on one design system: emerald on void, Cormorant Garamond for the stories.",
-              "Open any component in the left rail to see it running, then flip it to Code to read the real thing.",
+              "Seven screens on one design system — homepage, sign-in, explore, timeline, event and branch views, plus the sheet that defines them: emerald is canon, gold is divergence, Cormorant Garamond carries the stories.",
+              "Four of those screens run as miniatures in the left rail. Each one is rebuilt, not screenshotted — flip any of them to Code to read the real thing.",
             ],
           },
         ],
       },
-      "living-timeline": {
-        label: "The living timeline",
+      "timeline-view": {
+        label: "Timeline View",
         type: "comp",
-        frag: "multiverse",
-        desc: "The homepage is a place, not a page",
+        frag: "spine",
+        desc: "One universe as a flight deck",
         paras: [
-          "The homepage in miniature. Drag to traverse the multiverse, click a node to see what lives there. The real one runs full-screen with zoom and a guided tour — this is the postcard version.",
+          "The Ninth Signal's whole canon on a single spine — eight chapters, branches forking off the gold one where everything changed. Drag to pan, scrub the minimap, click a node, or press tour and let it walk the chapters. The full screen adds zoom and a four-tab inspector; this is the postcard.",
+        ],
+      },
+      "reality-ribbon": {
+        label: "Branch View",
+        type: "comp",
+        frag: "ribbon",
+        desc: "What changed at 02:09",
+        paras: [
+          "A branch in one strip: four chapters of shared canon, a gold diamond where this reality answered differently, then five chapters it wrote for itself. The split panel underneath states the divergence both ways — in canon, and in this reality. Click any node on the ribbon.",
+        ],
+      },
+      "branch-cards": {
+        label: "Branch cards",
+        type: "comp",
+        frag: "divergence",
+        desc: "Every fork answers “what changed?”",
+        paras: [
+          "Six realities fork from Chapter V, and every card leads with its divergence — a one-sentence answer to what changed, never optional in this design. Sorting is live, and the trending tags are the ones the data says are hot, not the layout.",
         ],
       },
       "gateway-comp": {
@@ -624,16 +727,7 @@ export const WORKSPACES: Workspace[] = [
         frag: "gateway",
         desc: "Guest-first, passwords never",
         paras: [
-          "Try it: any email works, and the magic link can be “opened” right here. Note what's missing — a password field, and any demand to sign up before you've seen the multiverse.",
-        ],
-      },
-      "palette-comp": {
-        label: "Command palette",
-        type: "comp",
-        frag: "palette",
-        desc: "The only menu in the product",
-        paras: [
-          "Search carries the whole navigation. Type a few letters — timelines, branches and events surface in groups; arrows and enter to dive in.",
+          "Try it: any email works, the magic link can be “opened” right here, and you get a keeper name with a generated sigil instead of a profile form. Note what's missing — a password field, and any demand to sign up before you've seen the multiverse.",
         ],
       },
       "component-library": LIBRARY,
