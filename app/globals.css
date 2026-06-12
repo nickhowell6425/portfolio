@@ -307,13 +307,21 @@ input::placeholder {
 }
 
 .portrait-figure {
-  height: 300px;
-  margin: 0 40px -1px 0;
+  width: 200px;
+  height: 200px;
+  margin: 0 44px 0 0;
 }
 @media (max-width: 700px) {
+  /* stack the hero: photo on top, text full-width below */
+  .portrait-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
   .portrait-figure {
-    height: 200px;
-    margin: 0 14px -1px 0;
+    width: 132px;
+    height: 132px;
+    margin: 26px 0 0 34px;
+    order: -1;
   }
 }
 

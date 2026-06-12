@@ -6,7 +6,7 @@ import { PH } from "@/lib/content";
 export function PortraitHero() {
   return (
     <div
-      className="anim-swap"
+      className="anim-swap portrait-hero"
       style={{
         position: "relative",
         overflow: "hidden",
@@ -29,20 +29,6 @@ export function PortraitHero() {
           backgroundImage: "radial-gradient(var(--border) 1px, transparent 1px)",
           backgroundSize: "18px 18px",
           opacity: 0.5,
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          right: 48,
-          bottom: -30,
-          width: 300,
-          height: 300,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--accent) 46%, transparent), transparent 66%)",
           pointerEvents: "none",
         }}
       />
@@ -136,20 +122,23 @@ export function PortraitHero() {
       </div>
       <span style={{ flex: 1 }} />
       <Image
-        src="/uploads/avatar-front.png"
-        alt={`Illustrated full-body portrait of ${PH.NAME}`}
-        width={172}
-        height={300}
+        src="/uploads/nicholas-howell.png"
+        alt={`Portrait of ${PH.NAME}`}
+        width={200}
+        height={200}
         priority
         fetchPriority="high"
         className="portrait-figure"
         style={{
           position: "relative",
           zIndex: 3,
-          width: "auto",
-          alignSelf: "flex-end",
+          borderRadius: "50%",
+          objectFit: "cover",
+          objectPosition: "50% 30%",
+          border: "1px solid color-mix(in srgb, var(--accent) 35%, var(--border2))",
+          boxShadow:
+            "0 0 0 5px color-mix(in srgb, var(--accent) 14%, transparent), 0 18px 36px -12px rgba(2,6,16,.55)",
           pointerEvents: "none",
-          filter: "drop-shadow(0 18px 26px rgba(0,0,0,.5))",
         }}
       />
     </div>
