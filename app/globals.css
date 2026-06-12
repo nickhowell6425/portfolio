@@ -284,7 +284,8 @@ input::placeholder {
   }
   /* Résumé / Send a message collapse to icon-only buttons,
      matched to the 38px menu button; search gets the same height */
-  .topbar-label {
+  .topbar-label,
+  .topbar-icon-d {
     display: none;
   }
   .topbar-icon-m {

@@ -114,8 +114,36 @@ export function TopBar() {
           cursor: "pointer",
         }}
       >
-        <span aria-hidden="true" style={{ fontFamily: MONO, fontSize: 12, color: "var(--accent)" }}>
+        <span
+          aria-hidden="true"
+          className="topbar-icon-d"
+          style={{ fontFamily: MONO, fontSize: 12, color: "var(--accent)" }}
+        >
           ▤
+        </span>
+        <span className="topbar-icon-m" aria-hidden="true" style={{ color: "var(--accent)" }}>
+          <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+            <path
+              d="M9.5 1.5H4.6a1.1 1.1 0 0 0-1.1 1.1v10.8a1.1 1.1 0 0 0 1.1 1.1h6.8a1.1 1.1 0 0 0 1.1-1.1V4.5l-3-3z"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinejoin="round"
+              fill="none"
+            />
+            <path
+              d="M9.5 1.5v3h3"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinejoin="round"
+              fill="none"
+            />
+            <path
+              d="M5.9 8.2h4.2M5.9 10.8h4.2"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+            />
+          </svg>
         </span>
         <span className="topbar-label">Résumé</span>
       </button>
