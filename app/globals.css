@@ -282,7 +282,8 @@ input::placeholder {
   .kbd-hint {
     display: none;
   }
-  /* Résumé / Send a message collapse to icon-only buttons */
+  /* Résumé / Send a message collapse to icon-only buttons,
+     matched to the 38px menu button; search gets the same height */
   .topbar-label {
     display: none;
   }
@@ -291,10 +292,16 @@ input::placeholder {
   }
   .btn-icon-m {
     width: 38px;
+    height: 38px !important;
+    border-radius: 10px !important;
     padding: 0 !important;
     justify-content: center;
     gap: 0 !important;
     flex: 0 0 auto;
+  }
+  .topbar-search {
+    height: 38px !important;
+    border-radius: 10px !important;
   }
 }
 

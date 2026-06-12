@@ -47,7 +47,7 @@ export function TopBar() {
       </button>
       <button
         onClick={openSearch}
-        className="hov-accent-border"
+        className="hov-accent-border topbar-search"
         style={{
           flex: 1,
           minWidth: 0,
