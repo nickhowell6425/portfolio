@@ -33,10 +33,17 @@ export function TopBar() {
           background: "transparent",
           color: "var(--dim)",
           cursor: "pointer",
-          fontSize: 16,
+          flex: "0 0 auto",
         }}
       >
-        ☰
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M2 4h12M2 8h12M2 12h12"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
+        </svg>
       </button>
       <button
         onClick={openSearch}
@@ -91,7 +98,7 @@ export function TopBar() {
       <button
         onClick={() => setResumeOpen(true)}
         aria-label="View résumé"
-        className="hov-accent-border"
+        className="hov-accent-border btn-icon-m"
         style={{
           display: "inline-flex",
           alignItems: "center",
@@ -110,7 +117,7 @@ export function TopBar() {
         <span aria-hidden="true" style={{ fontFamily: MONO, fontSize: 12, color: "var(--accent)" }}>
           ▤
         </span>
-        Résumé
+        <span className="topbar-label">Résumé</span>
       </button>
       <a
         href="#message"
@@ -118,7 +125,8 @@ export function TopBar() {
           e.preventDefault();
           openChat();
         }}
-        className="hov-bright"
+        aria-label="Send a message"
+        className="hov-bright btn-icon-m"
         style={{
           display: "inline-flex",
           alignItems: "center",
@@ -133,7 +141,19 @@ export function TopBar() {
           boxShadow: "0 6px 16px -6px var(--accent)",
         }}
       >
-        Send a message
+        <span className="topbar-icon-m" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+            <path
+              d="M14.5 1.5 7 9m7.5-7.5L9.8 14.3a.4.4 0 0 1-.74.03L7 9m7.5-7.5L1.7 6.2a.4.4 0 0 0 .03.74L7 9"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+          </svg>
+        </span>
+        <span className="topbar-label">Send a message</span>
       </a>
     </div>
   );

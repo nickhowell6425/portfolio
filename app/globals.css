@@ -274,9 +274,27 @@ input::placeholder {
 
 /* ---------- responsive refinements ---------- */
 
+.topbar-icon-m {
+  display: none;
+}
+
 @media (max-width: 800px) {
   .kbd-hint {
     display: none;
+  }
+  /* Résumé / Send a message collapse to icon-only buttons */
+  .topbar-label {
+    display: none;
+  }
+  .topbar-icon-m {
+    display: inline-flex;
+  }
+  .btn-icon-m {
+    width: 38px;
+    padding: 0 !important;
+    justify-content: center;
+    gap: 0 !important;
+    flex: 0 0 auto;
   }
 }
 
