@@ -1,5 +1,4 @@
 import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Schibsted_Grotesk, Spline_Sans_Mono } from "next/font/google";
 import { Providers } from "@/components/providers/providers";
@@ -111,7 +110,6 @@ export default function RootLayout({
           <WorkspaceShell>{children}</WorkspaceShell>
         </Providers>
         <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
