@@ -176,9 +176,13 @@ jobs:
             // The composite performance score swings wildly on shared CI runners
             // (simulated throttling x slow hardware), so assert the stable metrics
             // that catch real regressions, plus a catastrophe floor on the score.
+            // NOTE: TBT here is lanterns SIMULATED value — it scales with runner
+            // speed (~15ms locally, ~3000ms on shared runners), so its ceiling is a
+            // catastrophe catch only. Tight perf baselines live in the local
+            // audit-runner agent (.claude/agents/audit-runner.md).
             const m = r.audits.metrics.details.items[0];
             assert("CLS", m.cumulativeLayoutShift ?? 0, 0.02);
-            assert("TBT", m.totalBlockingTime ?? 0, 600, (v) => `${Math.round(v)}ms`);
+            assert("TBT (simulated)", m.totalBlockingTime ?? 0, 6000, (v) => `${Math.round(v)}ms`);
             assert("observed LCP", m.observedLargestContentfulPaint ?? 0, 4000, (v) => `${Math.round(v)}ms`);
             const perf = Math.round(r.categories.performance.score * 100);
             const perfOk = perf >= 55;
