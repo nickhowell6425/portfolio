@@ -1,0 +1,27 @@
+# Nicholas Howell — The Workspace
+
+> Portfolio of Nicholas Howell: CTO, founding engineer, and senior full-stack developer
+> (10+ years, multiple multi-million-dollar valuations, 0 abandoned codebases). The site is
+> an interactive workspace — projects in a left rail, live runnable UI components from
+> shipped products in each project, with a Preview/Code flip on every component.
+
+## Who
+
+- CTO and founding engineer at AccountTouch — solely architected and shipped the platform
+  (cross-platform mobile app, serverless backend, web portal).
+- Helped scale a fintech startup from 3 to 20+ people into a multi-million-dollar acquisition.
+- Runs the Pinnacle studio since 2019; embedded with client teams at Good Code.
+- Positioning: masters AI as an accelerator and — the harder half — evaluates, hardens, and
+  scales what it produces. Works greenfield or in existing codebases, solo or embedded in teams.
+- Contact: nickhowell6425@gmail.com (or the in-site message drawer).
+
+## Pages
+
+- /: About — who you'd be working with
+- /home/how-i-work: How an engagement actually looks
+- /home/straight-answers: Honest FAQ
+- /home/off-clock: The human running the agents
+- /paradox/overview: Paradox — storytelling-multiverse product concept (live canvas timeline)
+- /shiftsum/overview: Shiftsum — shift scheduling product, built and acquired in 2023
+- /clients/overview: Selected client builds (booking widget, identity verification, status page)
+- /home/component-library: Every live component from every project, filterable

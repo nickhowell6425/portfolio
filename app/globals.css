@@ -1,26 +1,334 @@
 @import "tailwindcss";
 
+/* ============================================================
+   The Workspace v2 — design tokens (ported 1:1 from the design)
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg0: #0a0d14;
+  --bg1: #121927;
+  --bg2: #0f141f;
+  --surface: #161d2c;
+  --surface2: #1c2435;
+  --border: rgba(151, 173, 214, 0.13);
+  --border2: rgba(151, 173, 214, 0.24);
+  --text: #e8edf7;
+  --dim: #93a1ba;
+  --faint: #5e6b84;
+  --accent: #5b8def;
+  --accent-soft: rgba(91, 141, 239, 0.13);
+  --shadow: 0 16px 44px -14px rgba(2, 6, 16, 0.55), 0 2px 8px rgba(2, 6, 16, 0.35);
+
+  --nav-pos: static;
+  --nav-tx: none;
+  --scrim-d: none;
+  --burger: none;
+  --sbw: 276px;
+
+  --font-stack-sans: var(--font-schibsted), system-ui, sans-serif;
+  --font-stack-mono: var(--font-spline-mono), ui-monospace, monospace;
+  --font-stack-serif: var(--font-cormorant), Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="light"] {
+  --bg0: #11161f;
+  --bg1: #edf0f6;
+  --bg2: #f6f8fc;
+  --surface: #ffffff;
+  --surface2: #eef1f8;
+  --border: rgba(40, 56, 88, 0.12);
+  --border2: rgba(40, 56, 88, 0.22);
+  --text: #1a2130;
+  --dim: #5d6a82;
+  --faint: #94a0b8;
+  --accent: #3d6be0;
+  --accent-soft: rgba(61, 107, 224, 0.1);
+  --shadow: 0 16px 40px -16px rgba(30, 44, 82, 0.18), 0 2px 8px rgba(30, 44, 82, 0.08);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (max-width: 800px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --nav-pos: fixed;
+    --nav-tx: translateX(-105%);
+    --burger: inline-flex;
+    --sbw: 262px;
   }
 }
 
+#wsroot[data-drawer="open"] {
+  --nav-tx: translateX(0);
+  --scrim-d: block;
+}
+
+@theme inline {
+  --font-sans: var(--font-stack-sans);
+  --font-mono: var(--font-stack-mono);
+  --font-serif: var(--font-stack-serif);
+
+  --color-bg0: var(--bg0);
+  --color-bg1: var(--bg1);
+  --color-bg2: var(--bg2);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface2);
+  --color-line: var(--border);
+  --color-line2: var(--border2);
+  --color-ink: var(--text);
+  --color-dim: var(--dim);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+
+  --shadow-panel: var(--shadow);
+}
+
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #0f141f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(91, 141, 239, 0.3);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+input::placeholder {
+  color: var(--faint);
+}
+
+/* ---------- keyframes ---------- */
+
+@keyframes msgIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) translateZ(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes swapIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes itemIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes popIn {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes drawerIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes drawerOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes scrimIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes scrimOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* boot sequence — the shell assembles from depth, once per full load.
+   `main` animates transform only (no opacity) so text paints immediately
+   and LCP isn't gated behind the animation. */
+@keyframes bootNav {
+  from {
+    opacity: 0;
+    transform: translateX(-44px) translateZ(-150px) rotateY(7deg);
+  }
+}
+@keyframes bootMain {
+  from {
+    transform: translateY(28px) translateZ(-190px);
+  }
+}
+
+.boot-nav {
+  animation: bootNav 0.55s cubic-bezier(0.2, 0.8, 0.25, 1) backwards;
+}
+.boot-main {
+  animation: bootMain 0.6s cubic-bezier(0.2, 0.8, 0.25, 1) 0.07s backwards;
+}
+
+/* ---------- navigation choreography ---------- */
+
+/* content items cascade in on every channel visit (remount-driven) */
+.anim-item {
+  animation: msgIn 0.38s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+/* header + content stage swap only when the workspace changes */
+[data-swap="true"].anim-swap,
+[data-swap="true"] .anim-swap {
+  animation: swapIn 0.5s cubic-bezier(0.16, 0.84, 0.28, 1) both 0.06s;
+}
+
+/* sidebar glides in from the rail on workspace switch */
+[data-side-swap="true"].anim-side {
+  animation: sideIn 0.45s cubic-bezier(0.16, 0.84, 0.28, 1) both;
+}
+[data-side-swap="true"] .anim-side-item {
+  animation: itemIn 0.42s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+/* ---------- responsive refinements ---------- */
+
+@media (max-width: 800px) {
+  .kbd-hint {
+    display: none;
+  }
+}
+
+.portrait-figure {
+  height: 300px;
+  margin: 0 40px -1px 0;
+}
+@media (max-width: 700px) {
+  .portrait-figure {
+    height: 200px;
+    margin: 0 14px -1px 0;
+  }
+}
+
+/* ---------- accessibility preferences ---------- */
+
+@media (prefers-contrast: more) {
+  :root {
+    --faint: #8d9ab4;
+    --dim: #b4c0d6;
+  }
+  [data-theme="light"] {
+    --faint: #5d6a82;
+    --dim: #3c4a64;
+  }
+}
+
+/* ---------- hover states (the design's style-hover) ---------- */
+
+.hov-raise:hover {
+  transform: translateY(-2px);
+}
+.hov-accent-border:hover {
+  border-color: var(--accent) !important;
+}
+.hov-accent-border-text:hover {
+  border-color: var(--accent) !important;
+  color: var(--text) !important;
+}
+.hov-bright:hover {
+  filter: brightness(1.08);
+}
+.hov-accent-bg:hover {
+  background: var(--accent-soft) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Workspace — Nicholas Howell's Portfolio
 
-## Getting Started
+A portfolio you open and poke around in, not a page you scroll. The interface borrows the
+grammar of a team workspace: a left rail of projects, a per-project sidebar of pages and
+components, and a content stage where shipped work runs **live** — sign-in flows, dashboards,
+booking widgets — each with a `Preview / Code` flip.
 
-First, run the development server:
+Built from the Claude Design prototype `The Workspace v2.dc.html`, ported pixel-for-pixel to
+Next.js.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack
+
+- **Next.js 16** (App Router, Turbopack) — every content route statically prerendered via an
+  optional catch-all (`app/[[...slug]]`) + `generateStaticParams`
+- **React 19**, server components for prose/content with client islands for everything live
+- **Tailwind CSS v4** for chrome + design tokens as CSS custom properties (dark/light)
+- **next-themes** — system / light / dark cycle from the rail
+- **next/font** — Schibsted Grotesk, Spline Sans Mono, Cormorant Garamond (self-hosted)
+- **zod + Resend** — validated `/api/contact` endpoint behind the message drawer
+
+## Structure
+
+```
+app/
+  [[...slug]]/page.tsx     all workspace routes (/, /paradox/overview, …)
+  api/contact/route.ts     message-drawer endpoint (zod-validated, Resend-backed)
+  layout.tsx               fonts, metadata, providers, shell
+components/
+  shell/                   rail · sidebar · top bar · page chrome · content stage · ambient canvas
+  overlays/                ⌘K search · résumé modal · message drawer · toast
+  content/                 sections · heroes · component card · code view · library grid
+  fragments/               the nine live component miniatures (Paradox, Shiftsum, client builds)
+  providers/               theme · UI orchestration · contact thread · shared fragment state
+hooks/                     reduced-motion, hydration, workspace-transition helpers
+lib/                       typed content model · route/search resolution
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Run it
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+pnpm dev        # http://localhost:3000
+pnpm build && pnpm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contact form delivery
 
-## Learn More
+Without configuration, messages are validated and logged server-side. To deliver them by
+email, copy `.env.example` to `.env.local` and set `RESEND_API_KEY` (plus optionally
+`CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`).
 
-To learn more about Next.js, take a look at the following resources:
+## Notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `⌘K` (or `/`) jumps to any project or component; `Esc` unwinds overlays.
+- Theme follows the visitor's system by default; the rail button cycles system → light → dark.
+- `prefers-reduced-motion` collapses all choreography to instant states.
+- Fragment state is shared and session-persistent: a component keeps its state when you
+  navigate away, and the component library shares state with the per-channel view.
