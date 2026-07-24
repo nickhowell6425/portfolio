@@ -55,7 +55,8 @@ export default async function WorkspacePage({ params }: Props) {
   if (item.type === "demo")
     return <InteractiveDemo item={item} wsName={ws.name} accent={ws.accent} />;
 
-  if (item.type === "comp") return <ComponentCard fid={item.frag} notes={item.paras} />;
+  if (item.type === "comp")
+    return <ComponentCard fid={item.frag} notes={item.paras} framed accent={ws.accent} />;
 
   return (
     <>
