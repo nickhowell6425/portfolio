@@ -63,9 +63,14 @@ export interface Section {
 }
 
 export interface OverviewHero {
-  frag: FragmentId;
+  /** A live fragment mounted in the hero (the default treatment). */
+  frag?: FragmentId;
+  /** OR a static screenshot of the real screen (path under public/). */
+  img?: string;
   kicker: string;
   lead: string;
+  /** Optional call-to-action link — e.g. through to the interactive demo. */
+  cta?: { label: string; href: string };
 }
 
 export interface PageItem {
@@ -84,6 +89,22 @@ export interface CompItem {
   paras: string[];
 }
 
+export interface DemoItem {
+  type: "demo";
+  label: string;
+  desc: string;
+  /**
+   * The real app, embedded edge-to-edge. `src` points at a self-contained
+   * bundle under public/ (served in an iframe — the app owns its viewport).
+   * `frag` mounts a portfolio fragment instead. With neither, the demo
+   * renders a scaffold placeholder.
+   */
+  src?: string;
+  frag?: FragmentId;
+  kicker?: string;
+  lead?: string;
+}
+
 export interface WsLinkItem {
   type: "ws";
   label: string;
@@ -97,7 +118,7 @@ export interface LibraryItem {
   desc: string;
 }
 
-export type SidebarItem = PageItem | CompItem | WsLinkItem | LibraryItem;
+export type SidebarItem = PageItem | CompItem | DemoItem | WsLinkItem | LibraryItem;
 
 export interface SidebarGroup {
   title: string;
@@ -111,7 +132,6 @@ export interface Workspace {
   desc: string;
   status: string;
   accent: string;
-  tags: string[];
   groups: SidebarGroup[];
   items: Record<string, SidebarItem>;
 }
@@ -499,7 +519,6 @@ export const WORKSPACES: Workspace[] = [
     desc: "The person behind the products",
     status: "a living showcase",
     accent: "#5b8def",
-    tags: [],
     groups: [
       { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
       { title: "Library", items: ["go-paradox", "go-shiftsum", "go-clients", "component-library"] },
@@ -665,12 +684,11 @@ export const WORKSPACES: Workspace[] = [
     desc: "A living multiverse of stories",
     status: "concept · 2026",
     accent: "#3edba6",
-    tags: ["Product concept", "Canvas 2D", "Vanilla JS", "7 screens", "Design system"],
     groups: [
-      { title: "Project", items: ["overview"] },
+      { title: "Project", items: ["overview", "demo"] },
       {
         title: "Components",
-        items: ["timeline-view", "reality-ribbon", "branch-cards", "gateway-comp"],
+        items: ["timeline-view", "branch-cards", "gateway-comp"],
       },
       { title: "Library", items: ["component-library"] },
     ],
@@ -680,19 +698,28 @@ export const WORKSPACES: Workspace[] = [
         type: "page",
         desc: "A storytelling app where the timeline is the interface",
         hero: {
-          frag: "multiverse",
-          kicker: "the homepage",
-          lead: "No feed. No thumbnail grid. You land inside a living graph of stories and traverse it — drag, zoom, click a node, enter a reality.",
+          img: "/uploads/paradox-home.jpg",
+          kicker: "the app",
+          lead: "No feed, no thumbnail grid — you land inside a living graph of stories and traverse it: drag, zoom, click a node, enter a reality.",
+          cta: { label: "Open the interactive demo", href: "/paradox/demo" },
         },
         sections: [
           {
             paras: [
               "Paradox is a product concept: collaborative storytelling as a multiverse. Every story is a Sacred Timeline; every “what if” forks it into a branch; every branch is an alternate reality written by its readers.",
               "Seven screens on one design system — homepage, sign-in, explore, timeline, event and branch views, plus the sheet that defines them: emerald is canon, gold is divergence, Cormorant Garamond carries the stories.",
-              "Four of those screens run as miniatures in the left rail. Each one is rebuilt, not screenshotted — flip any of them to Code to read the real thing.",
+              "Two ways to read it: open the interactive demo to move through the app end-to-end, or take the components in the rail one at a time. Each is rebuilt in Paradox's own skin, not screenshotted — flip any of them to Code to read the real thing.",
             ],
           },
         ],
+      },
+      demo: {
+        type: "demo",
+        label: "Interactive demo",
+        desc: "The whole app, running in the browser",
+        kicker: "the app, running",
+        src: "/demos/paradox/02-Marketing/Homepage.html",
+        lead: "The full Paradox concept, live and edge-to-edge — traverse the multiverse, open a timeline, fork a reality.",
       },
       "timeline-view": {
         label: "Timeline View",
@@ -701,15 +728,6 @@ export const WORKSPACES: Workspace[] = [
         desc: "One universe as a flight deck",
         paras: [
           "The Ninth Signal's whole canon on a single spine — eight chapters, branches forking off the gold one where everything changed. Drag to pan, scrub the minimap, click a node, or press tour and let it walk the chapters. The full screen adds zoom and a four-tab inspector; this is the postcard.",
-        ],
-      },
-      "reality-ribbon": {
-        label: "Branch View",
-        type: "comp",
-        frag: "ribbon",
-        desc: "What changed at 02:09",
-        paras: [
-          "A branch in one strip: four chapters of shared canon, a gold diamond where this reality answered differently, then five chapters it wrote for itself. The split panel underneath states the divergence both ways — in canon, and in this reality. Click any node on the ribbon.",
         ],
       },
       "branch-cards": {
@@ -740,7 +758,6 @@ export const WORKSPACES: Workspace[] = [
     desc: "Shift scheduling for hourly teams",
     status: "acquired 2023",
     accent: "#e3a84e",
-    tags: ["React", "Ruby on Rails", "Postgres", "Redis", "Twilio"],
     groups: [
       { title: "Project", items: ["overview"] },
       { title: "Components", items: ["onboarding", "notifications", "admin"] },
@@ -802,7 +819,6 @@ export const WORKSPACES: Workspace[] = [
     desc: "Selected engagements, 2–12 weeks",
     status: "3 of 9 shown",
     accent: "#a98bf5",
-    tags: ["Next.js", "TypeScript", "Stripe", "Vendor APIs", "Webhooks"],
     groups: [
       { title: "Project", items: ["overview"] },
       { title: "Components", items: ["booking-widget", "kyc-flow", "status-page"] },
