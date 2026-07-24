@@ -6,6 +6,7 @@ import {
   MultiverseTimeline,
   RealityRibbon,
   SignInGateway,
+  StoryReader,
   TimelineSpine,
 } from "./paradox";
 import { NotificationPrefs, Onboarding, RosterAdmin } from "./shiftsum";
@@ -17,6 +18,7 @@ export const FRAGMENT_COMPONENTS: Record<FragmentId, ComponentType> = {
   ribbon: RealityRibbon,
   gateway: SignInGateway,
   divergence: BranchCards,
+  reader: StoryReader,
   onboarding: Onboarding,
   notifications: NotificationPrefs,
   admin: RosterAdmin,

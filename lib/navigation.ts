@@ -2,12 +2,13 @@ import {
   WORKSPACES,
   type CompItem,
   type DemoItem,
+  type DesignSystemItem,
   type LibraryItem,
   type PageItem,
   type Workspace,
 } from "./content";
 
-export type RoutableItem = PageItem | CompItem | DemoItem | LibraryItem;
+export type RoutableItem = PageItem | CompItem | DemoItem | LibraryItem | DesignSystemItem;
 
 export interface Resolved {
   ws: Workspace;
@@ -84,14 +85,17 @@ export function searchItems(): SearchEntry[] {
         if (it.type === "ws") continue;
         if (it.type === "library" && w.id !== "home") continue;
         out.push({
-          icon: it.type === "page" ? "#" : it.type === "demo" ? "▶" : "▣",
+          icon:
+            it.type === "page" ? "#" : it.type === "demo" ? "▶" : it.type === "system" ? "❖" : "▣",
           label: it.label,
           sub:
             it.type === "comp"
               ? `${w.name} · live component`
               : it.type === "demo"
                 ? `${w.name} · interactive demo`
-                : w.name,
+                : it.type === "system"
+                  ? `${w.name} · design system`
+                  : w.name,
           ws: w.id,
           ch: id,
         });

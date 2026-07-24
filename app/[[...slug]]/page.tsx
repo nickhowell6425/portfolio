@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { ComponentCard } from "@/components/content/component-card";
+import { ParadoxDesignSystem } from "@/components/content/design-system";
 import { InteractiveDemo } from "@/components/content/interactive-demo";
 import { LibraryGrid } from "@/components/content/library-grid";
 import { OverviewHero } from "@/components/content/overview-hero";
@@ -48,6 +49,8 @@ export default async function WorkspacePage({ params }: Props) {
   const { ws, itemId, item } = resolved;
 
   if (item.type === "library") return <LibraryGrid />;
+
+  if (item.type === "system") return <ParadoxDesignSystem />;
 
   if (item.type === "demo")
     return <InteractiveDemo item={item} wsName={ws.name} accent={ws.accent} />;

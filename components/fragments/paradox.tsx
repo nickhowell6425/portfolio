@@ -3458,3 +3458,547 @@ export function BranchCards() {
     </PCard>
   );
 }
+
+// ============================================================
+// 6. Story reader — a chapter of the canon, read like a repo README
+// ============================================================
+
+interface RdFork {
+  title: string;
+  diverge: string;
+  hot?: boolean;
+}
+
+interface RdChapter {
+  ch: string;
+  slug: string;
+  title: string;
+  date: string;
+  live?: boolean;
+  pivotal?: boolean;
+  logline: string;
+  content: string[];
+  pull: string;
+  forks: RdFork[];
+}
+
+// The Ninth Signal, Chapters I–VIII — the canon record, verbatim from the
+// Event View's hand-authored view-model. Chapter V is the flagship.
+const RD_CHAPTERS: RdChapter[] = [
+  {
+    ch: "Chapter I",
+    slug: "chapter-i.reality",
+    title: "The First Silence",
+    date: "Mar 2024",
+    logline: "Station Kepler-9 goes dark mid-transmission. No wreckage, no signal, no reply.",
+    content: [
+      "Kepler-9 had listened to the same patch of dark for forty years without once raising its voice. At 03:11 station time, mid-transmission, it stopped — not cut off, not destroyed, simply finished, the way a sentence ends when the speaker decides they have said enough.",
+      "The relays found no wreckage and no distress call. What they found, in the last nine seconds of telemetry, was a silence with a shape to it: a quiet that arrived rather than fell. For three hundred years humanity had assumed the universe wasn't answering. Kepler-9 was the first to suspect it had simply been waiting to be sure we were listening.",
+    ],
+    pull: "The quiet had never been empty. It had been listening back.",
+    forks: [
+      { title: "Kepler-9 Answered First", diverge: "The station replies instead of going dark." },
+      {
+        title: "No One Was Listening",
+        diverge: "The first word arrives to an empty, unmanned array.",
+      },
+    ],
+  },
+  {
+    ch: "Chapter II",
+    slug: "chapter-ii.reality",
+    title: "The Signal Arrives",
+    date: "Apr 2024",
+    logline:
+      "The first of nine transmissions resolves out of the background noise. It is not random.",
+    content: [
+      "It came in on a frequency no one was watching, riding under the hiss of dead stars. At first the analysts logged it as instrument drift. Then the pattern repeated — not a pulse, but a structure, the unmistakable architecture of something built to be understood.",
+      "Eight more would follow. But the first arrival is the one every reality remembers, because it was the moment humanity stopped asking whether we were alone and started asking the far worse question: what does it want.",
+    ],
+    pull: "We stopped asking if we were alone. We started asking what it wanted.",
+    forks: [
+      {
+        title: "The Signal Was Never Heard",
+        diverge: "The transmission passes through an empty sky.",
+      },
+      {
+        title: "It Arrived Everywhere At Once",
+        diverge: "Every receiver on Earth hears it in the same instant.",
+        hot: true,
+      },
+    ],
+  },
+  {
+    ch: "Chapter III",
+    slug: "chapter-iii.reality",
+    title: "The Translation",
+    date: "Jul 2024",
+    logline:
+      "Linguists break the code. Buried inside the welcome is a warning no one wants to read aloud.",
+    content: [
+      "It took Dr. Mira Vane nine days, which she would later call eight too many. The message was not in any language, but it was in something — a grammar of intervals, a syntax of silence and tone that resolved, once seen, into nine plain words.",
+      "The first eight were a greeting. The ninth was a warning. Vane read it twice, then asked for the room to be cleared before she read it a third time. What she found there is the seam every branch in this universe eventually pulls at.",
+    ],
+    pull: "The first eight words were a greeting. The ninth was a warning.",
+    forks: [
+      {
+        title: "The Code Was a Warning",
+        diverge: "The message was a quarantine notice, not an invitation.",
+        hot: true,
+      },
+      {
+        title: "Vane Read It Wrong",
+        diverge: "We act on nine words that never meant what we thought.",
+      },
+    ],
+  },
+  {
+    ch: "Chapter IV",
+    slug: "chapter-iv.reality",
+    title: "Eight Answered",
+    date: "Oct 2024",
+    logline: "Humanity replies eight times across eight years. Eight times, the dark stays silent.",
+    content: [
+      "We answered the only way we knew how: carefully, then desperately. Orrin Thorne's relay carried all eight replies into the dark, each one a little louder, a little more human, a little more like begging.",
+      "Eight times we spoke. Eight times nothing came back. By the eighth, most of the project had stopped believing anyone was out there at all — which is exactly the moment the universe chose to prove them wrong.",
+    ],
+    pull: "Eight times we spoke into the void. Eight times, nothing.",
+    forks: [
+      {
+        title: "The Ninth Was Never Sent",
+        diverge: "Humanity stops at eight replies — the reply still comes.",
+        hot: true,
+      },
+      { title: "We Stopped at Three", diverge: "The project is shut down after the third reply." },
+    ],
+  },
+  {
+    ch: "Chapter V",
+    slug: "chapter-v.reality",
+    title: "The Ninth Signal",
+    date: "Feb 2025",
+    pivotal: true,
+    logline: "For the first time, the void speaks before we do. The ninth transmission is a reply.",
+    content: [
+      "For three hundred years the listening stations heard nothing — only the long, patient static of a universe that did not answer. Eight times humanity had spoken into that dark, and eight times the dark had let the words fall through it without a ripple. By the winter of the ninth year, the project was a formality, a few funded crews keeping the arrays warm out of habit more than hope.",
+      "Then, at 02:09 on a Tuesday, every receiver on the network lit at once. There was no preamble, no slow resolve out of the noise. The transmission was simply there, complete, the way a held breath is suddenly a word. And it was not a first contact. It was a reply — formatted in our own grammar, carrying our own eight messages folded inside it, returned to us with a ninth response appended at the end.",
+      "Commander Elias was the officer of the watch. Protocol was unambiguous: log it, isolate it, wait for committee. He held the channel open instead. For nine minutes he kept the line live against every standing order, because someone, he said later, had to be the one who listened first — had to be willing to still be there when the void decided to keep talking.",
+      "Whatever sent the ninth signal has never agreed to a single shape. Some realities call it a civilization, some a machine, some a god, some a mistake. The only thing every branch of this universe holds in common is the timestamp: 02:09, the moment humanity stopped being the one who spoke into the dark, and became the one who was answered.",
+    ],
+    pull: "The ninth time, the void spoke first — and every reality after is a different answer to the same question.",
+    forks: [
+      { title: "The Signal Was Answered", diverge: "Humanity chose to respond.", hot: true },
+      {
+        title: "The Caller Spoke a Name",
+        diverge: "The transmission wasn't a message — it was a name. Ours.",
+        hot: true,
+      },
+      {
+        title: "The Tenth Was Already Sent",
+        diverge: "A reply means we already sent a tenth, long ago.",
+        hot: true,
+      },
+    ],
+  },
+  {
+    ch: "Chapter VI",
+    slug: "chapter-vi.reality",
+    title: "The First Listener",
+    date: "Jun 2025",
+    logline:
+      "Commander Elias holds the channel open against every order. Someone has to listen first.",
+    content: [
+      "The committee convened to court-martial him and stayed to ask him what he heard. Elias had held the line for nine minutes — long enough to receive what came after the reply, the part of the ninth signal that protocol would have cut him off before reaching.",
+      "He never repeated it in full. But he came out of that room the First Listener, the man every later crew measured themselves against, and the single point of divergence for a thousand realities that turn on one question: what would you have done with the channel open in your hands.",
+    ],
+    pull: "Someone had to be willing to still be there when the void decided to keep talking.",
+    forks: [
+      { title: "Elias Never Replied", diverge: "The Commander closes the channel for good." },
+      {
+        title: "He Heard the Tenth",
+        diverge: "A tenth signal arrives, meant for Elias alone.",
+        hot: true,
+      },
+    ],
+  },
+  {
+    ch: "Chapter VII",
+    slug: "chapter-vii.reality",
+    title: "The Long Quiet",
+    date: "Nov 2025",
+    logline:
+      "The transmissions stop. The stations stay lit. Everyone waits for a tenth that may never come.",
+    content: [
+      "After the ninth, nothing. The arrays stayed warm, the crews stayed on shift, and the dark went back to being dark — but no one believed it anymore. A silence you have heard speak once is a different silence forever after.",
+      "Sister Aria's Choir formed in this gap, certain the quiet was not absence but anticipation. They may be wrong. In at least one reality, they are exactly right, and the Long Quiet is simply the held breath before the tenth.",
+    ],
+    pull: "A silence you have heard speak once is a different silence forever after.",
+    forks: [
+      { title: "The Choir Was Right", diverge: "The quiet ends exactly when Aria foretold." },
+    ],
+  },
+  {
+    ch: "Chapter VIII",
+    slug: "chapter-viii.live",
+    title: "What Answers Back",
+    date: "Mar 2026",
+    live: true,
+    logline:
+      "The newest chapter. The thing on the other end of the signal is no longer content to wait.",
+    content: [
+      "The tenth signal does not arrive. It approaches. For the first time the source is moving, and the network can watch it close — slow, deliberate, patient in a way that is somehow worse than silence ever was.",
+      "This is the live edge of the universe, the chapter still being written. Every reader who reaches it is standing where the canon runs out and the branching begins. What answers back has not decided what it is yet. Neither, quite, have we.",
+    ],
+    pull: "This is where the canon runs out and the branching begins.",
+    forks: [
+      {
+        title: "It Was Always Inside the Array",
+        diverge: "The source surfaces from inside our own network.",
+        hot: true,
+      },
+    ],
+  },
+];
+
+export function StoryReader() {
+  const { showToast } = useUI();
+  const [st, set] = useFragState<{ i: number }>("reader", { i: 4 });
+  const i = Math.max(0, Math.min(RD_CHAPTERS.length - 1, st.i));
+  const c = RD_CHAPTERS[i];
+  const prev = i > 0 ? RD_CHAPTERS[i - 1] : null;
+  const next = i < RD_CHAPTERS.length - 1 ? RD_CHAPTERS[i + 1] : null;
+  const [firstPara, ...restParas] = c.content;
+
+  const badge = c.live ? { label: "live edge", color: PX.GOLD } : { label: "canon", color: PX.A };
+
+  const walkBtn = (dir: "prev" | "next", ch: RdChapter | null) => (
+    <button
+      onClick={() => ch && set({ i: dir === "prev" ? i - 1 : i + 1 })}
+      disabled={!ch}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        maxWidth: "48%",
+        textAlign: dir === "prev" ? "left" : "right",
+        alignItems: dir === "prev" ? "flex-start" : "flex-end",
+        border: `1px solid ${ch ? PX.LINE : "transparent"}`,
+        borderRadius: 7,
+        padding: "7px 11px",
+        background: "none",
+        cursor: ch ? "pointer" : "default",
+        opacity: ch ? 1 : 0.25,
+        color: PX.SOFT,
+        font: "inherit",
+      }}
+    >
+      <span
+        style={{
+          fontFamily: MONO,
+          fontSize: 8.5,
+          letterSpacing: ".1em",
+          textTransform: "uppercase",
+          color: PX.FAINT,
+        }}
+      >
+        {dir === "prev" ? "← earlier" : "later →"}
+      </span>
+      <span
+        style={{
+          fontFamily: SERIF,
+          fontSize: 13,
+          lineHeight: 1.1,
+          color: ch ? PX.SOFT : PX.FAINT,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          maxWidth: "100%",
+        }}
+      >
+        {ch ? ch.title : "—"}
+      </span>
+    </button>
+  );
+
+  return (
+    <PCard w={560} sub="read · the-ninth-signal">
+      {/* repo breadcrumb */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          padding: "10px 16px",
+          borderBottom: `1px solid ${PX.LINE_SOFT}`,
+          fontFamily: MONO,
+          fontSize: 11,
+        }}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width={13}
+          height={13}
+          fill="none"
+          stroke={PX.JADE}
+          strokeWidth={1.7}
+          aria-hidden="true"
+          style={{ flex: "0 0 auto" }}
+        >
+          <circle cx="6" cy="5" r="2.2" />
+          <circle cx="18" cy="6" r="2.2" />
+          <circle cx="6" cy="19" r="2.2" />
+          <path d="M6 7.2v9.6M6 12h6a6 6 0 0 0 6-6" />
+        </svg>
+        <span style={{ color: PX.DIM }}>the-ninth-signal</span>
+        <span style={{ color: PX.FAINT }}>/</span>
+        <span style={{ color: PX.SOFT }}>{c.slug}</span>
+        <span style={{ flex: 1 }} />
+        <span
+          style={{
+            fontSize: 8.5,
+            letterSpacing: ".14em",
+            textTransform: "uppercase",
+            color: badge.color,
+            border: `1px solid color-mix(in srgb, ${badge.color} 40%, transparent)`,
+            background: `color-mix(in srgb, ${badge.color} 8%, transparent)`,
+            borderRadius: 100,
+            padding: "3px 9px",
+            flex: "0 0 auto",
+          }}
+        >
+          {badge.label}
+        </span>
+      </div>
+
+      {/* chapter header */}
+      <div style={{ padding: "15px 18px 2px" }}>
+        <div
+          style={{
+            fontFamily: MONO,
+            fontSize: 9,
+            letterSpacing: ".18em",
+            textTransform: "uppercase",
+            color: c.pivotal ? PX.GOLD : PX.JADE,
+          }}
+        >
+          {c.ch} · {c.date}
+          {c.pivotal ? " · the nexus" : ""}
+        </div>
+        <div style={{ fontFamily: SERIF, fontSize: 27, lineHeight: 1.04, margin: "6px 0 4px" }}>
+          {c.title}
+        </div>
+        <div
+          style={{
+            fontFamily: SERIF,
+            fontStyle: "italic",
+            fontSize: 14,
+            lineHeight: 1.45,
+            color: PX.JADE,
+            maxWidth: 460,
+            textWrap: "pretty",
+          }}
+        >
+          {c.logline}
+        </div>
+      </div>
+
+      {/* the canon record — scrolls inside a fixed reading pane */}
+      <div
+        key={c.slug}
+        style={{
+          margin: "12px 14px 0",
+          maxHeight: 288,
+          overflowY: "auto",
+          border: `1px solid ${PX.LINE_SOFT}`,
+          borderRadius: 8,
+          background: "oklch(0.078 0.014 158 / 0.5)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "9px 15px",
+            borderBottom: `1px solid ${PX.LINE_SOFT}`,
+            fontFamily: MONO,
+            fontSize: 9.5,
+            color: PX.FAINT,
+            position: "sticky",
+            top: 0,
+            background: "oklch(0.085 0.015 158 / 0.96)",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          <span style={{ color: PX.JADE }}>◆</span>
+          the-ninth-signal.canon
+          <span style={{ flex: 1 }} />
+          <span>canonical record</span>
+        </div>
+        <div style={{ padding: "16px 18px 18px" }}>
+          <p
+            style={{
+              margin: 0,
+              fontFamily: SERIF,
+              fontSize: 15.5,
+              lineHeight: 1.7,
+              color: PX.SOFT,
+              textWrap: "pretty",
+            }}
+          >
+            <span
+              style={{
+                float: "left",
+                fontFamily: SERIF,
+                fontSize: 46,
+                lineHeight: 0.82,
+                color: PX.A,
+                fontWeight: 500,
+                margin: "3px 9px 0 0",
+              }}
+            >
+              {firstPara.charAt(0)}
+            </span>
+            {firstPara.slice(1)}
+          </p>
+          {restParas.map((p, k) => (
+            <p
+              key={k}
+              style={{
+                margin: "13px 0 0",
+                fontFamily: SERIF,
+                fontSize: 15.5,
+                lineHeight: 1.7,
+                color: PX.SOFT,
+                textWrap: "pretty",
+              }}
+            >
+              {p}
+            </p>
+          ))}
+          <blockquote
+            style={{
+              margin: "18px 0 2px",
+              padding: "4px 0 4px 16px",
+              borderLeft: `2px solid ${PX.A}`,
+              boxShadow: `-1px 0 12px -6px ${PX.A}`,
+              fontFamily: SERIF,
+              fontStyle: "italic",
+              fontSize: 17,
+              lineHeight: 1.4,
+              color: PX.SOFT,
+              textWrap: "balance",
+            }}
+          >
+            {c.pull}
+          </blockquote>
+        </div>
+      </div>
+
+      {/* realities that fork here */}
+      <div style={{ padding: "13px 16px 2px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 7,
+            fontFamily: MONO,
+            fontSize: 8.5,
+            letterSpacing: ".16em",
+            textTransform: "uppercase",
+            color: PX.GOLD,
+            marginBottom: 9,
+          }}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: 2,
+              transform: "rotate(45deg)",
+              background: PX.GOLD,
+              boxShadow: `0 0 8px ${PX.GOLD}`,
+            }}
+          />
+          Realities that fork here
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 }}>
+          {c.forks.slice(0, 2).map((f) => (
+            <button
+              key={f.title}
+              onClick={() =>
+                showToast(
+                  "In the full app, opening a fork drops you into that reality — its own timeline, from this Event forward.",
+                )
+              }
+              style={{
+                textAlign: "left",
+                padding: "10px 11px",
+                borderRadius: 6,
+                border: `1px solid ${f.hot ? "oklch(0.86 0.12 86 / 0.32)" : PX.LINE}`,
+                background: f.hot ? "oklch(0.86 0.12 86 / 0.06)" : PX.PANEL,
+                cursor: "pointer",
+                color: PX.SOFT,
+                font: "inherit",
+              }}
+            >
+              {f.hot ? (
+                <span
+                  style={{
+                    display: "block",
+                    fontFamily: MONO,
+                    fontSize: 7,
+                    letterSpacing: ".14em",
+                    textTransform: "uppercase",
+                    color: PX.GOLD,
+                    marginBottom: 4,
+                  }}
+                >
+                  Trending
+                </span>
+              ) : null}
+              <span
+                style={{
+                  display: "block",
+                  fontFamily: SERIF,
+                  fontSize: 14.5,
+                  lineHeight: 1.1,
+                  marginBottom: 5,
+                }}
+              >
+                {f.title}
+              </span>
+              <span
+                style={{
+                  display: "block",
+                  fontFamily: SERIF,
+                  fontStyle: "italic",
+                  fontSize: 11.5,
+                  lineHeight: 1.35,
+                  color: PX.DIM,
+                  textWrap: "pretty",
+                }}
+              >
+                {f.diverge}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* walk the chronology */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "stretch",
+          gap: 10,
+          padding: "12px 16px 15px",
+        }}
+      >
+        {walkBtn("prev", prev)}
+        <span style={{ flex: 1 }} />
+        {walkBtn("next", next)}
+      </div>
+    </PCard>
+  );
+}

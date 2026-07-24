@@ -31,6 +31,7 @@ export type FragmentId =
   | "ribbon"
   | "gateway"
   | "divergence"
+  | "reader"
   | "onboarding"
   | "notifications"
   | "admin"
@@ -118,7 +119,20 @@ export interface LibraryItem {
   desc: string;
 }
 
-export type SidebarItem = PageItem | CompItem | DemoItem | WsLinkItem | LibraryItem;
+/** A project's design system — the atoms every screen is built from. */
+export interface DesignSystemItem {
+  type: "system";
+  label: string;
+  desc: string;
+}
+
+export type SidebarItem =
+  | PageItem
+  | CompItem
+  | DemoItem
+  | WsLinkItem
+  | LibraryItem
+  | DesignSystemItem;
 
 export interface SidebarGroup {
   title: string;
@@ -311,6 +325,34 @@ const sorters = {
   popular: (a, b) => b.stats.readers - a.stats.readers,
   newest: (a, b) => b.forkedAt - a.forkedAt,
   active: (a, b) => b.stats.contributors - a.stats.contributors,
+}`,
+    },
+  },
+  reader: {
+    title: "Story reader",
+    kind: "Discovery",
+    product: "Paradox",
+    year: "2026",
+    prod: false,
+    accent: "#3edba6",
+    code: {
+      file: "EventRead.tsx",
+      lang: "tsx",
+      src: `// A story is a repo; a chapter is its README. You read the canon,
+// then you see what forked from it — reading and authoring are one screen.
+export function EventRead({ id }: { id: EventId }) {
+  const ev = canon.byId(id)
+  const { prev, next } = canon.neighbours(id)   // prev/next walks the chronology
+
+  return (
+    <Read ref={\`the-ninth-signal/\${ev.slug}\`} status={ev.status}>
+      <Chapter kicker={ev.chapter} title={ev.title} logline={ev.logline} />
+      <Readme>{ev.content}</Readme>          {/* Cormorant, drop-capped */}
+      <PullQuote>{ev.pull}</PullQuote>       {/* emerald-railed, load-bearing */}
+      <ForksHere branches={ev.branches} />   {/* every fork answers "what changed?" */}
+      <Walk prev={prev} next={next} />
+    </Read>
+  )
 }`,
     },
   },
@@ -540,7 +582,7 @@ export const WORKSPACES: Workspace[] = [
             paras: [
               `${PH.YEARS}+ years building. ${PH.STATUS_LINE}. As CTO and founding engineer at AccountTouch I solely architected and shipped the whole platform — a cross-platform mobile app, a serverless backend, and a web portal, all Dockerized and in production.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
-              "The left rail is real work. The components inside are live — click through any of them, then flip from Preview to Code to read how it's built.",
+              "The left rail is real work. The components inside are live — click through any of them and they respond, the same as they do in the product.",
             ],
           },
           {
@@ -688,9 +730,9 @@ export const WORKSPACES: Workspace[] = [
       { title: "Project", items: ["overview", "demo"] },
       {
         title: "Components",
-        items: ["timeline-view", "branch-cards", "gateway-comp"],
+        items: ["timeline-view", "story-reader", "gateway-comp"],
       },
-      { title: "Library", items: ["component-library"] },
+      { title: "Library", items: ["design-system"] },
     ],
     items: {
       overview: {
@@ -707,8 +749,8 @@ export const WORKSPACES: Workspace[] = [
           {
             paras: [
               "Paradox is a product concept: collaborative storytelling as a multiverse. Every story is a Sacred Timeline; every “what if” forks it into a branch; every branch is an alternate reality written by its readers.",
-              "Seven screens on one design system — homepage, sign-in, explore, timeline, event and branch views, plus the sheet that defines them: emerald is canon, gold is divergence, Cormorant Garamond carries the stories.",
-              "Two ways to read it: open the interactive demo to move through the app end-to-end, or take the components in the rail one at a time. Each is rebuilt in Paradox's own skin, not screenshotted — flip any of them to Code to read the real thing.",
+              "Seven screens on one design system — homepage, sign-in, explore, timeline, and the event and branch views — all drawn from a single sheet: emerald is canon, gold is divergence, Cormorant Garamond carries the stories.",
+              "Two ways in: open the interactive demo to move through the whole app, or take the components one at a time — the timeline viewer, the story reader, the sign-in flow. Each is rebuilt live in Paradox's own skin, not screenshotted, and the Design system below is the atoms they're all built from.",
             ],
           },
         ],
@@ -722,7 +764,7 @@ export const WORKSPACES: Workspace[] = [
         lead: "The full Paradox concept, live and edge-to-edge — traverse the multiverse, open a timeline, fork a reality.",
       },
       "timeline-view": {
-        label: "Timeline View",
+        label: "Timeline viewer",
         type: "comp",
         frag: "spine",
         desc: "One universe as a flight deck",
@@ -730,17 +772,17 @@ export const WORKSPACES: Workspace[] = [
           "The Ninth Signal's whole canon on a single spine — eight chapters, branches forking off the gold one where everything changed. Drag to pan, scrub the minimap, click a node, or press tour and let it walk the chapters. The full screen adds zoom and a four-tab inspector; this is the postcard.",
         ],
       },
-      "branch-cards": {
-        label: "Branch cards",
+      "story-reader": {
+        label: "Story reader",
         type: "comp",
-        frag: "divergence",
-        desc: "Every fork answers “what changed?”",
+        frag: "reader",
+        desc: "Read the canon like a repo",
         paras: [
-          "Six realities fork from Chapter V, and every card leads with its divergence — a one-sentence answer to what changed, never optional in this design. Sorting is live, and the trending tags are the ones the data says are hot, not the layout.",
+          "A chapter of The Ninth Signal, read the way you'd read a repo's README — a story slug up top, the canon record below, and the realities that forked from it underneath. Walk the chronology with the chapter controls; every fork still answers the one required question: what changed?",
         ],
       },
       "gateway-comp": {
-        label: "Sign-in gateway",
+        label: "Sign-in & onboarding",
         type: "comp",
         frag: "gateway",
         desc: "Guest-first, passwords never",
@@ -748,7 +790,11 @@ export const WORKSPACES: Workspace[] = [
           "Try it: any email works, the magic link can be “opened” right here, and you get a keeper name with a generated sigil instead of a profile form. Note what's missing — a password field, and any demand to sign up before you've seen the multiverse.",
         ],
       },
-      "component-library": LIBRARY,
+      "design-system": {
+        label: "Design system",
+        type: "system",
+        desc: "The atoms every screen is built from — color, type, controls",
+      },
     },
   },
   {
@@ -777,7 +823,7 @@ export const WORKSPACES: Workspace[] = [
           {
             paras: [
               "Shiftsum scheduled shifts for restaurants and clinics — 280 teams at peak. Built it with one co-founder, sold it to a workforce-management company in 2023.",
-              "The components in the left rail are from the version that got acquired. Flip any of them to Code to read the real implementation.",
+              "The components in the left rail are from the version that got acquired — live, not screenshots. Click through any of them.",
             ],
           },
         ],
@@ -838,7 +884,7 @@ export const WORKSPACES: Workspace[] = [
           {
             paras: [
               "A few pieces from client work. Different products, different industries — same job: make the right thing, make it hold up, hand it over clean.",
-              "Names are blurred where contracts say so. The numbers and the decisions are real. Open any component on the left, then flip it to Code to see how it's built.",
+              "Names are blurred where contracts say so. The numbers and the decisions are real. Open any component on the left — they're live, click through them.",
             ],
           },
         ],

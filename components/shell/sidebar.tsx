@@ -82,9 +82,21 @@ export function Sidebar() {
               const it = W.items[id];
               const active = id === currentItem;
               const target = it.type === "ws" ? workspaceById(it.ws) : null;
-              const itemAccent = target ? target.accent : it.type === "library" ? W.accent : null;
+              const itemAccent = target
+                ? target.accent
+                : it.type === "library" || it.type === "system"
+                  ? W.accent
+                  : null;
               const icon =
-                it.type === "page" ? "#" : it.type === "ws" ? "→" : it.type === "demo" ? "▶" : "▣";
+                it.type === "page"
+                  ? "#"
+                  : it.type === "ws"
+                    ? "→"
+                    : it.type === "demo"
+                      ? "▶"
+                      : it.type === "system"
+                        ? "❖"
+                        : "▣";
               const style: React.CSSProperties = {
                 display: "flex",
                 width: "100%",
