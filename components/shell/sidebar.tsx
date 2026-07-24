@@ -59,27 +59,6 @@ export function Sidebar() {
         >
           {W.status}
         </div>
-        {W.tags.length ? (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 10 }}>
-            {W.tags.map((t) => (
-              <span
-                key={t}
-                style={{
-                  fontFamily: MONO,
-                  fontSize: 10,
-                  fontWeight: 500,
-                  color: "var(--dim)",
-                  border: "1px solid var(--border2)",
-                  borderRadius: 6,
-                  padding: "2px 7px",
-                  background: "var(--surface)",
-                }}
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-        ) : null}
       </div>
       <div style={{ flex: 1, overflowY: "auto", padding: "10px 8px 14px" }}>
         {W.groups.map((g) => (
@@ -104,7 +83,8 @@ export function Sidebar() {
               const active = id === currentItem;
               const target = it.type === "ws" ? workspaceById(it.ws) : null;
               const itemAccent = target ? target.accent : it.type === "library" ? W.accent : null;
-              const icon = it.type === "page" ? "#" : it.type === "ws" ? "→" : "▣";
+              const icon =
+                it.type === "page" ? "#" : it.type === "ws" ? "→" : it.type === "demo" ? "▶" : "▣";
               const style: React.CSSProperties = {
                 display: "flex",
                 width: "100%",

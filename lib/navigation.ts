@@ -1,12 +1,13 @@
 import {
   WORKSPACES,
   type CompItem,
+  type DemoItem,
   type LibraryItem,
   type PageItem,
   type Workspace,
 } from "./content";
 
-export type RoutableItem = PageItem | CompItem | LibraryItem;
+export type RoutableItem = PageItem | CompItem | DemoItem | LibraryItem;
 
 export interface Resolved {
   ws: Workspace;
@@ -83,9 +84,14 @@ export function searchItems(): SearchEntry[] {
         if (it.type === "ws") continue;
         if (it.type === "library" && w.id !== "home") continue;
         out.push({
-          icon: it.type === "page" ? "#" : "▣",
+          icon: it.type === "page" ? "#" : it.type === "demo" ? "▶" : "▣",
           label: it.label,
-          sub: it.type === "comp" ? `${w.name} · live component` : w.name,
+          sub:
+            it.type === "comp"
+              ? `${w.name} · live component`
+              : it.type === "demo"
+                ? `${w.name} · interactive demo`
+                : w.name,
           ws: w.id,
           ch: id,
         });

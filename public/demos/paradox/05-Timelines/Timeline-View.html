@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paradox — The Ninth Signal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../_shared/tlv2.css" />
+</head>
+<body>
+  <!-- the living timeline (full viewport, behind everything) -->
+  <canvas id="spine"></canvas>
+  <div id="ambient"></div>
+
+  <!-- ============================ top bar ============================ -->
+  <nav class="topbar">
+    <div class="brand" id="brand" title="Home">
+      <span class="glyph"></span>
+      <span class="word">PARADOX</span>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="search" id="searchLauncher">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="topSearch" type="text" placeholder="Search the multiverse…" autocomplete="off" readonly />
+      <kbd class="search-kbd">⌘K</kbd>
+    </div>
+    <div class="navlinks">
+      <button class="navbtn" id="exploreBtn">Explore</button>
+      <button class="navbtn" id="createBtn">Create</button>
+      <div class="account" id="account">
+        <button class="acct-trigger" id="acctTrigger" aria-haspopup="true" aria-expanded="false">
+          <span class="acct-av" id="acctAv"></span>
+          <span class="acct-name">strandkeeper</span>
+          <span class="acct-caret">▾</span>
+        </button>
+        <div class="acct-menu" id="acctMenu" role="menu">
+          <div class="acct-head">
+            <div class="av" id="acctMenuAv"></div>
+            <div class="who">
+              <div class="nm">strandkeeper_4F2A</div>
+              <div class="kp">Keeper #19,204</div>
+            </div>
+          </div>
+          <div class="acct-list">
+            <button class="acct-item" data-act="profile"><span class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3-6 7-6s7 2.4 7 6"/></svg></span>Your profile</button>
+            <button class="acct-item" data-act="branches"><span class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="6" cy="5" r="2.2"/><circle cx="18" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><path d="M6 7.2v9.6M6 12h7a5 5 0 0 0 5-5"/></svg></span>Your branches</button>
+            <button class="acct-item" data-act="saved"><span class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 4h12v16l-6-4-6 4z"/></svg></span>Saved realities</button>
+            <div class="acct-sep"></div>
+            <button class="acct-item signout" data-act="signout"><span class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4"/><path d="M10 12H3m0 0 3-3m-3 3 3 3"/></svg></span>Sign out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================ floating instruments ============================ -->
+  <div class="stage">
+
+    <!-- inspector — the control panel: tabs → list → detail -->
+    <aside class="inspector fade-up" id="inspector">
+      <div class="insp-tabs" id="inspTabs">
+        <button class="itab on" data-mode="overview">Overview</button>
+        <button class="itab" data-mode="events">Canon</button>
+        <button class="itab" data-mode="branches">Branches</button>
+        <button class="itab" data-mode="variants">Variants</button>
+      </div>
+      <div class="insp-back" id="inspBack">
+        <button class="ih-back" id="inspBackBtn"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>All</button>
+        <span class="ih-k" id="inspKicker">Branches</span>
+      </div>
+      <div class="insp-meta" id="inspMeta">
+        <span class="insp-sub" id="inspSub"></span>
+        <span class="ih-count" id="inspCount"></span>
+      </div>
+      <div class="insp-search" id="inspSearchWrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="inspSearch" type="text" placeholder="Filter…" autocomplete="off" />
+      </div>
+      <div class="insp-body" id="inspBody"></div>
+    </aside>
+
+    <!-- legend -->
+    <div class="legend fade-up">
+      <span class="li"><span class="dot ev"></span>Event</span>
+      <span class="li"><span class="dot pv"></span>Divergence</span>
+      <span class="li"><span class="dot br"></span>Branch</span>
+    </div>
+
+    <!-- traverse hint -->
+    <div class="hint" id="hint">
+      <span><b>Drag</b> to traverse</span>
+      <span><b>Scroll</b> to zoom</span>
+      <span><b>Click</b> a node</span>
+    </div>
+
+    <!-- scrubber / minimap -->
+    <div class="scrubber fade-up" id="scrubber">
+      <button class="scr-tour" id="tourBtn" title="Walk the canon">
+        <span class="ti"></span><span class="tl" id="tourLabel">Tour</span>
+      </button>
+      <div class="scr-map" id="scrMap">
+        <canvas id="mapCanvas"></canvas>
+        <div class="scr-labels" id="scrLabels"></div>
+        <div class="scr-window" id="scrWindow"></div>
+        <div class="scr-here" id="scrHere" style="display:none">you are here</div>
+      </div>
+      <div class="scr-ctrls">
+        <button id="vzIn" title="Zoom in"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg></button>
+        <button id="vzOut" title="Zoom out"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M8 11h6"/></svg></button>
+        <button id="vzFit" title="Fit timeline"><svg viewBox="0 0 24 24"><path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"/></svg></button>
+      </div>
+    </div>
+
+    <!-- hover readout -->
+    <div class="readout" id="readout"></div>
+  </div>
+
+  <!-- command palette -->
+  <div class="cmdk" id="cmdk" aria-hidden="true">
+    <div class="cmdk-box" role="dialog" aria-label="Search the multiverse">
+      <div class="cmdk-field">
+        <svg class="cmdk-glyph" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="cmdkInput" type="text" placeholder="Search timelines, branches, events, variants — or run a command" autocomplete="off" spellcheck="false" />
+        <kbd class="cmdk-esc">ESC</kbd>
+      </div>
+      <div class="cmdk-results" id="cmdkResults"></div>
+      <div class="cmdk-foot">
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> open</span>
+        <span><kbd>esc</kbd> close</span>
+        <span class="cmdk-foot-spacer"></span>
+        <span class="cmdk-count" id="cmdkCount"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scrim" id="scrim"><div class="modal" id="modal"></div></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="../_shared/paradox-data.js"></script>
+  <script src="../_shared/explore-data.js"></script>
+  <script src="../_shared/paradox-density.js"></script>
+  <script src="../_shared/timeline-view-data.js"></script>
+  <script src="../_shared/tlv2-spine.js"></script>
+  <script src="../_shared/tlv2-app.js"></script>
+</body>
+</html>

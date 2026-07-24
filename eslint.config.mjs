@@ -16,6 +16,9 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Design prototype reference — not project code.
     "docs/**",
+    // Embedded design bundles served verbatim (interactive demos) — third-party
+    // handoff code kept byte-faithful, not linted. See .prettierignore (public).
+    "public/demos/**",
   ]),
 ]);
 
