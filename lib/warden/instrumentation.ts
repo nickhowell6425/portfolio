@@ -25,7 +25,12 @@ function send(e: FunnelEvent): void {
     navigator.sendBeacon(endpoint, body);
     return;
   }
-  void fetch(endpoint, { method: "POST", body, headers: { "content-type": "application/json" }, keepalive: true }).catch(() => undefined);
+  void fetch(endpoint, {
+    method: "POST",
+    body,
+    headers: { "content-type": "application/json" },
+    keepalive: true,
+  }).catch(() => undefined);
 }
 
 function cid(): string {
