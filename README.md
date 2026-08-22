@@ -57,3 +57,4 @@ email, copy `.env.example` to `.env.local` and set `RESEND_API_KEY` (plus option
 - Fragment state is shared and session-persistent: a component keeps its state when you
   navigate away, and the component library shares state with the per-channel view.
 
+
