@@ -56,3 +56,4 @@ email, copy `.env.example` to `.env.local` and set `RESEND_API_KEY` (plus option
 - `prefers-reduced-motion` collapses all choreography to instant states.
 - Fragment state is shared and session-persistent: a component keeps its state when you
   navigate away, and the component library shares state with the per-channel view.
+
