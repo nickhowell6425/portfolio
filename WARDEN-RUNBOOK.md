@@ -6,7 +6,7 @@ Managed by Warden. These are the steps that cannot be automated through provider
 
 - GitHub: repository `nickhowell6425/portfolio` with the Warden App installed. Private repositories need the Team plan for rulesets.
 - Vercel: team `team_gHc8XDOJVXjLgDtBxGpX0VDS`, project `portfolio`. Warden needs a seat on the team (tokens are not scoped below a role).
-- Supabase: project `not-yet-provided` in an organisation you own.
+- Supabase: project `daxvlteupndmkolzfawr` in an organisation you own.
 
 ## Dashboard-only steps
 
