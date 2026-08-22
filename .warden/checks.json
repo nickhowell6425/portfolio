@@ -1,0 +1,35 @@
+{
+  "$schema": "https://warden.example/schemas/checks-v1.json",
+  "version": 1,
+  "framework": "next",
+  "checks": {
+    "warden/build": {
+      "run": "next build",
+      "timeoutMinutes": 15
+    },
+    "warden/typecheck": {
+      "run": "tsc --noEmit",
+      "timeoutMinutes": 10
+    },
+    "warden/secret-scan": {
+      "run": "static",
+      "timeoutMinutes": 5
+    },
+    "warden/protected-paths": {
+      "run": "static",
+      "timeoutMinutes": 2
+    },
+    "warden/migration-down-path": {
+      "run": "static",
+      "timeoutMinutes": 2
+    }
+  },
+  "required": [
+    "warden/build",
+    "warden/typecheck",
+    "warden/secret-scan",
+    "warden/protected-paths",
+    "warden/migration-down-path"
+  ],
+  "note": "Required checks are accepted by the repository ruleset only when posted by the Warden GitHub App. The `static` checks run on Warden's side; build and typecheck run in Warden's sandbox with egress sealed. Editing this file is itself a protected change."
+}
