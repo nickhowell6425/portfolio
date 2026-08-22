@@ -1,4 +1,4 @@
-# The Workspace — Nicholas Howell's Portfolio
+# Nicholas Howell's Portfolio
 
 A portfolio you open and poke around in, not a page you scroll. The interface borrows the
 grammar of a team workspace: a left rail of projects, a per-project sidebar of pages and
