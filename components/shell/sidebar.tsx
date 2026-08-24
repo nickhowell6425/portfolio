@@ -42,23 +42,6 @@ export function Sidebar() {
         <div style={{ color: "var(--dim)", fontSize: 12.5, marginTop: 1, textWrap: "pretty" }}>
           {W.desc}
         </div>
-        <div
-          style={{
-            display: "inline-block",
-            marginTop: 9,
-            fontFamily: MONO,
-            fontSize: 10.5,
-            fontWeight: 600,
-            letterSpacing: ".02em",
-            color: W.accent,
-            background: `color-mix(in srgb, ${W.accent} 12%, transparent)`,
-            border: `1px solid color-mix(in srgb, ${W.accent} 30%, transparent)`,
-            borderRadius: 999,
-            padding: "3px 9px",
-          }}
-        >
-          {W.status}
-        </div>
       </div>
       <div style={{ flex: 1, overflowY: "auto", padding: "10px 8px 14px" }}>
         {W.groups.map((g) => (
