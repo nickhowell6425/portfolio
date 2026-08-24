@@ -29,7 +29,7 @@ const cormorant = Cormorant_Garamond({
   preload: false,
 });
 
-const TITLE = `${PH.NAME} — CTO · Founding Engineer · Senior Full-Stack`;
+const TITLE = `${PH.NAME} — Portfolio`;
 const DESCRIPTION =
   "The Workspace — a portfolio you open and poke around in. Live components from shipped products, the decisions behind them, and the person who builds with AI agents and makes it hold up.";
 
