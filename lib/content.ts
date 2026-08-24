@@ -516,7 +516,7 @@ export const WORKSPACES: Workspace[] = [
     id: "home",
     initials: "NH",
     name: PH.NAME,
-    desc: "The person behind the products",
+    desc: "",
     status: "a living showcase",
     accent: "#5b8def",
     groups: [
