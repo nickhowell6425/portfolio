@@ -718,7 +718,7 @@ export const WORKSPACES: Workspace[] = [
         label: "Interactive demo",
         desc: "The whole app, running in the browser",
         kicker: "the app, running",
-        src: "/demos/paradox/02-Marketing/Homepage.html",
+        frag: "multiverse",
         lead: "The full Paradox concept, live and edge-to-edge — traverse the multiverse, open a timeline, fork a reality.",
       },
       "timeline-view": {
