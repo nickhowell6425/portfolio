@@ -565,6 +565,9 @@ export const WORKSPACES: Workspace[] = [
         desc: "What an engagement actually looks like",
         sections: [
           {
+            paras: ["Built in public"],
+          },
+          {
             heading: "It starts with a conversation",
             paras: [
               "Before anything else, we talk. If there's already something built, I'll be upfront about where it actually stands and what I'd do about it — no sugar-coating. If there's nothing yet, we figure out the shortest path to proof together.",
