@@ -90,20 +90,6 @@ export function PortraitHero() {
           >
             CTO · founding engineer
           </span>
-          <span
-            style={{
-              fontFamily: MONO,
-              fontSize: 10.5,
-              fontWeight: 600,
-              color: "var(--dim)",
-              border: "1px solid var(--border2)",
-              borderRadius: 999,
-              padding: "3px 10px",
-              background: "var(--surface)",
-            }}
-          >
-            multi-million exits
-          </span>
         </div>
       </div>
       <span style={{ flex: 1 }} />
