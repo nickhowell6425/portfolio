@@ -369,3 +369,63 @@ input::placeholder {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Notes: engine-written pages under /notes, in the prose scale of components/content/sections.tsx */
+.note {
+  max-width: 680px;
+  padding: 4px 0 40px;
+}
+.note h1 {
+  margin: 12px 0 10px;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.note h2 {
+  margin: 22px 0 4px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.note h3 {
+  margin: 16px 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.note p,
+.note li {
+  font-size: 14.5px;
+  line-height: 1.62;
+  color: var(--text);
+  text-wrap: pretty;
+}
+.note p {
+  margin: 7px 0;
+}
+.note ul,
+.note ol {
+  margin: 7px 0;
+  padding-left: 20px;
+}
+.note ul {
+  list-style: disc;
+}
+.note ol {
+  list-style: decimal;
+}
+.note a {
+  color: var(--accent);
+}
+.note table {
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 13.5px;
+}
+.note th,
+.note td {
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  text-align: left;
+}

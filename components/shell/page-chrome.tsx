@@ -16,6 +16,7 @@ export function PageChrome() {
   const W = resolved?.ws ?? WORKSPACES[0];
   const item = resolved?.item ?? W.items[W.groups[0].items[0]];
   const isLibrary = item.type === "library";
+  const isNote = pathname.startsWith("/notes/");
 
   return (
     <>
@@ -42,7 +43,7 @@ export function PageChrome() {
             flex: "0 0 auto",
           }}
         >
-          {item.label}
+          {isNote ? "Notes" : item.label}
         </h1>
         <div
           style={{
@@ -53,7 +54,7 @@ export function PageChrome() {
             whiteSpace: "nowrap",
           }}
         >
-          {item.desc}
+          {isNote ? "On hiring and building software" : item.desc}
         </div>
       </div>
       {isLibrary ? (
