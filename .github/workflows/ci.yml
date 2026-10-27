@@ -106,9 +106,28 @@ jobs:
           check /sitemap.xml             200
           check /robots.txt              200
           check /llms.txt                200
-          check /opengraph-image.png     200
+          check /og/personal.png         200
+          check /brand/fst-mark.svg      200
           check /nope                    404
           check /paradox                 307
+          check /home/services           404
+      - name: Brand routing (Full Stack Technologies host)
+        run: |
+          set -euo pipefail
+          check() {
+            code=$(curl -s -o /dev/null -w "%{http_code}" -H "Host: fst.localhost:3000" "http://localhost:3000$1")
+            echo "fst $1 -> $code (want $2)"
+            [ "$code" = "$2" ]
+          }
+          check /                        200
+          check /home/services           200
+          check /paradox/overview        200
+          check /home/off-clock          404
+          check /fst/home/about          404
+          html=$(curl -s -H "Host: fst.localhost:3000" http://localhost:3000/)
+          echo "$html" | grep -q 'data-brand="fst"'
+          echo "$html" | grep -q 'Full Stack Technologies'
+          echo "$html" | grep -q '"@type":"Organization"'
       - name: Contact API validates
         run: |
           set -euo pipefail

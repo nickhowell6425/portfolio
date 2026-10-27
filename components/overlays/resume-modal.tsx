@@ -1,21 +1,72 @@
 "use client";
 
 import { MONO } from "@/components/fragments/ui";
+import { useBrand } from "@/components/providers/brand-provider";
 import { useUI } from "@/components/providers/ui-provider";
-import { PH } from "@/lib/content";
+import { CAPABILITIES } from "@/lib/content";
 
-const RESUME_URL = "/uploads/Resume.pdf";
+/** FST's one-page capabilities sheet — rendered in place of a PDF. */
+function CapabilitiesSheet() {
+  return (
+    <div
+      style={{
+        height: "100%",
+        overflowY: "auto",
+        padding: "26px 28px 32px",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+        gap: "22px 30px",
+        alignContent: "start",
+      }}
+    >
+      {CAPABILITIES.map((sec) => (
+        <section key={sec.heading}>
+          <h3
+            style={{
+              margin: 0,
+              fontFamily: MONO,
+              fontSize: 10.5,
+              fontWeight: 600,
+              letterSpacing: ".14em",
+              textTransform: "uppercase",
+              color: "var(--accent)",
+            }}
+          >
+            {sec.heading}
+          </h3>
+          <ul style={{ margin: "10px 0 0", padding: 0, listStyle: "none" }}>
+            {sec.items.map((it) => (
+              <li
+                key={it}
+                style={{
+                  padding: "7px 0",
+                  borderBottom: "1px solid var(--border)",
+                  fontSize: 13.5,
+                  lineHeight: 1.45,
+                  color: "var(--text)",
+                }}
+              >
+                {it}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  );
+}
 
-/** In-app résumé viewer with download / open-in-tab. */
+/** In-app document viewer: the résumé PDF, or the capabilities sheet. */
 export function ResumeModal() {
-  const { resumeOpen, setResumeOpen } = useUI();
+  const { resumeOpen, setResumeOpen, openChat } = useUI();
+  const { doc } = useBrand();
   if (!resumeOpen) return null;
 
   return (
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Résumé"
+      aria-label={doc.label}
       onClick={() => setResumeOpen(false)}
       style={{
         position: "fixed",
@@ -34,7 +85,7 @@ export function ResumeModal() {
         style={{
           width: 880,
           maxWidth: "100%",
-          height: "90vh",
+          height: doc.pdf ? "90vh" : "auto",
           maxHeight: "90vh",
           display: "flex",
           flexDirection: "column",
@@ -67,7 +118,7 @@ export function ResumeModal() {
               flex: "0 0 auto",
             }}
           />
-          <span style={{ fontWeight: 800, fontSize: 14.5 }}>Résumé</span>
+          <span style={{ fontWeight: 800, fontSize: 14.5 }}>{doc.label}</span>
           <span
             style={{
               fontFamily: MONO,
@@ -78,57 +129,85 @@ export function ResumeModal() {
               whiteSpace: "nowrap",
             }}
           >
-            {PH.NAME} · Senior Full-Stack / CTO
+            {doc.subtitle}
           </span>
           <span style={{ flex: 1, minWidth: 8 }} />
-          <a
-            href={RESUME_URL}
-            target="_blank"
-            rel="noopener"
-            className="hov-accent-border"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: 32,
-              padding: "0 13px",
-              borderRadius: 8,
-              border: "1px solid var(--border2)",
-              background: "var(--surface)",
-              color: "var(--text)",
-              fontWeight: 600,
-              fontSize: 12.5,
-              textDecoration: "none",
-            }}
-          >
-            Open in tab
-          </a>
-          <a
-            href={RESUME_URL}
-            download="Nicholas-Howell-Resume.pdf"
-            className="hov-bright"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              height: 32,
-              padding: "0 14px",
-              borderRadius: 8,
-              background: "var(--accent)",
-              color: "#fff",
-              fontWeight: 700,
-              fontSize: 12.5,
-              textDecoration: "none",
-              boxShadow: "0 6px 16px -6px var(--accent)",
-            }}
-          >
-            <span aria-hidden="true" style={{ fontFamily: MONO, fontSize: 12 }}>
-              ↓
-            </span>
-            Download
-          </a>
+          {doc.pdf ? (
+            <>
+              <a
+                href={doc.pdf}
+                target="_blank"
+                rel="noopener"
+                className="hov-accent-border"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  height: 32,
+                  padding: "0 13px",
+                  borderRadius: 8,
+                  border: "1px solid var(--border2)",
+                  background: "var(--surface)",
+                  color: "var(--text)",
+                  fontWeight: 600,
+                  fontSize: 12.5,
+                  textDecoration: "none",
+                }}
+              >
+                Open in tab
+              </a>
+              <a
+                href={doc.pdf}
+                download={doc.download}
+                className="hov-bright"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 6,
+                  height: 32,
+                  padding: "0 14px",
+                  borderRadius: 8,
+                  background: "var(--accent)",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: 12.5,
+                  textDecoration: "none",
+                  boxShadow: "0 6px 16px -6px var(--accent)",
+                }}
+              >
+                <span aria-hidden="true" style={{ fontFamily: MONO, fontSize: 12 }}>
+                  ↓
+                </span>
+                Download
+              </a>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                setResumeOpen(false);
+                openChat();
+              }}
+              className="hov-bright"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                height: 32,
+                padding: "0 14px",
+                borderRadius: 8,
+                border: "none",
+                background: "var(--accent)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: 12.5,
+                cursor: "pointer",
+                boxShadow: "0 6px 16px -6px var(--accent)",
+              }}
+            >
+              Start a project
+            </button>
+          )}
           <button
             onClick={() => setResumeOpen(false)}
-            aria-label="Close résumé"
+            aria-label={`Close ${doc.label.toLowerCase()}`}
             className="hov-accent-border-text"
             style={{
               width: 32,
@@ -145,12 +224,16 @@ export function ResumeModal() {
             ✕
           </button>
         </div>
-        <div style={{ flex: 1, minHeight: 0, background: "var(--bg0)" }}>
-          <iframe
-            src={`${RESUME_URL}#view=FitH&navpanes=0`}
-            title={`${PH.NAME} résumé`}
-            style={{ width: "100%", height: "100%", border: "none", display: "block" }}
-          />
+        <div style={{ flex: 1, minHeight: 0, background: doc.pdf ? "var(--bg0)" : "transparent" }}>
+          {doc.pdf ? (
+            <iframe
+              src={`${doc.pdf}#view=FitH&navpanes=0`}
+              title={doc.subtitle}
+              style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+            />
+          ) : (
+            <CapabilitiesSheet />
+          )}
         </div>
       </div>
     </div>

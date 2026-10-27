@@ -4,6 +4,8 @@
 // cross-project library ("library").
 // ============================================================
 
+import type { BrandId } from "./brands";
+
 export const PH = {
   NAME: "Nicholas Howell",
   FIRST: "Nicholas",
@@ -510,8 +512,9 @@ const LIBRARY: LibraryItem = {
 };
 
 // ---- Workspaces ----------------------------------------------
+// The personal home first, then the projects every brand shares.
 
-export const WORKSPACES: Workspace[] = [
+const PERSONAL_WORKSPACES: Workspace[] = [
   {
     id: "home",
     initials: "NH",
@@ -877,3 +880,216 @@ export const WORKSPACES: Workspace[] = [
     },
   },
 ];
+
+const [PERSONAL_HOME, ...PROJECTS] = PERSONAL_WORKSPACES;
+
+// ---- Full Stack Technologies --------------------------------
+// Same projects and live components; its own front door.
+
+export const FST = {
+  NAME: "Full Stack Technologies",
+  LEGAL: "Full Stack Technologies, LLC",
+  INITIALS: "FS",
+  ACCENT: "#f7931e",
+  STATUS_LINE: "Senior product engineering · fixed scope · 0 abandoned codebases",
+} as const;
+
+const FST_HOME: Workspace = {
+  id: "home",
+  initials: FST.INITIALS,
+  name: FST.NAME,
+  desc: "",
+  status: "product engineering studio",
+  accent: FST.ACCENT,
+  groups: [
+    { title: "Company", items: ["about", "services", "engagements", "straight-answers"] },
+    { title: "Work", items: ["go-paradox", "go-shiftsum", "go-clients", "component-library"] },
+  ],
+  items: {
+    about: {
+      label: "About",
+      type: "page",
+      desc: "Who builds your product",
+      sections: [
+        {
+          paras: [
+            `${FST.LEGAL} is a product engineering studio led by ${PH.NAME} — CTO, founding engineer, and senior full-stack developer with ${PH.YEARS}+ years shipping products to real customers and multiple multi-million-dollar valuations behind him.`,
+            "We build new products from a blank repo, rescue and harden existing ones, and scale what's already working. AI agents do the heavy lifting; senior engineers steer, evaluate, and make the output hold up under real load.",
+          ],
+        },
+        {
+          heading: "The work speaks first",
+          paras: [
+            "The left rail is real work — a platform architected and shipped end to end, a scheduling product built and acquired, and selected client builds. The components inside are live: click through any of them, then flip from Preview to Code to read how they're built.",
+          ],
+        },
+        {
+          heading: "Who you work with",
+          paras: [
+            "Senior hands only. No account managers between you and the people writing your code, no junior bench learning on your budget. The person scoping the work is the person accountable for shipping it.",
+          ],
+        },
+        {
+          heading: "Start a project",
+          cta: "message",
+          ctaLabel: "Start a conversation →",
+          paras: [
+            "Tell us what you're building — in whatever shape it's in. You'll get a straight read on scope, timeline, and whether we're the right fit, usually the same day.",
+          ],
+        },
+      ],
+    },
+    services: {
+      label: "Services",
+      type: "page",
+      desc: "What we take on",
+      sections: [
+        {
+          heading: "New product builds",
+          paras: [
+            "From idea to production: architecture, mobile and web apps, backend and infrastructure, launched to real users. Shortest path to proof first, then the version that scales.",
+          ],
+        },
+        {
+          heading: "Rescue & hardening",
+          paras: [
+            "An existing codebase that's slowing down, breaking under load, or was generated faster than anyone could review. We assess it honestly, stabilize what matters, and leave it better documented than we found it.",
+          ],
+        },
+        {
+          heading: "Embedded senior engineering",
+          paras: [
+            "A senior engineer inside your team — your stack, your process, your rituals. Lead or follow, whichever the work needs.",
+          ],
+        },
+        {
+          heading: "AI-assisted delivery",
+          paras: [
+            "Adopting AI agents in your engineering workflow without shipping what they get wrong: tooling, review practice, and guardrails that keep velocity and quality together.",
+          ],
+        },
+        {
+          heading: "Fractional CTO",
+          paras: [
+            "Technical leadership for founders without one: architecture calls, hiring, vendor decisions, and a roadmap that matches what the team can actually ship.",
+          ],
+        },
+      ],
+    },
+    engagements: {
+      label: "Engagements",
+      type: "page",
+      desc: "How a project runs",
+      sections: [
+        {
+          heading: "1 · Conversation",
+          paras: [
+            "A short call about what you're building and where it stands. If something exists, you get an honest assessment. If nothing does, we map the shortest path to proof.",
+          ],
+        },
+        {
+          heading: "2 · Fixed-scope proposal",
+          paras: [
+            "A written scope, timeline, and price. Fixed scope wherever possible, so the risk sits with us, not you. Typical builds run 2–12 weeks.",
+          ],
+        },
+        {
+          heading: "3 · Build in the open",
+          paras: [
+            "Working software in days, not months — shared as it's built, so you watch momentum instead of waiting for it.",
+          ],
+        },
+        {
+          heading: "4 · Launch & handoff",
+          paras: [
+            "We ship it, then either maintain it or hand it to your team so cleanly they won't need us. Your call.",
+          ],
+        },
+      ],
+    },
+    "straight-answers": {
+      label: "Straight answers",
+      type: "page",
+      desc: "The honest FAQ",
+      sections: [
+        {
+          heading: "“What does it cost?”",
+          paras: [
+            "Less than a bad hire, more than a tool subscription. Most work is quoted as fixed scope after the first conversation; ongoing and embedded work is billed monthly.",
+          ],
+        },
+        {
+          heading: "“Who actually writes the code?”",
+          paras: [
+            `Senior engineers, led by ${PH.NAME}, working with AI agents — and accountable for every line those agents produce.`,
+          ],
+        },
+        {
+          heading: "“Who's a good fit?”",
+          paras: [
+            "Startups, small teams, and founders shipping something real. If you're a large org looking to fill one more seat on a big engineering floor, we're honestly not the best fit.",
+          ],
+        },
+        {
+          heading: "“Who owns the code?”",
+          paras: ["You do — the repository, the infrastructure, and the IP, from day one."],
+        },
+      ],
+    },
+    "go-paradox": PERSONAL_HOME.items["go-paradox"],
+    "go-shiftsum": PERSONAL_HOME.items["go-shiftsum"],
+    "go-clients": PERSONAL_HOME.items["go-clients"],
+    "component-library": LIBRARY,
+  },
+};
+
+/** The capabilities sheet — FST's counterpart to the résumé. */
+export const CAPABILITIES: { heading: string; items: string[] }[] = [
+  {
+    heading: "Services",
+    items: [
+      "New product builds — web, mobile, backend",
+      "Rescue & hardening of existing codebases",
+      "Embedded senior engineering",
+      "AI-assisted delivery & agent workflows",
+      "Fractional CTO",
+    ],
+  },
+  {
+    heading: "Stack",
+    items: [
+      "TypeScript · React · Next.js",
+      "Cross-platform mobile apps",
+      "Ruby on Rails",
+      "Serverless & containerized backends (Docker)",
+    ],
+  },
+  {
+    heading: "Track record",
+    items: [
+      `${PH.YEARS}+ years shipping production software`,
+      "Multiple multi-million-dollar valuations",
+      "Scaled a fintech startup from 3 to 20+ people into an acquisition",
+      "Built and sold Shiftsum (2023)",
+      "0 abandoned codebases",
+    ],
+  },
+  {
+    heading: "Engagement",
+    items: [
+      "Fixed scope wherever possible",
+      "Typical builds: 2–12 weeks",
+      "You own the code and IP from day one",
+      "Maintain after launch, or a clean handoff",
+    ],
+  },
+];
+
+const BRAND_WORKSPACES: Record<BrandId, Workspace[]> = {
+  personal: PERSONAL_WORKSPACES,
+  fst: [FST_HOME, ...PROJECTS],
+};
+
+export function workspacesFor(brand: BrandId): Workspace[] {
+  return BRAND_WORKSPACES[brand];
+}

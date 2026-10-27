@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useNavSwap } from "@/hooks/use-ws-transition";
-import { resolvePathname } from "@/lib/navigation";
+import { useNav } from "@/components/providers/brand-provider";
 
 /**
  * The scrolling content stage. Keyed by pathname so every visit
@@ -15,6 +15,7 @@ import { resolvePathname } from "@/lib/navigation";
 export function ContentArea({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const swap = useNavSwap();
+  const { resolvePathname } = useNav();
   const fullBleed = resolvePathname(pathname)?.item.type === "demo";
   return (
     <div

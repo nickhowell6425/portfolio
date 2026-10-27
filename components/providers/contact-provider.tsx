@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { PH } from "@/lib/content";
+import { useBrand } from "./brand-provider";
 import { useUI } from "./ui-provider";
 
 export interface ChatMsg {
@@ -51,6 +51,7 @@ function nowStr() {
  */
 export function ContactProvider({ children }: { children: React.ReactNode }) {
   const { showToast } = useUI();
+  const inbox = useBrand().email;
   const [first, setFirstRaw] = useState("");
   const [last, setLast] = useState("");
   const [email, setEmailRaw] = useState("");
@@ -109,11 +110,11 @@ export function ContactProvider({ children }: { children: React.ReactNode }) {
           }, wait);
         }
       } catch {
-        showToast(`Couldn't send just now — email me directly at ${PH.EMAIL}.`);
+        showToast(`Couldn't send just now — email me directly at ${inbox}.`);
       }
       return { ok: true };
     },
-    [first, last, email, showToast],
+    [first, last, email, inbox, showToast],
   );
 
   const value = useMemo(

@@ -37,9 +37,24 @@ There is no unit-test suite. Verification is browser-driven:
 **Content model drives everything.** `lib/content.ts` is the single source of all copy,
 workspaces, sidebar structure, fragment metadata, and code samples. `lib/navigation.ts`
 derives routes, the ⌘K search index, and `generateStaticParams` from it. The one route file
-`app/[[...slug]]/page.tsx` (optional catch-all, `dynamicParams = false`) statically
-prerenders every workspace item; `/` is home/about, `/{ws}` redirects to its first item.
-Adding content = editing `lib/content.ts`; routes, search, and sitemap follow automatically.
+`app/[brand]/[[...slug]]/page.tsx` (optional catch-all) statically prerenders every workspace
+item per brand; `/` is home/about, `/{ws}` redirects to its first item. Unknown slugs hit
+`notFound()` so the 404 renders inside the shell. Adding content = editing `lib/content.ts`;
+routes, search, and sitemap follow automatically.
+
+**Two brands, one app.** The personal portfolio and Full Stack Technologies, LLC
+(`fullstacktechnologiesllc.com`) share every project workspace and fragment; each brand has
+its own home workspace, theme, metadata/JSON-LD, top-bar document (résumé PDF vs capabilities
+sheet), and contact inbox. `lib/brands.ts` holds per-brand config; `workspacesFor(brand)` in
+`lib/content.ts` assembles the rail. `proxy.ts` maps the request host to a brand and rewrites
+into `app/[brand]/…` (the root layout lives there and sets `data-brand` on `<html>`); visible
+URLs never carry the brand. Unknown hosts (Vercel previews) take `?brand=fst|personal`,
+remembered in a cookie. Locally, `fst.localhost:3000` is the FST host. Client code gets the
+brand via `useBrand()` and route resolution via `useNav()` (`components/providers/brand-provider.tsx`)
+— never import a workspace list directly. The rail's top tile is the brand switcher: home, or
+the same path on the other domain. FST tokens are `[data-brand="fst"]` overrides in
+`globals.css`; its mark is `public/brand/fst-mark.svg` (a traced stand-in — replace with the
+official vector).
 
 **Server/client split.** Pages render prose server-side (`components/content/sections.tsx`,
 `portrait-hero.tsx`); everything interactive is a client island. The persistent shell
@@ -85,5 +100,9 @@ a `prefers-contrast: more` override; don't "fix" it globally without asking.
 - `zod` is v4 (`z.email()`, not `z.string().email()`).
 - The prototype's `setFrag` merged patches into `{}` (latent bug); this port merges over
   defaults in `useFragState` — keep that behavior.
-- Production needs `NEXT_PUBLIC_SITE_URL` set or canonicals/sitemap/OG URLs fall back to
-  localhost.
+- Production needs `NEXT_PUBLIC_PERSONAL_URL` (or legacy `NEXT_PUBLIC_SITE_URL`) set or the
+  personal brand's canonicals/sitemap/OG URLs fall back to localhost; `NEXT_PUBLIC_FST_URL`
+  defaults to `https://fullstacktechnologiesllc.com`. Both domains attach to the same Vercel
+  project.
+- During prerender `usePathname()` returns the proxy's internal path (`/fst/…`);
+  `nav.resolvePathname` strips the brand segment — resolve through it, or hydration breaks.

@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useRef } from "react";
+import { useBrand } from "@/components/providers/brand-provider";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 interface Dot {
@@ -16,6 +17,7 @@ interface Dot {
 export function AmbientCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rm = useReducedMotion();
+  const fst = useBrand().id === "fst";
   const { resolvedTheme } = useTheme();
   const darkRef = useRef(true);
   useEffect(() => {
@@ -48,7 +50,7 @@ export function AmbientCanvas() {
       const hh = cv.height;
       ctx.clearRect(0, 0, w, hh);
       const dark = darkRef.current;
-      const col = dark ? "140,172,238" : "82,116,200";
+      const col = fst ? (dark ? "247,170,90" : "200,120,30") : dark ? "140,172,238" : "82,116,200";
       for (const p of pts) {
         p.x = (p.x + p.vx + 1) % 1;
         p.y = (p.y + p.vy + 1) % 1;
@@ -74,7 +76,7 @@ export function AmbientCanvas() {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", size);
     };
-  }, [rm]);
+  }, [rm, fst]);
 
   return (
     <canvas

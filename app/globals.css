@@ -46,6 +46,41 @@
   --shadow: 0 16px 40px -16px rgba(30, 44, 82, 0.18), 0 2px 8px rgba(30, 44, 82, 0.08);
 }
 
+/* Full Stack Technologies — same grammar, the logo's orange on warm graphite.
+   Comes after the light block: brand-dark (0,1,0) beats [data-theme="light"]
+   by order, so brand-light needs the compound (0,2,0) selector. */
+[data-brand="fst"] {
+  --bg0: #0b0b0c;
+  --bg1: #151516;
+  --bg2: #101011;
+  --surface: #1a1a1c;
+  --surface2: #222225;
+  --border: rgba(214, 200, 182, 0.12);
+  --border2: rgba(214, 200, 182, 0.22);
+  --text: #f2efea;
+  --dim: #a8a29a;
+  --faint: #6d6862;
+  --accent: #f7931e;
+  --accent-soft: rgba(247, 147, 30, 0.13);
+  --shadow: 0 16px 44px -14px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-brand="fst"][data-theme="light"] {
+  --bg0: #161616;
+  --bg1: #f1efec;
+  --bg2: #f8f7f5;
+  --surface: #ffffff;
+  --surface2: #f0eeea;
+  --border: rgba(48, 38, 24, 0.12);
+  --border2: rgba(48, 38, 24, 0.22);
+  --text: #1b1a18;
+  --dim: #645f57;
+  --faint: #a19b91;
+  --accent: #d97a0b;
+  --accent-soft: rgba(217, 122, 11, 0.1);
+  --shadow: 0 16px 40px -16px rgba(40, 30, 16, 0.18), 0 2px 8px rgba(40, 30, 16, 0.08);
+}
+
 @media (max-width: 800px) {
   :root {
     --nav-pos: fixed;
@@ -339,6 +374,14 @@ input::placeholder {
     --faint: #5d6a82;
     --dim: #3c4a64;
   }
+  [data-brand="fst"] {
+    --faint: #9c968d;
+    --dim: #c9c3ba;
+  }
+  [data-brand="fst"][data-theme="light"] {
+    --faint: #645f57;
+    --dim: #45403a;
+  }
 }
 
 /* ---------- hover states (the design's style-hover) ---------- */
@@ -355,6 +398,10 @@ input::placeholder {
 }
 .hov-bright:hover {
   filter: brightness(1.08);
+}
+.hov-row:hover,
+.hov-row:focus-visible {
+  background: var(--surface2) !important;
 }
 .hov-accent-bg:hover {
   background: var(--accent-soft) !important;

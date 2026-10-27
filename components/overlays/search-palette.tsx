@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MONO } from "@/components/fragments/ui";
 import { useUI } from "@/components/providers/ui-provider";
-import { hrefFor, searchResults } from "@/lib/navigation";
+import { useNav } from "@/components/providers/brand-provider";
+import { hrefFor } from "@/lib/navigation";
 
 /** ⌘K jump-to: every project and component, one keystroke away. */
 export function SearchPalette() {
@@ -20,6 +21,7 @@ function PaletteDialog() {
   const [query, setQuery] = useState("");
   const [sel, setSel] = useState(0);
 
+  const { searchResults } = useNav();
   const results = searchResults(query);
   const noResults = !!query.trim() && results.length === 0;
 

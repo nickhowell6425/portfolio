@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { PH } from "@/lib/content";
+import { BRANDS, DEFAULT_BRAND, brandForHost, isBrandId } from "@/lib/brands";
 
 const contactSchema = z.object({
   firstName: z.string().trim().min(1).max(100),
@@ -52,6 +52,14 @@ export async function POST(req: Request) {
   }
   const { firstName, lastName, email, message } = parsed.data;
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
+  // route by the domain the visitor wrote in from
+  // (preview hosts carry the brand in the cookie the proxy set)
+  const cookieBrand = req.headers.get("cookie")?.match(/(?:^|;\s*)brand=([a-z]+)/)?.[1];
+  const brand =
+    BRANDS[
+      brandForHost(req.headers.get("host")) ??
+        (isBrandId(cookieBrand) ? cookieBrand : DEFAULT_BRAND)
+    ];
 
   const apiKey = process.env.RESEND_API_KEY;
   if (apiKey) {
@@ -59,9 +67,9 @@ export async function POST(req: Request) {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>",
-      to: process.env.CONTACT_TO_EMAIL ?? PH.EMAIL,
+      to: process.env[brand.inboxEnv] ?? brand.email,
       replyTo: email,
-      subject: `Portfolio message from ${fullName}`,
+      subject: `${brand.short} message from ${fullName}`,
       text: `From: ${fullName} <${email}>\n\n${message}`,
     });
     if (error) {
@@ -70,7 +78,7 @@ export async function POST(req: Request) {
     }
   } else {
     // No email provider configured — log so messages aren't silently dropped in dev.
-    console.log(`[contact] ${fullName} <${email}>: ${message}`);
+    console.log(`[contact:${brand.id}] ${fullName} <${email}>: ${message}`);
   }
 
   return NextResponse.json({ ok: true });

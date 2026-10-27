@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import { MONO } from "@/components/fragments/ui";
 import { useUI } from "@/components/providers/ui-provider";
 import { useWsSticky } from "@/hooks/use-ws-transition";
-import { PH, WORKSPACES } from "@/lib/content";
-import { hrefFor, resolvePathname, workspaceById } from "@/lib/navigation";
+import { useNav } from "@/components/providers/brand-provider";
+import { PH } from "@/lib/content";
+import { hrefFor } from "@/lib/navigation";
 
 const itemDelay = (si: number) => 70 + si * 26;
 
@@ -15,9 +16,10 @@ export function Sidebar() {
   const pathname = usePathname();
   const { goWorkspace, setNavOpen } = useUI();
   const { swapped } = useWsSticky();
+  const { resolvePathname, workspaceById, workspaces } = useNav();
 
   const resolved = resolvePathname(pathname);
-  const W = resolved?.ws ?? WORKSPACES[0];
+  const W = resolved?.ws ?? workspaces[0];
   const currentItem = resolved?.itemId;
 
   let si = 0;

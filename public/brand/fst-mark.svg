@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 452 462" role="img" aria-label="Full Stack Technologies">
+  <defs><clipPath id="c"><rect width="452" height="462"/></clipPath></defs>
+  <g clip-path="url(#c)" fill="none" stroke-linejoin="miter" stroke-miterlimit="10">
+    <g stroke="#f7931e" stroke-width="26">
+      <polyline points="0,145 226,275 452,145"/>
+      <polyline points="56,198 0,230 226,360 452,230 396,198"/>
+      <polyline points="56,283 0,315 226,445 452,315 396,283"/>
+    </g>
+    <g stroke="#141414" stroke-width="24">
+      <polyline points="0,138 238,1"/>
+      <polyline points="252,62 120,138 206,188 252,161 298,188 268,205"/>
+    </g>
+  </g>
+</svg>

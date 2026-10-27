@@ -1,11 +1,13 @@
 "use client";
 
 import { MONO } from "@/components/fragments/ui";
+import { useBrand } from "@/components/providers/brand-provider";
 import { useUI } from "@/components/providers/ui-provider";
 
 /** Persistent top chrome: jump-to search, résumé viewer, message CTA. */
 export function TopBar() {
   const { setNavOpen, openSearch, setResumeOpen, openChat } = useUI();
+  const { doc } = useBrand();
   return (
     <div
       style={{
@@ -97,7 +99,7 @@ export function TopBar() {
       <span className="topbar-spacer" style={{ flex: 1 }} />
       <button
         onClick={() => setResumeOpen(true)}
-        aria-label="View résumé"
+        aria-label={`View ${doc.label.toLowerCase()}`}
         className="hov-accent-border btn-icon-m"
         style={{
           display: "inline-flex",
@@ -145,7 +147,7 @@ export function TopBar() {
             />
           </svg>
         </span>
-        <span className="topbar-label">Résumé</span>
+        <span className="topbar-label">{doc.label}</span>
       </button>
       <a
         href="#message"

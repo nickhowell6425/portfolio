@@ -2,13 +2,14 @@
 
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
-import { Fragment, useCallback, useEffect, useRef } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { MONO } from "@/components/fragments/ui";
+import { useBrand, useNav } from "@/components/providers/brand-provider";
 import { useUI } from "@/components/providers/ui-provider";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import { WORKSPACES } from "@/lib/content";
-import { resolvePathname } from "@/lib/navigation";
+import { BRANDS, brandForHost, otherBrand, BRAND_PARAM, type BrandId } from "@/lib/brands";
+import { navFor } from "@/lib/navigation";
 
 // ---- the Paradox tile is alive ------------------------------------------
 // A 40px temporal nexus — the Sacred Timeline's core at the tile's center:
@@ -222,11 +223,160 @@ function ThemeButton() {
   );
 }
 
+// ---- brand switcher -------------------------------------------------------
+// The top tile is the brand's mark. Clicking it opens a small menu: home,
+// or the same page on the other brand's domain.
+
+const MARK_BG: Record<BrandId, string> = {
+  personal: "url('/uploads/avatar-circle-96.png') center/cover no-repeat, #1c2435",
+  // the logo is black-on-white, so it sits on a white tile in both themes
+  fst: "url('/brand/fst-mark.svg') center/70% no-repeat, #fff",
+};
+
+function BrandMark({ id, size }: { id: BrandId; size: number }) {
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size * 0.3,
+        flex: "0 0 auto",
+        display: "grid",
+        placeItems: "center",
+        background: MARK_BG[id],
+      }}
+    />
+  );
+}
+
+/** The same page on the other brand's front door (home if it has no such page). */
+function switchHref(target: BrandId, pathname: string): string {
+  const path = navFor(target).resolvePathname(pathname) ? pathname : "/";
+  const { protocol, hostname, port } = window.location;
+  const here = brandForHost(hostname);
+  if (!here) return `${path}?${BRAND_PARAM}=${target}`; // previews: one host, cookie-picked
+  if (BRANDS[here].devHosts.includes(hostname)) {
+    return `${protocol}//${BRANDS[target].devHosts[0]}${port ? `:${port}` : ""}${path}`;
+  }
+  return `${BRANDS[target].url}${path}`;
+}
+
+function BrandMenu({ onClose }: { onClose: () => void }) {
+  const brand = useBrand();
+  const pathname = usePathname();
+  const { goWorkspace } = useUI();
+  const ref = useRef<HTMLDivElement | null>(null);
+  const other = BRANDS[otherBrand(brand.id)];
+
+  useEffect(() => {
+    const onDown = (e: PointerEvent) => {
+      if (!ref.current?.parentElement?.contains(e.target as Node)) onClose();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("pointerdown", onDown);
+    window.addEventListener("keydown", onKey);
+    ref.current?.querySelector<HTMLElement>("[role=menuitem]")?.focus();
+    return () => {
+      document.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [onClose]);
+
+  const row: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    width: "100%",
+    padding: "8px 10px",
+    border: "none",
+    borderRadius: 9,
+    background: "transparent",
+    color: "var(--text)",
+    textAlign: "left",
+    textDecoration: "none",
+    cursor: "pointer",
+    fontSize: 13,
+    fontWeight: 600,
+  };
+  const sub: React.CSSProperties = {
+    display: "block",
+    fontFamily: MONO,
+    fontSize: 9.5,
+    fontWeight: 500,
+    color: "var(--faint)",
+    marginTop: 1,
+  };
+
+  return (
+    <div
+      ref={ref}
+      role="menu"
+      aria-label="Switch brand"
+      style={{
+        position: "absolute",
+        left: 50,
+        top: 0,
+        zIndex: 40,
+        width: 272,
+        padding: 6,
+        background: "var(--bg1)",
+        border: "1px solid var(--border2)",
+        borderRadius: 13,
+        boxShadow: "var(--shadow)",
+        animation: "popIn .16s ease",
+      }}
+    >
+      <button
+        role="menuitem"
+        className="hov-row"
+        style={row}
+        onClick={() => {
+          onClose();
+          goWorkspace("home");
+        }}
+      >
+        <BrandMark id={brand.id} size={28} />
+        <span style={{ minWidth: 0 }}>
+          {brand.short}
+          <span style={sub}>home</span>
+        </span>
+      </button>
+      <span
+        aria-hidden="true"
+        style={{ display: "block", height: 1, background: "var(--border)", margin: "4px 6px" }}
+      />
+      <a
+        role="menuitem"
+        className="hov-row"
+        style={row}
+        href={switchHref(other.id, pathname)}
+        onClick={onClose}
+      >
+        <BrandMark id={other.id} size={28} />
+        <span style={{ minWidth: 0, flex: 1 }}>
+          Switch to {other.short}
+          <span style={sub}>{new URL(other.url).hostname}</span>
+        </span>
+        <span aria-hidden="true" style={{ color: "var(--faint)", fontSize: 12 }}>
+          ↗
+        </span>
+      </a>
+    </div>
+  );
+}
+
 /** Far-left workspace switcher: you on top, the work below. */
 export function Rail() {
   const pathname = usePathname();
   const { goWorkspace } = useUI();
+  const brand = useBrand();
+  const { resolvePathname, workspaces } = useNav();
   const currentWs = resolvePathname(pathname)?.ws.id;
+  const [menuOpen, setMenuOpen] = useState(false);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   return (
     <div
@@ -242,7 +392,7 @@ export function Rail() {
         flex: "0 0 auto",
       }}
     >
-      {WORKSPACES.map((w, i) => {
+      {workspaces.map((w, i) => {
         const active = w.id === currentWs;
         const isHome = w.id === "home";
         const isParadox = w.id === "paradox";
@@ -276,51 +426,58 @@ export function Rail() {
                 </span>
               </>
             ) : null}
-            <button
-              onClick={() => goWorkspace(w.id)}
-              title={w.name}
-              aria-label={isHome ? w.name : `${w.initials} — ${w.name}`}
-              className="hov-raise"
-              style={{
-                position: "relative",
-                width: 40,
-                height: 40,
-                borderRadius: active ? 12 : 15,
-                border: "none",
-                cursor: "pointer",
-                background: isHome
-                  ? "url('/uploads/avatar-circle-96.png') center/cover no-repeat, #1c2435"
-                  : isParadox
-                    ? "oklch(0.06 0.014 158)"
-                    : active
-                      ? w.accent
-                      : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
-                color: active ? "#fff" : w.accent,
-                fontWeight: 800,
-                fontSize: 13,
-                letterSpacing: ".02em",
-                boxShadow: active ? `0 6px 18px -4px ${w.accent}77` : "none",
-                transition:
-                  "border-radius .25s, transform .2s, box-shadow .25s, background-color .3s, color .3s",
-                fontFamily: MONO,
-              }}
-            >
-              {isParadox ? <ParadoxTileCanvas active={active} /> : isHome ? "" : w.initials}
-              {active ? (
-                <span
-                  style={{
-                    position: "absolute",
-                    left: -11,
-                    top: "50%",
-                    marginTop: -11,
-                    width: 4,
-                    height: 22,
-                    borderRadius: "0 4px 4px 0",
-                    background: "#e8edf7",
-                  }}
-                />
-              ) : null}
-            </button>
+            <span style={{ position: "relative", display: "flex" }}>
+              <button
+                onClick={() => (isHome ? setMenuOpen((o) => !o) : goWorkspace(w.id))}
+                title={w.name}
+                aria-label={
+                  isHome ? `${w.name} — home or switch brand` : `${w.initials} — ${w.name}`
+                }
+                aria-haspopup={isHome ? "menu" : undefined}
+                aria-expanded={isHome ? menuOpen : undefined}
+                className="hov-raise"
+                style={{
+                  position: "relative",
+                  width: 40,
+                  height: 40,
+                  borderRadius: active ? 12 : 15,
+                  border: "none",
+                  cursor: "pointer",
+                  background: isHome
+                    ? MARK_BG[brand.id]
+                    : isParadox
+                      ? "oklch(0.06 0.014 158)"
+                      : active
+                        ? w.accent
+                        : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
+                  color: active ? "#fff" : w.accent,
+                  fontWeight: 800,
+                  fontSize: 13,
+                  letterSpacing: ".02em",
+                  boxShadow: active ? `0 6px 18px -4px ${w.accent}77` : "none",
+                  transition:
+                    "border-radius .25s, transform .2s, box-shadow .25s, background-color .3s, color .3s",
+                  fontFamily: MONO,
+                }}
+              >
+                {isParadox ? <ParadoxTileCanvas active={active} /> : isHome ? "" : w.initials}
+                {active ? (
+                  <span
+                    style={{
+                      position: "absolute",
+                      left: -11,
+                      top: "50%",
+                      marginTop: -11,
+                      width: 4,
+                      height: 22,
+                      borderRadius: "0 4px 4px 0",
+                      background: "#e8edf7",
+                    }}
+                  />
+                ) : null}
+              </button>
+              {isHome && menuOpen ? <BrandMenu onClose={closeMenu} /> : null}
+            </span>
           </Fragment>
         );
       })}

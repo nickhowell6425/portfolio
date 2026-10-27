@@ -11,7 +11,8 @@ import {
   useState,
 } from "react";
 import type { Kind } from "@/lib/content";
-import { defaultItemId, hrefFor, resolvePathname, workspaceById } from "@/lib/navigation";
+import { defaultItemId, hrefFor } from "@/lib/navigation";
+import { useNav } from "./brand-provider";
 
 interface UICtx {
   navOpen: boolean;
@@ -37,6 +38,7 @@ const Ctx = createContext<UICtx | null>(null);
 export function UIProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { resolvePathname, workspaceById } = useNav();
 
   const [navOpen, setNavOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -54,7 +56,7 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const r = resolvePathname(pathname);
     if (r) lastCh.current[r.ws.id] = r.itemId;
-  }, [pathname]);
+  }, [pathname, resolvePathname]);
 
   const openSearch = useCallback(() => setSearchOpen(true), []);
   const closeSearch = useCallback(() => setSearchOpen(false), []);
@@ -89,7 +91,7 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
       setNavOpen(false);
       router.push(hrefFor(wsId, lastCh.current[wsId] ?? defaultItemId(ws)));
     },
-    [router],
+    [router, workspaceById],
   );
 
   // global keyboard: ⌘K / "/" opens search, Escape unwinds overlays
