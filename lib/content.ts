@@ -15,15 +15,7 @@ export const PH = {
   FOOTER: "⌘K — jump to any project or component",
 } as const;
 
-export const KINDS = [
-  "All",
-  "Auth",
-  "Discovery",
-  "Dashboards",
-  "Commerce",
-  "Onboarding",
-  "Admin",
-] as const;
+export const KINDS = ["All", "Auth", "Discovery", "Dashboards"] as const;
 
 export type Kind = (typeof KINDS)[number];
 
@@ -33,12 +25,8 @@ export type FragmentId =
   | "ribbon"
   | "gateway"
   | "divergence"
-  | "onboarding"
-  | "notifications"
-  | "admin"
-  | "booking"
-  | "kyc"
-  | "status";
+  | "flap"
+  | "dial";
 
 export interface FragmentCode {
   file: string;
@@ -151,8 +139,10 @@ export interface ShowcaseItem {
   /** One factual paragraph — also the meta description. */
   summary: string;
   cover: { src: string; alt: string };
-  /** Where "Try it live" goes (an item id in the same workspace). */
-  live: string;
+  /** Where "Try it live" goes (an item id in the same workspace); omitted = no live demo. */
+  live?: string;
+  /** CSS background for the identity mark (defaults to an accent glow). */
+  mark?: string;
   stack: string[];
   tiles: ShowcaseTile[];
   sections: ShowcaseSection[];
@@ -390,189 +380,65 @@ const sorters = {
 }`,
     },
   },
-  onboarding: {
-    title: "Onboarding",
-    kind: "Onboarding",
-    product: "Shiftsum",
-    year: "2022",
-    prod: false,
-    accent: "#e3a84e",
-    code: {
-      file: "Onboarding.tsx",
-      lang: "tsx",
-      src: `// Nine fields became three questions with smart defaults.
-const STEPS = [TeamSize, ShiftPattern, InviteManagers]
-
-export function Onboarding() {
-  const [step, setStep] = useState(0)
-  const [answers, setAnswers] = useState(defaults())  // guesses well
-
-  function next(patch: Partial<Setup>) {
-    setAnswers({ ...answers, ...patch })
-    step < STEPS.length - 1 ? setStep(step + 1) : finish(answers)
-  }
-
-  const Step = STEPS[step]
-  return (
-    <Card>
-      <Progress value={step} total={STEPS.length} />
-      <Step answers={answers} onNext={next} />
-    </Card>
-  )
-}`,
-    },
-  },
-  notifications: {
-    title: "Notification preferences",
-    kind: "Admin",
-    product: "Shiftsum",
-    year: "2022",
-    prod: false,
-    accent: "#e3a84e",
-    code: {
-      file: "NotificationPrefs.tsx",
-      lang: "tsx",
-      src: `// Defaults are the product: quiet by default, loud only when it matters.
-const DEFAULTS = {
-  shift: true, swap: true, digest: true,
-  market: false,            // off on purpose
-  quiet: { enabled: true, from: '22:00', to: '07:00' },
-}
-
-export function NotificationPrefs() {
-  const [prefs, setPrefs] = usePrefs(DEFAULTS)
-  const set = (k: string, v: unknown) => setPrefs({ ...prefs, [k]: v })
-
-  return (
-    <Card>
-      <Toggle label='Your shift changed' checked={prefs.shift} onChange={(v) => set('shift', v)} />
-      <Toggle label='Swap requests' checked={prefs.swap} onChange={(v) => set('swap', v)} />
-      <QuietHours value={prefs.quiet} onChange={(v) => set('quiet', v)} />
-    </Card>
-  )
-}`,
-    },
-  },
-  admin: {
-    title: "Roster admin",
-    kind: "Admin",
-    product: "Shiftsum",
-    year: "2023",
-    prod: false,
-    accent: "#e3a84e",
-    code: {
-      file: "RosterAdmin.tsx",
-      lang: "tsx",
-      src: `// Instant, client-side, forgives typos. ~20 min/day became ~4.
-export function RosterAdmin({ people }: { people: Person[] }) {
-  const [q, setQ] = useState('')
-  const [role, setRole] = useState('All')
-  const [selected, setSelected] = useState<Set<string>>(new Set())
-
-  const rows = useMemo(
-    () => people.filter((p) => matchesRole(p, role) && fuzzy(p, q)),
-    [people, role, q],
-  )
-
-  async function approveSelected() {
-    await api.approve([...selected])   // no page reload
-    setSelected(new Set())
-  }
-
-  return (
-    <Table rows={rows} selected={selected} onSelect={setSelected} onApprove={approveSelected} />
-  )
-}`,
-    },
-  },
-  booking: {
-    title: "Booking widget",
-    kind: "Commerce",
-    product: "Client: physio clinic",
-    year: "2024",
+  flap: {
+    title: "Split-flap sign-in",
+    kind: "Auth",
+    product: "Timetrack",
+    year: "2026",
     prod: true,
-    accent: "#a98bf5",
+    accent: "#ffb454",
     code: {
-      file: "BookingWidget.tsx",
+      file: "CypherLock.tsx",
       lang: "tsx",
-      src: `// A widget, not an app — it drops into the clinic's existing site.
-export function BookingWidget({ clinicId }: { clinicId: string }) {
-  const [day, setDay] = useState(today())
-  const [slot, setSlot] = useState<Slot | null>(null)
-  const slots = useAvailability(clinicId, day)   // buffers + double-booking guards
+      src: `// One owner, one key. The board IS the form: no button, no status line.
+// Every filled leaf shows a random character, so the key never appears.
+export function CypherLock({ cells, next }: { cells: number; next: string }) {
+  const [deck, setDeck] = useState<'' | 'working' | 'granted' | 'denied'>('')
 
-  async function confirm() {
-    if (!slot) return
-    await book({ clinicId, slot })   // two-way calendar sync
-    setConfirmed(true)
+  function onInput(value: string) {
+    riffleTo(value.length, pick)                 // ciphertext, not the typed char
+    if (value.length === cells) submit(value)    // the last leaf commits
   }
 
-  return (
-    <Widget>
-      <DayStrip value={day} onChange={setDay} />
-      <SlotGrid slots={slots} value={slot} onPick={setSlot} />
-      <Confirm disabled={!slot} onClick={confirm} />
-    </Widget>
-  )
+  async function submit(key: string) {
+    setDeck('working')                           // every leaf turning, in cyan
+    const res = await fetch('/api/auth', { method: 'POST', body: JSON.stringify({ key, next }) })
+    if (res.ok) return word('ACCEPTED', 'granted'), router.push(next)
+    word('DENIED', 'denied')                     // the board answers for itself
+  }
+
+  // still a real <form> posting to /api/auth: with JS off it is a password field
+  return <form method='post' action='/api/auth'>{/* leaves + invisible input */}</form>
 }`,
     },
   },
-  kyc: {
-    title: "Identity verification",
-    kind: "Onboarding",
-    product: "Client: fintech",
-    year: "2025",
-    prod: true,
-    accent: "#a98bf5",
-    code: {
-      file: "IdentityCheck.tsx",
-      lang: "tsx",
-      src: `// The senior move was NOT building this — just the glue around a vendor.
-const STEPS = ['id', 'selfie', 'address'] as const
-
-export function IdentityCheck() {
-  const [done, setDone] = useState<Record<string, boolean>>({})
-
-  async function upload(step: string, file: File) {
-    const ref = await vendor.submit(step, file)
-    const ok = await pollStatus(ref)      // retries + timeouts + webhooks
-    audit.log(step, ref, ok)              // compliance wants receipts
-    setDone((d) => ({ ...d, [step]: ok }))
-  }
-
-  return STEPS.map((s) => (
-    <Step key={s} id={s} done={done[s]} onUpload={(f) => upload(s, f)} />
-  ))
-}`,
-    },
-  },
-  status: {
-    title: "Public status page",
+  dial: {
+    title: "The day as one dial",
     kind: "Dashboards",
-    product: "Client: SaaS API",
-    year: "2025",
+    product: "Timetrack",
+    year: "2026",
     prod: true,
-    accent: "#a98bf5",
+    accent: "#ffb454",
     code: {
-      file: "StatusPage.tsx",
+      file: "DayDial.tsx",
       lang: "tsx",
-      src: `// Honest when it isn't green. A two-day build that halved support tickets.
-export function StatusPage({ services }: { services: Service[] }) {
-  const [range, setRange] = useState<'30d' | '90d'>('90d')
-  const checks = useHealthChecks(services)   // pinged every 60s from 3 regions
+      src: `// A day of sessions as one dial: outer ring by hand, one ring per client.
+// The dial only draws. Deciding what a mark means is the screen's job.
+const angle = (min: number) => ((min - WINDOW_START) / WINDOW_LEN) * 100
 
-  return (
-    <Page>
-      <Banner ok={checks.every((c) => c.up)} />
-      {services.map((svc) => (
-        <Row key={svc.id} name={svc.name} uptime={svc.uptime}>
-          <UptimeBars days={range === '30d' ? 30 : 90} incidents={svc.incidents} />
-        </Row>
-      ))}
-      <IncidentLog entries={incidents} />
-    </Page>
-  )
-}`,
+const marks = sessions.map((s) => ({
+  angle: angle(s.start + s.dur / 2),         // placed by when it happened
+  radius: s.byHand ? rings[0] : rings[ringOf(s.client)],
+  size: clamp(5 + s.dur / 12, 6, 15),        // longer sessions, bigger dots
+  hue: s.byHand ? GOLD : s.client.hue,       // hue is identity, never status
+  opacity: s.evidence ? 1 : 0.5,             // a gappy day reads faint at a glance
+}))
+
+// overlapping sessions all count: two matters in one hour are two billable hours
+const worked = sum(sessions, (s) => s.dur)
+const atOnce = worked / unionOf(sessions)    // concurrency, shown, not hidden
+
+return <RadialDial figure={fmt(worked / 60)} caption='Hours worked' marks={marks} />`,
     },
   },
 };
@@ -598,7 +464,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     accent: "#5b8def",
     groups: [
       { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
-      { title: "Library", items: ["go-paradox", "go-shiftsum", "go-clients", "component-library"] },
+      { title: "Library", items: ["go-paradox", "go-timetrack", "component-library"] },
     ],
     items: {
       about: {
@@ -742,17 +608,11 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ws: "paradox",
         desc: "A living multiverse of stories",
       },
-      "go-shiftsum": {
-        label: "Shiftsum",
+      "go-timetrack": {
+        label: "Timetrack",
         type: "ws",
-        ws: "shiftsum",
-        desc: "Shift scheduling for hourly teams",
-      },
-      "go-clients": {
-        label: "Client builds",
-        type: "ws",
-        ws: "clients",
-        desc: "Selected engagements, 2–12 weeks",
+        ws: "timetrack",
+        desc: "Time tracking for AI coding work",
       },
       "component-library": LIBRARY,
     },
@@ -1015,7 +875,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
           fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
         },
-        next: "shiftsum",
+        next: "timetrack",
       },
       demo: {
         type: "demo",
@@ -1078,123 +938,292 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     },
   },
   {
-    id: "shiftsum",
-    initials: "S",
-    name: "Shiftsum",
-    desc: "Shift scheduling for hourly teams",
-    status: "acquired 2023",
-    accent: "#e3a84e",
+    id: "timetrack",
+    initials: "TT",
+    name: "Timetrack",
+    desc: "Time tracking for AI coding work",
+    status: "self-hosted · v0.1 beta",
+    accent: "#ffb454",
     groups: [
       { title: "Project", items: ["overview"] },
-      { title: "Components", items: ["onboarding", "notifications", "admin"] },
+      {
+        title: "Features",
+        items: ["a-signin", "a-dashboard", "a-log", "a-manual", "a-reports", "a-rules"],
+      },
       { title: "Library", items: ["component-library"] },
     ],
     items: {
       overview: {
+        type: "showcase",
         label: "Overview",
-        type: "page",
-        desc: "Built, grown, acquired",
-        hero: {
-          frag: "admin",
-          kicker: "the screen managers lived in",
-          lead: "Search, filter, bulk-approve, zero page reloads. The roster screen that took ~20 minutes a day down to ~4.",
+        desc: "Billable hours from AI coding sessions",
+        seoTitle: "Timetrack — time tracking and client billing for AI coding agents",
+        tagline: "Billable hours for work done with AI coding agents.",
+        summary:
+          "Timetrack, designed and built end to end: a secure sign-in, a live dashboard, an audit-ready time log, client reports and billing rules, built the way production apps need it.",
+        cover: {
+          src: "/showcase/timetrack/cover.webp",
+          alt: "Timetrack Command Center: a week of work sessions on one dial, with hours, overlap and billing",
         },
-        sections: [
+        mark: "radial-gradient(circle at 50% 50%, #050508 0 15%, transparent 16%), conic-gradient(from 210deg, #ffc96b, #ff9e6b, #b69cff, #5fd4e8, #ffc96b)",
+        stack: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Zod",
+          "Deno",
+          "Hono",
+          "Supabase",
+          "PostgreSQL",
+          "Edge Functions",
+          "Python",
+          "Vercel AI SDK",
+          "Docker",
+          "Vercel",
+          "GitHub Actions CI/CD",
+          "Biome",
+        ],
+        tiles: [
           {
-            paras: [
-              "Shiftsum scheduled shifts for restaurants and clinics — 280 teams at peak. Built it with one co-founder, sold it to a workforce-management company in 2023.",
-              "The components in the left rail are from the version that got acquired. Flip any of them to Code to read the real implementation.",
-            ],
+            title: "Command Center",
+            line: "A whole week on one dial.",
+            img: "/showcase/timetrack/command-center.webp",
+            target: "dashboard",
+            lead: true,
+          },
+          {
+            title: "Sign-in",
+            line: "A board that never shows the key.",
+            img: "/showcase/timetrack/sign-in.webp",
+            target: "sign-in",
+            contain: true,
+          },
+          {
+            title: "Time log",
+            line: "Every hour, with receipts.",
+            img: "/showcase/timetrack/time-log.webp",
+            target: "time-log",
+          },
+          {
+            title: "Reports",
+            line: "Frozen the moment you export.",
+            img: "/showcase/timetrack/reports.webp",
+            target: "reports",
+          },
+          {
+            title: "Manual entry",
+            line: "For time the tracker can’t see.",
+            img: "/showcase/timetrack/manual-entry.webp",
+            target: "manual-entry",
+          },
+          {
+            title: "Client rules",
+            line: "Attribution by rule, not guesswork.",
+            img: "/showcase/timetrack/client-rules.webp",
+            target: "client-rules",
+            contain: true,
           },
         ],
-      },
-      onboarding: {
-        label: "Onboarding",
-        type: "comp",
-        frag: "onboarding",
-        desc: "From 9 fields to 3 questions",
-        paras: [
-          "Onboarding went from nine fields to three questions. Everything else gets a sensible default you can change later. Activation went up 34%. Walk through it — takes twenty seconds.",
-        ],
-      },
-      notifications: {
-        label: "Notifications",
-        type: "comp",
-        frag: "notifications",
-        desc: "Quiet by default",
-        paras: [
-          "Shift workers sleep at odd hours, so notifications default to quiet: digests instead of pings, loud only for “your shift changed.” Unsubscribe rate stayed under 1% — for a product whose whole job is interrupting you.",
-        ],
-      },
-      admin: {
-        label: "Roster admin",
-        type: "comp",
-        frag: "admin",
-        desc: "The screen managers lived in",
-        paras: [
-          "Managers lived in this roster screen about 20 minutes a day. Search, filters and bulk-approve cut it to about 4. It's the least glamorous screen in this portfolio — and the one users thanked us for most.",
-        ],
-      },
-      "component-library": LIBRARY,
-    },
-  },
-  {
-    id: "clients",
-    initials: "CB",
-    name: "Client builds",
-    desc: "Selected engagements, 2–12 weeks",
-    status: "3 of 9 shown",
-    accent: "#a98bf5",
-    groups: [
-      { title: "Project", items: ["overview"] },
-      { title: "Components", items: ["booking-widget", "kyc-flow", "status-page"] },
-      { title: "Library", items: ["component-library"] },
-    ],
-    items: {
-      overview: {
-        label: "Overview",
-        type: "page",
-        desc: "Other people's products, same standards",
-        hero: {
-          frag: "status",
-          kicker: "a public status page",
-          lead: "A two-day build. The week it shipped the client's API had a bad day — and support tickets halved, because customers could watch the fix happen.",
-        },
         sections: [
           {
-            paras: [
-              "A few pieces from client work. Different products, different industries — same job: make the right thing, make it hold up, hand it over clean.",
-              "Names are blurred where contracts say so. The numbers and the decisions are real. Open any component on the left, then flip it to Code to see how it's built.",
+            id: "sign-in",
+            kicker: "Authentication",
+            title: "Sign-in that fits the product.",
+            line: "A one-owner app doesn’t need accounts. One key, set into a split-flap board that answers for itself. Try it.",
+            points: [
+              "The key never appears on screen",
+              "Signed session cookie, real sign-out",
+              "Still works with JavaScript off",
             ],
+            media: {
+              frag: "flap",
+              poster: { src: "/showcase/timetrack/flap.webp", width: 460, height: 178 },
+            },
+          },
+          {
+            id: "dashboard",
+            kicker: "Dashboard",
+            title: "A whole day in one glance.",
+            line: "Every session lands on a dial by when it happened, one ring per client. Point at any dot for the story behind it.",
+            points: [
+              "Hours, overlap and billing together",
+              "Unproven time dims on its own",
+              "Day or week, same dial",
+            ],
+            media: {
+              frag: "dial",
+              poster: { src: "/showcase/timetrack/dial.webp", width: 480, height: 535 },
+            },
+          },
+          {
+            id: "time-log",
+            kicker: "Audit trail",
+            title: "Every hour, with receipts.",
+            line: "The log ties each session to the pull request or commit that proves the work happened.",
+            points: [
+              "Filter to what lacks evidence",
+              "Attach a PR in one click",
+              "Search by work, client or project",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/timetrack/time-log.webp",
+                  alt: "Time log: sessions by client with the pull request that evidences each one",
+                  width: 1440,
+                  height: 900,
+                },
+              ],
+            },
+          },
+          {
+            id: "manual-entry",
+            kicker: "Forms",
+            title: "For the time the tracker can’t see.",
+            line: "Calls and meetings go in by hand, tagged so they’re never mistaken for tracked time.",
+            points: [
+              "Find a client as you type",
+              "Duration worked out for you",
+              "Marked “by hand” everywhere it shows",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/timetrack/manual-entry.webp",
+                  alt: "Manual entry drawer: work, client, time range, kind and project",
+                  width: 640,
+                  height: 894,
+                },
+              ],
+            },
+          },
+          {
+            id: "reports",
+            kicker: "Client reports",
+            title: "Invoices clients don’t argue with.",
+            line: "Time, detailed and summary reports, rendered as real documents and frozen the moment you export.",
+            points: [
+              "Three report types, one click",
+              "A sent figure never changes",
+              "Every report says how hours were counted",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/timetrack/reports.webp",
+                  alt: "Time report: hours and amount per client for the period",
+                  width: 1200,
+                  height: 1038,
+                },
+                {
+                  src: "/showcase/timetrack/reports-detailed.webp",
+                  alt: "Detail of Work report: every session listed under its client",
+                  width: 1200,
+                  height: 1038,
+                },
+              ],
+            },
+          },
+          {
+            id: "client-rules",
+            kicker: "Billing rules",
+            title: "Attribution by rule, not guesswork.",
+            line: "Ordered rules map each repository to a client and a rate. Anything unmatched becomes a draft, never an invented client.",
+            points: [
+              "First match wins, in order",
+              "No rate means tracked, never billed",
+              "Change a rule and history recomputes",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/timetrack/client-rules.webp",
+                  alt: "Client rules: each client with its hourly rate and the repositories it matches",
+                  width: 1460,
+                  height: 585,
+                },
+              ],
+            },
+            gold: true,
           },
         ],
-      },
-      "booking-widget": {
-        label: "Booking widget",
-        type: "comp",
-        frag: "booking",
-        desc: "A physio clinic, off the phone",
-        paras: [
-          "A physio clinic was taking every appointment by phone. This widget sits on their existing site — 41% of bookings now happen after office hours, when the front desk is asleep.",
+        faq: [
+          {
+            q: "Why count overlapping sessions in full?",
+            a: "Two agents working two clients’ code in the same hour is two hours of billable work. Timetrack counts both, then shows the overlap right next to the total, so nothing is hidden from you or your client.",
+          },
+          {
+            q: "What makes an hour “defensible”?",
+            a: "It carries proof: a pull request or a commit. The dashboard shows how much of your time has it, and the log makes the rest easy to fix before a client ever asks.",
+          },
+          {
+            q: "Why never invent a client or a rate?",
+            a: "A wrong name on an invoice costs more trust than a missing one. Unmatched work becomes an unbilled draft you confirm, and a client without a rate is tracked but never charged.",
+          },
+          {
+            q: "Why freeze reports at export?",
+            a: "Once a client has a number, it can’t quietly change. Edits after export only touch new drafts, so every invoice you’ve sent stays exactly as sent.",
+          },
+          {
+            q: "Why keep the raw events untouched?",
+            a: "Every figure is rebuilt from the original record. Change a rule and history recomputes cleanly; nothing is ever patched by hand or lost.",
+          },
+          {
+            q: "What about privacy?",
+            a: "Capture is deny-by-default: only folders you allow are tracked, file paths are redacted, and prompt text is thrown away. It’s self-hosted, so the data never leaves your own database.",
+          },
+          {
+            q: "What happens if it’s misconfigured?",
+            a: "It fails closed. A half-configured deployment shows an error, never an open dashboard full of client names and rates.",
+          },
         ],
+        builtBy: {
+          personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
+          fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
+        },
+        next: "paradox",
       },
-      "kyc-flow": {
-        label: "Identity verification",
-        type: "comp",
-        frag: "kyc",
-        desc: "The code I didn't write",
-        paras: [
-          "A fintech client needed identity verification. The senior move was NOT building it: I recommended a vendor and built the glue around it. Saved roughly four months and a compliance headache. Sometimes the most valuable code is the code you don't write.",
-        ],
+      "a-signin": {
+        type: "anchor",
+        label: "Sign-in",
+        desc: "A split-flap board, key never shown",
+        page: "overview",
+        hash: "sign-in",
       },
-      "status-page": {
-        label: "Status page",
-        type: "comp",
-        frag: "status",
-        desc: "Two days, lasting trust",
-        paras: [
-          "A two-day build: a public status page for a client's API. The week it launched their API had a bad day — and support tickets halved, because customers could see what was happening and when it would be fixed. Trust is a feature. Sometimes it costs two days.",
-        ],
+      "a-dashboard": {
+        type: "anchor",
+        label: "Dashboard",
+        desc: "The day as one dial",
+        page: "overview",
+        hash: "dashboard",
+      },
+      "a-log": {
+        type: "anchor",
+        label: "Time log",
+        desc: "Every hour, with receipts",
+        page: "overview",
+        hash: "time-log",
+      },
+      "a-manual": {
+        type: "anchor",
+        label: "Manual entry",
+        desc: "Time the tracker can’t see",
+        page: "overview",
+        hash: "manual-entry",
+      },
+      "a-reports": {
+        type: "anchor",
+        label: "Reports",
+        desc: "Frozen at export",
+        page: "overview",
+        hash: "reports",
+      },
+      "a-rules": {
+        type: "anchor",
+        label: "Client rules",
+        desc: "Attribution by rule",
+        page: "overview",
+        hash: "client-rules",
       },
       "component-library": LIBRARY,
     },
@@ -1223,7 +1252,7 @@ const FST_HOME: Workspace = {
   accent: FST.ACCENT,
   groups: [
     { title: "Company", items: ["about", "services", "engagements", "straight-answers"] },
-    { title: "Work", items: ["go-paradox", "go-shiftsum", "go-clients", "component-library"] },
+    { title: "Work", items: ["go-paradox", "go-timetrack", "component-library"] },
   ],
   items: {
     about: {
@@ -1240,7 +1269,7 @@ const FST_HOME: Workspace = {
         {
           heading: "The work speaks first",
           paras: [
-            "The left rail is real work — a platform architected and shipped end to end, a scheduling product built and acquired, and selected client builds. The components inside are live: click through any of them, then flip from Preview to Code to read how they're built.",
+            "The left rail is real work — two products designed and built end to end: Paradox, a storytelling platform built around interactive data, and Timetrack, self-hosted time tracking for AI coding agents. The components inside are live: click through any of them.",
           ],
         },
         {
@@ -1357,8 +1386,7 @@ const FST_HOME: Workspace = {
       ],
     },
     "go-paradox": PERSONAL_HOME.items["go-paradox"],
-    "go-shiftsum": PERSONAL_HOME.items["go-shiftsum"],
-    "go-clients": PERSONAL_HOME.items["go-clients"],
+    "go-timetrack": PERSONAL_HOME.items["go-timetrack"],
     "component-library": LIBRARY,
   },
 };
@@ -1390,7 +1418,7 @@ export const CAPABILITIES: { heading: string; items: string[] }[] = [
       `${PH.YEARS}+ years shipping production software`,
       "Multiple multi-million-dollar valuations",
       "Scaled a fintech startup from 3 to 20+ people into an acquisition",
-      "Built and sold Shiftsum (2023)",
+      "Designed and built Paradox and Timetrack end to end",
       "0 abandoned codebases",
     ],
   },

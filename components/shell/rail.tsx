@@ -11,6 +11,9 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { BRANDS, brandForHost, otherBrand, BRAND_PARAM, type BrandId } from "@/lib/brands";
 import { navFor } from "@/lib/navigation";
 
+// Timetrack's own mark: its conic orb with the dark core.
+const TIMETRACK_ORB = "conic-gradient(from 210deg, #ffc96b, #ff9e6b, #b69cff, #5fd4e8, #ffc96b)";
+
 // ---- the Paradox tile is alive ------------------------------------------
 // A 40px temporal nexus — the Sacred Timeline's core at the tile's center:
 // a pulsing emerald nucleus, spiral arms swirling into it, timeline strands
@@ -396,6 +399,7 @@ export function Rail() {
         const active = w.id === currentWs;
         const isHome = w.id === "home";
         const isParadox = w.id === "paradox";
+        const isTimetrack = w.id === "timetrack";
         return (
           <Fragment key={w.id}>
             {i === 1 ? (
@@ -447,9 +451,11 @@ export function Rail() {
                     ? MARK_BG[brand.id]
                     : isParadox
                       ? "oklch(0.06 0.014 158)"
-                      : active
-                        ? w.accent
-                        : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
+                      : isTimetrack
+                        ? TIMETRACK_ORB
+                        : active
+                          ? w.accent
+                          : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
                   color: active ? "#fff" : w.accent,
                   fontWeight: 800,
                   fontSize: 13,
@@ -460,7 +466,24 @@ export function Rail() {
                   fontFamily: MONO,
                 }}
               >
-                {isParadox ? <ParadoxTileCanvas active={active} /> : isHome ? "" : w.initials}
+                {isParadox ? (
+                  <ParadoxTileCanvas active={active} />
+                ) : isTimetrack ? (
+                  <span
+                    style={{
+                      display: "block",
+                      margin: "0 auto",
+                      width: 13,
+                      height: 13,
+                      borderRadius: "50%",
+                      background: "#050508",
+                    }}
+                  />
+                ) : isHome ? (
+                  ""
+                ) : (
+                  w.initials
+                )}
                 {active ? (
                   <span
                     style={{

@@ -216,6 +216,20 @@ input::placeholder {
     opacity: 1;
   }
 }
+/* Timetrack's split-flap leaf: arrives rotated back on its hinge, swings down */
+@keyframes ttLeaf {
+  0% {
+    transform: rotateX(-82deg);
+    filter: brightness(2.1);
+  }
+  55% {
+    filter: brightness(1.15);
+  }
+  100% {
+    transform: rotateX(0deg);
+    filter: brightness(1);
+  }
+}
 @keyframes drawerIn {
   from {
     transform: translateX(100%);

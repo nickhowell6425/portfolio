@@ -7,10 +7,10 @@ disable-model-invocation: true
 # New Fragment
 
 Adds a live component fragment to the portfolio. A fragment is a small, fully interactive
-miniature of real shipped UI (see existing ones: `booking`, `kyc`, `status` in
-`components/fragments/clients.tsx`).
+miniature of real shipped UI (see existing ones: `flap`, `dial` in
+`components/fragments/timetrack.tsx`).
 
-Parse the arguments as: workspace id (`home|paradox|shiftsum|clients` or a new one),
+Parse the arguments as: workspace id (`home|paradox|timetrack` or a new one),
 fragment id (kebab/camel, used as the `FragmentId`), and a human title. Ask the user for
 anything missing — especially what the fragment shows and the story behind it.
 
@@ -23,8 +23,9 @@ anything missing — especially what the fragment shows and the story behind it.
      so state survives navigation and is shared with the library view.
    - Wrap in `FCard(w, accent, productName)` from `./ui` — pick `w` from the design's
      scale (360/380/400/430/480/560). Paradox fragments use `PCard` and the `PX` palette.
-   - Use the workspace accent: home `#5b8def`, paradox `#3edba6`, shiftsum `#e3a84e`,
-     clients `#a98bf5`.
+   - Use the workspace accent: home `#5b8def`, paradox `#3edba6`, timetrack `#ffb454`.
+     Product-styled fragments use their product's card (`PCard` for Paradox, `TTCard` for
+     Timetrack).
    - Inline style objects, matching the density/sizing of existing fragments
      (12–15px type, 8–10px radii). Respect `useReducedMotion()` for any animation.
 
