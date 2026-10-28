@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Showcase screenshots are text-heavy UI; they're served at 90.
+  images: { qualities: [75, 90] },
   async redirects() {
     // Paradox's per-component pages became sections of its product page
     const paradox = [

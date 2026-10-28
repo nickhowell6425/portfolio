@@ -446,19 +446,19 @@ input::placeholder {
   justify-content: center;
   align-items: flex-start;
   gap: 16px;
-  padding: 40px 28px;
+  padding: 32px 24px;
 }
 .sc-shot {
   display: block;
   width: auto;
   height: auto;
-  max-width: 82%;
-  max-height: 460px;
+  max-width: 100%;
+  max-height: 480px;
   border-radius: 10px;
   box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.9);
 }
 .sc-shots-pair .sc-shot {
-  max-width: 46%;
+  max-width: calc(50% - 8px);
 }
 .sc-shots-pair .sc-shot + .sc-shot {
   margin-top: 48px;
@@ -502,10 +502,10 @@ input::placeholder {
     padding: 22px 12px;
   }
   .sc-shots {
-    padding: 26px 16px;
+    padding: 20px 12px;
   }
   .sc-shot {
-    max-height: 380px;
+    max-height: 420px;
   }
   .sc-faq {
     margin-top: 72px;

@@ -59,7 +59,12 @@ function SectionMedia({ sec, accent }: { sec: ShowcaseSection; accent: string })
               alt={im.alt}
               width={im.width}
               height={im.height}
-              sizes="(max-width: 700px) 80vw, 420px"
+              sizes={
+                imgs.length > 1
+                  ? "(max-width: 700px) 46vw, 270px"
+                  : "(max-width: 700px) 92vw, 520px"
+              }
+              quality={90}
               className="sc-shot"
             />
           ))}
@@ -281,6 +286,7 @@ export function Showcase({
                 sizes={
                   t.lead ? "(max-width: 560px) 100vw, 700px" : "(max-width: 560px) 100vw, 360px"
                 }
+                quality={90}
                 style={{
                   objectFit: t.contain ? "contain" : "cover",
                   objectPosition: t.contain ? "50% 20%" : "40% 0%",
