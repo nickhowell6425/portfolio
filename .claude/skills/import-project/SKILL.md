@@ -41,7 +41,8 @@ Confirm before building — these are content decisions, not code decisions:
 - **Workspace**: id, name, one-line desc, and an honest status chip
   (existing patterns: `concept · 2026`, `self-hosted · v0.1 beta`).
 - **Accent**: one distinctive color, ideally from the design's own palette. Taken hues:
-  blue `#5b8def` (home), emerald `#3edba6` (paradox), amber `#ffb454` (timetrack).
+  blue `#5b8def` (home), emerald `#3edba6` (paradox), amber `#ffb454` (timetrack),
+  lime `#c8f542` (constellation).
 - **Tags**: the real stack/framework chips for the sidebar.
 - **Pieces**: which screen is the product page's cover, which features become sections
   (screens, or 1–2 live component miniatures). Favor range: auth, dashboards, discovery.

@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import type { FragmentId } from "@/lib/content";
+import { PlanBranches, RankQueue, ShipForecast } from "./constellation";
 import { BranchCards, SignInGateway, TimelineSpine } from "./paradox";
 import { DayDial, SplitFlapSignIn } from "./timetrack";
 
@@ -10,4 +11,7 @@ export const FRAGMENT_COMPONENTS: Record<FragmentId, ComponentType> = {
   divergence: BranchCards,
   flap: SplitFlapSignIn,
   dial: DayDial,
+  rank: RankQueue,
+  branches: PlanBranches,
+  forecast: ShipForecast,
 };

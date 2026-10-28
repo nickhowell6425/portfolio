@@ -65,6 +65,39 @@ function TimetrackMark() {
   );
 }
 
+// Constellation's mark: four linked stars in ink on its lime, the same
+// glyph the app's own sidebar and client portal carry.
+function ConstellationMark() {
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        inset: 0,
+        borderRadius: "inherit",
+        overflow: "hidden",
+        background: "#c8f542",
+      }}
+    >
+      <svg viewBox="0 0 30 30" style={{ display: "block", width: "100%", height: "100%" }}>
+        <g transform="translate(15 15) scale(.78) translate(-15 -15)">
+          <path
+            d="M8 20 L14 9 L22 14 L18 22 Z"
+            fill="none"
+            stroke="#0d0f14"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+          <circle cx="8" cy="20" r="2.4" fill="#0d0f14" />
+          <circle cx="14" cy="9" r="2.4" fill="#0d0f14" />
+          <circle cx="22" cy="14" r="2.4" fill="#0d0f14" />
+          <circle cx="18" cy="22" r="2.4" fill="#0d0f14" />
+        </g>
+      </svg>
+    </span>
+  );
+}
+
 /**
  * A product's mark, identical wherever it appears (rail tile, product page,
  * "Next product" card). Fills its positioned parent; products without one
@@ -87,5 +120,6 @@ export function ProductMark({
 }) {
   if (wsId === "paradox") return <ParadoxMark active={active} res={res} delay={delay} />;
   if (wsId === "timetrack") return <TimetrackMark />;
+  if (wsId === "constellation") return <ConstellationMark />;
   return <>{children}</>;
 }

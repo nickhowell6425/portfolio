@@ -8,7 +8,7 @@ import { useActiveSection } from "@/hooks/use-active-section";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useWsSticky } from "@/hooks/use-ws-transition";
 import { useNav } from "@/components/providers/brand-provider";
-import { PH } from "@/lib/content";
+import { PH, accentText } from "@/lib/content";
 import { hrefFor } from "@/lib/navigation";
 
 const itemDelay = (si: number) => 70 + si * 26;
@@ -94,7 +94,7 @@ export function Sidebar() {
                   ? it.page === currentItem && it.hash === activeSection
                   : id === currentItem && !activeSection;
               const target = it.type === "ws" ? workspaceById(it.ws) : null;
-              const itemAccent = target ? target.accent : null;
+              const itemAccent = target ? accentText(target) : null;
               const icon =
                 it.type === "page" || it.type === "showcase"
                   ? "#"
@@ -130,7 +130,7 @@ export function Sidebar() {
                     style={{
                       width: 16,
                       textAlign: "center",
-                      color: active ? W.accent : (itemAccent ?? "var(--faint)"),
+                      color: active ? accentText(W) : (itemAccent ?? "var(--faint)"),
                       fontFamily: MONO,
                       fontSize: 12.5,
                       flex: "0 0 auto",

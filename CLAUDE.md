@@ -65,8 +65,8 @@ steps down to a `div`), and `ContentArea` widens to 1080 for it. Sidebar `type: 
 jump to a section (`page` + `hash`); they aren't routes but do appear in ⌘K. Responsive rules
 are the `.sc-*` classes in `globals.css`. Paradox's old per-component URLs 308 to their
 sections, and the retired Shiftsum / Client builds workspaces 308 to Timetrack
-(`next.config.ts`). Without `live`, a product page's CTAs lead into its first feature section
-instead of a demo. A product's mark (`components/shell/product-mark.tsx`) is the same in the
+(`next.config.ts`). A product page's CTAs ("See how it works") lead into its first feature
+section; there is no "Try it live" button. A product's mark (`components/shell/product-mark.tsx`) is the same in the
 rail tile, the product page's identity mark, and the "Next product" card.
 
 **Server/client split.** Pages render prose server-side (`components/content/sections.tsx`,
@@ -110,6 +110,9 @@ a `prefers-contrast: more` override; don't "fix" it globally without asking.
 
 ## Gotchas
 
+- **Never state a product's status** anywhere in site copy, metadata or `llms.txt`: no
+  "shipped", "beta", "MVP", "prototype", "concept", "client project", version numbers or
+  "not yet". Describe what a product does and how it's built, never how finished it is.
 - A PreToolUse hook blocks edits to `.env*` (except `.env.example`) and `pnpm-lock.yaml`;
   a PostToolUse hook lints every edited `.ts/.tsx` and reports failures back.
 - `zod` is v4 (`z.email()`, not `z.string().email()`).

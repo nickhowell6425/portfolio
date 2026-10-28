@@ -6,7 +6,7 @@ import { Sections } from "@/components/content/sections";
 import { CompanyHero } from "@/components/content/company-hero";
 import { Showcase } from "@/components/content/showcase";
 import { BRAND_IDS, BRANDS, isBrandId, type BrandId } from "@/lib/brands";
-import type { ShowcaseItem, Workspace } from "@/lib/content";
+import { accentText, type ShowcaseItem, type Workspace } from "@/lib/content";
 import { defaultItemId, hrefFor, navFor } from "@/lib/navigation";
 
 interface Props {
@@ -150,7 +150,7 @@ export default async function WorkspacePage({ params }: Props) {
           item={item}
           name={ws.name}
           accent={ws.accent}
-          liveHref={item.live ? hrefFor(ws.id, item.live) : undefined}
+          ink={accentText(ws)}
           builtBy={item.builtBy[brand]}
           wsId={ws.id}
           next={
@@ -160,6 +160,7 @@ export default async function WorkspacePage({ params }: Props) {
                   name: nextWs.name,
                   initials: nextWs.initials,
                   accent: nextWs.accent,
+                  ink: accentText(nextWs),
                   href: hrefFor(nextWs.id, defaultItemId(nextWs)),
                 }
               : undefined

@@ -23,9 +23,10 @@ missing — especially what the fragment shows and the story behind it.
      `components/content/live-fragment.tsx`).
    - State via `useFragState(fid, defaults)` from `@/components/providers/fragment-state`
      so state survives navigation.
-   - Wrap in the product's card (`PCard` for Paradox, `TTCard` for Timetrack; `FCard`
+   - Wrap in the product's card (`PCard` for Paradox, `TTCard` for Timetrack, `CNCard` for Constellation; `FCard`
      from `./ui` otherwise) — pick `w` from the design's scale (360/380/400/430/480/560).
-   - Use the workspace accent: paradox `#3edba6`, timetrack `#ffb454`.
+   - Use the workspace accent: paradox `#3edba6`, timetrack `#ffb454`, constellation
+     `#c8f542` (lime: ink text on it, never white).
    - Inline style objects, matching the density/sizing of existing fragments
      (12–15px type, 8–10px radii). Respect `useReducedMotion()` for any animation.
 

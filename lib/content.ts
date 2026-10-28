@@ -15,7 +15,15 @@ export const PH = {
   FOOTER: "⌘K — jump to any project or feature",
 } as const;
 
-export type FragmentId = "spine" | "gateway" | "divergence" | "flap" | "dial";
+export type FragmentId =
+  | "spine"
+  | "gateway"
+  | "divergence"
+  | "flap"
+  | "dial"
+  | "rank"
+  | "branches"
+  | "forecast";
 
 export interface Section {
   heading?: string;
@@ -91,8 +99,6 @@ export interface ShowcaseItem {
   /** One factual paragraph — also the meta description. */
   summary: string;
   cover: { src: string; alt: string };
-  /** Where "Try it live" goes (an item id in the same workspace); omitted = no live demo. */
-  live?: string;
   stack: string[];
   tiles: ShowcaseTile[];
   sections: ShowcaseSection[];
@@ -135,8 +141,17 @@ export interface Workspace {
   desc: string;
   status: string;
   accent: string;
+  /** Accent for text in the light theme, when `accent` is too pale to read on white. */
+  accentInk?: string;
   groups: SidebarGroup[];
   items: Record<string, SidebarItem>;
+}
+
+/** A workspace's accent as text colour: its light-theme ink when it has one. */
+export function accentText(ws: Pick<Workspace, "accent" | "accentInk">): string {
+  return ws.accentInk
+    ? `color-mix(in srgb, ${ws.accent} calc(100% - var(--light, 0) * 100%), ${ws.accentInk})`
+    : ws.accent;
 }
 
 // ---- Workspaces ----------------------------------------------
@@ -152,7 +167,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     accent: "#5b8def",
     groups: [
       { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
-      { title: "Work", items: ["go-paradox", "go-timetrack"] },
+      { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation"] },
     ],
     items: {
       about: {
@@ -171,7 +186,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               `${PH.YEARS}+ years building. ${PH.STATUS_LINE}. As CTO and founding engineer at AccountTouch I solely architected and shipped the whole platform — a cross-platform mobile app, a serverless backend, and a web portal, all Dockerized and in production.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
-              "The left rail is real work: two products, each with a page on how it's built and why. The components inside are live — click through any of them.",
+              "The left rail is real work: three products, each with a page on how it's built and why. The components inside are live — click through any of them.",
             ],
           },
           {
@@ -302,6 +317,12 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ws: "timetrack",
         desc: "Time tracking for the age of AI",
       },
+      "go-constellation": {
+        label: "Constellation",
+        type: "ws",
+        ws: "constellation",
+        desc: "Prioritization across every client",
+      },
     },
   },
   {
@@ -309,7 +330,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     initials: "P",
     name: "Paradox",
     desc: "A living multiverse of stories",
-    status: "concept · 2026",
+    status: "storytelling · 2026",
     accent: "#3edba6",
     groups: [
       { title: "Project", items: ["overview", "demo"] },
@@ -339,7 +360,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           src: "/showcase/paradox/home.webp",
           alt: "Paradox homepage: a living graph of story timelines",
         },
-        live: "demo",
         stack: [
           "Next.js",
           "React",
@@ -569,7 +589,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         desc: "The whole app, running in the browser",
         kicker: "the app, running",
         src: "/demos/paradox/02-Marketing/Homepage.html",
-        lead: "The full Paradox concept, live and edge-to-edge — traverse the multiverse, open a timeline, fork a reality.",
+        lead: "Paradox, live and edge-to-edge — traverse the multiverse, open a timeline, fork a reality.",
       },
       "a-signin": {
         type: "anchor",
@@ -627,7 +647,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     initials: "TT",
     name: "Timetrack",
     desc: "Time tracking for the age of AI",
-    status: "self-hosted · v0.1 beta",
+    status: "time tracking · 2026",
     accent: "#ffb454",
     groups: [
       { title: "Project", items: ["overview"] },
@@ -858,7 +878,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
           fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
         },
-        next: "paradox",
+        next: "constellation",
       },
       "a-signin": {
         type: "anchor",
@@ -904,6 +924,328 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       },
     },
   },
+  {
+    id: "constellation",
+    initials: "CN",
+    name: "Constellation",
+    desc: "Prioritization across every client",
+    status: "planning · 2026",
+    accent: "#c8f542",
+    accentInk: "#3f5c00",
+    groups: [
+      { title: "Project", items: ["overview"] },
+      {
+        title: "Features",
+        items: [
+          "a-queue",
+          "a-branches",
+          "a-forecast",
+          "a-inbox",
+          "a-timeline",
+          "a-portal",
+          "a-client",
+          "a-setup",
+        ],
+      },
+    ],
+    items: {
+      overview: {
+        type: "showcase",
+        label: "Overview",
+        desc: "What to work on next, across every client",
+        seoTitle: "Constellation — prioritization and project planning across every client",
+        tagline: "Know what to work on next, across every client.",
+        summary:
+          "Constellation, designed and built end to end: one ranked queue across every client, plans that branch like code, ship dates with honest error bars, client messages turned into proposed changes, and a live status page clients check for themselves.",
+        cover: {
+          src: "/showcase/constellation/cover.webp",
+          alt: "Constellation queue: every client's issues in one ranked list, with forecasts and a capacity-planned Today",
+        },
+        stack: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Zod",
+          "PostgreSQL",
+          "Redis",
+          "Background jobs",
+          "Gmail & Slack APIs",
+          "Calendar sync",
+          "Stripe API",
+          "WebSockets",
+          "Vercel",
+          "GitHub Actions CI/CD",
+        ],
+        tiles: [
+          {
+            title: "Queue",
+            line: "Every client, one ranked list.",
+            img: "/showcase/constellation/queue.webp",
+            target: "queue",
+            lead: true,
+          },
+          {
+            title: "Inbox",
+            line: "Messages become proposed changes.",
+            img: "/showcase/constellation/inbox.webp",
+            target: "inbox",
+          },
+          {
+            title: "Timeline",
+            line: "Forecast bands, not guesses.",
+            img: "/showcase/constellation/timeline.webp",
+            target: "timeline",
+          },
+          {
+            title: "Issue",
+            line: "What moves the date, spelled out.",
+            img: "/showcase/constellation/issue.webp",
+            target: "forecast",
+          },
+          {
+            title: "Client portal",
+            line: "The same truth, read-only.",
+            img: "/showcase/constellation/portal.webp",
+            target: "portal",
+          },
+          {
+            title: "Phone",
+            line: "Today, in one hand.",
+            img: "/showcase/constellation/phone.webp",
+            target: "queue",
+            contain: true,
+          },
+        ],
+        sections: [
+          {
+            id: "queue",
+            kicker: "Prioritization",
+            title: "One ranked queue across every client.",
+            line: "Every open issue, scored on deadline, client value, who’s waiting and effort. Change what matters and the queue re-sorts. Try it.",
+            points: [
+              "Today fills itself to your capacity",
+              "Every score shows its reasons",
+              "J / K, X and ⌘K for everything",
+            ],
+            media: { frag: "rank" },
+          },
+          {
+            id: "branches",
+            kicker: "Scenario planning",
+            title: "Plans branch like code.",
+            line: "Say yes to the rush job on a branch first. Every forecast moves, and you merge only if the week still works.",
+            points: [
+              "A diff against main before you commit",
+              "Forecasts, load and late count recompute",
+              "Merge or discard in one click",
+            ],
+            media: { frag: "branches" },
+          },
+          {
+            id: "forecast",
+            kicker: "Forecasting",
+            title: "Dates with honest error bars.",
+            line: "Each issue ships on a range, not a guess. Finish a sub-issue and watch the date pull in.",
+            points: [
+              "A p10–p90 range on every date",
+              "The chance of hitting the due date",
+              "Shows which work moves the date",
+            ],
+            media: { frag: "forecast" },
+          },
+          {
+            id: "inbox",
+            kicker: "Intake",
+            title: "Client messages become proposed changes.",
+            line: "Email, Slack, calendar and billing are read for what they change: a new issue, a moved date, more scope. You accept or decline.",
+            points: [
+              "The effect on your week, shown first",
+              "Nothing changes without a yes",
+              "A and D on the keyboard",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/constellation/inbox.webp",
+                  alt: "Inbox: a client email proposing a new due date, with the field-by-field change and its effect on the plan",
+                  width: 1440,
+                  height: 900,
+                },
+              ],
+            },
+          },
+          {
+            id: "timeline",
+            kicker: "Timeline & load",
+            title: "The whole quarter, and this week.",
+            line: "Every project’s plan, forecast band and due date on one timeline, and daily hours against capacity underneath.",
+            points: [
+              "Late work is visible weeks early",
+              "Overbooked days turn red",
+              "Same view on every plan branch",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/constellation/timeline.webp",
+                  alt: "Timeline on the ferro-rush branch: plan bars, forecast bands, due dates and a diff of what slips",
+                  width: 1440,
+                  height: 760,
+                },
+              ],
+            },
+          },
+          {
+            id: "portal",
+            kicker: "Client portal",
+            title: "Clients see what you see.",
+            line: "A read-only live page per project: status in plain language, milestones, the forecast, and exactly what’s waiting on them.",
+            points: [
+              "Their blockers, with the days they’d recover",
+              "Updates without a status meeting",
+              "No internal ranks, rates or other clients",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/constellation/portal.webp",
+                  alt: "Client portal: expected delivery against target, milestones, what's waiting on the client and the delivery forecast",
+                  width: 1440,
+                  height: 1000,
+                },
+              ],
+            },
+          },
+          {
+            id: "client",
+            kicker: "Client workspace",
+            title: "Every client on one page.",
+            line: "Retainer hours, open issues, forecasts, people and the signals worth noticing, like replies getting slower.",
+            points: [
+              "Retainer burn against plan",
+              "Projects and issues with forecasts",
+              "Upcoming dates in one list",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/constellation/client.webp",
+                  alt: "Client workspace for Halcyon Health: retainer use, forecast, projects, issues, weekly hours and people",
+                  width: 1440,
+                  height: 1000,
+                },
+              ],
+            },
+          },
+          {
+            id: "setup",
+            kicker: "Onboarding",
+            title: "Set up from the tools you already use.",
+            line: "Connect mail, chat, calendar and billing, confirm the clients it finds, set your deep-work hours and tune the ranking.",
+            points: [
+              "Clients detected from real threads",
+              "Capacity set per weekday",
+              "Ranking preview on your own issues",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/constellation/setup.webp",
+                  alt: "Setup, step one: connect sources like Gmail, Slack, Google Calendar and Stripe",
+                  width: 1440,
+                  height: 720,
+                },
+              ],
+            },
+            gold: true,
+          },
+        ],
+        faq: [
+          {
+            q: "How is the rank score worked out?",
+            a: "A weighted average of four signals scored 0 to 10: deadline pressure, client value, whether someone is waiting, and effort. You set the weights, and every issue shows its score and the main reason for it, so the order is never a black box.",
+          },
+          {
+            q: "Why branches instead of a what-if mode?",
+            a: "Because a plan change is a change you might not keep. A branch shows the diff first (which projects slip, by how many days, how many hours it adds) and then you merge it or throw it away, the same way you would with code.",
+          },
+          {
+            q: "Why forecast a range instead of one date?",
+            a: "One date hides the risk. A p10–p90 band and an on-time percentage make a late project visible weeks earlier, while there’s still time to move work around it.",
+          },
+          {
+            q: "Does it ever message a client on its own?",
+            a: "No. Intake proposes changes; nothing reaches a client and no date moves without an explicit yes.",
+          },
+          {
+            q: "What does the client see?",
+            a: "A read-only live page for their project: status in plain language, milestones, the forecast and what’s waiting on them. Never internal ranks, rates or other clients.",
+          },
+        ],
+        builtBy: {
+          personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
+          fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
+        },
+        next: "paradox",
+      },
+      "a-queue": {
+        type: "anchor",
+        label: "Ranked queue",
+        desc: "Every client, one list",
+        page: "overview",
+        hash: "queue",
+      },
+      "a-branches": {
+        type: "anchor",
+        label: "Plan branches",
+        desc: "What-ifs you can merge",
+        page: "overview",
+        hash: "branches",
+      },
+      "a-forecast": {
+        type: "anchor",
+        label: "Forecasts",
+        desc: "Dates with error bars",
+        page: "overview",
+        hash: "forecast",
+      },
+      "a-inbox": {
+        type: "anchor",
+        label: "Inbox",
+        desc: "Messages to proposed changes",
+        page: "overview",
+        hash: "inbox",
+      },
+      "a-timeline": {
+        type: "anchor",
+        label: "Timeline & load",
+        desc: "The quarter and this week",
+        page: "overview",
+        hash: "timeline",
+      },
+      "a-portal": {
+        type: "anchor",
+        label: "Client portal",
+        desc: "A live, read-only page",
+        page: "overview",
+        hash: "portal",
+      },
+      "a-client": {
+        type: "anchor",
+        label: "Client workspace",
+        desc: "Every client on one page",
+        page: "overview",
+        hash: "client",
+      },
+      "a-setup": {
+        type: "anchor",
+        label: "Onboarding",
+        desc: "Sources, capacity, ranking",
+        page: "overview",
+        hash: "setup",
+      },
+    },
+  },
 ];
 
 const [PERSONAL_HOME, ...PROJECTS] = PERSONAL_WORKSPACES;
@@ -928,7 +1270,7 @@ const FST_HOME: Workspace = {
   accent: FST.ACCENT,
   groups: [
     { title: "Company", items: ["about", "services", "engagements", "straight-answers"] },
-    { title: "Work", items: ["go-paradox", "go-timetrack"] },
+    { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation"] },
   ],
   items: {
     about: {
@@ -945,7 +1287,7 @@ const FST_HOME: Workspace = {
         {
           heading: "The work speaks first",
           paras: [
-            "The left rail is real work — two products designed and built end to end: Paradox, a storytelling platform built around interactive data, and Timetrack, time tracking for the age of AI. The components inside are live: click through any of them.",
+            "The left rail is real work — three products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; and Constellation, prioritization and planning across every client. The components inside are live: click through any of them.",
           ],
         },
         {
@@ -1063,6 +1405,7 @@ const FST_HOME: Workspace = {
     },
     "go-paradox": PERSONAL_HOME.items["go-paradox"],
     "go-timetrack": PERSONAL_HOME.items["go-timetrack"],
+    "go-constellation": PERSONAL_HOME.items["go-constellation"],
   },
 };
 
@@ -1093,7 +1436,7 @@ export const CAPABILITIES: { heading: string; items: string[] }[] = [
       `${PH.YEARS}+ years shipping production software`,
       "Multiple multi-million-dollar valuations",
       "Scaled a fintech startup from 3 to 20+ people into an acquisition",
-      "Designed and built Paradox and Timetrack end to end",
+      "Designed and built Paradox, Timetrack and Constellation end to end",
       "0 abandoned codebases",
     ],
   },

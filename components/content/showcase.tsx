@@ -13,6 +13,8 @@ export interface ShowcaseNext {
   name: string;
   initials: string;
   accent: string;
+  /** Accent as text (theme-aware); defaults to `accent`. */
+  ink?: string;
   href: string;
 }
 
@@ -79,17 +81,17 @@ export function Showcase({
   item,
   name,
   accent,
-  liveHref,
   builtBy,
   next,
   wsId,
+  ink = accent,
 }: {
   item: ShowcaseItem;
   /** The product's name — the page's <h1>. */
   name: string;
   accent: string;
-  /** The live demo; without one the CTAs lead into the feature sections. */
-  liveHref?: string;
+  /** Accent as text (theme-aware); defaults to `accent`. */
+  ink?: string;
   builtBy: string;
   next?: ShowcaseNext;
   /** Workspace id — picks the product's mark (the same one its rail tile shows). */
@@ -174,7 +176,7 @@ export function Showcase({
           <p style={{ margin: 0, fontSize: 16, color: "var(--dim)" }}>{item.tagline}</p>
         </div>
         <Link
-          href={liveHref ?? tour}
+          href={tour}
           className="hov-bright"
           style={{
             marginBottom: 6,
@@ -191,15 +193,7 @@ export function Showcase({
             textDecoration: "none",
           }}
         >
-          {liveHref ? (
-            <>
-              <span aria-hidden="true">▶</span> Try it live
-            </>
-          ) : (
-            <>
-              See how it works <span aria-hidden="true">↓</span>
-            </>
-          )}
+          See how it works <span aria-hidden="true">↓</span>
         </Link>
       </header>
 
@@ -265,7 +259,7 @@ export function Showcase({
           {item.tiles.map((t) => (
             <Link
               key={t.title}
-              href={t.target ? `#${t.target}` : (liveHref ?? tour)}
+              href={t.target ? `#${t.target}` : tour}
               className={t.lead ? "sc-tile sc-tile-lead hov-raise" : "sc-tile hov-raise"}
               style={{
                 position: "relative",
@@ -325,7 +319,7 @@ export function Showcase({
 
       {/* feature sections: media then text in the DOM, alternated by CSS */}
       {item.sections.map((sec, i) => {
-        const tint = sec.gold ? GOLD : accent;
+        const tint = sec.gold ? GOLD : ink;
         return (
           <section
             key={sec.id}
@@ -375,7 +369,7 @@ export function Showcase({
           `name` makes them one exclusive group: opening one closes the rest. */}
       <section aria-labelledby="sc-faq" className="sc-faq">
         <div style={{ flex: "1 1 220px", display: "flex", flexDirection: "column", gap: 8 }}>
-          <span style={kicker(accent)}>FAQ</span>
+          <span style={kicker(ink)}>FAQ</span>
           <h2
             id="sc-faq"
             className="sc-h2"
@@ -442,28 +436,6 @@ export function Showcase({
             alignItems: "center",
           }}
         >
-          {liveHref ? (
-            <Link
-              href={liveHref}
-              className="hov-bright"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                height: 40,
-                margin: "8px 0 4px",
-                padding: "0 20px",
-                borderRadius: 10,
-                border: "1px solid var(--border2)",
-                background: "var(--surface)",
-                color: "var(--text)",
-                fontWeight: 600,
-                fontSize: 14,
-                textDecoration: "none",
-              }}
-            >
-              ▶ Try it live
-            </Link>
-          ) : null}
           <MessageCta label="Let’s talk" />
         </div>
       </section>
@@ -509,7 +481,7 @@ export function Showcase({
             <span style={{ fontSize: 12, color: "var(--dim)" }}>Next product</span>
             <span style={{ fontSize: 18, fontWeight: 800 }}>{next.name}</span>
           </span>
-          <span aria-hidden="true" style={{ fontWeight: 700, color: next.accent }}>
+          <span aria-hidden="true" style={{ fontWeight: 700, color: next.ink ?? next.accent }}>
             →
           </span>
         </Link>
