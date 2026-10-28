@@ -45,9 +45,9 @@ export const BRANDS: Record<BrandId, Brand> = {
     name: "Nicholas Howell",
     short: "Nicholas Howell",
     url: PERSONAL_URL,
-    title: "Nicholas Howell — Portfolio",
+    title: "Nicholas Howell — Full-Stack Developer & CTO",
     description:
-      "The Workspace — a portfolio you open and poke around in. Live components from real products, the decisions behind them, and the person who builds with AI agents and makes it hold up.",
+      "Nicholas Howell’s engineering portfolio: web and mobile products, design and architecture decisions, and 10+ years of experience. Based in Saint Petersburg, Florida.",
     siteName: "Nicholas Howell — The Workspace",
     ogImage: "/og/personal.png",
     email: "nickhowell6425@gmail.com",
@@ -59,9 +59,9 @@ export const BRANDS: Record<BrandId, Brand> = {
     name: "Full Stack Technologies, LLC",
     short: "Full Stack Technologies",
     url: FST_URL,
-    title: "Full Stack Technologies — Product engineering",
+    title: "Full Stack Technologies — Custom Software Development",
     description:
-      "Full Stack Technologies builds, rescues, and scales software products — senior engineering with AI agents, fixed scope, and live work you can click through.",
+      "Custom web and mobile software, codebase rescue, and fractional CTO support. Led by Nicholas Howell in Saint Petersburg, Florida, for founders and small teams.",
     siteName: "Full Stack Technologies",
     ogImage: "/og/fst.png",
     email: "nickhowell6425@gmail.com",

@@ -22,6 +22,8 @@ export function defaultItemId(ws: Workspace): string {
 /** Canonical href for a workspace item. Home/About is the site root. */
 export function hrefFor(wsId: string, itemId: string): string {
   if (wsId === "home" && itemId === "about") return "/";
+  if (wsId === "blog" && itemId === "index") return "/blog";
+  if ((wsId === "ai" || wsId === "prompts") && itemId === "index") return `/${wsId}`;
   return `/${wsId}/${itemId}`;
 }
 

@@ -10,3 +10,6 @@ docs/design
 public
 .claude/skills/pixel-check/references
 .vercel
+
+# generated browser snapshots and screenshots
+.playwright-mcp

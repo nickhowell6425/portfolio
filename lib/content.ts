@@ -4,14 +4,14 @@
 // ("anchor"), demos ("demo"), or links to another workspace ("ws").
 // ============================================================
 
-import type { BrandId } from "./brands";
+import { BRANDS, type BrandId } from "./brands";
 
 export const PH = {
   NAME: "Nicholas Howell",
   FIRST: "Nicholas",
   YEARS: "10",
   EMAIL: "nickhowell6425@gmail.com",
-  STATUS_LINE: "Multiple multi-million valuations · 0 abandoned codebases",
+  STATUS_LINE: "Product architecture · web and mobile · technical leadership",
   FOOTER: "⌘K — jump to any project or feature",
 } as const;
 
@@ -31,6 +31,9 @@ export type FragmentId =
 export interface Section {
   heading?: string;
   paras: string[];
+  prompt?: string;
+  table?: { headers: string[]; rows: string[][] };
+  links?: { label: string; href: string }[];
   cta?: "message";
   ctaLabel?: string;
 }
@@ -39,6 +42,9 @@ export interface PageItem {
   type: "page";
   label: string;
   desc: string;
+  title?: string;
+  seoTitle?: string;
+  article?: { published: string; modified: string };
   sections: Section[];
 }
 
@@ -101,6 +107,7 @@ export interface ShowcaseItem {
   tagline: string;
   /** One factual paragraph — also the meta description. */
   summary: string;
+  context?: Section[];
   cover: { src: string; alt: string };
   stack: string[];
   tiles: ShowcaseTile[];
@@ -143,6 +150,8 @@ export interface Workspace {
   name: string;
   desc: string;
   status: string;
+  /** Owning brand for the studio libraries; former personal URLs redirect here. */
+  canonicalBrand?: BrandId;
   accent: string;
   /** Accent for text in the light theme, when `accent` is too pale to read on white. */
   accentInk?: string;
@@ -170,40 +179,43 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     accent: "#5b8def",
     groups: [
       { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
-      { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm"] },
+      {
+        title: "Explore",
+        items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm"],
+      },
     ],
     items: {
       about: {
         label: "About",
         type: "page",
-        desc: "Who you'd be working with",
+        desc: "Full-stack development and technical leadership for founders and small teams",
         sections: [
           {
             paras: [
-              `I'm ${PH.NAME} — CTO, founding engineer, and senior full-stack developer. For ${PH.YEARS}+ years I've shipped products to real customers — greenfield builds and established codebases alike — and helped teams reach multiple multi-million-dollar valuations.`,
-              "My honest framing for 2026: I've mastered AI as an accelerator — but mastering the tool is the easy half. The harder half is understanding what it produces — evaluating it, hardening it, and making it perform under real load and real scale. Point me at a blank repo or drop me into your existing product and team; either way you get someone who runs with AI agents and knows exactly what to do when they get it wrong.",
+              `I'm ${PH.NAME} — CTO, founding engineer, and senior full-stack developer. For ${PH.YEARS}+ years I've worked across web and mobile applications, backend systems, and the technical decisions that connect them.`,
+              "I help founders and small teams turn an idea into working software, improve an existing product, or make a difficult technical decision. That includes web and mobile applications, backend systems, and the infrastructure that keeps them running. I use AI agents to accelerate the work and review their output against the requirements, security boundaries, and behavior your users need.",
             ],
           },
           {
-            heading: "The receipts",
+            heading: "Experience behind the work",
             paras: [
-              `${PH.YEARS}+ years building. ${PH.STATUS_LINE}. As CTO and founding engineer at AccountTouch I solely architected and shipped the whole platform — a cross-platform mobile app, a serverless backend, and a web portal, all Dockerized and in production.`,
+              `At AccountTouch, I served as CTO and founding engineer and architected the platform: a cross-platform mobile app, a serverless backend, and a web portal. My ${PH.YEARS}+ years of experience span product architecture, implementation, and technical leadership.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
-              "The left rail is real work: four products, each with a page on how it's built and why. The components inside are live — click through any of them.",
+              "Explore Paradox for interactive data and onboarding, Timetrack for activity records and reporting, Constellation for prioritization and planning, and Helm for decisions across clients and AI agents. Each product page explains the decisions and includes interfaces you can explore.",
             ],
           },
           {
-            heading: "What I'm not",
+            heading: "Work directly with the engineer",
             paras: [
-              "An agency, a dev shop, or a body-leasing arrangement. You get me, my judgment, my agents, and the receipts.",
+              "You work directly with me on scope, architecture, implementation, and handoff. I can take ownership of a build or join your existing team and work within its stack and process.",
             ],
           },
           {
             heading: "If you're building something",
             cta: "message",
-            ctaLabel: "Leave a message →",
+            ctaLabel: "Tell me about your project →",
             paras: [
-              "Drop a note in the message box below — bring the idea in whatever shape it's in. I'll tell you straight whether it's a six-week build or a six-month one — even if the answer is “you don't need me yet.”",
+              "Send a short description of the problem, who the software is for, and what already exists. Include any deadline or budget constraints. We can then decide whether the next step is a focused build, a codebase review, or a smaller experiment.",
             ],
           },
         ],
@@ -211,10 +223,14 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       "how-i-work": {
         label: "How I work",
         type: "page",
-        desc: "What an engagement actually looks like",
+        title: "How I work with founders and engineering teams",
+        seoTitle: "Full-stack engineering engagements and process",
+        desc: "How we scope, review, build, and hand over your software project.",
         sections: [
           {
-            paras: ["Built in public, shipped in days"],
+            paras: [
+              "Start with the problem your users need solved. Agree on the smallest useful outcome, review working software as it develops, and keep the code and operating knowledge with your team.",
+            ],
           },
           {
             heading: "It starts with a conversation",
@@ -229,15 +245,15 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             ],
           },
           {
-            heading: "Results in days, not months",
+            heading: "Review working software early",
             paras: [
-              "With AI doing the heavy lifting and me steering it, you start seeing real, working output in days — not weeks, not months. Momentum you can watch instead of wait for.",
+              "We break the work into reviewable steps and agree on acceptance criteria before building. Early demonstrations make it easier to catch misunderstandings while changes are still inexpensive. Delivery dates depend on the scope and what we learn about the existing system.",
             ],
           },
           {
-            heading: "I push the code to the edge",
+            heading: "Use tools that earn their place",
             paras: [
-              "I keep a close eye on what's shipping and keep pushing the limits — newest tools, latest patterns, the best version that still holds up under real load. Cutting-edge where it earns its place, boring and bulletproof everywhere it counts.",
+              "I reuse your existing stack where it works. AI-assisted changes get the same review as any other code: permissions, error handling, tests for important behavior, and a practical way to recover if a deployment goes wrong.",
             ],
           },
         ],
@@ -245,12 +261,14 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       "straight-answers": {
         label: "Straight answers",
         type: "page",
-        desc: "The honest FAQ",
+        title: "Working with Nicholas Howell: common questions",
+        seoTitle: "Hiring a full-stack developer: common questions",
+        desc: "Answers about project fit, AI-assisted development, pricing, and maintenance.",
         sections: [
           {
             heading: "“Should I just build it myself with AI?”",
             paras: [
-              "Genuinely: maybe. If it's a prototype to test interest, yes — go. Today's tools are great at that, and you'll learn more in a weekend than in a month of meetings.",
+              "If you need to test an idea with sample data, building a small experiment yourself can be a useful first step. Get feedback before committing to a larger build.",
               "Where it bites is the moment real users, real money, or real data show up. That's when you want someone who's seen what breaks — and who knows where AI quietly cuts the wrong corner.",
             ],
           },
@@ -263,7 +281,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             heading: "“What do you cost?”",
             paras: [
-              "Less than a bad hire, more than a tool subscription. Fixed scope wherever possible, so the risk sits with me, not you.",
+              "Pricing depends on the scope, the condition of the existing system, and the responsibility you need me to take on. We agree on deliverables and commercial terms before starting. A defined piece of work may suit a fixed scope; embedded work needs a different arrangement.",
             ],
           },
           {
@@ -275,7 +293,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             heading: "“Will you maintain it after launch?”",
             paras: [
-              "Yes — or I'll hand it to your team so cleanly they won't need me. Your call. “0 abandoned codebases” is a number I intend to keep.",
+              "Ongoing maintenance or a handoff to your team can be part of the engagement. We should agree on ownership, documentation, access, and support expectations before the build begins.",
             ],
           },
         ],
@@ -283,7 +301,9 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       "off-clock": {
         label: "Off the clock",
         type: "page",
-        desc: "The human running the agents",
+        title: "Nicholas Howell, away from the keyboard",
+        seoTitle: "Life in Saint Petersburg, Florida",
+        desc: "Family, travel, ice hockey, and the interests behind Nicholas Howell’s engineering work.",
         sections: [
           {
             paras: ["The rest of this portfolio is the work. This page is the person running it."],
@@ -362,10 +382,10 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         type: "showcase",
         label: "Overview",
         desc: "A storytelling app where the timeline is the interface",
-        seoTitle: "Paradox — sign-up, search, real-time and interactive data",
+        seoTitle: "Paradox — interactive storytelling",
         tagline: "A living multiverse of stories.",
         summary:
-          "Paradox, designed and built end to end: sign-up, search, a details panel, real-time activity and an interactive canvas, built the way production apps need it.",
+          "Explore Paradox, an interactive storytelling app with branching timelines, guest-first onboarding, search, and a canvas for navigating connected stories.",
         cover: {
           src: "/showcase/paradox/home.webp",
           alt: "Paradox homepage: a living graph of story timelines",
@@ -431,7 +451,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             id: "interactive-data",
             kicker: "Interactive data",
             title: "Complex data people want to explore.",
-            line: "A pannable canvas with a minimap underneath. It never gets lost. Try it.",
+            line: "Explore connected timelines on a pannable canvas, with a minimap that keeps the wider story in view.",
             points: [
               "Minimap at 1:1 with the canvas",
               "Drag, scrub and guided tour",
@@ -442,8 +462,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             id: "sign-up",
             kicker: "Sign-up & onboarding",
-            title: "Sign-up that doesn’t lose people.",
-            line: "Most apps lose users at the front door. This one lets them in first.",
+            title: "Let readers explore before signing up.",
+            line: "Guest access lets readers explore first, with magic-link, Google, and Discord sign-in when they choose to join.",
             points: [
               "Guest mode before any account",
               "Magic links, Google and Discord",
@@ -457,7 +477,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             id: "command-palette",
             kicker: "Search & command palette",
-            title: "Find anything in two keystrokes.",
+            title: "Search stories and run commands in one place.",
             line: "⌘K searches every timeline, branch, event and variant, and runs commands too.",
             points: [
               "Grouped, ranked results",
@@ -478,7 +498,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             id: "details-panel",
             kicker: "Details panel",
-            title: "Click anything. Get everything.",
+            title: "Inspect the details without losing your place.",
             line: "Overview, canon, branches and variants in one panel, without leaving the view.",
             points: [
               "Tabs instead of new pages",
@@ -505,7 +525,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             id: "live-activity",
             kicker: "Real-time activity",
-            title: "Show that it’s alive.",
+            title: "Keep recent story activity in view.",
             line: "A live stream of what’s happening right now: new branches, discoveries, milestones.",
             points: ["Real-time events", "Readable at a glance", "Every item leads somewhere"],
             media: {
@@ -560,15 +580,15 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         faq: [
           {
             q: "Why magic links instead of passwords?",
-            a: "Passwords are where sign-ups stall and support tickets start. A one-tap link removes both, and there’s no password to leak.",
+            a: "Magic links remove the need to create and remember a password. Their security still depends on email access, short-lived tokens, safe redirects, and session handling.",
           },
           {
             q: "Why let people in as a guest first?",
-            a: "People decide to sign up after they see something worth it. Asking first loses them at the door, so here looking is never gated.",
+            a: "Guest access lets readers understand the stories and navigation before deciding whether to create an account. The sign-in flow is available when they want to take part.",
           },
           {
             q: "Why a ⌘K command palette?",
-            a: "One box finds everything and runs everything. Power users never leave the keyboard, and new users never hunt through menus.",
+            a: "The palette brings search and common actions into one keyboard-accessible entry point, with results grouped by content type. It gives readers an alternative to navigating each view separately.",
           },
           {
             q: "Why a details panel instead of a new page?",
@@ -611,7 +631,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       "a-search": {
         type: "anchor",
         label: "Command palette",
-        desc: "Find anything in two keystrokes",
+        desc: "Open search and commands with ⌘K",
         page: "overview",
         hash: "command-palette",
       },
@@ -672,10 +692,10 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         type: "showcase",
         label: "Overview",
         desc: "Tracks every AI session, even several at once",
-        seoTitle: "Timetrack — key sign-in, live dashboards, audit trails and reports",
+        seoTitle: "Timetrack — AI coding session tracking",
         tagline: "Time tracking for the age of AI, all on your machine.",
         summary:
-          "Timetrack, designed and built end to end: key sign-in, a live dashboard, an audit trail, reports and a rules engine, built the way production apps need it.",
+          "Explore Timetrack, a local-first tool for tracking AI coding sessions, reviewing parallel activity, and creating reports backed by an audit trail.",
         cover: {
           src: "/showcase/timetrack/cover.webp",
           alt: "Timetrack dashboard: a week of sessions on one dial, with totals, overlap and billing",
@@ -743,7 +763,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             id: "dashboard",
             kicker: "Dashboards & data viz",
             title: "Raw activity, one clear picture.",
-            line: "Hundreds of events become one dial: each session placed by when it ran, one ring per client. Point at any dot.",
+            line: "Session activity becomes one dial: each session placed by when it ran, one ring per client. Inspect a point to see the record behind it.",
             points: [
               "Totals, overlap and money in one view",
               "Weak data dims on its own",
@@ -757,11 +777,11 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             id: "sign-in",
             kicker: "Key authentication",
-            title: "Secure sign-in, no accounts.",
-            line: "Not every app needs sign-up. One owner, one key, and a sign-in that never shows what you type. Try it.",
+            title: "Key-based sign-in for a single owner.",
+            line: "A single-owner tool can use a key-based sign-in flow, with masked input and a signed session cookie.",
             points: [
               "Signed session cookie, real sign-out",
-              "Nothing secret ever on screen",
+              "Key input stays masked",
               "Still works with JavaScript off",
             ],
             media: {
@@ -793,7 +813,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             id: "reports",
             kicker: "Reports & exports",
-            title: "Reports nobody argues with.",
+            title: "Reports with a traceable calculation.",
             line: "Real documents generated from live data, then frozen the moment they’re sent.",
             points: [
               "Three report types, one click",
@@ -862,7 +882,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           },
           {
             q: "Why count parallel sessions in full?",
-            a: "Several jobs running at once is real work. Each one counts in full, and the overlap sits right beside the total, so nothing is hidden.",
+            a: "Session time records each job’s duration, including concurrent jobs. Overlap is shown alongside the total so it can be distinguished from elapsed human time. What is billable depends on the client agreement.",
           },
           {
             q: "Why keep the raw data untouched?",
@@ -964,10 +984,10 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         type: "showcase",
         label: "Overview",
         desc: "What to work on next, across every client",
-        seoTitle: "Constellation — prioritization and project planning across every client",
+        seoTitle: "Constellation — multi-client project planning",
         tagline: "Know what to work on next, across every client.",
         summary:
-          "Constellation, designed and built end to end: one ranked queue across every client, plans that branch like code, ship dates with honest error bars, client messages turned into proposed changes, and a live status page clients check for themselves.",
+          "Explore Constellation, a multi-client planning tool with a ranked work queue, plan branches, delivery forecasts, and a read-only client portal.",
         cover: {
           src: "/showcase/constellation/cover.webp",
           alt: "Constellation queue: every client's issues in one ranked list, with forecasts and a capacity-planned Today",
@@ -1534,7 +1554,7 @@ export const FST = {
   LEGAL: "Full Stack Technologies, LLC",
   INITIALS: "FS",
   ACCENT: "#f7931e",
-  STATUS_LINE: "Senior product engineering · fixed scope · 0 abandoned codebases",
+  STATUS_LINE: "Senior product engineering · clear scope · code ownership",
 } as const;
 
 const FST_HOME: Workspace = {
@@ -1546,18 +1566,19 @@ const FST_HOME: Workspace = {
   accent: FST.ACCENT,
   groups: [
     { title: "Company", items: ["about", "services", "engagements", "straight-answers"] },
+    { title: "Resources", items: ["go-services", "go-blog", "go-ai", "go-prompts"] },
     { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm"] },
   ],
   items: {
     about: {
       label: "About",
       type: "page",
-      desc: "Who builds your product",
+      desc: "Custom software development and technical leadership for founders and small teams",
       sections: [
         {
           paras: [
-            `${FST.LEGAL} is a product engineering studio led by ${PH.NAME} — CTO, founding engineer, and senior full-stack developer with ${PH.YEARS}+ years shipping products to real customers and multiple multi-million-dollar valuations behind him.`,
-            "We build new products from a blank repo, rescue and harden existing ones, and scale what's already working. AI agents do the heavy lifting; senior engineers steer, evaluate, and make the output hold up under real load.",
+            `${FST.LEGAL} builds custom web and mobile software for founders and small teams. Based in Saint Petersburg, Florida, the studio is led by ${PH.NAME}, a CTO and founding engineer with ${PH.YEARS}+ years of product development experience.`,
+            "Bring a new product idea, an application that needs attention, or a team that needs technical leadership. We define the next useful outcome, build within an agreed scope, and use AI agents with engineering review throughout the work.",
           ],
         },
         {
@@ -1569,7 +1590,7 @@ const FST_HOME: Workspace = {
         {
           heading: "Who you work with",
           paras: [
-            "Senior hands only. No account managers between you and the people writing your code, no junior bench learning on your budget. The person scoping the work is the person accountable for shipping it.",
+            `Work directly with ${PH.NAME} on technical decisions and delivery. Agree on who owns each part of the work, what success looks like, and how your team will operate the software afterward.`,
           ],
         },
         {
@@ -1577,7 +1598,7 @@ const FST_HOME: Workspace = {
           cta: "message",
           ctaLabel: "Start a conversation →",
           paras: [
-            "Tell us what you're building — in whatever shape it's in. You'll get a straight read on scope, timeline, and whether we're the right fit, usually the same day.",
+            "Tell us who the product is for, what needs to work, and what already exists. Include your constraints so we can discuss a useful next step and whether the engagement is a fit.",
           ],
         },
       ],
@@ -1585,12 +1606,14 @@ const FST_HOME: Workspace = {
     services: {
       label: "Services",
       type: "page",
-      desc: "What we take on",
+      title: "Software development and technical leadership services",
+      seoTitle: "Custom software development services",
+      desc: "Web and mobile product development, codebase rescue, embedded engineering, and fractional CTO support.",
       sections: [
         {
           heading: "New product builds",
           paras: [
-            "From idea to production: architecture, mobile and web apps, backend and infrastructure, launched to real users. Shortest path to proof first, then the version that scales.",
+            "Scope and build the core user journey across web or mobile interfaces, backend systems, integrations, and deployment. Start with a focused release and an explicit plan for what follows.",
           ],
         },
         {
@@ -1622,7 +1645,9 @@ const FST_HOME: Workspace = {
     engagements: {
       label: "Engagements",
       type: "page",
-      desc: "How a project runs",
+      title: "How a software development engagement works",
+      seoTitle: "Project scope, delivery, and software handoff",
+      desc: "What to expect from the first conversation through scoping, development, and handoff.",
       sections: [
         {
           heading: "1 · Conversation",
@@ -1633,19 +1658,19 @@ const FST_HOME: Workspace = {
         {
           heading: "2 · Fixed-scope proposal",
           paras: [
-            "A written scope, timeline, and price. Fixed scope wherever possible, so the risk sits with us, not you. Typical builds run 2–12 weeks.",
+            "A written scope identifies deliverables, acceptance criteria, assumptions, exclusions, and commercial terms. Where uncertainty is high, start with discovery or a codebase review before committing to a larger build.",
           ],
         },
         {
           heading: "3 · Build in the open",
           paras: [
-            "Working software in days, not months — shared as it's built, so you watch momentum instead of waiting for it.",
+            "Review working software at agreed checkpoints. Use those reviews to confirm behavior, resolve questions, and make any change in scope explicit before it changes the schedule.",
           ],
         },
         {
           heading: "4 · Launch & handoff",
           paras: [
-            "We ship it, then either maintain it or hand it to your team so cleanly they won't need us. Your call.",
+            "Confirm the release checks, deployment process, monitoring, and recovery plan. Then hand over the repository, infrastructure access, and operating notes, with maintenance responsibilities agreed in writing.",
           ],
         },
       ],
@@ -1653,12 +1678,14 @@ const FST_HOME: Workspace = {
     "straight-answers": {
       label: "Straight answers",
       type: "page",
-      desc: "The honest FAQ",
+      title: "Working with Full Stack Technologies: common questions",
+      seoTitle: "Software development pricing, ownership, and fit",
+      desc: "Answers about custom software project pricing, who writes the code, and who owns it.",
       sections: [
         {
           heading: "“What does it cost?”",
           paras: [
-            "Less than a bad hire, more than a tool subscription. Most work is quoted as fixed scope after the first conversation; ongoing and embedded work is billed monthly.",
+            "The quote depends on scope, technical uncertainty, integrations, and ongoing responsibilities. Defined deliverables can be quoted as a fixed scope; embedded or ongoing work needs terms that reflect the work. We agree on pricing before starting.",
           ],
         },
         {
@@ -1679,6 +1706,30 @@ const FST_HOME: Workspace = {
         },
       ],
     },
+    "go-ai": {
+      type: "ws",
+      label: "AI playbook",
+      desc: "AI across the delivery lifecycle",
+      ws: "ai",
+    },
+    "go-prompts": {
+      type: "ws",
+      label: "Prompt library",
+      desc: "Prompts and when to use them",
+      ws: "prompts",
+    },
+    "go-services": {
+      type: "ws",
+      label: "Services",
+      desc: "Ways to work together",
+      ws: "services",
+    },
+    "go-blog": {
+      type: "ws",
+      label: "Blog",
+      desc: "Practical product engineering guides",
+      ws: "blog",
+    },
     "go-paradox": PERSONAL_HOME.items["go-paradox"],
     "go-timetrack": PERSONAL_HOME.items["go-timetrack"],
     "go-constellation": PERSONAL_HOME.items["go-constellation"],
@@ -1686,9 +1737,1678 @@ const FST_HOME: Workspace = {
   },
 };
 
+const SERVICES: Workspace = {
+  id: "services",
+  initials: "S",
+  name: "Services",
+  desc: "From first build to technical leadership",
+  status: "work together",
+  accent: "#f7931e",
+  canonicalBrand: "fst",
+  groups: [
+    {
+      title: "Ways to work together",
+      items: ["product-development", "codebase-rescue", "fractional-cto"],
+    },
+  ],
+  items: {
+    "product-development": {
+      type: "page",
+      label: "Product development",
+      title: "Custom web and mobile product development",
+      seoTitle: "Web and mobile product development",
+      desc: "Turn a focused product idea into a web or mobile application with clear scope, review points, and a practical handoff.",
+      sections: [
+        {
+          heading: "Who this is for",
+          paras: [
+            "Founders and small teams who know the problem they want to solve and need an engineer to turn it into usable software. Full Stack Technologies is led by Nicholas Howell, a CTO and founding engineer based in Saint Petersburg, Florida.",
+            "The starting point can be a new idea, a set of designs, or a product with a missing workflow. The first decision is which user outcome the next release must deliver.",
+          ],
+        },
+        {
+          heading: "What the work can include",
+          paras: [
+            "Product scoping, application architecture, web and mobile interfaces, backend APIs, data models, integrations, and deployment. The scope should identify which of those your project actually needs.",
+            "A useful deliverable is a complete user journey: someone can enter the application, do the core task, and see the result. Agree on the important failure cases alongside the happy path.",
+          ],
+        },
+        {
+          heading: "How we define a useful first release",
+          paras: [
+            "Start with one audience and one repeated task. List the data, permissions, and external systems involved. Separate essential behavior from work that can wait, and write down how we will decide that the release is ready.",
+            "You review working software at agreed checkpoints. Handoff should cover the repository, infrastructure access, setup instructions, and maintenance responsibilities.",
+          ],
+          links: [
+            {
+              label: "How to scope the first version of a software product",
+              href: "/blog/scope-first-software-release",
+            },
+            {
+              label: "Paradox: onboarding and interactive storytelling",
+              href: "/paradox/overview",
+            },
+          ],
+        },
+        {
+          heading: "Start with the problem",
+          paras: [
+            "Send a short brief: who the users are, what they need to do, what exists today, and the deadline or budget constraints. That is enough to begin a useful scoping conversation.",
+          ],
+          cta: "message",
+          ctaLabel: "Discuss your project →",
+        },
+      ],
+    },
+    "codebase-rescue": {
+      type: "page",
+      label: "Codebase rescue",
+      title: "Codebase review and software rescue",
+      seoTitle: "Codebase review and software rescue",
+      desc: "Assess an existing application, prioritize its risks, and plan focused repairs before committing to a rewrite.",
+      sections: [
+        {
+          heading: "When an existing application needs attention",
+          paras: [
+            "Repeated regressions, unclear data ownership, fragile deployments, or a feature backlog nobody can estimate are reasons to inspect the system before adding more work. The same applies when AI-generated code has accumulated faster than the team can review it.",
+            "The goal is to understand what is failing, what is worth keeping, and what must change for the next business milestone.",
+          ],
+        },
+        {
+          heading: "What a review should examine",
+          paras: [
+            "Trace an important user journey from the interface to the stored data. Review access controls, input validation, integrations, error handling, and the way changes reach production. Identify where a failed request or deployment could lose data or leave the system inconsistent.",
+            "Findings should point to specific behavior and explain the consequence. Separate confirmed defects from concerns that need measurement or access to production evidence.",
+          ],
+        },
+        {
+          heading: "From findings to repairs",
+          paras: [
+            "Agree on a short repair sequence ordered by user impact and risk. Stabilize the critical path, add checks for the failures being repaired, and make deployments recoverable. A targeted replacement may be appropriate where the existing design cannot meet the requirement.",
+            "Deliverables and access needs depend on the system. Agree on a review scope and written findings before scheduling a broader remediation effort.",
+          ],
+          links: [
+            {
+              label: "Repair or rewrite an existing application?",
+              href: "/blog/repair-or-rewrite",
+            },
+            {
+              label: "A practical review checklist for AI-generated code",
+              href: "/blog/review-ai-generated-code",
+            },
+            {
+              label: "Timetrack: inspectable records and reporting",
+              href: "/timetrack/overview",
+            },
+          ],
+        },
+        {
+          heading: "Describe the failure you want solved",
+          paras: [
+            "Share the symptoms, the affected workflow, the stack, and the next change you need to make. Keep credentials and sensitive customer data out of the initial message.",
+          ],
+          cta: "message",
+          ctaLabel: "Discuss your project →",
+        },
+      ],
+    },
+    "fractional-cto": {
+      type: "page",
+      label: "Fractional CTO",
+      title: "Fractional CTO and embedded senior engineering",
+      seoTitle: "Fractional CTO and senior engineering",
+      desc: "Technical direction and hands-on engineering for founders and small teams that need experienced product leadership.",
+      sections: [
+        {
+          heading: "When technical leadership is the missing piece",
+          paras: [
+            "You may need help turning product priorities into an engineering plan, choosing an architecture, evaluating a vendor, or deciding what to hire for. Sometimes you also need someone to implement the decision with your team.",
+            "Nicholas Howell works with founders and engineering teams through Full Stack Technologies. The role can focus on technical direction, hands-on delivery, or a clearly agreed combination.",
+          ],
+        },
+        {
+          heading: "What we can work through",
+          paras: [
+            "Architecture and data decisions, technical due diligence, delivery planning, hiring needs, engineering review practices, and the use of AI coding tools. Start with the decisions that are blocking progress instead of creating a new process for its own sake.",
+            "Embedded engineering fits into your existing repository, stack, and review process. Agree on decision ownership, availability, and the deliverables the engagement is meant to produce.",
+          ],
+        },
+        {
+          heading: "Define the responsibility before the title",
+          paras: [
+            "A useful engagement has a specific outcome: a technical plan the team can execute, a risky integration resolved, or a review process people can use. Ongoing responsibilities and implementation capacity should be explicit.",
+            "If you already have engineering leadership and need additional senior delivery capacity, the scope can focus on that work.",
+          ],
+          links: [
+            {
+              label: "Constellation: prioritization and delivery planning",
+              href: "/constellation/overview",
+            },
+            {
+              label: "Scope a release around one useful outcome",
+              href: "/blog/scope-first-software-release",
+            },
+          ],
+        },
+        {
+          heading: "Start with the decision in front of you",
+          paras: [
+            "Describe the product, the team, and the technical decision or delivery problem you need help with. Include the next milestone so we can discuss the responsibility the role needs to carry.",
+          ],
+          cta: "message",
+          ctaLabel: "Discuss your project →",
+        },
+      ],
+    },
+  },
+};
+
+const BLOG: Workspace = {
+  id: "blog",
+  initials: "B",
+  name: "Blog",
+  desc: "Practical product engineering guides",
+  status: "writing by Nicholas Howell",
+  accent: "#5b8def",
+  canonicalBrand: "fst",
+  groups: [
+    {
+      title: "Guides",
+      items: [
+        "index",
+        "scope-first-software-release",
+        "review-ai-generated-code",
+        "repair-or-rewrite",
+      ],
+    },
+  ],
+  items: {
+    index: {
+      type: "page",
+      label: "All articles",
+      title: "Practical guides to building and improving software",
+      seoTitle: "Software engineering blog",
+      desc: "Product engineering guides from Nicholas Howell and Full Stack Technologies on software scope, AI code review, and codebase rescue.",
+      sections: [
+        {
+          heading: "For founders and small engineering teams",
+          paras: [
+            "These guides help you make decisions before and during a software engagement: what to build first, what to check before release, and when an existing application needs repair. Each guide connects the decision to examples you can explore in this workspace.",
+          ],
+        },
+        {
+          heading: "Plan a first release",
+          paras: [
+            "A practical guide for founders: choose one user journey, define acceptance criteria, and expose dependencies before committing to a software build.",
+          ],
+          links: [
+            {
+              label: "Read: how to scope the first version of a software product",
+              href: "/blog/scope-first-software-release",
+            },
+          ],
+        },
+        {
+          heading: "Review AI-assisted work",
+          paras: [
+            "A practical review checklist for AI-assisted software: trace the user journey, check authorization and data writes, test failure paths, and plan recovery.",
+          ],
+          links: [
+            {
+              label: "Read: how to review AI-generated code before release",
+              href: "/blog/review-ai-generated-code",
+            },
+          ],
+        },
+        {
+          heading: "Make an existing application easier to change",
+          paras: [
+            "Decide whether to repair, replace a component, or rewrite an application by examining user impact, data risk, and the next required change.",
+          ],
+          links: [
+            {
+              label: "Read: should you repair or rewrite an existing application?",
+              href: "/blog/repair-or-rewrite",
+            },
+          ],
+        },
+        {
+          heading: "Put the guidance to work",
+          paras: [
+            "If a guide describes the problem in front of you, bring a short account of your product, current constraints, and the outcome you need.",
+          ],
+          links: [
+            {
+              label: "Product development",
+              href: "/services/product-development",
+            },
+            {
+              label: "Codebase rescue",
+              href: "/services/codebase-rescue",
+            },
+            {
+              label: "Fractional CTO and embedded engineering",
+              href: "/services/fractional-cto",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss your project →",
+        },
+      ],
+    },
+    "scope-first-software-release": {
+      type: "page",
+      label: "Scope your first release",
+      title: "How to scope the first version of a software product",
+      seoTitle: "How to scope your first software release",
+      desc: "A practical guide for founders: choose one user journey, define acceptance criteria, and expose dependencies before committing to a software build.",
+      sections: [
+        {
+          heading: "Start with one complete user journey",
+          paras: [
+            "Scope a first release around a specific person completing a useful task. “Build a dashboard” describes a screen. “A project owner can review this week’s activity and export an agreed report” describes an outcome you can inspect.",
+            "Write the journey in plain language before listing features. Include how the user arrives, what information they need, what action they take, and how they know it worked. If the journey depends on somebody doing manual work behind the scenes, describe that work too.",
+          ],
+        },
+        {
+          heading: "Use a short brief that exposes the unknowns",
+          paras: [
+            "A useful brief identifies the user, the problem, the current workaround, and the reason to change it. Add the information the system must store, the people allowed to see it, and any external services it depends on.",
+            "Then record the constraints: a fixed event date, a required integration, an existing technology choice, or a budget boundary. Separate confirmed requirements from assumptions. An unanswered question about a payment provider or data import can affect the schedule more than several interface screens.",
+          ],
+        },
+        {
+          heading: "Turn the core journey into acceptance criteria",
+          paras: [
+            "Acceptance criteria describe observable behavior. For a reporting workflow, they might say that a user can select a date range, see which records contribute to a total, and export the same figures. A user without access to the project must be unable to retrieve those records.",
+            "Include important failure cases: an empty result, a duplicate submission, an unavailable integration, or an interrupted operation. These cases reveal work that a polished mockup can hide. The criteria should be specific enough that you and the engineer can agree whether the behavior is present.",
+          ],
+        },
+        {
+          heading: "Separate launch requirements from later work",
+          paras: [
+            "Keep a feature in the first release when the core journey cannot work safely without it. Permissions and data validation often belong there. Extra reporting views, extensive customization, or support for additional audiences may be able to wait.",
+            "For example, a focused reporting tool might begin with one import format and one export layout. Supporting every possible format introduces separate parsing, validation, and support work. Write down that limit so the first release is a deliberate choice rather than a surprise.",
+          ],
+        },
+        {
+          heading: "Test the riskiest dependency before fixing the plan",
+          paras: [
+            "If the build relies on an unfamiliar API, uncertain source data, or a platform restriction, investigate that dependency early. A small technical check can tell you whether the proposed workflow is feasible and what access it needs.",
+            "Once the unknowns are clearer, agree on deliverables, exclusions, review points, and who handles deployment and support. Treat new requirements as explicit scope decisions. This gives you a way to adapt the plan without hiding the effect on cost or delivery.",
+          ],
+        },
+        {
+          heading: "What to bring to a scoping conversation",
+          paras: [
+            "Bring the short brief, any designs, a representative example of the input and output, and the questions you cannot yet answer. You do not need a complete specification to start. You need enough context to identify the next useful piece of work.",
+          ],
+          links: [
+            {
+              label: "Explore product development services",
+              href: "/services/product-development",
+            },
+            {
+              label: "See Timetrack’s reporting workflow",
+              href: "/timetrack/overview",
+            },
+            {
+              label: "Next: how to review AI-generated code",
+              href: "/blog/review-ai-generated-code",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss your project →",
+        },
+      ],
+      article: {
+        published: "2026-10-28",
+        modified: "2026-10-28",
+      },
+    },
+    "review-ai-generated-code": {
+      type: "page",
+      label: "Review AI-generated code",
+      title: "How to review AI-generated code before release",
+      seoTitle: "Reviewing AI-generated code before release",
+      desc: "A practical review checklist for AI-assisted software: trace the user journey, check authorization and data writes, test failure paths, and plan recovery.",
+      sections: [
+        {
+          heading: "Review the behavior the change introduces",
+          paras: [
+            "Treat AI-generated code as a proposed implementation that needs the same scrutiny as any other change. A successful build confirms that the project can compile. It does not confirm that the application meets its requirements or protects the right data.",
+            "Start by identifying what changed for a user. Trace that journey through the interface, request handler, business logic, and storage. Read the callers and the surrounding code so that a locally plausible change is checked against the system it joins.",
+          ],
+        },
+        {
+          heading: "Check authorization where the data is accessed",
+          paras: [
+            "Signing in establishes identity. Authorization decides which records and actions that identity is allowed to access. A hidden button in the interface does not establish that boundary.",
+            "Inspect the server-side handler and data query. Ask what happens if someone changes a record identifier, sends the request directly, or uses another account. Check tenant ownership and privileged actions explicitly. Never paste real credentials or private customer records into a review prompt.",
+          ],
+        },
+        {
+          heading: "Follow every important write and failure path",
+          paras: [
+            "For a write operation, identify what is validated, what can change, and what happens when the operation only partly succeeds. A retry must not silently duplicate a charge, message, or record. Where several changes must succeed together, examine how consistency is maintained.",
+            "Check error handling at external services and storage boundaries. The application should distinguish a successful operation from one that failed or needs attention. Avoid swallowing an error and presenting a success state simply because the generated code supplied a convenient fallback.",
+          ],
+        },
+        {
+          heading: "Choose tests that could catch a real defect",
+          paras: [
+            "Use a small set of checks tied to the behavior at risk. For a protected report, verify the expected result for an allowed account and denial for an account without access. For an import, include malformed input and a repeated submission.",
+            "Read the test itself. A test that repeats the same calculation as the implementation can reproduce the same mistake. Prefer expected results derived from the requirement or a small example you can calculate independently. Run the existing relevant checks as well as the new ones.",
+          ],
+        },
+        {
+          heading: "Inspect what reaches the browser and logs",
+          paras: [
+            "Look for secrets in client bundles, sensitive fields returned unnecessarily by APIs, and private information written into logs. Check that new dependencies and scripts are actually needed and that generated files do not introduce unrelated changes.",
+            "Review the diff after running tooling. Formatting, scaffolding, and code generation can obscure a small behavior change inside a much larger patch. Remove unrelated changes where possible so the reviewer can see the decision being made.",
+          ],
+        },
+        {
+          heading: "Define how to release and recover",
+          paras: [
+            "Before release, know which configuration, permissions, and migrations the change requires. Decide how you will observe whether the core journey still works. For data changes, establish a recovery approach that preserves user data; reverting application code alone may not undo a migration.",
+            "If you cannot explain the important control flow, reduce the change or investigate it before accepting it. AI assistance is useful when the resulting work remains understandable to the people responsible for operating it.",
+          ],
+          links: [
+            {
+              label: "Discuss a codebase review",
+              href: "/services/codebase-rescue",
+            },
+            {
+              label: "See Timetrack’s audit trail and reporting design",
+              href: "/timetrack/overview",
+            },
+            {
+              label: "Next: repair or rewrite an existing application?",
+              href: "/blog/repair-or-rewrite",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss your project →",
+        },
+      ],
+      article: {
+        published: "2026-10-28",
+        modified: "2026-10-28",
+      },
+    },
+    "repair-or-rewrite": {
+      type: "page",
+      label: "Repair or rewrite?",
+      title: "Should you repair or rewrite an existing application?",
+      seoTitle: "Repair or rewrite your application?",
+      desc: "Decide whether to repair, replace a component, or rewrite an application by examining user impact, data risk, and the next required change.",
+      sections: [
+        {
+          heading: "Diagnose the failure before choosing a rewrite",
+          paras: [
+            "Begin with the behavior that is stopping progress. “The code is messy” is difficult to act on. “Customers lose a draft when this request fails” or “every billing change breaks reporting” identifies a problem you can investigate.",
+            "A rewrite may be appropriate, but it replaces working behavior as well as broken behavior. Before choosing it, identify what the current application does that users depend on, including undocumented rules and integrations. Those requirements do not disappear when the implementation changes.",
+          ],
+        },
+        {
+          heading: "Map one critical path through the application",
+          paras: [
+            "Pick a workflow that matters to the business and trace it from entry to stored result. Note the services, data, permissions, and background work involved. Establish whether you can reproduce the reported failure in a safe environment.",
+            "Review the deployment and recovery process alongside the code. A system that is difficult to release safely may need better operating practices before substantial implementation changes. Check what evidence exists: incidents, logs, support reports, and relevant tests. Separate observed failures from untested suspicions.",
+          ],
+        },
+        {
+          heading: "Prefer focused repairs when the boundaries still work",
+          paras: [
+            "Repair is a useful starting point when the application’s structure supports the required behavior and the failures are identifiable. Examples include missing validation, an incorrect query, or an integration without reliable error handling.",
+            "Add a check that demonstrates the failure, make the smallest complete repair, and verify the affected callers. The immediate goal is a safer critical path and a clearer next change. There is no requirement to clean up every file before restoring useful behavior.",
+          ],
+        },
+        {
+          heading: "Replace a component when the problem is contained",
+          paras: [
+            "A targeted replacement can make sense when one module repeatedly blocks the work but the rest of the application remains useful. Define the boundary and expected behavior before replacing the implementation.",
+            "For example, a reporting component can sometimes be replaced while retaining the source records and existing sign-in flow. Compare outputs on representative data before moving users. This approach still needs a plan for compatibility, deployment, and recovery; a smaller replacement is not automatically risk-free.",
+          ],
+        },
+        {
+          heading: "Consider a rewrite when repair cannot meet the requirement",
+          paras: [
+            "A rewrite deserves consideration when the existing design fundamentally cannot support a necessary change, or when maintaining the current platform is no longer feasible. Document the specific constraint and the alternatives that were considered.",
+            "The plan must account for data migration, integrations, behavior parity, access controls, and the transition for existing users. Identify which features must move first and how results will be reconciled. If those costs are missing, the rewrite estimate is incomplete.",
+          ],
+        },
+        {
+          heading: "Ask for a decision you can review",
+          paras: [
+            "A useful assessment connects findings to user impact, identifies the next business milestone, and compares repair, targeted replacement, and rewrite against that milestone. It states what is known, what still needs investigation, and the order of recommended work.",
+            "Start there before commissioning a broad rebuild. The result should help you decide what to preserve and what to change, with enough evidence to question the recommendation.",
+          ],
+          links: [
+            {
+              label: "Explore codebase rescue and review",
+              href: "/services/codebase-rescue",
+            },
+            {
+              label: "Review AI-generated changes before release",
+              href: "/blog/review-ai-generated-code",
+            },
+            {
+              label: "Need technical direction? Fractional CTO services",
+              href: "/services/fractional-cto",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss your project →",
+        },
+      ],
+      article: {
+        published: "2026-10-28",
+        modified: "2026-10-28",
+      },
+    },
+  },
+};
+
+const AI_PLAYBOOK: Workspace = {
+  id: "ai",
+  initials: "AI",
+  name: "AI playbook",
+  desc: "Tools, people, and a working delivery path",
+  status: "practical AI delivery",
+  accent: "#a78bfa",
+  accentInk: "#6842b8",
+  canonicalBrand: "fst",
+  groups: [
+    {
+      title: "Workflow",
+      items: ["index", "workflow", "models"],
+    },
+    {
+      title: "People and delivery",
+      items: ["why-an-engineer", "why-a-designer", "lean-team", "offshore-tradeoffs"],
+    },
+    {
+      title: "Transparency",
+      items: ["resources", "community-research"],
+    },
+  ],
+  items: {
+    index: {
+      type: "page",
+      label: "Start here",
+      title: "Build with AI. Keep the judgment.",
+      seoTitle: "AI software development playbook",
+      desc: "How Nicholas Howell uses Claude Code and Codex across product design, implementation, review, and delivery.",
+      sections: [
+        {
+          heading: "A practical path from idea to maintained software",
+          paras: [
+            "AI is part of the delivery process here. Nicholas uses Claude /design for product design, Claude Code generally for implementation, and Codex for code reviews, image and logo exploration, landing pages, and websites. Some tasks move between both tools.",
+            "The purpose is a smaller, more effective delivery team with clear ownership. Engineers still need to understand the system. Designers still need to understand the people using it. A founder still needs to decide which problem is worth solving.",
+          ],
+        },
+        {
+          heading: "Follow the workflow",
+          paras: [
+            "Start with the software development lifecycle, then use the model guide and prompts for the stage you are in.",
+          ],
+          links: [
+            {
+              label: "The AI-assisted software development lifecycle",
+              href: "/ai/workflow",
+            },
+            {
+              label: "Which tool and model to use when",
+              href: "/ai/models",
+            },
+            {
+              label: "The prompt library: when to use each prompt",
+              href: "/prompts",
+            },
+          ],
+        },
+        {
+          heading: "Understand the people and commercial decisions",
+          paras: [
+            "See where experienced engineering and design earn their place, when a smaller external team can work, and how to evaluate a delivery partner.",
+          ],
+          links: [
+            {
+              label: "Why an engineer still matters",
+              href: "/ai/why-an-engineer",
+            },
+            {
+              label: "Why a designer still matters",
+              href: "/ai/why-a-designer",
+            },
+            {
+              label: "Do you need a full in-house development team?",
+              href: "/ai/lean-team",
+            },
+            {
+              label: "When an offshore handoff is the wrong fit",
+              href: "/ai/offshore-tradeoffs",
+            },
+          ],
+        },
+        {
+          heading: "See the resources and the evidence",
+          paras: [
+            "Our workflow preferences are different from a provider capability claim or an independent performance benchmark. The resources page separates those, and the community review links to the Reddit discussions we read.",
+          ],
+          links: [
+            {
+              label: "AI tools, access, usage, and cost transparency",
+              href: "/ai/resources",
+            },
+            {
+              label: "What Reddit users report about Claude Code and Codex",
+              href: "/ai/community-research",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss an AI-assisted project →",
+        },
+      ],
+    },
+    workflow: {
+      type: "page",
+      label: "AI across the SDLC",
+      title: "An AI-assisted software development lifecycle",
+      seoTitle: "AI across the software development lifecycle",
+      desc: "A working path through discovery, design, planning, implementation, review, release, and maintenance, with an owner and an output at every stage.",
+      sections: [
+        {
+          heading: "Give each stage an owner and an observable result",
+          paras: [
+            "The software development lifecycle, or SDLC, is the path from deciding what to build to operating and improving it. AI can help throughout that path. It does not remove the need to agree on requirements, examine evidence, or own a release decision.",
+            "Our starting split is Claude /design for product design, Claude Code for implementation, and Codex for review. Codex can also own a website or landing-page build. Choose the next tool based on the task and the evidence, rather than forcing every task through a fixed sequence.",
+          ],
+        },
+        {
+          heading: "The delivery path",
+          paras: [
+            "These are recommended responsibilities for a project. One person may cover several roles, but each decision still needs an accountable owner.",
+          ],
+          table: {
+            headers: ["Stage", "AI contribution", "Human decision and output"],
+            rows: [
+              [
+                "Discover",
+                "Turn notes into questions, assumptions, and a brief.",
+                "Founder and engineer agree on one user outcome and acceptance criteria.",
+              ],
+              [
+                "Design",
+                "Use Claude /design to explore flows and interface states.",
+                "Designer reviews hierarchy, usability, accessibility, and the handoff.",
+              ],
+              [
+                "Plan",
+                "Inspect the repository and propose a small change sequence.",
+                "Engineer confirms architecture, permissions, dependencies, and scope.",
+              ],
+              [
+                "Build",
+                "Claude Code usually implements; Codex can also implement.",
+                "Engineer keeps changes reviewable and inspects affected callers.",
+              ],
+              [
+                "Review and verify",
+                "Codex reviews the change and helps exercise failure cases.",
+                "Engineer triages evidence; designer checks the implemented experience.",
+              ],
+              [
+                "Release",
+                "Prepare checks, release notes, and operating instructions.",
+                "Named owner approves deployment, data changes, and recovery.",
+              ],
+              [
+                "Maintain",
+                "Help investigate incidents and propose improvements.",
+                "Owner checks behavior, support needs, and the next priority.",
+              ],
+            ],
+          },
+        },
+        {
+          heading: "A worked example: a client report",
+          paras: [
+            "Start with the outcome: a client can view only their project’s report for an agreed date range. The designer covers loading, empty, error, mobile, and export states. The engineer identifies the records, tenant boundary, calculations, and existing reporting code.",
+            "Give the implementer the approved flow and acceptance criteria. Give the reviewer the same requirement, the revision, and the surrounding code. Verify the expected total and attempt the request with an account that must not have access. A persuasive explanation cannot substitute for that check.",
+            "Before release, confirm how the report is observed, what happens if the export fails, and how the deployment can be recovered. The example is illustrative; it is not a claim about a client engagement.",
+          ],
+        },
+        {
+          heading: "Use a written handoff when switching tools",
+          paras: [
+            "Carry forward the goal, approved design, revision or diff, files changed, checks run, unresolved questions, and decisions already accepted. The second tool should verify the code rather than inherit the first tool’s confidence.",
+            "Stop a review cycle when the agreed checks pass and material findings have a recorded resolution. Repeating reviews indefinitely can add cost without resolving the underlying uncertainty.",
+          ],
+          links: [
+            {
+              label: "Get discovery and scoping prompts",
+              href: "/prompts/discovery",
+            },
+            {
+              label: "Get implementation and handoff prompts",
+              href: "/prompts/implementation",
+            },
+            {
+              label: "Get review and release prompts",
+              href: "/prompts/review-release",
+            },
+          ],
+        },
+      ],
+    },
+    models: {
+      type: "page",
+      label: "Tools and model selection",
+      title: "Which AI tool and model should you use when?",
+      seoTitle: "Claude Code and Codex: tools and model guide",
+      desc: "Our Claude Code and Codex workflow, with dated model examples and a practical way to choose quality, speed, and cost.",
+      sections: [
+        {
+          heading: "Choose the workbench, then the model",
+          paras: [
+            "Claude Code and Codex are working environments with tools, repository context, and permissions. The model is one component inside that environment. A model name alone does not tell you which browser, image tool, integrations, or account limits you have.",
+            "Nicholas’s starting workflow is shown below. The model roles are editorial starting points, not a cross-vendor benchmark or a claim that each named model is used on every engagement.",
+          ],
+        },
+        {
+          heading: "Our starting tool split",
+          paras: [
+            "Switch roles when the task or observed output justifies it. Give either tool the same approved requirements and design references.",
+          ],
+          table: {
+            headers: ["Work", "Usual starting point", "What remains a human responsibility"],
+            rows: [
+              [
+                "Product design",
+                "Claude /design",
+                "Define the user journey, critique options, and approve the interaction design.",
+              ],
+              [
+                "Application implementation",
+                "Claude Code; sometimes Codex or both",
+                "Confirm architecture and inspect the behavior being added.",
+              ],
+              [
+                "Code review",
+                "Codex, with permission to read the connected code",
+                "Reproduce important findings and decide what must change.",
+              ],
+              [
+                "Images and logo exploration",
+                "Codex with its image-generation tools",
+                "Art direction, brand consistency, asset checks, and final suitability.",
+              ],
+              [
+                "Landing pages and websites",
+                "Codex, using an approved brief and visual direction",
+                "Claims, content, responsive behavior, accessibility, and conversion flow.",
+              ],
+            ],
+          },
+        },
+        {
+          heading: "Concrete model examples, checked October 28, 2026",
+          paras: [
+            "Claude’s model aliases can resolve differently by provider. Confirm the actual model in your session rather than copying a version from an old article. OpenAI model availability and settings also depend on the product and account.",
+            "The following routing choices are our suggested starting points. Compare them on representative tasks before making them a project rule.",
+          ],
+          links: [
+            {
+              label: "Anthropic: model aliases and provider-specific versions",
+              href: "https://code.claude.com/docs/en/model-config",
+            },
+            {
+              label: "OpenAI: current model family and capabilities",
+              href: "https://developers.openai.com/api/docs/guides/latest-model",
+            },
+          ],
+          table: {
+            headers: ["Task shape", "Model starting point", "When to change"],
+            rows: [
+              [
+                "Routine Claude Code implementation",
+                "Sonnet family; Anthropic API example: Sonnet 5.5",
+                "Try Opus for unresolved ambiguity or a harder architectural problem.",
+              ],
+              [
+                "Difficult Claude Code investigation",
+                "Opus family; Anthropic API example: Opus 5.5",
+                "Return to a lighter model once the work is well specified.",
+              ],
+              [
+                "Focused, low-risk Claude tasks",
+                "Haiku family; Anthropic API example: Haiku 5.5",
+                "Escalate if results repeatedly miss the acceptance criteria.",
+              ],
+              [
+                "Codex implementation or review",
+                "GPT-6.1 Sol",
+                "Try GPT-6 Astra for difficult, high-consequence analysis.",
+              ],
+              [
+                "Bounded OpenAI tasks",
+                "GPT-6 Luna",
+                "Use a stronger model when verification exposes a quality gap.",
+              ],
+              [
+                "Visual analysis and writing",
+                "GPT-6.1 Terra",
+                "Evaluate on your real screenshots and deliverable.",
+              ],
+            ],
+          },
+        },
+        {
+          heading: "Spend more reasoning where the decision needs it",
+          paras: [
+            "A small copy edit and a permissions migration should not have the same budget. Start with a setting appropriate to the task, measure whether the output passes the checks, and increase effort when better analysis is worth the delay and usage.",
+            "Compare total work: retries, human corrections, and review time as well as token or subscription cost. More agents and more review rounds are not automatically an improvement.",
+          ],
+          links: [
+            {
+              label: "OpenAI: model selection and evaluation guidance",
+              href: "https://developers.openai.com/api/docs/guides/model-selection",
+            },
+          ],
+        },
+        {
+          heading: "Image generation is its own capability",
+          paras: [
+            "Using Codex as the workbench for a visual asset does not mean the selected coding model is also the image generator. Record the tool or image model used when that matters to the handoff. A generated logo direction also needs checks at small sizes and suitable final file formats.",
+            "Use Claude /design for the product interface workflow described here. A visual-generation task can be handled through Codex, then brought into the approved design system.",
+          ],
+          links: [
+            {
+              label: "Claude: using /design in Claude Code",
+              href: "https://support.claude.com/en/articles/14604416-get-started-with-claude-design",
+            },
+            {
+              label: "OpenAI: image generation in the app",
+              href: "https://learn.chatgpt.com/docs/image-generation",
+            },
+            {
+              label: "Design and visual asset prompts",
+              href: "/prompts/design",
+            },
+          ],
+        },
+      ],
+    },
+    "why-an-engineer": {
+      type: "page",
+      label: "Why an engineer?",
+      title: "Why you still need an engineer when AI writes code",
+      seoTitle: "Why AI software projects still need engineers",
+      desc: "AI can accelerate implementation. An engineer connects requirements, architecture, data safety, verification, and long-term ownership.",
+      sections: [
+        {
+          heading: "Someone must decide what correct means",
+          paras: [
+            "An AI coding tool can create a plausible implementation before the requirements are clear. An engineer asks which records belong to whom, what happens when a request fails, and how the new behavior interacts with the system already in place.",
+            "That work starts before code generation. It includes identifying assumptions, reading existing callers, defining trust boundaries, and choosing a change that solves the user’s problem without introducing unnecessary machinery.",
+          ],
+        },
+        {
+          heading: "The expensive decisions often sit between files",
+          paras: [
+            "A screen can look finished while its API exposes another customer’s data. A payment flow can pass its happy-path test and duplicate a write on retry. An import can appear to work while corrupting an existing record.",
+            "The engineer follows those paths across the application, examines failure cases, and selects checks that would reveal the mistake. The question is whether the whole behavior holds, including under the conditions users will actually encounter.",
+          ],
+        },
+        {
+          heading: "AI review is a second input to the decision",
+          paras: [
+            "Our usual split puts Codex in the review role and Claude Code in implementation. Either can be wrong. A separate reviewer can challenge assumptions, but agreement between models is not proof of correctness.",
+            "A useful finding identifies a reproducible failure, affected behavior, and consequence. An engineer checks the finding, fixes or explicitly accepts it, and verifies that the repair did not break a caller. The person accepting the change needs enough understanding to explain it.",
+          ],
+        },
+        {
+          heading: "You need an owner after the code is generated",
+          paras: [
+            "Releases involve configuration, permissions, data changes, observability, and recovery. The engineer should be able to explain how the team will deploy, diagnose failures, and maintain the system.",
+            "For a focused product, that responsibility may fit an experienced external engineer instead of several full-time hires. The ownership still has to exist, with an agreed support and handoff arrangement.",
+          ],
+          links: [
+            {
+              label: "Review AI-generated code before release",
+              href: "/blog/review-ai-generated-code",
+            },
+            {
+              label: "See the complete delivery workflow",
+              href: "/ai/workflow",
+            },
+            {
+              label: "Explore codebase rescue and review",
+              href: "/services/codebase-rescue",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss an AI-assisted project →",
+        },
+      ],
+    },
+    "why-a-designer": {
+      type: "page",
+      label: "Why a designer?",
+      title: "Why you still need a designer when AI makes interfaces",
+      seoTitle: "Why AI product work still needs designers",
+      desc: "AI can produce interface options quickly. A designer makes the workflow understandable, coherent, accessible, and appropriate for the people using it.",
+      sections: [
+        {
+          heading: "An attractive screen is only part of the job",
+          paras: [
+            "A product designer connects a person’s goal to the information and actions on a screen. That includes deciding what appears first, how navigation works, which language makes sense, and what happens when the user has incomplete information.",
+            "Generating several polished options is useful. Choosing which option supports the actual task requires product context, critique, and feedback from the people who will use it.",
+          ],
+        },
+        {
+          heading: "Our product design starting point is Claude /design",
+          paras: [
+            "Nicholas uses Claude /design for product design. Bring the existing components, brand system, target audience, core journey, and content constraints. Generate an interactive direction, then refine it before implementation.",
+            "The designer’s work is to question the default: can a new user find the next action, recover from a mistake, read the content, and operate the interface with a keyboard? Ask for loading, empty, error, success, and mobile states alongside the main screen.",
+          ],
+          links: [
+            {
+              label: "Claude Design: context, iteration, and handoff",
+              href: "https://support.claude.com/en/articles/14604416-get-started-with-claude-design",
+            },
+          ],
+        },
+        {
+          heading: "Review the implemented experience as well as the design",
+          paras: [
+            "A development handoff should identify components, spacing and type rules, responsive changes, interaction behavior, and the states the engineer must preserve. A screenshot alone leaves many decisions unspecified.",
+            "After implementation, review the actual browser experience. Check reading order, contrast, focus visibility, labels, touch targets, and long content. Automated checks can help, but they do not replace watching a person try the important task.",
+          ],
+        },
+        {
+          heading: "Image and website work still needs art direction",
+          paras: [
+            "Codex is also part of our workflow for images, logo exploration, landing pages, and websites. A designer helps keep those outputs consistent with the product and brand rather than treating each generated asset as a separate style.",
+            "You may need a focused design engagement instead of a permanent design department. You still benefit from someone owning the decisions and leaving a usable system for the next page or feature.",
+          ],
+          links: [
+            {
+              label: "Use the design brief and visual asset prompts",
+              href: "/prompts/design",
+            },
+            {
+              label: "Compare a lean team with in-house hiring",
+              href: "/ai/lean-team",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss an AI-assisted project →",
+        },
+      ],
+    },
+    "lean-team": {
+      type: "page",
+      label: "A smaller delivery team",
+      title: "Do you need a full in-house development team?",
+      seoTitle: "AI-assisted delivery versus an in-house dev team",
+      desc: "When an AI-assisted senior engineer and focused design support can fit the work, and when a permanent team is the better investment.",
+      sections: [
+        {
+          heading: "You may be able to buy the capability you need now",
+          paras: [
+            "A focused build with one main user journey may not need separate full-time hires for every discipline. An experienced engineer can cover connected implementation work, while a designer joins for the product decisions and reviews that need design expertise.",
+            "AI can assist with code drafts, investigation, repetitive updates, documentation, and review preparation. That can reduce the need to staff every execution task separately. The size of the benefit depends on scope, system complexity, and how much rework the output needs; there is no fixed team-replacement ratio.",
+          ],
+        },
+        {
+          heading: "Compare responsibility and total cost",
+          paras: [
+            "Consider coordination, ramp-up, review, maintenance, availability, and recovery as well as the quoted hourly rate.",
+          ],
+          table: {
+            headers: ["Approach", "Can fit when", "Check before choosing"],
+            rows: [
+              [
+                "Senior engineer plus focused design support",
+                "The scope is bounded and a small number of people can own the decisions.",
+                "Availability, backup coverage, handoff, support, and ownership of each discipline.",
+              ],
+              [
+                "Permanent in-house team",
+                "Product knowledge, continuing delivery, and operational responsibility are ongoing needs.",
+                "Hiring and management capacity, continuity, specialist needs, and support coverage.",
+              ],
+              [
+                "Distributed or offshore partner",
+                "The handoff, working-hour overlap, and quality controls fit the project.",
+                "Direct senior access, communication, data access, review evidence, and release ownership.",
+              ],
+            ],
+          },
+        },
+        {
+          heading: "Keep a permanent team when the responsibility is permanent",
+          paras: [
+            "A product with many concurrent workstreams, demanding service commitments, deep specialist requirements, or substantial ongoing support may justify an in-house team. AI tools do not create a support rota or preserve institutional knowledge by themselves.",
+            "A lean external team can also become a bottleneck if every decision depends on one person. Plan for absences, documentation, infrastructure access, and the point at which it makes sense to bring work inside.",
+          ],
+        },
+        {
+          heading: "Start with a milestone, then choose the team",
+          paras: [
+            "Define the next outcome and the skills it needs. A first engagement might be a codebase assessment, a complete product workflow, or technical direction for your existing team. Review what capacity you need after that milestone.",
+            "The commercial case is paying for the responsibilities the project needs at this stage, with explicit expectations about delivery and maintenance.",
+          ],
+          links: [
+            {
+              label: "Product development engagements",
+              href: "/services/product-development",
+            },
+            {
+              label: "Fractional CTO and embedded engineering",
+              href: "/services/fractional-cto",
+            },
+            {
+              label: "AI usage and cost transparency",
+              href: "/ai/resources",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss an AI-assisted project →",
+        },
+      ],
+    },
+    "offshore-tradeoffs": {
+      type: "page",
+      label: "Offshore tradeoffs",
+      title: "When an offshore development handoff is the wrong fit",
+      seoTitle: "Offshore development: delivery tradeoffs",
+      desc: "Evaluate a development partner by working-hour overlap, direct access, context, code ownership, and evidence of quality.",
+      sections: [
+        {
+          heading: "Avoid buying a low rate without a delivery system",
+          paras: [
+            "If the work requires frequent discovery and decisions with the founder, a handoff with little working-hour overlap can make feedback harder. Several layers between the client and the engineer can also leave important questions unresolved while implementation continues.",
+            "These are properties of the engagement. They can occur in a domestic agency or an offshore contract. A well-run international team with direct communication and sound engineering practices can be a good fit.",
+          ],
+        },
+        {
+          heading: "Where a distant handoff can become expensive",
+          paras: [
+            "Requirements that are still moving need fast feedback. If each question waits for another workday or travels through an account manager, the apparent savings can be offset by coordination and rework. The same problem appears when the people scoping the work are not the people doing it.",
+            "Another risk is accepting demonstrations without access to the repository, tests, or operating knowledge. You need evidence that the team can change and run the system, wherever that team is located. AI-generated output makes that inspection more important because a large volume of code is easy to produce.",
+          ],
+        },
+        {
+          heading: "Questions to ask any partner",
+          paras: [
+            "Ask who makes architecture decisions, who reviews generated code, which working hours overlap, and how questions reach the implementer. Establish who owns the repository and infrastructure and what happens if the engagement ends.",
+            "Ask to review a small deliverable with its acceptance criteria and verification evidence before committing to a larger scope. Agree on escalation, backup coverage, and support responsibilities. A clear answer to those questions matters more than the country listed on the invoice.",
+          ],
+        },
+        {
+          heading: "Our alternative is direct access and a defined scope",
+          paras: [
+            "Nicholas is based in Saint Petersburg, Florida. Work directly with the person responsible for technical decisions and delivery, with the design and specialist input the scope requires. Working hours, availability, and support still need to be agreed.",
+            "Choose this model when direct decisions and a smaller senior team fit the work. Choose a larger or distributed team when it can provide the ownership, capacity, and coverage you need.",
+          ],
+          links: [
+            {
+              label: "How a smaller delivery team can fit",
+              href: "/ai/lean-team",
+            },
+            {
+              label: "What to expect in a project scope",
+              href: "/blog/scope-first-software-release",
+            },
+            {
+              label: "Technical leadership services",
+              href: "/services/fractional-cto",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss an AI-assisted project →",
+        },
+      ],
+    },
+    resources: {
+      type: "page",
+      label: "Tools, usage, and costs",
+      title: "Our AI resources and what a client should know",
+      seoTitle: "AI tools, resources, usage, and cost transparency",
+      desc: "The Claude Code and Codex tool split, project access decisions, and the AI usage and billing details that belong in a written scope.",
+      sections: [
+        {
+          heading: "The tools are part of the work",
+          paras: [
+            "Nicholas uses Claude Code and Codex. Product design starts with Claude /design. Claude Code is generally the implementation tool; Codex is generally the review tool and is also used for images, logo directions, landing pages, and websites. Some work uses both.",
+            "That is a workflow preference, not a promise that one vendor or model is always better. Model versions, account access, and tool capabilities change. The model guide is a dated reference, while a project should record the versions and tools actually used.",
+          ],
+          links: [
+            {
+              label: "Tool and model selection guide",
+              href: "/ai/models",
+            },
+            {
+              label: "Community reports and their limitations",
+              href: "/ai/community-research",
+            },
+          ],
+        },
+        {
+          heading: "Separate the workbench, model, tools, and project services",
+          paras: [
+            "The workbench is Claude Code or Codex. A selected language model handles reasoning and code generation. An image tool may use a different model. Connected tools can add repository access, browser actions, design assets, or other services. Those are separate access and cost decisions.",
+            "This site itself uses Next.js, React, TypeScript, and Vercel integrations, with Resend for configured contact delivery. A technology used by the portfolio is not automatically required for your product. Reuse the systems that fit the engagement.",
+          ],
+        },
+        {
+          heading: "What the commercial terms should make explicit",
+          paras: [
+            "Ask the written scope to state whether subscriptions and usage are included, billed separately, or supplied through client-owned accounts. It should identify any pass-through charges or markup, spending limits, who approves extra usage, and who owns the accounts afterward.",
+            "This page does not set a universal usage allowance, subscription reimbursement policy, or markup. Those terms need to be confirmed for the engagement. Provider pricing and included limits can change, so compare the current plan and expected workload before setting a budget.",
+          ],
+        },
+        {
+          heading: "Agree on access before supplying private information",
+          paras: [
+            "Identify which code, documents, assets, and data can be shared with each tool and which integrations are permitted. Confirm the account and provider settings that apply to the work. Do not assume every plan has identical data handling.",
+            "Use representative or redacted examples when possible. Keep credentials in approved secret storage, grant only the access the task needs, and plan to remove temporary access after handoff. If a task requires production data or a production action, make that requirement explicit before the task starts.",
+          ],
+        },
+        {
+          heading: "The useful deliverable is inspectable work",
+          paras: [
+            "A client should be able to see what changed, why it changed, what was checked, and what remains uncertain. A handoff can record the models and tools used alongside the revision, design references, tests, and operating instructions.",
+            "Model agreement, hours of agent activity, or a large token count are not evidence of business value. Judge the work against the outcome, acceptance criteria, and responsibilities agreed for the project.",
+          ],
+          links: [
+            {
+              label: "AI-assisted delivery workflow",
+              href: "/ai/workflow",
+            },
+            {
+              label: "Review and handoff prompts",
+              href: "/prompts/review-release",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss an AI-assisted project →",
+        },
+      ],
+    },
+    "community-research": {
+      type: "page",
+      label: "What the community says",
+      title: "What Reddit users report about Claude Code and Codex",
+      seoTitle: "Claude Code and Codex: Reddit workflow research",
+      desc: "A dated reading of user-reported workflows: cross-tool reviews, clear handoffs, frontend preferences, and the limits of repeated AI review.",
+      sections: [
+        {
+          heading: "A qualitative reading, not a popularity ranking",
+          paras: [
+            "Reviewed October 28, 2026. We read discussions in r/ClaudeCode, r/codex, and r/ClaudeAI, including older and recent posts. These are self-selected accounts, with different projects, model versions, prompts, and levels of experience. They cannot establish which tool is objectively best or how most developers work.",
+            "The observations below paraphrase the linked threads. They are useful ideas to test against your own codebase, not independently verified performance results.",
+          ],
+        },
+        {
+          heading: "Some users like Claude implementation with Codex review",
+          paras: [
+            "One discussion describes using Claude Code for planning and execution and Codex to look for edge cases. A separate setup discussion also describes that split, while its author notes the overhead of moving work between agents.",
+            "That resembles Nicholas’s preferred implementation and review roles. The practical lesson we take is to pass a compact written brief and a specific revision, rather than repeatedly copying a long conversation between tools.",
+          ],
+          links: [
+            {
+              label: "Reddit: combining Claude Code and Codex",
+              href: "https://www.reddit.com/r/ClaudeCode/comments/1rh0kuo/anyone_else_using_claude_code_codex_together_way/",
+            },
+            {
+              label: "Reddit: actual workflow and setup discussion",
+              href: "https://www.reddit.com/r/codex/comments/1wyzbib/claude_code_codex_users_what_does_your_actual/",
+            },
+          ],
+        },
+        {
+          heading: "Others reverse the roles",
+          paras: [
+            "Another thread describes Codex implementing and Claude Code actively reviewing and attempting to exercise the result. Its author reports finding a test that was not exercising the intended product behavior.",
+            "That supports trying a separate review role. It does not show that either vendor must always implement or review. Ask the reviewer to inspect the requirement and connected code, and verify the behavior yourself.",
+          ],
+          links: [
+            {
+              label: "Reddit: Codex implements, Claude reviews",
+              href: "https://www.reddit.com/r/ClaudeAI/comments/1vv7pdk/codex_writes_claude_code_reviews_heres_how_it_went/",
+            },
+          ],
+        },
+        {
+          heading: "Review loops and frontend preferences have caveats",
+          paras: [
+            "A reviewer report includes both useful findings and repeated non-issues. Commenters discuss keeping accepted decisions and review rules available to both tools. In a frontend discussion, participants disagree about visual quality and distinguish interface design from the technical implementation.",
+            "Our takeaway is to keep a record of resolved findings, give the next tool the same design system, and stop rerunning reviews without a concrete question. Design quality, implementation correctness, and familiarity with a stack are different things to evaluate.",
+          ],
+          links: [
+            {
+              label: "Reddit: useful findings and repeated review noise",
+              href: "https://www.reddit.com/r/codex/comments/1xcku1r/codex_reviewed_claude_codes_pull_requests_for_3/",
+            },
+            {
+              label: "Reddit: frontend design versus implementation",
+              href: "https://www.reddit.com/r/codex/comments/1s4h9hy/frontend_ui_design_performance_comparison/",
+            },
+          ],
+        },
+        {
+          heading: "How this changes the workflow",
+          paras: [
+            "Use a defined task, observable acceptance criteria, and a written handoff. Try the alternate tool when a model repeats the same failure after receiving clear feedback. Keep humans responsible for design acceptance and engineering release decisions.",
+            "The linked posts mention older models and personal configurations. Use the current model guide for examples rather than copying the settings in an older comment.",
+          ],
+          links: [
+            {
+              label: "Current model examples and selection criteria",
+              href: "/ai/models",
+            },
+            {
+              label: "Use the handoff and review prompts",
+              href: "/prompts/implementation",
+            },
+          ],
+        },
+      ],
+    },
+  },
+};
+
+const PROMPTS: Workspace = {
+  id: "prompts",
+  initials: "PR",
+  name: "Prompt library",
+  desc: "What to ask, when to ask, and what to check",
+  status: "reusable workflow templates",
+  accent: "#3edba6",
+  accentInk: "#0a7553",
+  canonicalBrand: "fst",
+  groups: [
+    {
+      title: "Workflow prompts",
+      items: ["index", "discovery", "design", "implementation", "review-release"],
+    },
+  ],
+  items: {
+    index: {
+      type: "page",
+      label: "Start here",
+      title: "Prompts for each stage of an AI-assisted software project",
+      seoTitle: "AI software development prompt library",
+      desc: "Reusable prompts with timing, required context, and review checks for discovery, design, implementation, code review, and release.",
+      sections: [
+        {
+          heading: "Choose a prompt for the stage you are in",
+          paras: [
+            "Start with discovery if the problem is unclear, design when you need a usable flow, implementation after the scope and design are approved, and review when there is a concrete revision to inspect. These prompts are starting templates rather than a tested guarantee of a correct result.",
+            "Replace bracketed fields with verified context. Provide the relevant files and references through your tool’s supported attachments or repository access. Keep credentials and private customer records out of the prompt. Read the proposed actions before letting an agent change a live system.",
+          ],
+        },
+        {
+          heading: "The library",
+          paras: [
+            "Each template says when to use it, what to bring, and what to check. Select the prompt text to copy it into the tool you use.",
+          ],
+          links: [
+            {
+              label: "Discovery: a useful brief and acceptance criteria",
+              href: "/prompts/discovery",
+            },
+            {
+              label: "Design: a Claude /design brief and Codex asset brief",
+              href: "/prompts/design",
+            },
+            {
+              label: "Implementation: a focused change and tool-to-tool handoff",
+              href: "/prompts/implementation",
+            },
+            {
+              label: "Review and release: evidence, risks, and recovery",
+              href: "/prompts/review-release",
+            },
+          ],
+        },
+        {
+          heading: "Keep the request concrete",
+          paras: [
+            "Specify the outcome, constraints, allowed actions, relevant context, and the format of the result. Ask for evidence and open questions rather than an elaborate explanation of hidden reasoning. For reasoning models, OpenAI recommends direct instructions and does not require chain-of-thought prompting.",
+          ],
+          links: [
+            {
+              label: "OpenAI: reasoning prompt guidance",
+              href: "https://developers.openai.com/api/docs/guides/reasoning-best-practices",
+            },
+            {
+              label: "See the complete AI delivery path",
+              href: "/ai/workflow",
+            },
+            {
+              label: "Choose a model for the task",
+              href: "/ai/models",
+            },
+          ],
+        },
+        {
+          heading: "A prompt does not replace the owner",
+          paras: [
+            "The founder approves the problem and priorities, the designer reviews the experience, and the engineer checks the system behavior. Stop if a required input is missing or a proposed action exceeds the approved scope.",
+          ],
+          links: [
+            {
+              label: "Why the engineer still matters",
+              href: "/ai/why-an-engineer",
+            },
+            {
+              label: "Why the designer still matters",
+              href: "/ai/why-a-designer",
+            },
+          ],
+        },
+      ],
+    },
+    discovery: {
+      type: "page",
+      label: "Discovery prompts",
+      title: "Prompts for discovery and software scope",
+      seoTitle: "AI prompts for product discovery and scope",
+      desc: "Turn an early idea into a useful brief, then turn an approved workflow into acceptance criteria before asking an agent to build it.",
+      sections: [
+        {
+          heading: "1 · Turn an idea into a decision-ready brief",
+          paras: [
+            "Use when: the idea is still broad and you do not know what the first build should include. Start in Claude Code or Codex with read-only access to relevant material.",
+            "Bring: a description of the audience, current workaround, known constraints, and any source notes. Check: the output separates facts from assumptions and describes a complete user journey.",
+          ],
+          prompt:
+            "Act as a product discovery partner. Do not edit files or build the product.\n\nAudience: [who will use this]\nProblem and current workaround: [what happens today]\nDesired outcome: [what should improve]\nKnown constraints: [budget boundary, date, stack, integrations]\nSource context: [notes or attached references]\n\nProduce a short brief with one core user journey, the smallest useful first release, explicit exclusions, and dependencies that need investigation. Separate confirmed requirements from assumptions. Ask only the questions that would materially change scope or feasibility. Do not invent demand, user research, or results.\n\nFinish with the decisions a founder and engineer need to make before implementation.",
+        },
+        {
+          heading: "2 · Define acceptance and failure cases",
+          paras: [
+            "Use when: the core journey is agreed but “done” is still vague. This is a planning task before implementation.",
+            "Bring: the approved brief, user roles, data boundaries, and relevant existing behavior. Check: the expected results can be verified independently, including a denied-access and a failure case where relevant.",
+          ],
+          prompt:
+            "Create acceptance criteria for the approved journey below. Do not implement changes.\n\nApproved journey: [user, task, expected result]\nRoles and access rules: [who can see and change which records]\nRelevant existing behavior: [files, docs, or examples]\nOut of scope: [explicit exclusions]\n\nDescribe observable success, empty input or results, invalid input, permission denial, and meaningful integration failures. For write operations, cover repeated submission and partial failure where relevant.\n\nGive a small set of checks with explicit inputs and expected outcomes. Identify missing requirements as questions rather than choosing business rules silently. Flag dependencies that need a technical check before a delivery estimate.",
+        },
+        {
+          heading: "Move from the brief into design",
+          paras: [
+            "Have the founder confirm the outcome and an engineer examine the technical unknowns. Then bring the approved journey into the design stage.",
+          ],
+          links: [
+            {
+              label: "Next: design prompts",
+              href: "/prompts/design",
+            },
+            {
+              label: "Guide: scoping a first release",
+              href: "/blog/scope-first-software-release",
+            },
+          ],
+        },
+      ],
+    },
+    design: {
+      type: "page",
+      label: "Design and asset prompts",
+      title: "Prompts for Claude product design and Codex visual work",
+      seoTitle: "Claude design and Codex visual prompts",
+      desc: "Brief Claude /design with a real user journey and design system, and brief Codex for a visual asset or landing page with clear acceptance checks.",
+      sections: [
+        {
+          heading: "3 · Explore the product experience with Claude /design",
+          paras: [
+            "Use when: the core user journey is agreed and you need to explore the interface before implementation. Run /design in Claude Code, then provide this brief and your references.",
+            "Bring: the approved journey, actual content, design tokens or components, and mobile requirements. Check: a designer can trace the task through the important states and the developer has a clear handoff.",
+          ],
+          prompt:
+            "Design the following product journey using the attached design system and references.\n\nAudience and goal: [user and task]\nApproved journey and acceptance criteria: [brief]\nExisting components and brand rules: [files or references]\nContent and data examples: [representative, non-sensitive examples]\nConstraints: [devices, accessibility needs, existing navigation]\n\nExplore a focused direction that supports the task. Include loading, empty, error, success, and narrow-screen behavior where relevant. Show labels, hierarchy, keyboard interaction intent, and recovery from mistakes. Reuse existing components where they work.\n\nList design decisions for human review and any assumptions. Provide an implementation handoff with states, components, responsive behavior, and unresolved questions. Do not treat generated visuals as evidence of user research.",
+        },
+        {
+          heading: "4 · Brief a visual asset or landing page in Codex",
+          paras: [
+            "Use when: you have an approved brand direction and need an image, logo exploration, landing page, or website. Pick one deliverable before running the prompt.",
+            "Bring: approved assets and copy, the audience, dimensions or breakpoints, and examples of the intended visual direction. Check: a designer reviews the result in context; an engineer checks any implemented page.",
+          ],
+          prompt:
+            "Create one deliverable: [image / logo direction / landing page / website].\n\nPurpose and audience: [where this will appear and who it serves]\nApproved brand direction: [assets, palette, type, references]\nRequired content: [verified copy and claims]\nOutput requirements: [file format, dimensions, transparency or page breakpoints]\nPrimary action for a page: [what the visitor should do]\n\nUse the appropriate image tool for raster artwork or the existing site components for an implemented page. Preserve supplied logos and brand constraints unless a redesign is explicitly requested. Do not invent testimonials, customer logos, statistics, or endorsements.\n\nFor a page, include responsive and keyboard behavior. For an asset, inspect the crop and legibility at its intended sizes. State the tools used and any limitations in the final artifact. Leave publishing to an explicitly authorized step.",
+        },
+        {
+          heading: "Review before handing it to implementation",
+          paras: [
+            "Confirm that the design solves the agreed task, uses approved content, and covers the states the implementation needs. Record the accepted direction so the next tool does not reinterpret it from scratch.",
+          ],
+          links: [
+            {
+              label: "Next: implementation and handoff prompts",
+              href: "/prompts/implementation",
+            },
+            {
+              label: "Why a designer still matters",
+              href: "/ai/why-a-designer",
+            },
+            {
+              label: "Claude /design documentation",
+              href: "https://support.claude.com/en/articles/14604416-get-started-with-claude-design",
+            },
+          ],
+        },
+      ],
+    },
+    implementation: {
+      type: "page",
+      label: "Implementation prompts",
+      title: "Prompts for implementation and AI tool handoff",
+      seoTitle: "AI implementation and handoff prompts",
+      desc: "Give Claude Code or Codex a bounded change, then hand the result to the next tool with its requirements, revision, and verification evidence.",
+      sections: [
+        {
+          heading: "5 · Implement an approved change",
+          paras: [
+            "Use when: the brief, design, and acceptance criteria are ready. Claude Code is Nicholas’s usual implementation starting point; Codex can also own the task.",
+            "Bring: the relevant repository, approved design, requirements, and allowed actions. Check: the implementation reaches affected callers and the verification tests behavior rather than repeating the implementation.",
+          ],
+          prompt:
+            "Implement the approved change in this repository.\n\nOutcome and acceptance criteria: [approved requirements]\nDesign reference and required states: [approved design]\nKnown relevant files: [starting points, not an exhaustive scope]\nOut of scope: [exclusions]\nAllowed actions: [local edits and checks, or other explicitly approved actions]\n\nRead the relevant code and callers first. Reuse the existing components, stack, validation, and error handling. Make the smallest complete change, including affected callers, fixtures, and configuration. Do not add an abstraction or dependency without a concrete need.\n\nVerify the behavior with checks appropriate to its risk, including important failure paths. Do not deploy, delete data, change production access, or run a destructive migration without explicit authorization.\n\nReport changed behavior, checks actually run, failures or gaps, and any human decision still required.",
+        },
+        {
+          heading: "6 · Hand work from Claude Code to Codex, or back",
+          paras: [
+            "Use when: implementation is ready for review, a different tool may help investigate a concrete failure, or another session must continue the work.",
+            "Bring: the actual revision and evidence. Check: the receiving tool can locate the work and distinguish decisions from unverified assumptions. Shared requirements should live with the project, not only in a chat.",
+          ],
+          prompt:
+            "Prepare a concise handoff for the next engineering session. Do not make further changes.\n\nGoal and approved scope: [brief or source path]\nDesign reference: [approved source]\nWork revision: [commit or precise diff]\nReceiving task: [review / investigate a named failure / continue a named step]\n\nInclude:\n- Files and connected behavior changed.\n- Acceptance criteria and business rules to preserve.\n- Checks actually run and their results.\n- Exact reproduction steps for remaining failures.\n- Assumptions, unresolved questions, and accepted design decisions.\n- Findings already resolved or explicitly accepted, with evidence.\n- Allowed next actions and actions requiring human authorization.\n\nPoint to repository evidence. Do not claim the change is correct because another model accepted it. Do not include credentials, private customer data, or unnecessary chat history.",
+        },
+        {
+          heading: "Give the reviewer enough context to disagree",
+          paras: [
+            "The review should start with the requirement and code, not just the implementer’s summary. Use the next prompts to examine the change and prepare an explicit release decision.",
+          ],
+          links: [
+            {
+              label: "Next: review and release prompts",
+              href: "/prompts/review-release",
+            },
+            {
+              label: "How to review AI-generated code",
+              href: "/blog/review-ai-generated-code",
+            },
+          ],
+        },
+      ],
+    },
+    "review-release": {
+      type: "page",
+      label: "Review and release prompts",
+      title: "Prompts for code review and release readiness",
+      seoTitle: "AI code review and release prompts",
+      desc: "Ask Codex or Claude Code for evidence-backed findings, then prepare a release decision that records verification, operating needs, and recovery.",
+      sections: [
+        {
+          heading: "7 · Review a specific change against the requirement",
+          paras: [
+            "Use when: there is an identifiable change to inspect. Codex is Nicholas’s usual reviewer; Claude Code can review too. Start with read-only access and explicitly permitted non-destructive checks.",
+            "Bring: the approved requirement, revision, business rules, and previous review decisions. Check: each material finding has evidence and a consequence; a human resolves it rather than counting model approvals.",
+          ],
+          prompt:
+            "Review this change. Do not edit files or production data.\n\nRequirement and acceptance criteria: [source]\nRevision or diff: [exact change]\nImportant business rules and design decisions: [source]\nPrevious findings and resolutions: [source, if any]\nAllowed verification actions: [read-only inspection and named safe checks]\n\nRead the connected code and callers, not only the diff. Prioritize incorrect behavior, authorization boundaries, data loss, partial failure, regressions, and missing checks for material risk. Check whether the tests exercise the real product behavior.\n\nFor each finding, give severity, file and location, a concrete scenario, evidence or reproduction steps, and user impact. Separate confirmed defects from questions. Do not repeat a resolved finding without new evidence. If no material finding is supported, say so and state the verification limits. Do not give a safety guarantee.",
+        },
+        {
+          heading: "8 · Prepare a release decision and handoff",
+          paras: [
+            "Use when: implementation and review are complete enough for the release owner to decide. This prompt prepares evidence; it does not authorize deployment.",
+            "Bring: the final revision, review resolutions, check output, deployment process, and recovery requirements. Check: the owner can see what is ready, what is unknown, and who is responsible afterward.",
+          ],
+          prompt:
+            "Prepare a release-readiness note for human review. Do not deploy or modify data.\n\nCandidate revision: [exact version]\nAcceptance criteria and check results: [evidence]\nReview findings and resolutions: [record]\nDeployment and configuration: [current process]\nData changes and recovery requirements: [details or none]\nSupport owner and access handoff: [agreed responsibilities]\n\nList what is verified, what is not verified, unresolved blockers, required configuration or permissions, and checks to run after deployment. Explain recovery limits, including whether reverting code would leave data changes behind.\n\nRecord the AI tools and model versions used when known; mark unknown values as unknown. Note any approved usage costs and unresolved billing terms without inventing amounts.\n\nEnd with the specific decisions the release owner must make and the operating information the team needs after handoff.",
+        },
+        {
+          heading: "Use the result to make a human decision",
+          paras: [
+            "A release note is useful when it points to evidence and makes uncertainty visible. It does not replace a deployment policy, the agreed support arrangement, or the engineer’s understanding of the system.",
+          ],
+          links: [
+            {
+              label: "See the complete delivery path",
+              href: "/ai/workflow",
+            },
+            {
+              label: "AI usage and billing transparency",
+              href: "/ai/resources",
+            },
+            {
+              label: "Discuss engineering review support",
+              href: "/services/codebase-rescue",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss an AI-assisted project →",
+        },
+      ],
+    },
+  },
+};
+
+(BLOG.items.index as PageItem).sections.splice(1, 0, {
+  heading: "Build with Claude Code and Codex",
+  paras: [
+    "Follow the AI-assisted delivery lifecycle, understand the engineering and design roles, compare team models, and use prompts for the stage you are in.",
+  ],
+  links: [
+    { label: "Read the AI delivery playbook", href: "/ai" },
+    { label: "Choose tools and models for the task", href: "/ai/models" },
+    { label: "Open the prompt library", href: "/prompts" },
+    { label: "Read our Reddit workflow research", href: "/ai/community-research" },
+  ],
+});
+
+const PERSONAL_RESOURCES = [
+  { label: "At FST: my AI delivery workflow", href: new URL("/ai/workflow", BRANDS.fst.url).href },
+  { label: "At FST: practical engineering articles", href: new URL("/blog", BRANDS.fst.url).href },
+  { label: "At FST: prompts and when to use them", href: new URL("/prompts", BRANDS.fst.url).href },
+];
+
+for (const home of [PERSONAL_HOME, FST_HOME]) {
+  const personal = home === PERSONAL_HOME;
+  const about = home.items.about as PageItem;
+  about.sections.splice(2, 0, {
+    heading: personal ? "Explore my work and writing" : "Explore the work and guides",
+    paras: personal
+      ? [
+          "The product pages here explain my contribution and engineering decisions. I publish the practical guides and AI resources at Full Stack Technologies, the studio I lead.",
+        ]
+      : [],
+    links: [
+      { label: "Paradox: interactive storytelling", href: "/paradox/overview" },
+      { label: "Timetrack: AI session tracking and reports", href: "/timetrack/overview" },
+      { label: "Constellation: multi-client planning", href: "/constellation/overview" },
+      { label: "Helm: client and agent decisions", href: "/helm/overview" },
+      ...(personal
+        ? PERSONAL_RESOURCES
+        : [
+            { label: "Software development services", href: "/services/product-development" },
+            { label: "Read the product engineering blog", href: "/blog" },
+            { label: "How we build with Claude Code and Codex", href: "/ai" },
+            { label: "Prompts for each stage of delivery", href: "/prompts" },
+          ]),
+    ],
+  });
+  for (const id of home.groups[0].items) {
+    const item = home.items[id];
+    if (item.type !== "page" || id === "about" || id === "off-clock") continue;
+    item.sections.push({
+      heading: personal ? "Continue exploring" : "Choose the next step",
+      paras: [
+        personal
+          ? "Read the decisions behind my product work here. My practical guides and studio services live at Full Stack Technologies. You can also contact me directly about a role or project."
+          : "Bring the problem, what already exists, and the outcome you need. We can use that context to discuss a focused next step.",
+      ],
+      links: personal
+        ? [
+            { label: "Explore my product work", href: "/" },
+            ...PERSONAL_RESOURCES,
+            {
+              label: "Work with my studio",
+              href: new URL("/services/product-development", BRANDS.fst.url).href,
+            },
+          ]
+        : [
+            { label: "Product development", href: "/services/product-development" },
+            { label: "Codebase review and rescue", href: "/services/codebase-rescue" },
+            { label: "Fractional CTO and embedded engineering", href: "/services/fractional-cto" },
+            { label: "Practical product engineering guides", href: "/blog" },
+            { label: "AI tools, workflow, and resources", href: "/ai" },
+            { label: "Reusable prompts and when to use them", href: "/prompts" },
+          ],
+      cta: "message",
+      ctaLabel: personal ? "Get in touch with me →" : "Discuss your project →",
+    });
+  }
+}
+
+const PROJECT_FRAMING: Record<
+  string,
+  { personal: Partial<ShowcaseItem>; fst: Partial<ShowcaseItem> }
+> = {
+  paradox: {
+    personal: {
+      seoTitle: "Paradox — my approach to interactive storytelling",
+      summary:
+        "I designed and built Paradox around branching stories. Explore my approach to the canvas, guest-first onboarding, search, and readable story details.",
+      tagline: "My approach to making connected stories explorable.",
+      context: [
+        {
+          heading: "My contribution and decisions",
+          paras: [
+            "I designed and built the product end to end. The central interaction is a timeline canvas: it needs to show a connected story without making readers lose their place.",
+            "Guest access, a command palette, and a details panel give readers several ways to explore. The examples below show how I connect navigation, information hierarchy, and interaction behavior.",
+          ],
+        },
+      ],
+    },
+    fst: {
+      context: [
+        {
+          heading: "The problem this approach addresses",
+          paras: [
+            "Products with connected information need ways to explore detail while retaining context. Paradox demonstrates a canvas, search, and a side panel working together around that problem.",
+            "For a new product engagement, the useful questions are which journey readers need first, where onboarding belongs, and how the interface behaves with more content. The examples show capabilities to discuss against your own requirements.",
+          ],
+        },
+      ],
+    },
+  },
+  timetrack: {
+    personal: {
+      seoTitle: "Timetrack — my approach to inspectable activity data",
+      summary:
+        "I designed and built Timetrack to make AI coding activity inspectable. Explore my decisions around parallel sessions, raw records, and traceable reports.",
+      tagline: "My approach to activity records you can inspect.",
+      context: [
+        {
+          heading: "My contribution and decisions",
+          paras: [
+            "I designed and built the product end to end. My focus here is how to turn session activity into a view that can be understood and checked, including when several sessions overlap.",
+            "The dashboard, audit trail, and reporting views make the source of a total visible. Separating session duration from elapsed human time is part of presenting the data honestly.",
+          ],
+        },
+      ],
+    },
+    fst: {
+      context: [
+        {
+          heading: "The problem this approach addresses",
+          paras: [
+            "Operational software often needs to turn activity records into decisions and reports. Timetrack demonstrates dashboards, an audit trail, and reporting rules that keep the calculation inspectable.",
+            "These patterns are useful discussion points for an internal tool or reporting workflow: what counts, which source records support the result, and how a correction affects previously issued reports. Billable time still depends on the client agreement.",
+          ],
+        },
+      ],
+    },
+  },
+  constellation: {
+    personal: {
+      seoTitle: "Constellation — my approach to prioritization",
+      summary:
+        "I designed and built Constellation around multi-client planning. Explore my decisions on ranked work, plan branches, forecast ranges, and client visibility.",
+      tagline: "My approach to making planning decisions visible.",
+      context: [
+        {
+          heading: "My contribution and decisions",
+          paras: [
+            "I designed and built the product end to end. My focus is making planning decisions visible: why a task comes first, what a proposed change affects, and which information a client should see.",
+            "The ranked queue, plan branches, and forecast ranges present those decisions in different ways. The client portal makes the boundary between internal planning and external status part of the interface.",
+          ],
+        },
+      ],
+    },
+    fst: {
+      context: [
+        {
+          heading: "The problem this approach addresses",
+          paras: [
+            "Teams balancing work across clients need to compare priorities and understand the effect of a plan change. Constellation demonstrates a ranked queue, branching plans, and forecasts that show uncertainty.",
+            "A client-facing view raises a separate requirement: useful status without exposing internal rates, priorities, or other clients. These examples provide a starting point for discussing a planning tool or client portal.",
+          ],
+        },
+      ],
+    },
+  },
+  helm: {
+    personal: {
+      seoTitle: "Helm — my approach to client and agent decisions",
+      summary:
+        "I designed and built Helm around one decision at a time. Explore my approach to agent activity, client context, rules, and review before sending.",
+      tagline: "My approach to turning client and agent activity into decisions.",
+      context: [
+        {
+          heading: "My contribution and decisions",
+          paras: [
+            "I designed and built the product end to end. My focus is making the next decision clear when client conversations and agent runs compete for attention.",
+            "The decision deck, client board, and plain-language rules connect the work to its context. Per-client settings make access, communication preferences, and review part of the experience.",
+          ],
+        },
+      ],
+    },
+    fst: {
+      context: [
+        {
+          heading: "The problem this approach addresses",
+          paras: [
+            "Client operations can span messages, delivery work, and agents that need an answer. Helm demonstrates bringing those inputs into a ranked decision deck while retaining a view of each client.",
+            "The examples provide discussion points for an operations tool: how decisions are prioritized, what needs human review, and how client-specific access and communication rules stay visible.",
+          ],
+        },
+      ],
+    },
+  },
+};
+
+function projectsFor(brand: BrandId): Workspace[] {
+  return PROJECTS.map((ws) => ({
+    ...ws,
+    items: {
+      ...ws.items,
+      overview: { ...(ws.items.overview as ShowcaseItem), ...PROJECT_FRAMING[ws.id][brand] },
+    },
+  }));
+}
+
 const BRAND_WORKSPACES: Record<BrandId, Workspace[]> = {
-  personal: PERSONAL_WORKSPACES,
-  fst: [FST_HOME, ...PROJECTS],
+  personal: [PERSONAL_HOME, ...projectsFor("personal")],
+  fst: [FST_HOME, ...projectsFor("fst"), SERVICES, BLOG, AI_PLAYBOOK, PROMPTS],
 };
 
 export function workspacesFor(brand: BrandId): Workspace[] {

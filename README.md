@@ -13,7 +13,8 @@ Next.js.
 - **Next.js 16** (App Router, Turbopack) — every content route statically prerendered via an
   optional catch-all (`app/[brand]/[[...slug]]`) + `generateStaticParams`, per brand
 - **Two domains, one app** — `proxy.ts` maps the host to a brand (personal portfolio or Full
-  Stack Technologies, LLC); same projects and live components, separate home, theme, and inbox
+  Stack Technologies, LLC); shared product interfaces, distinct product framing, separate home, theme, and inbox;
+  services and resource libraries belong to FST
 - **React 19**, server components for prose/content with client islands for everything live
 - **Tailwind CSS v4** for chrome + design tokens as CSS custom properties (dark/light)
 - **next-themes** — system / light / dark cycle from the rail
@@ -62,3 +63,44 @@ email, copy `.env.example` to `.env.local` and set `RESEND_API_KEY` (plus option
 - `prefers-reduced-motion` collapses all choreography to instant states.
 - Fragment state is session-persistent: a live component keeps its state when you navigate
   away and back.
+
+## Blog and service content
+
+`lib/content.ts` contains the Services and Blog workspaces as well as the existing pages.
+A blog article is a `PageItem` with a full `title`, a concise `seoTitle`, a `desc`, prose
+`sections`, and `article: { published, modified }` using ISO dates. Add its ID to the Blog
+workspace's group, link it from the index and a relevant page, and use the actual publication
+date. Keep `modified` unchanged until the content receives a substantive update.
+
+Sections support descriptive `links` and the existing message CTA. Routing, sidebar search,
+static generation, metadata, and the sitemap follow the content model. `/blog` is the index;
+`/blog/index` redirects there. Blog and service pages live on FST. Former personal resource URLs permanently
+redirect to their FST canonical destinations; unknown resource URLs remain 404s. See [the content plan](docs/marketing-content-plan.md) for topic priorities,
+editorial evidence requirements, and deployment checks.
+
+With a server running, `pnpm test:content` checks the rendered pages across both hosts. Set
+`CONTENT_CHECK_URL` to use a different local port. This check also runs in CI.
+
+The AI playbook (`/ai`) and prompt library (`/prompts`) use the same content model and
+FST-only ownership. The personal site links to selected FST resources. Sections can include an accessible comparison `table` with
+`headers` and `rows`, or a selectable, server-rendered `prompt` string. Model examples
+carry a visible review date and official source links. Keep personal tool preferences,
+provider capabilities, and community anecdotes separate; confirm billing terms before
+publishing a claim about included usage or markups.
+
+## Brand boundaries
+
+The personal brand contains Nicholas's profile, process, FAQ, interests, and product
+work. FST contains the studio's services, engagements, blog, AI playbook, and prompt
+library. Product pages reuse the same interfaces while `PROJECT_FRAMING` supplies
+personal contribution/decision copy and studio problem/capability copy; metadata follows
+that framing too. Adding a new product requires entries for both brands.
+
+`canonicalBrand` identifies FST-owned resource workspaces. Those workspaces are absent
+from personal routing, rail, sidebar, search, and sitemap. Valid former personal URLs
+return a 308 directly to the FST canonical URL, including index aliases. The brand
+switcher falls back to the other site's home when that site does not own the current page.
+
+The far-left rail is reserved for Home and product projects, including Helm. Services,
+Blog, AI Playbook, and Prompts are linked from the FST home page and its Resources sidebar
+group. Resource pages highlight Home in the rail and retain their own section navigation.

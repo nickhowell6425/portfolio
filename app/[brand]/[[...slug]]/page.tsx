@@ -1,16 +1,78 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import Link from "next/link";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { InteractiveDemo } from "@/components/content/interactive-demo";
 import { PortraitHero } from "@/components/content/portrait-hero";
 import { Sections } from "@/components/content/sections";
 import { CompanyHero } from "@/components/content/company-hero";
 import { Showcase } from "@/components/content/showcase";
 import { BRAND_IDS, BRANDS, isBrandId, type BrandId } from "@/lib/brands";
-import { accentText, type ShowcaseItem, type Workspace } from "@/lib/content";
+import { PH, accentText, type PageItem, type ShowcaseItem, type Workspace } from "@/lib/content";
 import { defaultItemId, hrefFor, navFor } from "@/lib/navigation";
 
 interface Props {
   params: Promise<{ brand: string; slug?: string[] }>;
+}
+
+function pageJsonLd(brand: BrandId, ws: Workspace, itemId: string, item: PageItem) {
+  const b = BRANDS[ws.canonicalBrand ?? brand];
+  const url = new URL(hrefFor(ws.id, itemId), b.url).href;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": item.article ? "BlogPosting" : itemId === "index" ? "CollectionPage" : "WebPage",
+        "@id": `${url}#content`,
+        url,
+        headline: item.title ?? b.title,
+        description: item.desc,
+        inLanguage: "en-US",
+        ...(item.article
+          ? {
+              datePublished: item.article.published,
+              dateModified: item.article.modified,
+              author: { "@type": "Person", name: PH.NAME, url: BRANDS.personal.url },
+              publisher: { "@type": "Organization", name: BRANDS.fst.name, url: BRANDS.fst.url },
+              mainEntityOfPage: url,
+              image: new URL(BRANDS.fst.ogImage!, BRANDS.fst.url).href,
+            }
+          : {}),
+      },
+      ...(ws.id === "services"
+        ? [
+            {
+              "@type": "Service",
+              name: item.title,
+              description: item.desc,
+              url,
+              provider: { "@type": "Organization", name: BRANDS.fst.name, url: BRANDS.fst.url },
+            },
+          ]
+        : []),
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: b.short, item: b.url },
+          ...(item.article
+            ? [
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Blog",
+                  item: new URL("/blog", b.url).href,
+                },
+              ]
+            : []),
+          {
+            "@type": "ListItem",
+            position: item.article ? 3 : 2,
+            name: item.title ?? item.label,
+            item: url,
+          },
+        ],
+      },
+    ],
+  };
 }
 
 /** CreativeWork + FAQPage + breadcrumbs for a product page (SEO and AI answer engines). */
@@ -81,9 +143,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!slug || slug.length === 0) return {};
   const resolved = navFor(brandOf(brand)).resolveSlug(slug);
   if (!resolved) return {};
-  const title = `${resolved.item.label} — ${resolved.ws.name}`;
-  const canonical = hrefFor(resolved.ws.id, resolved.itemId);
+  const b = BRANDS[brandOf(brand)];
+  const canonical = new URL(
+    hrefFor(resolved.ws.id, resolved.itemId),
+    BRANDS[resolved.ws.canonicalBrand ?? b.id].url,
+  ).href;
   const { item } = resolved;
+  const title =
+    item.type === "page"
+      ? (item.seoTitle ?? item.title ?? `${item.label} — ${resolved.ws.name}`)
+      : `${item.label} — ${resolved.ws.name}`;
   if (item.type === "showcase") {
     const images = [{ url: item.cover.src, alt: item.cover.alt }];
     return {
@@ -110,7 +179,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description: resolved.item.desc,
     alternates: { canonical },
-    openGraph: { title, description: resolved.item.desc, url: canonical },
+    robots: item.type === "demo" ? { index: false, follow: true } : undefined,
+    openGraph: {
+      type: item.type === "page" && item.article ? "article" : "website",
+      title,
+      description: item.desc,
+      url: canonical,
+      siteName: b.siteName,
+      images: b.ogImage ? [{ url: b.ogImage, alt: b.siteName }] : [],
+      ...(item.type === "page" && item.article
+        ? {
+            publishedTime: item.article.published,
+            modifiedTime: item.article.modified,
+            authors: [PH.NAME],
+          }
+        : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: item.desc,
+      images: b.ogImage ? [b.ogImage] : [],
+    },
   };
 }
 
@@ -119,16 +209,27 @@ export default async function WorkspacePage({ params }: Props) {
   const brand = brandOf(rawBrand);
   const nav = navFor(brand);
 
+  if (brand === "personal") {
+    const moved = navFor("fst").resolveSlug(slug);
+    if (moved?.ws.canonicalBrand === "fst") {
+      permanentRedirect(new URL(hrefFor(moved.ws.id, moved.itemId), BRANDS.fst.url).href);
+    }
+  }
+
   // /paradox → /paradox/overview (and /home → /)
   if (slug?.length === 1) {
     const ws = nav.workspaceById(slug[0]);
     if (!ws) notFound();
-    redirect(hrefFor(ws.id, defaultItemId(ws)));
+    const destination = hrefFor(ws.id, defaultItemId(ws));
+    if (destination !== `/${slug[0]}`) redirect(destination);
   }
 
   const resolved = nav.resolveSlug(slug);
   if (!resolved) notFound();
   const { ws, itemId, item } = resolved;
+  if (slug?.length === 2 && hrefFor(ws.id, itemId) !== `/${slug.join("/")}`) {
+    redirect(hrefFor(ws.id, itemId));
+  }
 
   if (item.type === "demo")
     return <InteractiveDemo item={item} wsName={ws.name} accent={ws.accent} />;
@@ -166,12 +267,97 @@ export default async function WorkspacePage({ params }: Props) {
               : undefined
           }
         />
+        <Sections
+          accent={ws.accent}
+          sections={[
+            {
+              heading:
+                brand === "personal"
+                  ? "More of my work and thinking"
+                  : "Building something with similar challenges?",
+              paras: [
+                brand === "personal"
+                  ? "Explore another product here, or read my practical guides at Full Stack Technologies, the studio I lead."
+                  : "Explore the engineering services and guides behind this kind of work.",
+              ],
+              links: [
+                {
+                  label: "Web and mobile product development",
+                  href:
+                    brand === "personal"
+                      ? new URL("/services/product-development", BRANDS.fst.url).href
+                      : "/services/product-development",
+                },
+                {
+                  label: "Codebase review and rescue",
+                  href:
+                    brand === "personal"
+                      ? new URL("/services/codebase-rescue", BRANDS.fst.url).href
+                      : "/services/codebase-rescue",
+                },
+                {
+                  label: "Practical product engineering guides",
+                  href: brand === "personal" ? new URL("/blog", BRANDS.fst.url).href : "/blog",
+                },
+              ],
+              cta: "message",
+              ctaLabel:
+                brand === "personal" ? "Talk to me about the work →" : "Discuss your project →",
+            },
+          ]}
+        />
       </>
     );
   }
 
+  const Body = item.article ? "article" : "div";
   return (
-    <>
+    <Body>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(pageJsonLd(brand, ws, itemId, item)).replace(/</g, "\\u003c"),
+        }}
+      />
+      {item.title ? (
+        <header style={{ maxWidth: 680, marginBottom: 16 }}>
+          <h1
+            style={{
+              fontSize: "clamp(25px, 4vw, 38px)",
+              lineHeight: 1.15,
+              letterSpacing: "-.025em",
+              margin: "0 0 12px",
+              textWrap: "balance",
+            }}
+          >
+            {item.title}
+          </h1>
+          <p style={{ color: "var(--dim)", fontSize: 16, lineHeight: 1.6 }}>{item.desc}</p>
+          {item.article ? (
+            <p style={{ color: "var(--dim)", fontSize: 13, lineHeight: 1.6 }}>
+              By{" "}
+              <Link href={BRANDS.personal.url} style={{ color: "var(--text)" }}>
+                {PH.NAME}
+              </Link>
+              {" · Full Stack Technologies · "}
+              <time dateTime={item.article.published}>
+                {new Date(item.article.published).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  timeZone: "UTC",
+                })}
+              </time>
+              {item.article.modified !== item.article.published ? (
+                <>
+                  {" · Updated "}
+                  <time dateTime={item.article.modified}>{item.article.modified}</time>
+                </>
+              ) : null}
+            </p>
+          ) : null}
+        </header>
+      ) : null}
       {ws.id === "home" && itemId === "about" ? (
         brand === "fst" ? (
           <CompanyHero />
@@ -180,6 +366,6 @@ export default async function WorkspacePage({ params }: Props) {
         )
       ) : null}
       <Sections sections={item.sections} accent={ws.accent} />
-    </>
+    </Body>
   );
 }

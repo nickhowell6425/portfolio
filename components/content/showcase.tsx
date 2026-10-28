@@ -5,6 +5,7 @@ import { accentText, type ShowcaseItem, type ShowcaseSection } from "@/lib/conte
 import { ProductMark } from "@/components/shell/product-mark";
 import { LiveFragment } from "./live-fragment";
 import { MessageCta } from "./message-cta";
+import { Sections } from "./sections";
 
 const GOLD = "#e9b949";
 /** Gold as text: the same darkened in the light theme so it stays readable. */
@@ -244,6 +245,8 @@ export function Showcase({
           </li>
         ))}
       </ul>
+
+      {item.context ? <Sections sections={item.context} accent={ink} /> : null}
 
       {/* what it does */}
       <section
