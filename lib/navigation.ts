@@ -1,15 +1,13 @@
 import type { BrandId } from "./brands";
 import {
   workspacesFor,
-  type CompItem,
   type DemoItem,
-  type LibraryItem,
   type PageItem,
   type ShowcaseItem,
   type Workspace,
 } from "./content";
 
-export type RoutableItem = PageItem | CompItem | DemoItem | ShowcaseItem | LibraryItem;
+export type RoutableItem = PageItem | DemoItem | ShowcaseItem;
 
 export interface Resolved {
   ws: Workspace;
@@ -97,7 +95,6 @@ function buildNav(brand: BrandId): Nav {
         for (const id of g.items) {
           const it = w.items[id];
           if (it.type === "ws") continue;
-          if (it.type === "library" && w.id !== "home") continue;
           if (it.type === "anchor") {
             out.push({
               icon: "▣",
@@ -111,12 +108,7 @@ function buildNav(brand: BrandId): Nav {
             icon:
               it.type === "page" || it.type === "showcase" ? "#" : it.type === "demo" ? "▶" : "▣",
             label: it.label,
-            sub:
-              it.type === "comp"
-                ? `${w.name} · live component`
-                : it.type === "demo"
-                  ? `${w.name} · interactive demo`
-                  : w.name,
+            sub: it.type === "demo" ? `${w.name} · interactive demo` : w.name,
             href: hrefFor(w.id, id),
           });
         }
