@@ -143,8 +143,17 @@ export interface Workspace {
   desc: string;
   status: string;
   accent: string;
+  /** Accent for text in the light theme, when `accent` is too pale to read on white. */
+  accentInk?: string;
   groups: SidebarGroup[];
   items: Record<string, SidebarItem>;
+}
+
+/** A workspace's accent as text colour: its light-theme ink when it has one. */
+export function accentText(ws: Pick<Workspace, "accent" | "accentInk">): string {
+  return ws.accentInk
+    ? `color-mix(in srgb, ${ws.accent} calc(100% - var(--light, 0) * 100%), ${ws.accentInk})`
+    : ws.accent;
 }
 
 // ---- Workspaces ----------------------------------------------
@@ -925,6 +934,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     desc: "Prioritization across every client",
     status: "concept · 2026",
     accent: "#c8f542",
+    accentInk: "#3f5c00",
     groups: [
       { title: "Project", items: ["overview"] },
       {

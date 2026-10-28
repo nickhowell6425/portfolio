@@ -17,6 +17,9 @@
   --faint: #5e6b84;
   --accent: #5b8def;
   --accent-soft: rgba(91, 141, 239, 0.13);
+  /* 0 in dark, 1 in light — lets an inline color pick a light-theme ink
+     (see accentText in lib/content.ts) without a stylesheet rule per product */
+  --light: 0;
   --shadow: 0 16px 44px -14px rgba(2, 6, 16, 0.55), 0 2px 8px rgba(2, 6, 16, 0.35);
 
   --nav-pos: static;
@@ -43,6 +46,7 @@
   --faint: #94a0b8;
   --accent: #3d6be0;
   --accent-soft: rgba(61, 107, 224, 0.1);
+  --light: 1;
   --shadow: 0 16px 40px -16px rgba(30, 44, 82, 0.18), 0 2px 8px rgba(30, 44, 82, 0.08);
 }
 

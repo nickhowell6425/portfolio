@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useWsSticky } from "@/hooks/use-ws-transition";
 import { useNav } from "@/components/providers/brand-provider";
+import { accentText } from "@/lib/content";
 import { defaultItemId, hrefFor } from "@/lib/navigation";
 
 /** Channel header bar. A demo gets a way back out — on a phone the sidebar is folded away. */
@@ -55,7 +56,7 @@ export function PageChrome() {
               flex: "0 0 auto",
             }}
           >
-            <span aria-hidden="true" style={{ color: W.accent }}>
+            <span aria-hidden="true" style={{ color: accentText(W) }}>
               ←
             </span>
             Back to {W.name}

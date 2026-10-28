@@ -13,6 +13,8 @@ export interface ShowcaseNext {
   name: string;
   initials: string;
   accent: string;
+  /** Accent as text (theme-aware); defaults to `accent`. */
+  ink?: string;
   href: string;
 }
 
@@ -83,11 +85,14 @@ export function Showcase({
   builtBy,
   next,
   wsId,
+  ink = accent,
 }: {
   item: ShowcaseItem;
   /** The product's name — the page's <h1>. */
   name: string;
   accent: string;
+  /** Accent as text (theme-aware); defaults to `accent`. */
+  ink?: string;
   /** The live demo; without one the CTAs lead into the feature sections. */
   liveHref?: string;
   builtBy: string;
@@ -325,7 +330,7 @@ export function Showcase({
 
       {/* feature sections: media then text in the DOM, alternated by CSS */}
       {item.sections.map((sec, i) => {
-        const tint = sec.gold ? GOLD : accent;
+        const tint = sec.gold ? GOLD : ink;
         return (
           <section
             key={sec.id}
@@ -375,7 +380,7 @@ export function Showcase({
           `name` makes them one exclusive group: opening one closes the rest. */}
       <section aria-labelledby="sc-faq" className="sc-faq">
         <div style={{ flex: "1 1 220px", display: "flex", flexDirection: "column", gap: 8 }}>
-          <span style={kicker(accent)}>FAQ</span>
+          <span style={kicker(ink)}>FAQ</span>
           <h2
             id="sc-faq"
             className="sc-h2"
@@ -509,7 +514,7 @@ export function Showcase({
             <span style={{ fontSize: 12, color: "var(--dim)" }}>Next product</span>
             <span style={{ fontSize: 18, fontWeight: 800 }}>{next.name}</span>
           </span>
-          <span aria-hidden="true" style={{ fontWeight: 700, color: next.accent }}>
+          <span aria-hidden="true" style={{ fontWeight: 700, color: next.ink ?? next.accent }}>
             →
           </span>
         </Link>
