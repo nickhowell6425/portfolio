@@ -4,6 +4,8 @@
 // cross-project library ("library").
 // ============================================================
 
+import type { BrandId } from "./brands";
+
 export const PH = {
   NAME: "Nicholas Howell",
   FIRST: "Nicholas",
@@ -105,6 +107,73 @@ export interface DemoItem {
   lead?: string;
 }
 
+export interface ShowcaseMedia {
+  /** A live fragment, mounted in place. */
+  frag?: FragmentId;
+  /** Still shown until the live fragment scrolls near (same size, under public/). */
+  poster?: { src: string; width: number; height: number };
+  /** OR one or more captured screens (paths under public/). */
+  imgs?: { src: string; alt: string; width: number; height: number }[];
+}
+
+export interface ShowcaseSection {
+  /** In-page anchor; sidebar anchor items point here. */
+  id: string;
+  kicker: string;
+  title: string;
+  line: string;
+  points: string[];
+  media: ShowcaseMedia;
+  /** Gold treatment (Paradox's "divergence" colour). */
+  gold?: boolean;
+}
+
+export interface ShowcaseTile {
+  title: string;
+  line: string;
+  img: string;
+  /** Section id this tile jumps to; omitted = the live demo. */
+  target?: string;
+  /** Show the whole screen instead of cropping to fill. */
+  contain?: boolean;
+  /** The big lead tile. */
+  lead?: boolean;
+}
+
+/** A product landing page: cover, identity, what it does, feature sections, FAQ. */
+export interface ShowcaseItem {
+  type: "showcase";
+  label: string;
+  desc: string;
+  /** <title> for search; the label is just the sidebar name. */
+  seoTitle: string;
+  tagline: string;
+  /** One factual paragraph — also the meta description. */
+  summary: string;
+  cover: { src: string; alt: string };
+  /** Where "Try it live" goes (an item id in the same workspace). */
+  live: string;
+  stack: string[];
+  tiles: ShowcaseTile[];
+  sections: ShowcaseSection[];
+  faq: { q: string; a: string }[];
+  /** Answer to "Who built it?", per brand. */
+  builtBy: Record<BrandId, string>;
+  /** The workspace the "next product" card points to. */
+  next?: string;
+}
+
+/** Sidebar entry that jumps to a section of a page in the same workspace. */
+export interface AnchorItem {
+  type: "anchor";
+  label: string;
+  desc: string;
+  /** Item id of the page holding the section. */
+  page: string;
+  /** Section id on that page. */
+  hash: string;
+}
+
 export interface WsLinkItem {
   type: "ws";
   label: string;
@@ -118,7 +187,14 @@ export interface LibraryItem {
   desc: string;
 }
 
-export type SidebarItem = PageItem | CompItem | DemoItem | WsLinkItem | LibraryItem;
+export type SidebarItem =
+  | PageItem
+  | CompItem
+  | DemoItem
+  | ShowcaseItem
+  | AnchorItem
+  | WsLinkItem
+  | LibraryItem;
 
 export interface SidebarGroup {
   title: string;
@@ -510,8 +586,9 @@ const LIBRARY: LibraryItem = {
 };
 
 // ---- Workspaces ----------------------------------------------
+// The personal home first, then the projects every brand shares.
 
-export const WORKSPACES: Workspace[] = [
+const PERSONAL_WORKSPACES: Workspace[] = [
   {
     id: "home",
     initials: "NH",
@@ -690,31 +767,255 @@ export const WORKSPACES: Workspace[] = [
     groups: [
       { title: "Project", items: ["overview", "demo"] },
       {
-        title: "Components",
-        items: ["timeline-view", "branch-cards", "gateway-comp"],
+        title: "Features",
+        items: [
+          "a-signin",
+          "a-search",
+          "a-details",
+          "a-activity",
+          "a-filters",
+          "a-canvas",
+          "a-branches",
+        ],
       },
       { title: "Library", items: ["component-library"] },
     ],
     items: {
       overview: {
+        type: "showcase",
         label: "Overview",
-        type: "page",
         desc: "A storytelling app where the timeline is the interface",
-        hero: {
-          img: "/uploads/paradox-home.jpg",
-          kicker: "the app",
-          lead: "No feed, no thumbnail grid — you land inside a living graph of stories and traverse it: drag, zoom, click a node, enter a reality.",
-          cta: { label: "Open the interactive demo", href: "/paradox/demo" },
+        seoTitle: "Paradox — sign-up, search, real-time and interactive data",
+        tagline: "A living multiverse of stories.",
+        summary:
+          "Paradox, designed and built end to end: sign-up, search, a details panel, real-time activity and an interactive canvas, built the way production apps need it.",
+        cover: {
+          src: "/uploads/paradox-home.jpg",
+          alt: "Paradox homepage: a living graph of story timelines",
         },
-        sections: [
+        live: "demo",
+        stack: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Tailwind CSS",
+          "Node.js",
+          "PostgreSQL",
+          "Redis",
+          "REST & GraphQL APIs",
+          "Magic-link auth",
+          "Docker",
+          "Vercel",
+          "AWS",
+          "Cloudflare",
+          "GitHub Actions CI/CD",
+          "Sentry",
+        ],
+        tiles: [
           {
-            paras: [
-              "Paradox is a product concept: collaborative storytelling as a multiverse. Every story is a Sacred Timeline; every “what if” forks it into a branch; every branch is an alternate reality written by its readers.",
-              "Seven screens on one design system — homepage, sign-in, explore, timeline, event and branch views, plus the sheet that defines them: emerald is canon, gold is divergence, Cormorant Garamond carries the stories.",
-              "Two ways to read it: open the interactive demo to move through the app end-to-end, or take the components in the rail one at a time. Each is rebuilt in Paradox's own skin, not screenshotted — flip any of them to Code to read the real thing.",
-            ],
+            title: "Timeline View",
+            line: "One universe as a flight deck.",
+            img: "/showcase/paradox/timeline.webp",
+            target: "interactive-data",
+            lead: true,
+          },
+          {
+            title: "Sign-in",
+            line: "Passwords never.",
+            img: "/showcase/paradox/gateway.webp",
+            target: "sign-up",
+            contain: true,
+          },
+          {
+            title: "Branch cards",
+            line: "Every fork says what changed.",
+            img: "/showcase/paradox/branches.webp",
+            target: "user-content",
+          },
+          {
+            title: "Explore",
+            line: "What’s alive, at a glance.",
+            img: "/showcase/paradox/explore.webp",
+            target: "filters",
+          },
+          {
+            title: "Homepage",
+            line: "The graph is the front door.",
+            img: "/showcase/paradox/home.webp",
+          },
+          {
+            title: "Command palette",
+            line: "Everything, two keystrokes away.",
+            img: "/showcase/paradox/command-palette.webp",
+            target: "command-palette",
           },
         ],
+        sections: [
+          {
+            id: "sign-up",
+            kicker: "Sign-up & onboarding",
+            title: "Sign-up that doesn’t lose people.",
+            line: "Most apps lose users at the front door. This one lets them in first.",
+            points: [
+              "Guest mode before any account",
+              "Magic links, Google and Discord",
+              "No passwords to forget or leak",
+            ],
+            media: {
+              frag: "gateway",
+              poster: { src: "/showcase/paradox/gateway.webp", width: 400, height: 417 },
+            },
+          },
+          {
+            id: "command-palette",
+            kicker: "Search & command palette",
+            title: "Find anything in two keystrokes.",
+            line: "⌘K searches every timeline, branch, event and variant, and runs commands too.",
+            points: [
+              "Grouped, ranked results",
+              "Full keyboard control",
+              "Content and actions in one box",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/paradox/command-palette.webp",
+                  alt: "Command palette with grouped results for timelines, branches, events and variants",
+                  width: 1240,
+                  height: 1070,
+                },
+              ],
+            },
+          },
+          {
+            id: "details-panel",
+            kicker: "Details panel",
+            title: "Click anything. Get everything.",
+            line: "Overview, canon, branches and variants in one panel, without leaving the view.",
+            points: [
+              "Tabs instead of new pages",
+              "Primary action always in reach",
+              "Creator and rights built in",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/paradox/details-overview.webp",
+                  alt: "Details panel, overview tab: stats, read and branch actions, creator",
+                  width: 760,
+                  height: 1340,
+                },
+                {
+                  src: "/showcase/paradox/details-branches.webp",
+                  alt: "Details panel, branches tab: branch list with what changed",
+                  width: 760,
+                  height: 1340,
+                },
+              ],
+            },
+          },
+          {
+            id: "live-activity",
+            kicker: "Real-time activity",
+            title: "Show that it’s alive.",
+            line: "A live stream of what’s happening right now: new branches, discoveries, milestones.",
+            points: ["Real-time events", "Readable at a glance", "Every item leads somewhere"],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/paradox/activity.webp",
+                  alt: "Live activity stream: branches created, variants discovered, timeline growth",
+                  width: 580,
+                  height: 576,
+                },
+              ],
+            },
+          },
+          {
+            id: "filters",
+            kicker: "Search filters",
+            title: "Filters with live counts.",
+            line: "Narrow by type, source and genre. Counts update as you go.",
+            points: [
+              "Faceted by type, source and genre",
+              "A count on every option",
+              "One-click reset",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/paradox/filters.webp",
+                  alt: "Explore screen: faceted filters with counts beside trending timelines",
+                  width: 1000,
+                  height: 838,
+                },
+              ],
+            },
+          },
+          {
+            id: "interactive-data",
+            kicker: "Interactive data",
+            title: "Complex data people want to explore.",
+            line: "A pannable canvas with a minimap underneath. It never gets lost. Try it.",
+            points: [
+              "Minimap at 1:1 with the canvas",
+              "Drag, scrub and guided tour",
+              "Color that carries meaning",
+            ],
+            media: { frag: "spine" },
+          },
+          {
+            id: "user-content",
+            kicker: "User content",
+            title: "User content that stays readable.",
+            line: "When anyone can post, structure is what keeps quality up.",
+            points: [
+              "Required summaries, shown first",
+              "Live sorting by real activity",
+              "Creator credit on everything",
+            ],
+            media: {
+              frag: "divergence",
+              poster: { src: "/showcase/paradox/branches.webp", width: 560, height: 558 },
+            },
+            gold: true,
+          },
+        ],
+        faq: [
+          {
+            q: "Why magic links instead of passwords?",
+            a: "Passwords are where sign-ups stall and support tickets start. A one-tap link removes both, and there’s no password to leak.",
+          },
+          {
+            q: "Why let people in as a guest first?",
+            a: "People decide to sign up after they see something worth it. Asking first loses them at the door, so here looking is never gated.",
+          },
+          {
+            q: "Why a ⌘K command palette?",
+            a: "One box finds everything and runs everything. Power users never leave the keyboard, and new users never hunt through menus.",
+          },
+          {
+            q: "Why a details panel instead of a new page?",
+            a: "Users keep their place. Stats, people and actions open beside what they’re looking at, so nobody loses the thread or hits back five times.",
+          },
+          {
+            q: "How does the canvas stay easy to navigate?",
+            a: "The minimap and the canvas share one model, so they never drift out of sync. A guided tour shows the way, and hands control back the moment you touch it.",
+          },
+          {
+            q: "Why require a summary on every branch?",
+            a: "When anyone can post, structure keeps quality up. One required sentence, shown first, means every card is readable at a glance.",
+          },
+          {
+            q: "How is discovery ranked?",
+            a: "By what readers actually do: readers, branches and recent activity. The busiest worlds rise on their own, no guesswork.",
+          },
+        ],
+        builtBy: {
+          personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
+          fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
+        },
+        next: "shiftsum",
       },
       demo: {
         type: "demo",
@@ -724,32 +1025,54 @@ export const WORKSPACES: Workspace[] = [
         src: "/demos/paradox/02-Marketing/Homepage.html",
         lead: "The full Paradox concept, live and edge-to-edge — traverse the multiverse, open a timeline, fork a reality.",
       },
-      "timeline-view": {
-        label: "Timeline View",
-        type: "comp",
-        frag: "spine",
-        desc: "One universe as a flight deck",
-        paras: [
-          "The Ninth Signal's whole canon on a single spine — eight chapters, branches forking off the gold one where everything changed. Drag to pan, scrub the minimap, click a node, or press tour and let it walk the chapters. The full screen adds zoom and a four-tab inspector; this is the postcard.",
-        ],
-      },
-      "branch-cards": {
-        label: "Branch cards",
-        type: "comp",
-        frag: "divergence",
-        desc: "Every fork answers “what changed?”",
-        paras: [
-          "Six realities fork from Chapter V, and every card leads with its divergence — a one-sentence answer to what changed, never optional in this design. Sorting is live, and the trending tags are the ones the data says are hot, not the layout.",
-        ],
-      },
-      "gateway-comp": {
-        label: "Sign-in gateway",
-        type: "comp",
-        frag: "gateway",
+      "a-signin": {
+        type: "anchor",
+        label: "Sign-up flow",
         desc: "Guest-first, passwords never",
-        paras: [
-          "Try it: any email works, the magic link can be “opened” right here, and you get a keeper name with a generated sigil instead of a profile form. Note what's missing — a password field, and any demand to sign up before you've seen the multiverse.",
-        ],
+        page: "overview",
+        hash: "sign-up",
+      },
+      "a-search": {
+        type: "anchor",
+        label: "Command palette",
+        desc: "Find anything in two keystrokes",
+        page: "overview",
+        hash: "command-palette",
+      },
+      "a-details": {
+        type: "anchor",
+        label: "Details panel",
+        desc: "Click anything, get everything",
+        page: "overview",
+        hash: "details-panel",
+      },
+      "a-activity": {
+        type: "anchor",
+        label: "Live activity",
+        desc: "A real-time stream",
+        page: "overview",
+        hash: "live-activity",
+      },
+      "a-filters": {
+        type: "anchor",
+        label: "Filters",
+        desc: "Faceted, with live counts",
+        page: "overview",
+        hash: "filters",
+      },
+      "a-canvas": {
+        type: "anchor",
+        label: "Interactive data",
+        desc: "A canvas with a 1:1 minimap",
+        page: "overview",
+        hash: "interactive-data",
+      },
+      "a-branches": {
+        type: "anchor",
+        label: "User content",
+        desc: "Branch cards that stay readable",
+        page: "overview",
+        hash: "user-content",
       },
       "component-library": LIBRARY,
     },
@@ -877,3 +1200,216 @@ export const WORKSPACES: Workspace[] = [
     },
   },
 ];
+
+const [PERSONAL_HOME, ...PROJECTS] = PERSONAL_WORKSPACES;
+
+// ---- Full Stack Technologies --------------------------------
+// Same projects and live components; its own front door.
+
+export const FST = {
+  NAME: "Full Stack Technologies",
+  LEGAL: "Full Stack Technologies, LLC",
+  INITIALS: "FS",
+  ACCENT: "#f7931e",
+  STATUS_LINE: "Senior product engineering · fixed scope · 0 abandoned codebases",
+} as const;
+
+const FST_HOME: Workspace = {
+  id: "home",
+  initials: FST.INITIALS,
+  name: FST.NAME,
+  desc: "",
+  status: "product engineering studio",
+  accent: FST.ACCENT,
+  groups: [
+    { title: "Company", items: ["about", "services", "engagements", "straight-answers"] },
+    { title: "Work", items: ["go-paradox", "go-shiftsum", "go-clients", "component-library"] },
+  ],
+  items: {
+    about: {
+      label: "About",
+      type: "page",
+      desc: "Who builds your product",
+      sections: [
+        {
+          paras: [
+            `${FST.LEGAL} is a product engineering studio led by ${PH.NAME} — CTO, founding engineer, and senior full-stack developer with ${PH.YEARS}+ years shipping products to real customers and multiple multi-million-dollar valuations behind him.`,
+            "We build new products from a blank repo, rescue and harden existing ones, and scale what's already working. AI agents do the heavy lifting; senior engineers steer, evaluate, and make the output hold up under real load.",
+          ],
+        },
+        {
+          heading: "The work speaks first",
+          paras: [
+            "The left rail is real work — a platform architected and shipped end to end, a scheduling product built and acquired, and selected client builds. The components inside are live: click through any of them, then flip from Preview to Code to read how they're built.",
+          ],
+        },
+        {
+          heading: "Who you work with",
+          paras: [
+            "Senior hands only. No account managers between you and the people writing your code, no junior bench learning on your budget. The person scoping the work is the person accountable for shipping it.",
+          ],
+        },
+        {
+          heading: "Start a project",
+          cta: "message",
+          ctaLabel: "Start a conversation →",
+          paras: [
+            "Tell us what you're building — in whatever shape it's in. You'll get a straight read on scope, timeline, and whether we're the right fit, usually the same day.",
+          ],
+        },
+      ],
+    },
+    services: {
+      label: "Services",
+      type: "page",
+      desc: "What we take on",
+      sections: [
+        {
+          heading: "New product builds",
+          paras: [
+            "From idea to production: architecture, mobile and web apps, backend and infrastructure, launched to real users. Shortest path to proof first, then the version that scales.",
+          ],
+        },
+        {
+          heading: "Rescue & hardening",
+          paras: [
+            "An existing codebase that's slowing down, breaking under load, or was generated faster than anyone could review. We assess it honestly, stabilize what matters, and leave it better documented than we found it.",
+          ],
+        },
+        {
+          heading: "Embedded senior engineering",
+          paras: [
+            "A senior engineer inside your team — your stack, your process, your rituals. Lead or follow, whichever the work needs.",
+          ],
+        },
+        {
+          heading: "AI-assisted delivery",
+          paras: [
+            "Adopting AI agents in your engineering workflow without shipping what they get wrong: tooling, review practice, and guardrails that keep velocity and quality together.",
+          ],
+        },
+        {
+          heading: "Fractional CTO",
+          paras: [
+            "Technical leadership for founders without one: architecture calls, hiring, vendor decisions, and a roadmap that matches what the team can actually ship.",
+          ],
+        },
+      ],
+    },
+    engagements: {
+      label: "Engagements",
+      type: "page",
+      desc: "How a project runs",
+      sections: [
+        {
+          heading: "1 · Conversation",
+          paras: [
+            "A short call about what you're building and where it stands. If something exists, you get an honest assessment. If nothing does, we map the shortest path to proof.",
+          ],
+        },
+        {
+          heading: "2 · Fixed-scope proposal",
+          paras: [
+            "A written scope, timeline, and price. Fixed scope wherever possible, so the risk sits with us, not you. Typical builds run 2–12 weeks.",
+          ],
+        },
+        {
+          heading: "3 · Build in the open",
+          paras: [
+            "Working software in days, not months — shared as it's built, so you watch momentum instead of waiting for it.",
+          ],
+        },
+        {
+          heading: "4 · Launch & handoff",
+          paras: [
+            "We ship it, then either maintain it or hand it to your team so cleanly they won't need us. Your call.",
+          ],
+        },
+      ],
+    },
+    "straight-answers": {
+      label: "Straight answers",
+      type: "page",
+      desc: "The honest FAQ",
+      sections: [
+        {
+          heading: "“What does it cost?”",
+          paras: [
+            "Less than a bad hire, more than a tool subscription. Most work is quoted as fixed scope after the first conversation; ongoing and embedded work is billed monthly.",
+          ],
+        },
+        {
+          heading: "“Who actually writes the code?”",
+          paras: [
+            `Senior engineers, led by ${PH.NAME}, working with AI agents — and accountable for every line those agents produce.`,
+          ],
+        },
+        {
+          heading: "“Who's a good fit?”",
+          paras: [
+            "Startups, small teams, and founders shipping something real. If you're a large org looking to fill one more seat on a big engineering floor, we're honestly not the best fit.",
+          ],
+        },
+        {
+          heading: "“Who owns the code?”",
+          paras: ["You do — the repository, the infrastructure, and the IP, from day one."],
+        },
+      ],
+    },
+    "go-paradox": PERSONAL_HOME.items["go-paradox"],
+    "go-shiftsum": PERSONAL_HOME.items["go-shiftsum"],
+    "go-clients": PERSONAL_HOME.items["go-clients"],
+    "component-library": LIBRARY,
+  },
+};
+
+/** The capabilities sheet — FST's counterpart to the résumé. */
+export const CAPABILITIES: { heading: string; items: string[] }[] = [
+  {
+    heading: "Services",
+    items: [
+      "New product builds — web, mobile, backend",
+      "Rescue & hardening of existing codebases",
+      "Embedded senior engineering",
+      "AI-assisted delivery & agent workflows",
+      "Fractional CTO",
+    ],
+  },
+  {
+    heading: "Stack",
+    items: [
+      "TypeScript · React · Next.js",
+      "Cross-platform mobile apps",
+      "Ruby on Rails",
+      "Serverless & containerized backends (Docker)",
+    ],
+  },
+  {
+    heading: "Track record",
+    items: [
+      `${PH.YEARS}+ years shipping production software`,
+      "Multiple multi-million-dollar valuations",
+      "Scaled a fintech startup from 3 to 20+ people into an acquisition",
+      "Built and sold Shiftsum (2023)",
+      "0 abandoned codebases",
+    ],
+  },
+  {
+    heading: "Engagement",
+    items: [
+      "Fixed scope wherever possible",
+      "Typical builds: 2–12 weeks",
+      "You own the code and IP from day one",
+      "Maintain after launch, or a clean handoff",
+    ],
+  },
+];
+
+const BRAND_WORKSPACES: Record<BrandId, Workspace[]> = {
+  personal: PERSONAL_WORKSPACES,
+  fst: [FST_HOME, ...PROJECTS],
+};
+
+export function workspacesFor(brand: BrandId): Workspace[] {
+  return BRAND_WORKSPACES[brand];
+}

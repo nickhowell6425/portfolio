@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MONO } from "@/components/fragments/ui";
 import { useUI } from "@/components/providers/ui-provider";
-import { hrefFor, searchResults } from "@/lib/navigation";
+import { useNav } from "@/components/providers/brand-provider";
 
 /** ⌘K jump-to: every project and component, one keystroke away. */
 export function SearchPalette() {
@@ -20,12 +20,13 @@ function PaletteDialog() {
   const [query, setQuery] = useState("");
   const [sel, setSel] = useState(0);
 
+  const { searchResults } = useNav();
   const results = searchResults(query);
   const noResults = !!query.trim() && results.length === 0;
 
-  const pick = (ws: string, ch: string) => {
+  const pick = (href: string) => {
     closeSearch();
-    router.push(hrefFor(ws, ch));
+    router.push(href);
   };
 
   return (
@@ -74,7 +75,7 @@ function PaletteDialog() {
               setSel((p) => Math.max(p - 1, 0));
             } else if (e.key === "Enter") {
               const r = results[sel];
-              if (r) pick(r.ws, r.ch);
+              if (r) pick(r.href);
             } else if (e.key === "Escape") {
               closeSearch();
             }
@@ -94,8 +95,8 @@ function PaletteDialog() {
         <div style={{ maxHeight: 330, overflowY: "auto", padding: 6 }}>
           {results.map((r, i) => (
             <button
-              key={`${r.ws}/${r.ch}`}
-              onClick={() => pick(r.ws, r.ch)}
+              key={r.href}
+              onClick={() => pick(r.href)}
               className="hov-accent-bg"
               style={{
                 display: "flex",

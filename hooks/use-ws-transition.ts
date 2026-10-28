@@ -2,9 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { resolvePathname } from "@/lib/navigation";
+import { useNav } from "@/components/providers/brand-provider";
 
-const wsIdOf = (path: string) => resolvePathname(path)?.ws.id ?? null;
+function useWsIdOf() {
+  const { resolvePathname } = useNav();
+  return (path: string) => resolvePathname(path)?.ws.id ?? null;
+}
 
 /**
  * Sticky workspace-switch flag: false on first mount, true once the user
@@ -13,6 +16,7 @@ const wsIdOf = (path: string) => resolvePathname(path)?.ws.id ?? null;
  */
 export function useWsSticky(): { wsId: string | null; swapped: boolean } {
   const pathname = usePathname();
+  const wsIdOf = useWsIdOf();
   const wsId = wsIdOf(pathname);
   const [mark, setMark] = useState({ wsId, swapped: false });
   if (mark.wsId !== wsId) setMark({ wsId, swapped: true });
@@ -26,6 +30,7 @@ export function useWsSticky(): { wsId: string | null; swapped: boolean } {
  */
 export function useNavSwap(): boolean {
   const pathname = usePathname();
+  const wsIdOf = useWsIdOf();
   const [mark, setMark] = useState({ path: pathname, swap: false });
   if (mark.path !== pathname) {
     setMark({ path: pathname, swap: wsIdOf(mark.path) !== wsIdOf(pathname) });

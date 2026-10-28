@@ -11,7 +11,9 @@ Next.js.
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack) — every content route statically prerendered via an
-  optional catch-all (`app/[[...slug]]`) + `generateStaticParams`
+  optional catch-all (`app/[brand]/[[...slug]]`) + `generateStaticParams`, per brand
+- **Two domains, one app** — `proxy.ts` maps the host to a brand (personal portfolio or Full
+  Stack Technologies, LLC); same projects and live components, separate home, theme, and inbox
 - **React 19**, server components for prose/content with client islands for everything live
 - **Tailwind CSS v4** for chrome + design tokens as CSS custom properties (dark/light)
 - **next-themes** — system / light / dark cycle from the rail
@@ -22,9 +24,10 @@ Next.js.
 
 ```
 app/
-  [[...slug]]/page.tsx     all workspace routes (/, /paradox/overview, …)
+  [brand]/[[...slug]]/page.tsx  all workspace routes (/, /paradox/overview, …), per brand
+  [brand]/layout.tsx       fonts, per-brand metadata, providers, shell
   api/contact/route.ts     message-drawer endpoint (zod-validated, Resend-backed)
-  layout.tsx               fonts, metadata, providers, shell
+proxy.ts                   host → brand rewrite (fullstacktechnologiesllc.com → fst)
 components/
   shell/                   rail · sidebar · top bar · page chrome · content stage · ambient canvas
   overlays/                ⌘K search · résumé modal · message drawer · toast
@@ -53,8 +56,9 @@ email, copy `.env.example` to `.env.local` and set `RESEND_API_KEY` (plus option
 
 - `⌘K` (or `/`) jumps to any project or component; `Esc` unwinds overlays.
 - Theme follows the visitor's system by default; the rail button cycles system → light → dark.
+- The top rail tile switches brands: same page on the other domain. Locally, run `pnpm dev`
+  and open `http://fst.localhost:3000` for Full Stack Technologies; on Vercel previews append
+  `?brand=fst` (or `?brand=personal`).
 - `prefers-reduced-motion` collapses all choreography to instant states.
 - Fragment state is shared and session-persistent: a component keeps its state when you
   navigate away, and the component library shares state with the per-channel view.
-
-

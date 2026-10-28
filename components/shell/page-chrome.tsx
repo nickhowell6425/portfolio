@@ -3,8 +3,8 @@
 import { usePathname } from "next/navigation";
 import { useUI } from "@/components/providers/ui-provider";
 import { useWsSticky } from "@/hooks/use-ws-transition";
-import { KINDS, WORKSPACES } from "@/lib/content";
-import { resolvePathname } from "@/lib/navigation";
+import { useNav } from "@/components/providers/brand-provider";
+import { KINDS } from "@/lib/content";
 
 /** Channel header bar + library filter chips. */
 export function PageChrome() {
@@ -12,10 +12,13 @@ export function PageChrome() {
   const { libFilter, setLibFilter } = useUI();
   const { swapped } = useWsSticky();
 
+  const { resolvePathname, workspaces } = useNav();
   const resolved = resolvePathname(pathname);
-  const W = resolved?.ws ?? WORKSPACES[0];
+  const W = resolved?.ws ?? workspaces[0];
   const item = resolved?.item ?? W.items[W.groups[0].items[0]];
   const isLibrary = item.type === "library";
+  // a showcase page owns its <h1> (the product name); the strip steps down
+  const Title = item.type === "showcase" ? "div" : "h1";
 
   return (
     <>
@@ -33,7 +36,7 @@ export function PageChrome() {
           minWidth: 0,
         }}
       >
-        <h1
+        <Title
           style={{
             margin: 0,
             fontWeight: 800,
@@ -43,7 +46,7 @@ export function PageChrome() {
           }}
         >
           {item.label}
-        </h1>
+        </Title>
         <div
           style={{
             color: "var(--dim)",
