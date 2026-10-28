@@ -216,6 +216,14 @@ input::placeholder {
     opacity: 1;
   }
 }
+/* The app frame never scrolls. `clip` (not `hidden`) also stops the browser
+   from scrolling it to bring an anchor into view, which slid the whole shell
+   up and left it stuck; only the content stage and sidebar list scroll. */
+#wsroot {
+  overflow: hidden;
+  overflow: clip;
+}
+
 /* demo header: the description gives way to a small-screen note on phones */
 .pc-demo-note {
   display: none;
