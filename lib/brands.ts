@@ -2,7 +2,7 @@
 // Brands — one app, two front doors. The personal portfolio and
 // Full Stack Technologies serve the same projects and live
 // components; each domain gets its own home, theme, metadata,
-// document (résumé vs capabilities), and contact inbox.
+// and contact inbox.
 //
 // Edge-safe: imported by proxy.ts, so no React or heavy imports.
 // ============================================================
@@ -25,14 +25,6 @@ export interface Brand {
   siteName: string;
   /** Open Graph image under public/, or none. */
   ogImage?: string;
-  /** Where the top-bar document button points. */
-  doc: {
-    label: string;
-    subtitle: string;
-    /** A PDF to embed; without one the modal renders the capabilities sheet. */
-    pdf?: string;
-    download?: string;
-  };
   /** Contact inbox fallback when the per-brand env var is unset. */
   email: string;
   /** Env var naming this brand's inbox (overrides `email`). */
@@ -58,12 +50,6 @@ export const BRANDS: Record<BrandId, Brand> = {
       "The Workspace — a portfolio you open and poke around in. Live components from real products, the decisions behind them, and the person who builds with AI agents and makes it hold up.",
     siteName: "Nicholas Howell — The Workspace",
     ogImage: "/og/personal.png",
-    doc: {
-      label: "Résumé",
-      subtitle: "Nicholas Howell · Senior Full-Stack / CTO",
-      pdf: "/uploads/Resume.pdf",
-      download: "Nicholas-Howell-Resume.pdf",
-    },
     email: "nickhowell6425@gmail.com",
     inboxEnv: "CONTACT_TO_EMAIL",
     devHosts: ["localhost", "127.0.0.1"],
@@ -77,10 +63,6 @@ export const BRANDS: Record<BrandId, Brand> = {
     description:
       "Full Stack Technologies builds, rescues, and scales software products — senior engineering with AI agents, fixed scope, and live work you can click through.",
     siteName: "Full Stack Technologies",
-    doc: {
-      label: "Capabilities",
-      subtitle: "Full Stack Technologies, LLC · capabilities",
-    },
     email: "nickhowell6425@gmail.com",
     inboxEnv: "CONTACT_TO_EMAIL_FST",
     devHosts: ["fst.localhost"],

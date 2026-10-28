@@ -1409,48 +1409,6 @@ const FST_HOME: Workspace = {
   },
 };
 
-/** The capabilities sheet — FST's counterpart to the résumé. */
-export const CAPABILITIES: { heading: string; items: string[] }[] = [
-  {
-    heading: "Services",
-    items: [
-      "New product builds — web, mobile, backend",
-      "Rescue & hardening of existing codebases",
-      "Embedded senior engineering",
-      "AI-assisted delivery & agent workflows",
-      "Fractional CTO",
-    ],
-  },
-  {
-    heading: "Stack",
-    items: [
-      "TypeScript · React · Next.js",
-      "Cross-platform mobile apps",
-      "Ruby on Rails",
-      "Serverless & containerized backends (Docker)",
-    ],
-  },
-  {
-    heading: "Track record",
-    items: [
-      `${PH.YEARS}+ years shipping production software`,
-      "Multiple multi-million-dollar valuations",
-      "Scaled a fintech startup from 3 to 20+ people into an acquisition",
-      "Designed and built Paradox, Timetrack and Constellation end to end",
-      "0 abandoned codebases",
-    ],
-  },
-  {
-    heading: "Engagement",
-    items: [
-      "Fixed scope wherever possible",
-      "Typical builds: 2–12 weeks",
-      "You own the code and IP from day one",
-      "Maintain after launch, or a clean handoff",
-    ],
-  },
-];
-
 const BRAND_WORKSPACES: Record<BrandId, Workspace[]> = {
   personal: PERSONAL_WORKSPACES,
   fst: [FST_HOME, ...PROJECTS],

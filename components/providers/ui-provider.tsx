@@ -19,8 +19,6 @@ interface UICtx {
   searchOpen: boolean;
   openSearch: () => void;
   closeSearch: () => void;
-  resumeOpen: boolean;
-  setResumeOpen: (open: boolean) => void;
   chatOpen: boolean;
   chatClosing: boolean;
   openChat: () => void;
@@ -39,7 +37,6 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
 
   const [navOpen, setNavOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [resumeOpen, setResumeOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [chatClosing, setChatClosing] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -107,14 +104,13 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
       }
       if (e.key === "Escape") {
         if (chatOpen) closeChat();
-        else if (resumeOpen) setResumeOpen(false);
         else if (searchOpen) setSearchOpen(false);
         else setNavOpen(false);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [chatOpen, resumeOpen, searchOpen, closeChat]);
+  }, [chatOpen, searchOpen, closeChat]);
 
   useEffect(
     () => () => {
@@ -131,8 +127,6 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
       searchOpen,
       openSearch,
       closeSearch,
-      resumeOpen,
-      setResumeOpen,
       chatOpen,
       chatClosing,
       openChat,
@@ -146,7 +140,6 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
       searchOpen,
       openSearch,
       closeSearch,
-      resumeOpen,
       chatOpen,
       chatClosing,
       openChat,

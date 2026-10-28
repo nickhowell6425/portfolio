@@ -1,7 +1,6 @@
 "use client";
 
 import { MessageDrawer } from "@/components/overlays/message-drawer";
-import { ResumeModal } from "@/components/overlays/resume-modal";
 import { SearchPalette } from "@/components/overlays/search-palette";
 import { Toast } from "@/components/overlays/toast";
 import { useUI } from "@/components/providers/ui-provider";
@@ -14,9 +13,9 @@ import { TopBar } from "./top-bar";
 
 /** The whole app frame: rail + sidebar on the left, the stage on the right. */
 export function WorkspaceShell({ children }: { children: React.ReactNode }) {
-  const { navOpen, setNavOpen, chatOpen, searchOpen, resumeOpen } = useUI();
+  const { navOpen, setNavOpen, chatOpen, searchOpen } = useUI();
   // keep focus inside open dialogs by making the shell inert behind them
-  const overlayOpen = chatOpen || searchOpen || resumeOpen;
+  const overlayOpen = chatOpen || searchOpen;
   return (
     <div
       id="wsroot"
@@ -87,7 +86,6 @@ export function WorkspaceShell({ children }: { children: React.ReactNode }) {
 
       <MessageDrawer />
       <SearchPalette />
-      <ResumeModal />
       <Toast />
     </div>
   );

@@ -30,7 +30,7 @@ app/
 proxy.ts                   host → brand rewrite (fullstacktechnologiesllc.com → fst)
 components/
   shell/                   rail · sidebar · top bar · page chrome · content stage · ambient canvas
-  overlays/                ⌘K search · résumé modal · message drawer · toast
+  overlays/                ⌘K search · message drawer · toast
   content/                 sections · heroes · component card · code view · library grid
   fragments/               the live component miniatures (Paradox, Timetrack)
   providers/               theme · UI orchestration · contact thread · shared fragment state
