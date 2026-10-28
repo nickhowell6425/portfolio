@@ -332,8 +332,8 @@ export function MessageDrawer() {
                   height: 32,
                   padding: "0 15px",
                   borderRadius: 9,
-                  background: "var(--accent)",
-                  color: "#fff",
+                  background: "var(--action)",
+                  color: "var(--action-text)",
                   fontWeight: 700,
                   fontSize: 12.5,
                 }}

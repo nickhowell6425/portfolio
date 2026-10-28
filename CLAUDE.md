@@ -52,8 +52,10 @@ remembered in a cookie. Locally, `fst.localhost:3000` is the FST host. Client co
 brand via `useBrand()` and route resolution via `useNav()` (`components/providers/brand-provider.tsx`)
 — never import a workspace list directly. The rail's top tile is the brand switcher: home, or
 the same path on the other domain. FST tokens are `[data-brand="fst"]` overrides in
-`globals.css`; its mark is `public/brand/fst-mark.svg` (a traced stand-in — replace with the
-official vector).
+`globals.css`; its official light/dark SVG marks and wordmarks are in `public/brand/`. Its brand-kit
+typography is Inter (UI) and Manrope (headings). Each brand’s favicon and Apple touch icon
+live under `public/brand/{personal,fst}/`; `/favicon.ico` follows the host/preview brand via
+`proxy.ts`, and the layout emits explicit per-brand icon metadata.
 
 **Product pages (`type: "showcase"`).** A project's overview can be a landing-style product
 page (`components/content/showcase.tsx`): cover + identity, stack tags, "What it does" tiles,

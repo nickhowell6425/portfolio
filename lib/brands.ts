@@ -63,6 +63,7 @@ export const BRANDS: Record<BrandId, Brand> = {
     description:
       "Full Stack Technologies builds, rescues, and scales software products — senior engineering with AI agents, fixed scope, and live work you can click through.",
     siteName: "Full Stack Technologies",
+    ogImage: "/og/fst.png",
     email: "nickhowell6425@gmail.com",
     inboxEnv: "CONTACT_TO_EMAIL_FST",
     devHosts: ["fst.localhost"],

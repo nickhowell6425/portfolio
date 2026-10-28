@@ -1,14 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 452 462" role="img" aria-label="Full Stack Technologies">
-  <defs><clipPath id="c"><rect width="452" height="462"/></clipPath></defs>
-  <g clip-path="url(#c)" fill="none" stroke-linejoin="miter" stroke-miterlimit="10">
-    <g stroke="#f7931e" stroke-width="26">
-      <polyline points="0,145 226,275 452,145"/>
-      <polyline points="56,198 0,230 226,360 452,230 396,198"/>
-      <polyline points="56,283 0,315 226,445 452,315 396,283"/>
-    </g>
-    <g stroke="#141414" stroke-width="24">
-      <polyline points="0,138 238,1"/>
-      <polyline points="252,62 120,138 206,188 252,161 298,188 268,205"/>
-    </g>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000" role="img" aria-label="Full Stack Technologies LLC"><title>Full Stack Technologies LLC</title><g transform="translate(-18.059856 -11.867905) scale(0.825593395)"><path fill="#F7931A" d="M143 818V375Q143 345 165 323L280 209Q302 187 337 187H970Q995 187 1017 214L907 325H356L267 406V470L355 393H859V517H382L267 621V818Z"/><path fill="#171717" d="M887 396L1036 248L1090 302Q1129 344 1101 385L935 541H887Z"/><path fill="#171717" d="M414 566H992Q1025 566 1047 589L1112 654V807L962 683H434V738H959L1092 851Q1111 869 1111 896V963L1016 1034Q994 1053 962 1053H302Q279 1053 257 1032L165 940Q144 919 144 889V844H264L350 928H935V847H384L307 772V650Z"/></g></svg>
