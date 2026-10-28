@@ -332,6 +332,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     desc: "A living multiverse of stories",
     status: "storytelling · 2026",
     accent: "#3edba6",
+    accentInk: "#0a7553",
     groups: [
       { title: "Project", items: ["overview", "demo"] },
       {
@@ -649,6 +650,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     desc: "Time tracking for the age of AI",
     status: "time tracking · 2026",
     accent: "#ffb454",
+    accentInk: "#955300",
     groups: [
       { title: "Project", items: ["overview"] },
       {
