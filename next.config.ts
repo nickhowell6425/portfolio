@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Showcase screenshots are text-heavy UI; they're served at 90.
+  images: { qualities: [75, 90] },
   async redirects() {
     // Paradox's per-component pages became sections of its product page
     const paradox = [
@@ -21,7 +23,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       })),
     );
-    return [...paradox, ...retired];
+    // The component library was retired; its pages land on the work itself
+    const library = [
+      ["home", "/"],
+      ["paradox", "/paradox/overview"],
+      ["timetrack", "/timetrack/overview"],
+    ].map(([ws, destination]) => ({
+      source: `/${ws}/component-library`,
+      destination,
+      permanent: true,
+    }));
+    return [...paradox, ...retired, ...library];
   },
 };
 

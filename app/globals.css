@@ -216,6 +216,72 @@ input::placeholder {
     opacity: 1;
   }
 }
+/* The app frame never scrolls. `clip` (not `hidden`) also stops the browser
+   from scrolling it to bring an anchor into view, which slid the whole shell
+   up and left it stuck; only the content stage and sidebar list scroll. */
+#wsroot {
+  overflow: hidden;
+  overflow: clip;
+}
+
+/* demo header: the description gives way to a small-screen note on phones */
+.pc-demo-note {
+  display: none;
+}
+@media (max-width: 700px) {
+  .pc-desc-demo {
+    display: none;
+  }
+  .pc-demo-note {
+    display: block;
+  }
+  /* the back button says where you are; the title stays for screen readers */
+  .pc-title-demo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* Timetrack's mark: session rings turning at their own pace, a live core */
+.ttm-spin {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+  animation: ttmSpin 7s linear infinite;
+}
+.ttm-rev {
+  animation-duration: 4.6s;
+  animation-direction: reverse;
+}
+.ttm-slow {
+  animation-duration: 10s;
+}
+.ttm-gold {
+  animation-duration: 16s;
+}
+.ttm-live {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+  animation: ttmPing 2.4s ease-out infinite;
+}
+@keyframes ttmSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ttmPing {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
 /* Timetrack's split-flap leaf: arrives rotated back on its hinge, swings down */
 @keyframes ttLeaf {
   0% {
@@ -446,19 +512,19 @@ input::placeholder {
   justify-content: center;
   align-items: flex-start;
   gap: 16px;
-  padding: 40px 28px;
+  padding: 32px 24px;
 }
 .sc-shot {
   display: block;
   width: auto;
   height: auto;
-  max-width: 82%;
-  max-height: 460px;
+  max-width: 100%;
+  max-height: 480px;
   border-radius: 10px;
   box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.9);
 }
 .sc-shots-pair .sc-shot {
-  max-width: 46%;
+  max-width: calc(50% - 8px);
 }
 .sc-shots-pair .sc-shot + .sc-shot {
   margin-top: 48px;
@@ -502,10 +568,10 @@ input::placeholder {
     padding: 22px 12px;
   }
   .sc-shots {
-    padding: 26px 16px;
+    padding: 20px 12px;
   }
   .sc-shot {
-    max-height: 380px;
+    max-height: 420px;
   }
   .sc-faq {
     margin-top: 72px;

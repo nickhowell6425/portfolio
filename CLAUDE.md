@@ -35,7 +35,7 @@ There is no unit-test suite. Verification is browser-driven:
 ## Architecture
 
 **Content model drives everything.** `lib/content.ts` is the single source of all copy,
-workspaces, sidebar structure, fragment metadata, and code samples. `lib/navigation.ts`
+workspaces, sidebar structure, and product-page content. `lib/navigation.ts`
 derives routes, the ⌘K search index, and `generateStaticParams` from it. The one route file
 `app/[brand]/[[...slug]]/page.tsx` (optional catch-all) statically prerenders every workspace
 item per brand; `/` is home/about, `/{ws}` redirects to its first item. Unknown slugs hit
@@ -66,7 +66,8 @@ jump to a section (`page` + `hash`); they aren't routes but do appear in ⌘K. R
 are the `.sc-*` classes in `globals.css`. Paradox's old per-component URLs 308 to their
 sections, and the retired Shiftsum / Client builds workspaces 308 to Timetrack
 (`next.config.ts`). Without `live`, a product page's CTAs lead into its first feature section
-instead of a demo; `mark` overrides the identity mark's background.
+instead of a demo. A product's mark (`components/shell/product-mark.tsx`) is the same in the
+rail tile, the product page's identity mark, and the "Next product" card.
 
 **Server/client split.** Pages render prose server-side (`components/content/sections.tsx`,
 `portrait-hero.tsx`); everything interactive is a client island. The persistent shell
@@ -77,11 +78,13 @@ résumé modal, toast) are siblings of the shell; the shell gets `inert` while a
 **Fragments** (`components/fragments/`) are the live component miniatures. Conventions:
 
 - No `"use client"` directive — they sit inside the client graph; the boundary is
-  `component-card.tsx` / `overview-hero.tsx` / `library-grid.tsx`.
+  `live-fragment.tsx`, which mounts one in a product-page section (`media.frag`, with a
+  same-size `poster` still until it scrolls near).
 - State via `useFragState(fid, defaults)` (provider-backed map) so a fragment keeps state
-  across navigation and the library view shares state with the channel view.
-- Registered in `registry.tsx`; metadata + Code-tab source in `lib/content.ts`.
-- Use `/new-fragment` for the four-touchpoint checklist when adding one.
+  across navigation.
+- Registered in `registry.tsx`; its id is in the `FragmentId` union in `lib/content.ts`.
+  There is no component library or Code tab any more (retired URLs 308 in `next.config.ts`).
+- Use `/new-fragment` for the checklist when adding one.
 
 **Providers** (`components/providers/`): `ui-provider` is the orchestration hub — overlay
 open/close state, global keyboard (⌘K, `/`, Escape priority order), toasts, and the

@@ -2,12 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { MONO } from "@/components/fragments/ui";
 import type { ShowcaseItem, ShowcaseSection } from "@/lib/content";
+import { ProductMark } from "@/components/shell/product-mark";
 import { LiveFragment } from "./live-fragment";
 import { MessageCta } from "./message-cta";
 
 const GOLD = "#e9b949";
 
 export interface ShowcaseNext {
+  id: string;
   name: string;
   initials: string;
   accent: string;
@@ -57,7 +59,12 @@ function SectionMedia({ sec, accent }: { sec: ShowcaseSection; accent: string })
               alt={im.alt}
               width={im.width}
               height={im.height}
-              sizes="(max-width: 700px) 80vw, 420px"
+              sizes={
+                imgs.length > 1
+                  ? "(max-width: 700px) 46vw, 270px"
+                  : "(max-width: 700px) 92vw, 520px"
+              }
+              quality={90}
               className="sc-shot"
             />
           ))}
@@ -75,6 +82,7 @@ export function Showcase({
   liveHref,
   builtBy,
   next,
+  wsId,
 }: {
   item: ShowcaseItem;
   /** The product's name — the page's <h1>. */
@@ -84,6 +92,8 @@ export function Showcase({
   liveHref?: string;
   builtBy: string;
   next?: ShowcaseNext;
+  /** Workspace id — picks the product's mark (the same one its rail tile shows). */
+  wsId: string;
 }) {
   const faq = [...item.faq, { q: "Who built it?", a: builtBy }];
   const tour = `#${item.sections[0]?.id ?? "sc-what"}`;
@@ -135,14 +145,16 @@ export function Showcase({
           aria-hidden="true"
           className="sc-mark"
           style={{
+            position: "relative",
+            overflow: "hidden",
             flex: "0 0 auto",
             border: "5px solid var(--bg2)",
-            background:
-              item.mark ??
-              `radial-gradient(circle at 50% 50%, #e9fff6 0, ${accent} 14%, color-mix(in srgb, ${accent} 30%, #04140d) 38%, #04140d 72%)`,
+            background: `radial-gradient(circle at 50% 50%, #e9fff6 0, ${accent} 14%, color-mix(in srgb, ${accent} 30%, #04140d) 38%, #04140d 72%)`,
             boxShadow: `0 16px 40px -10px color-mix(in srgb, ${accent} 50%, transparent)`,
           }}
-        />
+        >
+          <ProductMark wsId={wsId} res={224} delay={3000} />
+        </div>
         <div
           style={{
             flex: "1 1 260px",
@@ -274,6 +286,7 @@ export function Showcase({
                 sizes={
                   t.lead ? "(max-width: 560px) 100vw, 700px" : "(max-width: 560px) 100vw, 360px"
                 }
+                quality={90}
                 style={{
                   objectFit: t.contain ? "contain" : "cover",
                   objectPosition: t.contain ? "50% 20%" : "40% 0%",
@@ -358,7 +371,8 @@ export function Showcase({
         );
       })}
 
-      {/* FAQ — server-rendered <details>, mirrored as FAQPage JSON-LD */}
+      {/* FAQ — server-rendered <details>, mirrored as FAQPage JSON-LD. A shared
+          `name` makes them one exclusive group: opening one closes the rest. */}
       <section aria-labelledby="sc-faq" className="sc-faq">
         <div style={{ flex: "1 1 220px", display: "flex", flexDirection: "column", gap: 8 }}>
           <span style={kicker(accent)}>FAQ</span>
@@ -374,6 +388,7 @@ export function Showcase({
           {faq.map((f, i) => (
             <details
               key={f.q}
+              name="sc-faq"
               open={i === 0}
               className="sc-qa"
               style={{ borderBottom: "1px solid var(--border2)", padding: "16px 0" }}
@@ -472,6 +487,8 @@ export function Showcase({
           <span
             aria-hidden="true"
             style={{
+              position: "relative",
+              overflow: "hidden",
               width: 44,
               height: 44,
               borderRadius: 13,
@@ -484,7 +501,9 @@ export function Showcase({
               fontWeight: 800,
             }}
           >
-            {next.initials}
+            <ProductMark wsId={next.id} res={88} delay={3000}>
+              {next.initials}
+            </ProductMark>
           </span>
           <span style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0 }}>
             <span style={{ fontSize: 12, color: "var(--dim)" }}>Next product</span>

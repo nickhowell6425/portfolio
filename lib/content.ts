@@ -1,7 +1,7 @@
 // ============================================================
 // THE WORKSPACE v2 — all copy & content, ported from the design.
-// Items are pages ("page"), live components ("comp"), or the
-// cross-project library ("library").
+// Items are pages ("page"), product pages ("showcase"), section anchors
+// ("anchor"), demos ("demo"), or links to another workspace ("ws").
 // ============================================================
 
 import type { BrandId } from "./brands";
@@ -12,17 +12,11 @@ export const PH = {
   YEARS: "10",
   EMAIL: "nickhowell6425@gmail.com",
   STATUS_LINE: "Multiple multi-million valuations · 0 abandoned codebases",
-  FOOTER: "⌘K — jump to any project or component",
+  FOOTER: "⌘K — jump to any project or feature",
 } as const;
 
-export const KINDS = ["All", "Auth", "Discovery", "Dashboards", "Planning"] as const;
-
-export type Kind = (typeof KINDS)[number];
-
 export type FragmentId =
-  | "multiverse"
   | "spine"
-  | "ribbon"
   | "gateway"
   | "divergence"
   | "flap"
@@ -31,23 +25,6 @@ export type FragmentId =
   | "branches"
   | "forecast";
 
-export interface FragmentCode {
-  file: string;
-  lang: string;
-  src: string;
-}
-
-export interface FragmentMeta {
-  title: string;
-  kind: Exclude<Kind, "All">;
-  product: string;
-  year: string;
-  /** still in production */
-  prod: boolean;
-  accent: string;
-  code: FragmentCode;
-}
-
 export interface Section {
   heading?: string;
   paras: string[];
@@ -55,31 +32,11 @@ export interface Section {
   ctaLabel?: string;
 }
 
-export interface OverviewHero {
-  /** A live fragment mounted in the hero (the default treatment). */
-  frag?: FragmentId;
-  /** OR a static screenshot of the real screen (path under public/). */
-  img?: string;
-  kicker: string;
-  lead: string;
-  /** Optional call-to-action link — e.g. through to the interactive demo. */
-  cta?: { label: string; href: string };
-}
-
 export interface PageItem {
   type: "page";
   label: string;
   desc: string;
-  hero?: OverviewHero;
   sections: Section[];
-}
-
-export interface CompItem {
-  type: "comp";
-  label: string;
-  desc: string;
-  frag: FragmentId;
-  paras: string[];
 }
 
 export interface DemoItem {
@@ -144,8 +101,6 @@ export interface ShowcaseItem {
   cover: { src: string; alt: string };
   /** Where "Try it live" goes (an item id in the same workspace); omitted = no live demo. */
   live?: string;
-  /** CSS background for the identity mark (defaults to an accent glow). */
-  mark?: string;
   stack: string[];
   tiles: ShowcaseTile[];
   sections: ShowcaseSection[];
@@ -174,20 +129,7 @@ export interface WsLinkItem {
   ws: string;
 }
 
-export interface LibraryItem {
-  type: "library";
-  label: string;
-  desc: string;
-}
-
-export type SidebarItem =
-  | PageItem
-  | CompItem
-  | DemoItem
-  | ShowcaseItem
-  | AnchorItem
-  | WsLinkItem
-  | LibraryItem;
+export type SidebarItem = PageItem | DemoItem | ShowcaseItem | AnchorItem | WsLinkItem;
 
 export interface SidebarGroup {
   title: string;
@@ -205,361 +147,6 @@ export interface Workspace {
   items: Record<string, SidebarItem>;
 }
 
-// ---- Component fragments (the bits & pieces) ----------------
-
-export const FRAGMENTS: Record<FragmentId, FragmentMeta> = {
-  multiverse: {
-    title: "The Sacred Timeline",
-    kind: "Discovery",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "timeline-engine.ts",
-      lang: "tsx",
-      src: `// The homepage is the graph itself — no feed, no grid.
-// One canvas, additive blending, a beating core at the origin.
-function frame(t: number) {
-  drawVoid(ctx)                          // radial green-black, brighter at the core
-  ctx.globalCompositeOperation = 'lighter'
-  for (const s of strands) drawStrand(s, t)     // glow halo pass + bright core pass
-  for (const s of strands) drawParticles(s, t)  // light flowing toward the future
-  drawCore(t)                            // 26 woven fibers round a pulsing nucleus
-  for (const n of nodes) drawNode(n, t)  // emerald = canon, gold = divergence
-  ctx.globalCompositeOperation = 'source-over'
-}
-
-// ten timelines fan out from a tight band around the core, then
-// grow organically — each limb forks into smaller and dimmer kids
-function grow(origin: Pt, ang: number, len: number, depth: number) {
-  const end = reach(origin, ang, len)
-  strands.push(bowedBezier(origin, end, {
-    w: 3.4 - depth * 0.7,
-    bright: 0.62 - depth * 0.1,
-  }))
-  for (const spread of spreads(depth)) grow(end, ang + spread, len * 0.6, depth + 1)
-  return end
-}`,
-    },
-  },
-  spine: {
-    title: "Timeline View",
-    kind: "Dashboards",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "tlv2-spine.ts",
-      lang: "tsx",
-      src: `// "Forget everything and reimagine it." One universe, full-bleed:
-// canon flows left → right, branches fork off their divergence point.
-const GAP = 460                              // px between canon events
-
-// hero framing: open punchy and centered on the great divergence —
-// whole-canon orientation lives in the minimap, not the first frame
-const heroScale = () => clamp(Math.min(0.95, W / (2.6 * GAP)))
-const heroNode = () => nodes.find((n) => n.type === 'event' && n.gold)
-
-// the bottom scrubber is the same world at 1:1 — a draggable window
-function syncMinimap() {
-  const cw = content.maxX - content.minX
-  win.style.left = \`\${((cam.x - W / 2 - content.minX) / cw) * 100}%\`
-  win.style.width = \`\${(W / cw) * 100}%\`
-}
-
-function scrubTo(f: number) {
-  cam.tx = content.minX + f * (content.maxX - content.minX)
-}
-
-// guided tour: fly the camera down the canon, one chapter at a time,
-// the inspector following — first interaction hands control back
-const tour = setInterval(() => focusEvent(chronology[i++ % 8]), 3600)`,
-    },
-  },
-  ribbon: {
-    title: "Reality ribbon",
-    kind: "Dashboards",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "BranchHero.tsx",
-      lang: "tsx",
-      src: `// A branch is a fork of the canon. The hero says it in one strip:
-// shared chapters → gold divergence diamond → this reality, unfolding.
-type Phase = 'canon' | 'split' | 'reality' | 'live'
-
-function phaseOf(node: RibbonNode, divergence: Divergence): Phase {
-  if (node.chapter < divergence.chapter) return 'canon'   // dashed jade — shared
-  if (node.chapter === divergence.chapter) return 'split' // the 02:09 diamond
-  return node.live ? 'live' : 'reality'                   // emerald — ours now
-}
-
-export function RealityRibbon({ nodes, divergence }: Props) {
-  return (
-    <ol className='ribbon'>
-      {nodes.map((n) => (
-        <li key={n.id} data-phase={phaseOf(n, divergence)}>
-          <Knob />          {/* jade dot · gold diamond · emerald glow */}
-          <Chapter n={n} />
-        </li>
-      ))}
-    </ol>
-  )
-}`,
-    },
-  },
-  gateway: {
-    title: "Sign-in gateway",
-    kind: "Auth",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "SignInGateway.tsx",
-      lang: "tsx",
-      src: `// Guest first. Magic link second. Passwords never.
-export function SignInGateway() {
-  const [step, setStep] = useState<'gate' | 'sent' | 'in'>('gate')
-  const [email, setEmail] = useState('')
-
-  async function sendLink() {
-    if (!email.includes('@')) return setError(true)
-    await auth.sendMagicLink(email)
-    setStep('sent')
-  }
-
-  if (step === 'in') return <Welcome name={forgeKeeperName()} />
-  return (
-    <Gate>
-      <Provider id='google' recommended />
-      <Provider id='discord' />
-      <EmailField value={email} onChange={setEmail} onSubmit={sendLink} />
-      <GuestLink onClick={enterAsGuest} />
-    </Gate>
-  )
-}`,
-    },
-  },
-  divergence: {
-    title: "Branch cards",
-    kind: "Discovery",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "BranchCard.tsx",
-      lang: "tsx",
-      src: `// Design rule: every branch answers "what changed?" — it is never optional.
-interface Branch {
-  title: string
-  divergence: string      // one sentence, serif, emerald-railed
-  log: string
-  stats: { readers: number; events: number; variants: number }
-  hot?: boolean           // the data decides what's trending, not the layout
-}
-
-export function BranchCard({ b, onOpen }: { b: Branch; onOpen: () => void }) {
-  return (
-    <Card hot={b.hot} onClick={onOpen}>
-      <Origin from='The Ninth Signal' trending={b.hot} />
-      <Title>{b.title}</Title>
-      <Divergence>{b.divergence}</Divergence>   {/* the load-bearing line */}
-      <Logline>{b.log}</Logline>
-      <Stats {...b.stats} creator={<Sigil seed={b.creator} />} />
-    </Card>
-  )
-}
-
-const sorters = {
-  popular: (a, b) => b.stats.readers - a.stats.readers,
-  newest: (a, b) => b.forkedAt - a.forkedAt,
-  active: (a, b) => b.stats.contributors - a.stats.contributors,
-}`,
-    },
-  },
-  flap: {
-    title: "Split-flap sign-in",
-    kind: "Auth",
-    product: "Timetrack",
-    year: "2026",
-    prod: true,
-    accent: "#ffb454",
-    code: {
-      file: "CypherLock.tsx",
-      lang: "tsx",
-      src: `// One owner, one key. The board IS the form: no button, no status line.
-// Every filled leaf shows a random character, so the key never appears.
-export function CypherLock({ cells, next }: { cells: number; next: string }) {
-  const [deck, setDeck] = useState<'' | 'working' | 'granted' | 'denied'>('')
-
-  function onInput(value: string) {
-    riffleTo(value.length, pick)                 // ciphertext, not the typed char
-    if (value.length === cells) submit(value)    // the last leaf commits
-  }
-
-  async function submit(key: string) {
-    setDeck('working')                           // every leaf turning, in cyan
-    const res = await fetch('/api/auth', { method: 'POST', body: JSON.stringify({ key, next }) })
-    if (res.ok) return word('ACCEPTED', 'granted'), router.push(next)
-    word('DENIED', 'denied')                     // the board answers for itself
-  }
-
-  // still a real <form> posting to /api/auth: with JS off it is a password field
-  return <form method='post' action='/api/auth'>{/* leaves + invisible input */}</form>
-}`,
-    },
-  },
-  dial: {
-    title: "The day as one dial",
-    kind: "Dashboards",
-    product: "Timetrack",
-    year: "2026",
-    prod: true,
-    accent: "#ffb454",
-    code: {
-      file: "DayDial.tsx",
-      lang: "tsx",
-      src: `// A day of sessions as one dial: outer ring by hand, one ring per client.
-// The dial only draws. Deciding what a mark means is the screen's job.
-const angle = (min: number) => ((min - WINDOW_START) / WINDOW_LEN) * 100
-
-const marks = sessions.map((s) => ({
-  angle: angle(s.start + s.dur / 2),         // placed by when it happened
-  radius: s.byHand ? rings[0] : rings[ringOf(s.client)],
-  size: clamp(5 + s.dur / 12, 6, 15),        // longer sessions, bigger dots
-  hue: s.byHand ? GOLD : s.client.hue,       // hue is identity, never status
-  opacity: s.evidence ? 1 : 0.5,             // a gappy day reads faint at a glance
-}))
-
-// overlapping sessions all count: two matters in one hour are two billable hours
-const worked = sum(sessions, (s) => s.dur)
-const atOnce = worked / unionOf(sessions)    // concurrency, shown, not hidden
-
-return <RadialDial figure={fmt(worked / 60)} caption='Hours worked' marks={marks} />`,
-    },
-  },
-  rank: {
-    title: "Ranked queue",
-    kind: "Planning",
-    product: "Constellation",
-    year: "2026",
-    prod: false,
-    accent: "#c8f542",
-    code: {
-      file: "rank.ts",
-      lang: "tsx",
-      src: `// One queue across every client. The rank is a weighted average the
-// user can read and tune, never a black box.
-const LEVEL = [0, 0.5, 1, 2] // Off · Low · Med · High
-
-export function score(issue: Issue, w: Weights) {
-  const den = FACTORS.reduce((t, f) => t + LEVEL[w[f]], 0)
-  if (!den) return 0
-  const sum = FACTORS.reduce((t, f) => t + LEVEL[w[f]] * issue.signals[f], 0)
-  return Math.round((sum / den) * 10)            // 0–100, shown on every row
-}
-
-// Today fills itself: rank order, until the next issue no longer fits
-export function plan(ranked: Issue[], capacity: Hours[]) {
-  const buckets = { today: [], week: [], later: [] }
-  let used = 0
-  let stage: keyof typeof buckets = 'today'
-  for (const x of ranked) {
-    if (stage === 'today' && used + x.est > capacity[0]) stage = 'week'
-    if (stage === 'week' && used + x.est > sum(capacity)) stage = 'later'
-    used += x.mine ? x.est : 0                   // delegated work costs you nothing
-    buckets[stage].push(x)
-  }
-  return buckets
-}`,
-    },
-  },
-  branches: {
-    title: "Plan branches",
-    kind: "Planning",
-    product: "Constellation",
-    year: "2026",
-    prod: false,
-    accent: "#c8f542",
-    code: {
-      file: "branches.ts",
-      lang: "tsx",
-      src: `// A plan change is a change you might not keep, so it lives on a branch.
-// main is what you've committed to; a branch is a diff you can read first.
-interface Branch {
-  id: string                       // 'ferro-rush'
-  slip: Partial<Record<ProjectKey, Days>>
-  load: Partial<Record<ProjectKey, Hours[]>>
-  capacity?: Hours[]               // 'friday-off' zeroes a day
-}
-
-export function forecast(project: Project, branch: Branch) {
-  const slip = project.slip + (branch.slip[project.key] ?? 0)
-  const sigma = Math.max(0.8, project.spread / 1.5)
-  return {
-    p50: addDays(project.due, slip),
-    band: [addDays(project.due, slip - 1.3 * sigma), addDays(project.due, slip + 1.3 * sigma)],
-    late: slip > 0,
-  }
-}
-
-// the banner reads like a pull request: what moves, by how much
-export const diff = (b: Branch) =>
-  Object.entries(b.slip).map(([key, d]) => ({ key, d, tone: d > 0 ? 'late' : 'gain' }))
-
-export const merge = (main: Plan, b: Branch): Plan => ({ ...main, base: b.id })`,
-    },
-  },
-  forecast: {
-    title: "Ship-date forecast",
-    kind: "Dashboards",
-    product: "Constellation",
-    year: "2026",
-    prod: false,
-    accent: "#c8f542",
-    code: {
-      file: "ShipForecast.tsx",
-      lang: "tsx",
-      src: `// A date is a distribution. Show the spread and the odds, not one guess.
-const phi = (z: number) => 0.5 * (1 + erf(z / Math.SQRT2))
-
-export function ShipForecast({ issue }: { issue: Issue }) {
-  const done = issue.subIssues.filter((s) => s.done)
-  const slip = issue.slip - sum(done, (s) => s.gain)
-  const sigma = Math.max(0.6, issue.spread - 0.35 * done.length)
-  const onTime = phi(-slip / sigma)               // chance of shipping by the due date
-
-  const bars = range(-6, 6).map((d) => ({
-    h: Math.exp(-(d * d) / (2 * sigma * sigma)),
-    late: slip + d > 0,                           // red past the due date
-  }))
-
-  return (
-    <Panel>
-      <Big date={addDays(issue.due, slip)} chip={slipLabel(slip)} />
-      <Histogram bars={bars} caption={\`\${pct(onTime)} on time\`} />
-      <SubIssues items={issue.subIssues} gainLabel={(s) => \`−\${s.gain}d\`} />
-    </Panel>
-  )
-}`,
-    },
-  },
-};
-
-// ---- Shared library item -------------------------------------
-
-const LIBRARY: LibraryItem = {
-  label: "Component library",
-  type: "library",
-  desc: "Every piece from every project — filter by what your product needs.",
-};
-
 // ---- Workspaces ----------------------------------------------
 // The personal home first, then the projects every brand shares.
 
@@ -573,10 +160,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     accent: "#5b8def",
     groups: [
       { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
-      {
-        title: "Library",
-        items: ["go-paradox", "go-timetrack", "go-constellation", "component-library"],
-      },
+      { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation"] },
     ],
     items: {
       about: {
@@ -595,7 +179,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               `${PH.YEARS}+ years building. ${PH.STATUS_LINE}. As CTO and founding engineer at AccountTouch I solely architected and shipped the whole platform — a cross-platform mobile app, a serverless backend, and a web portal, all Dockerized and in production.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
-              "The left rail is real work. The components inside are live — click through any of them, then flip from Preview to Code to read how it's built.",
+              "The left rail is real work: three products, each with a page on how it's built and why. The components inside are live — click through any of them.",
             ],
           },
           {
@@ -724,7 +308,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         label: "Timetrack",
         type: "ws",
         ws: "timetrack",
-        desc: "Time tracking for AI coding work",
+        desc: "Time tracking for the age of AI",
       },
       "go-constellation": {
         label: "Constellation",
@@ -732,7 +316,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ws: "constellation",
         desc: "Prioritization across every client",
       },
-      "component-library": LIBRARY,
     },
   },
   {
@@ -747,16 +330,15 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       {
         title: "Features",
         items: [
+          "a-canvas",
           "a-signin",
           "a-search",
           "a-details",
           "a-activity",
           "a-filters",
-          "a-canvas",
           "a-branches",
         ],
       },
-      { title: "Library", items: ["component-library"] },
     ],
     items: {
       overview: {
@@ -768,7 +350,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         summary:
           "Paradox, designed and built end to end: sign-up, search, a details panel, real-time activity and an interactive canvas, built the way production apps need it.",
         cover: {
-          src: "/uploads/paradox-home.jpg",
+          src: "/showcase/paradox/home.webp",
           alt: "Paradox homepage: a living graph of story timelines",
         },
         live: "demo",
@@ -805,10 +387,10 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             contain: true,
           },
           {
-            title: "Branch cards",
-            line: "Every fork says what changed.",
-            img: "/showcase/paradox/branches.webp",
-            target: "user-content",
+            title: "Command palette",
+            line: "Everything, two keystrokes away.",
+            img: "/showcase/paradox/command-palette.webp",
+            target: "command-palette",
           },
           {
             title: "Explore",
@@ -817,18 +399,30 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             target: "filters",
           },
           {
+            title: "Branch cards",
+            line: "Every fork says what changed.",
+            img: "/showcase/paradox/branches.webp",
+            target: "user-content",
+          },
+          {
             title: "Homepage",
             line: "The graph is the front door.",
             img: "/showcase/paradox/home.webp",
           },
-          {
-            title: "Command palette",
-            line: "Everything, two keystrokes away.",
-            img: "/showcase/paradox/command-palette.webp",
-            target: "command-palette",
-          },
         ],
         sections: [
+          {
+            id: "interactive-data",
+            kicker: "Interactive data",
+            title: "Complex data people want to explore.",
+            line: "A pannable canvas with a minimap underneath. It never gets lost. Try it.",
+            points: [
+              "Minimap at 1:1 with the canvas",
+              "Drag, scrub and guided tour",
+              "Color that carries meaning",
+            ],
+            media: { frag: "spine" },
+          },
           {
             id: "sign-up",
             kicker: "Sign-up & onboarding",
@@ -924,23 +518,11 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 {
                   src: "/showcase/paradox/filters.webp",
                   alt: "Explore screen: faceted filters with counts beside trending timelines",
-                  width: 1000,
-                  height: 838,
+                  width: 1520,
+                  height: 1280,
                 },
               ],
             },
-          },
-          {
-            id: "interactive-data",
-            kicker: "Interactive data",
-            title: "Complex data people want to explore.",
-            line: "A pannable canvas with a minimap underneath. It never gets lost. Try it.",
-            points: [
-              "Minimap at 1:1 with the canvas",
-              "Drag, scrub and guided tour",
-              "Color that carries meaning",
-            ],
-            media: { frag: "spine" },
           },
           {
             id: "user-content",
@@ -954,7 +536,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             ],
             media: {
               frag: "divergence",
-              poster: { src: "/showcase/paradox/branches.webp", width: 560, height: 558 },
+              poster: { src: "/showcase/paradox/branches.webp", width: 560, height: 743 },
             },
             gold: true,
           },
@@ -1052,38 +634,35 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         page: "overview",
         hash: "user-content",
       },
-      "component-library": LIBRARY,
     },
   },
   {
     id: "timetrack",
     initials: "TT",
     name: "Timetrack",
-    desc: "Time tracking for AI coding work",
+    desc: "Time tracking for the age of AI",
     status: "self-hosted · v0.1 beta",
     accent: "#ffb454",
     groups: [
       { title: "Project", items: ["overview"] },
       {
         title: "Features",
-        items: ["a-signin", "a-dashboard", "a-log", "a-manual", "a-reports", "a-rules"],
+        items: ["a-dashboard", "a-signin", "a-log", "a-reports", "a-manual", "a-rules"],
       },
-      { title: "Library", items: ["component-library"] },
     ],
     items: {
       overview: {
         type: "showcase",
         label: "Overview",
-        desc: "Billable hours from AI coding sessions",
-        seoTitle: "Timetrack — time tracking and client billing for AI coding agents",
-        tagline: "Billable hours for work done with AI coding agents.",
+        desc: "Tracks every AI session, even several at once",
+        seoTitle: "Timetrack — key sign-in, live dashboards, audit trails and reports",
+        tagline: "Time tracking for the age of AI, all on your machine.",
         summary:
-          "Timetrack, designed and built end to end: a secure sign-in, a live dashboard, an audit-ready time log, client reports and billing rules, built the way production apps need it.",
+          "Timetrack, designed and built end to end: key sign-in, a live dashboard, an audit trail, reports and a rules engine, built the way production apps need it.",
         cover: {
           src: "/showcase/timetrack/cover.webp",
-          alt: "Timetrack Command Center: a week of work sessions on one dial, with hours, overlap and billing",
+          alt: "Timetrack dashboard: a week of sessions on one dial, with totals, overlap and billing",
         },
-        mark: "radial-gradient(circle at 50% 50%, #050508 0 15%, transparent 16%), conic-gradient(from 210deg, #ffc96b, #ff9e6b, #b69cff, #5fd4e8, #ffc96b)",
         stack: [
           "Next.js",
           "React",
@@ -1103,40 +682,40 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ],
         tiles: [
           {
-            title: "Command Center",
-            line: "A whole week on one dial.",
+            title: "Dashboard",
+            line: "Raw activity, one clear picture.",
             img: "/showcase/timetrack/command-center.webp",
             target: "dashboard",
             lead: true,
           },
           {
             title: "Sign-in",
-            line: "A board that never shows the key.",
+            line: "Secure, no accounts.",
             img: "/showcase/timetrack/sign-in.webp",
             target: "sign-in",
             contain: true,
           },
           {
-            title: "Time log",
-            line: "Every hour, with receipts.",
+            title: "Audit trail",
+            line: "Every record, with receipts.",
             img: "/showcase/timetrack/time-log.webp",
             target: "time-log",
           },
           {
             title: "Reports",
-            line: "Frozen the moment you export.",
+            line: "Frozen the moment they’re sent.",
             img: "/showcase/timetrack/reports.webp",
             target: "reports",
           },
           {
-            title: "Manual entry",
-            line: "For time the tracker can’t see.",
+            title: "Forms",
+            line: "Forms that do the math.",
             img: "/showcase/timetrack/manual-entry.webp",
             target: "manual-entry",
           },
           {
-            title: "Client rules",
-            line: "Attribution by rule, not guesswork.",
+            title: "Rules engine",
+            line: "Automation that asks, not guesses.",
             img: "/showcase/timetrack/client-rules.webp",
             target: "client-rules",
             contain: true,
@@ -1144,13 +723,28 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ],
         sections: [
           {
-            id: "sign-in",
-            kicker: "Authentication",
-            title: "Sign-in that fits the product.",
-            line: "A one-owner app doesn’t need accounts. One key, set into a split-flap board that answers for itself. Try it.",
+            id: "dashboard",
+            kicker: "Dashboards & data viz",
+            title: "Raw activity, one clear picture.",
+            line: "Hundreds of events become one dial: each session placed by when it ran, one ring per client. Point at any dot.",
             points: [
-              "The key never appears on screen",
+              "Totals, overlap and money in one view",
+              "Weak data dims on its own",
+              "Same view for a day or a week",
+            ],
+            media: {
+              frag: "dial",
+              poster: { src: "/showcase/timetrack/dial.webp", width: 480, height: 535 },
+            },
+          },
+          {
+            id: "sign-in",
+            kicker: "Key authentication",
+            title: "Secure sign-in, no accounts.",
+            line: "Not every app needs sign-up. One owner, one key, and a sign-in that never shows what you type. Try it.",
+            points: [
               "Signed session cookie, real sign-out",
+              "Nothing secret ever on screen",
               "Still works with JavaScript off",
             ],
             media: {
@@ -1159,37 +753,43 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             },
           },
           {
-            id: "dashboard",
-            kicker: "Dashboard",
-            title: "A whole day in one glance.",
-            line: "Every session lands on a dial by when it happened, one ring per client. Point at any dot for the story behind it.",
-            points: [
-              "Hours, overlap and billing together",
-              "Unproven time dims on its own",
-              "Day or week, same dial",
-            ],
-            media: {
-              frag: "dial",
-              poster: { src: "/showcase/timetrack/dial.webp", width: 480, height: 535 },
-            },
-          },
-          {
             id: "time-log",
             kicker: "Audit trail",
-            title: "Every hour, with receipts.",
-            line: "The log ties each session to the pull request or commit that proves the work happened.",
+            title: "Every record, with receipts.",
+            line: "Each entry links to the proof behind it, so anything can be checked later.",
             points: [
-              "Filter to what lacks evidence",
-              "Attach a PR in one click",
-              "Search by work, client or project",
+              "Filter to what’s missing proof",
+              "Attach proof in one click",
+              "Search across everything",
             ],
             media: {
               imgs: [
                 {
                   src: "/showcase/timetrack/time-log.webp",
-                  alt: "Time log: sessions by client with the pull request that evidences each one",
-                  width: 1440,
-                  height: 900,
+                  alt: "Audit trail: each session with the pull request that proves it",
+                  width: 2390,
+                  height: 1670,
+                },
+              ],
+            },
+          },
+          {
+            id: "reports",
+            kicker: "Reports & exports",
+            title: "Reports nobody argues with.",
+            line: "Real documents generated from live data, then frozen the moment they’re sent.",
+            points: [
+              "Three report types, one click",
+              "A sent number never changes",
+              "Each one says how it was counted",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/timetrack/reports.webp",
+                  alt: "Time report: hours and amount per client for the period",
+                  width: 1700,
+                  height: 1470,
                 },
               ],
             },
@@ -1197,66 +797,39 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             id: "manual-entry",
             kicker: "Forms",
-            title: "For the time the tracker can’t see.",
-            line: "Calls and meetings go in by hand, tagged so they’re never mistaken for tracked time.",
+            title: "Forms that do the math.",
+            line: "Manual entry for what automation can’t see, clearly marked so it never mixes with tracked data.",
             points: [
-              "Find a client as you type",
-              "Duration worked out for you",
-              "Marked “by hand” everywhere it shows",
+              "Search-as-you-type pickers",
+              "Durations worked out live",
+              "Hand-entered data stays labeled",
             ],
             media: {
               imgs: [
                 {
                   src: "/showcase/timetrack/manual-entry.webp",
-                  alt: "Manual entry drawer: work, client, time range, kind and project",
-                  width: 640,
-                  height: 894,
-                },
-              ],
-            },
-          },
-          {
-            id: "reports",
-            kicker: "Client reports",
-            title: "Invoices clients don’t argue with.",
-            line: "Time, detailed and summary reports, rendered as real documents and frozen the moment you export.",
-            points: [
-              "Three report types, one click",
-              "A sent figure never changes",
-              "Every report says how hours were counted",
-            ],
-            media: {
-              imgs: [
-                {
-                  src: "/showcase/timetrack/reports.webp",
-                  alt: "Time report: hours and amount per client for the period",
-                  width: 1200,
-                  height: 1038,
-                },
-                {
-                  src: "/showcase/timetrack/reports-detailed.webp",
-                  alt: "Detail of Work report: every session listed under its client",
-                  width: 1200,
-                  height: 1038,
+                  alt: "Manual entry form: work, client, time range, kind and project",
+                  width: 859,
+                  height: 1200,
                 },
               ],
             },
           },
           {
             id: "client-rules",
-            kicker: "Billing rules",
-            title: "Attribution by rule, not guesswork.",
-            line: "Ordered rules map each repository to a client and a rate. Anything unmatched becomes a draft, never an invented client.",
+            kicker: "Rules engine",
+            title: "Automation people can trust.",
+            line: "Ordered rules sort incoming data on their own. Anything they can’t place waits for a person instead of a guess.",
             points: [
               "First match wins, in order",
-              "No rate means tracked, never billed",
-              "Change a rule and history recomputes",
+              "No guessing where money is involved",
+              "Change a rule, history updates",
             ],
             media: {
               imgs: [
                 {
                   src: "/showcase/timetrack/client-rules.webp",
-                  alt: "Client rules: each client with its hourly rate and the repositories it matches",
+                  alt: "Rules engine: each client with its rate and the repositories it matches",
                   width: 1460,
                   height: 585,
                 },
@@ -1267,32 +840,32 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ],
         faq: [
           {
-            q: "Why count overlapping sessions in full?",
-            a: "Two agents working two clients’ code in the same hour is two hours of billable work. Timetrack counts both, then shows the overlap right next to the total, so nothing is hidden from you or your client.",
+            q: "Why sign in with a key instead of accounts?",
+            a: "A one-owner tool doesn’t need sign-up, password resets or a user table. One key behind a signed session cookie is less to build, less to leak and nothing to forget.",
           },
           {
-            q: "What makes an hour “defensible”?",
-            a: "It carries proof: a pull request or a commit. The dashboard shows how much of your time has it, and the log makes the rest easy to fix before a client ever asks.",
+            q: "Why count parallel sessions in full?",
+            a: "Several jobs running at once is real work. Each one counts in full, and the overlap sits right beside the total, so nothing is hidden.",
           },
           {
-            q: "Why never invent a client or a rate?",
-            a: "A wrong name on an invoice costs more trust than a missing one. Unmatched work becomes an unbilled draft you confirm, and a client without a rate is tracked but never charged.",
+            q: "Why keep the raw data untouched?",
+            a: "Every number is rebuilt from the original record. Change a rule and history updates cleanly; nothing is ever patched by hand or lost.",
           },
           {
-            q: "Why freeze reports at export?",
-            a: "Once a client has a number, it can’t quietly change. Edits after export only touch new drafts, so every invoice you’ve sent stays exactly as sent.",
+            q: "Why freeze reports once they’re sent?",
+            a: "Once someone has a number, it shouldn’t quietly change. Later edits only touch new drafts, so everything you’ve sent stays exactly as sent.",
           },
           {
-            q: "Why keep the raw events untouched?",
-            a: "Every figure is rebuilt from the original record. Change a rule and history recomputes cleanly; nothing is ever patched by hand or lost.",
+            q: "Why make automation ask instead of guess?",
+            a: "A wrong guess costs more trust than a gap. Anything the rules can’t place waits for a person to confirm, and nothing gets billed by accident.",
           },
           {
-            q: "What about privacy?",
-            a: "Capture is deny-by-default: only folders you allow are tracked, file paths are redacted, and prompt text is thrown away. It’s self-hosted, so the data never leaves your own database.",
+            q: "Why keep the data on your machine?",
+            a: "Activity data is sensitive. Hooks capture only what you allow, file paths are stripped, prompt text is thrown away, and it all stays local.",
           },
           {
-            q: "What happens if it’s misconfigured?",
-            a: "It fails closed. A half-configured deployment shows an error, never an open dashboard full of client names and rates.",
+            q: "What happens if it’s set up wrong?",
+            a: "It fails closed. A half-configured install shows an error, never an open dashboard full of names and rates.",
           },
         ],
         builtBy: {
@@ -1303,47 +876,46 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       },
       "a-signin": {
         type: "anchor",
-        label: "Sign-in",
-        desc: "A split-flap board, key never shown",
+        label: "Key sign-in",
+        desc: "Secure, no accounts",
         page: "overview",
         hash: "sign-in",
       },
       "a-dashboard": {
         type: "anchor",
         label: "Dashboard",
-        desc: "The day as one dial",
+        desc: "Raw activity, one clear picture",
         page: "overview",
         hash: "dashboard",
       },
       "a-log": {
         type: "anchor",
-        label: "Time log",
-        desc: "Every hour, with receipts",
+        label: "Audit trail",
+        desc: "Every record, with receipts",
         page: "overview",
         hash: "time-log",
       },
       "a-manual": {
         type: "anchor",
-        label: "Manual entry",
-        desc: "Time the tracker can’t see",
+        label: "Forms",
+        desc: "Forms that do the math",
         page: "overview",
         hash: "manual-entry",
       },
       "a-reports": {
         type: "anchor",
         label: "Reports",
-        desc: "Frozen at export",
+        desc: "Frozen once sent",
         page: "overview",
         hash: "reports",
       },
       "a-rules": {
         type: "anchor",
-        label: "Client rules",
-        desc: "Attribution by rule",
+        label: "Rules engine",
+        desc: "Automation that asks, not guesses",
         page: "overview",
         hash: "client-rules",
       },
-      "component-library": LIBRARY,
     },
   },
   {
@@ -1368,7 +940,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           "a-setup",
         ],
       },
-      { title: "Library", items: ["component-library"] },
     ],
     items: {
       overview: {
@@ -1383,7 +954,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           src: "/showcase/constellation/cover.webp",
           alt: "Constellation queue: every client's issues in one ranked list, with forecasts and a capacity-planned Today",
         },
-        mark: "url(/showcase/constellation/mark.svg) center / 64% no-repeat, #c8f542",
         stack: [
           "Next.js",
           "React",
@@ -1671,7 +1241,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         page: "overview",
         hash: "setup",
       },
-      "component-library": LIBRARY,
     },
   },
 ];
@@ -1698,10 +1267,7 @@ const FST_HOME: Workspace = {
   accent: FST.ACCENT,
   groups: [
     { title: "Company", items: ["about", "services", "engagements", "straight-answers"] },
-    {
-      title: "Work",
-      items: ["go-paradox", "go-timetrack", "go-constellation", "component-library"],
-    },
+    { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation"] },
   ],
   items: {
     about: {
@@ -1718,7 +1284,7 @@ const FST_HOME: Workspace = {
         {
           heading: "The work speaks first",
           paras: [
-            "The left rail is real work — three products designed end to end: Paradox, a storytelling platform built around interactive data; Timetrack, self-hosted time tracking for AI coding agents; and Constellation, prioritization and planning across every client. The components inside are live: click through any of them.",
+            "The left rail is real work — three products designed end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; and Constellation, prioritization and planning across every client. The components inside are live: click through any of them.",
           ],
         },
         {
@@ -1837,7 +1403,6 @@ const FST_HOME: Workspace = {
     "go-paradox": PERSONAL_HOME.items["go-paradox"],
     "go-timetrack": PERSONAL_HOME.items["go-timetrack"],
     "go-constellation": PERSONAL_HOME.items["go-constellation"],
-    "component-library": LIBRARY,
   },
 };
 

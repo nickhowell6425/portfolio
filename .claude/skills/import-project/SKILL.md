@@ -44,9 +44,8 @@ Confirm before building — these are content decisions, not code decisions:
   blue `#5b8def` (home), emerald `#3edba6` (paradox), amber `#ffb454` (timetrack),
   lime `#c8f542` (constellation).
 - **Tags**: the real stack/framework chips for the sidebar.
-- **Pieces**: which screen becomes the **overview hero** (the app's "home screen,
-  running") and which 2–4 parts become component miniatures. Favor range: auth,
-  dashboards, discovery (the library `KINDS` — add a kind when a piece needs one).
+- **Pieces**: which screen is the product page's cover, which features become sections
+  (screens, or 1–2 live component miniatures). Favor range: auth, dashboards, discovery.
 
 ## 4. Build (follow /new-fragment conventions for each piece)
 
@@ -54,23 +53,22 @@ Fragments are **rebuilt as miniatures in the project's own skin** — its fonts,
 and voice, like Paradox's `PCard` (void/emerald/Cormorant) — not copied DOM. Match the
 portfolio's card scale (`w` 360–560) and density. Read
 `.claude/skills/new-fragment/SKILL.md` for the per-fragment touchpoints (component,
-registry, `FragmentId` + `FRAGMENTS` meta with a code sample, sidebar item).
+registry, `FragmentId`, placement in a section with a poster).
 
 Workspace-level touchpoints on top of those:
 
 1. `components/fragments/<ws>.tsx` — new file; define the project's mini design-system
    constants at the top (see `PX` in `paradox.tsx`).
-2. `lib/content.ts` — new `WORKSPACES` entry with groups
-   `Project (overview) / Components / Library (component-library)`; overview gets a
-   `hero` (`frag`, `kicker`, `lead`) and honest intro paras in Nicholas's voice
-   (plain verbs, numbers over adjectives, at least one candid tradeoff).
-3. Home workspace — add a `go-<ws>` item (`type: "ws"`) to `items` and append it to the
-   home `Library` group so the color-coded jump list stays complete.
+2. `lib/content.ts` — new workspace with groups `Project (overview) / Features (anchors)`;
+   the overview is a `type: "showcase"` product page (see Paradox and Timetrack: cover,
+   stack, tiles, sections, FAQ), written as reusable patterns rather than product pitch.
+3. Home workspaces (personal and FST) — add a `go-<ws>` item (`type: "ws"`) and append it
+   to the home `Work` group so the color-coded jump list stays complete.
 4. Assets the design needs (images, PDFs) → `public/uploads/` (downscale to display size).
 5. `public/llms.txt` — add the new overview route to the Pages list.
 
-The rail, routes, ⌘K search, sitemap, and library grid all derive from `lib/content.ts` —
-no other wiring.
+The rail, routes, ⌘K search and sitemap all derive from `lib/content.ts` — no other
+wiring. Give the product a mark in `components/shell/product-mark.tsx`.
 
 ## 5. Verify
 

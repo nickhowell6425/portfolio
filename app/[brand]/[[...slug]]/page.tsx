@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { ComponentCard } from "@/components/content/component-card";
 import { InteractiveDemo } from "@/components/content/interactive-demo";
-import { LibraryGrid } from "@/components/content/library-grid";
-import { OverviewHero } from "@/components/content/overview-hero";
 import { PortraitHero } from "@/components/content/portrait-hero";
 import { Sections } from "@/components/content/sections";
 import { CompanyHero } from "@/components/content/company-hero";
@@ -133,12 +130,8 @@ export default async function WorkspacePage({ params }: Props) {
   if (!resolved) notFound();
   const { ws, itemId, item } = resolved;
 
-  if (item.type === "library") return <LibraryGrid />;
-
   if (item.type === "demo")
     return <InteractiveDemo item={item} wsName={ws.name} accent={ws.accent} />;
-
-  if (item.type === "comp") return <ComponentCard fid={item.frag} notes={item.paras} />;
 
   if (item.type === "showcase") {
     const nextWs = item.next ? nav.workspaceById(item.next) : undefined;
@@ -159,9 +152,11 @@ export default async function WorkspacePage({ params }: Props) {
           accent={ws.accent}
           liveHref={item.live ? hrefFor(ws.id, item.live) : undefined}
           builtBy={item.builtBy[brand]}
+          wsId={ws.id}
           next={
             nextWs
               ? {
+                  id: nextWs.id,
                   name: nextWs.name,
                   initials: nextWs.initials,
                   accent: nextWs.accent,
@@ -176,7 +171,6 @@ export default async function WorkspacePage({ params }: Props) {
 
   return (
     <>
-      {item.hero ? <OverviewHero hero={item.hero} wsName={ws.name} accent={ws.accent} /> : null}
       {ws.id === "home" && itemId === "about" ? (
         brand === "fst" ? (
           <CompanyHero />

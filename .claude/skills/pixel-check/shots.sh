@@ -9,7 +9,7 @@ CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 mkdir -p "$OUT"
 
-for spec in "home:/" "paradox:/paradox/overview" "timetrack:/timetrack/overview" "library:/home/component-library"; do
+for spec in "home:/" "paradox:/paradox/overview" "timetrack:/timetrack/overview"; do
   shotname="${spec%%:*}"
   route="${spec#*:}"
   for vp in "1440,900:desktop" "390,844:mobile"; do

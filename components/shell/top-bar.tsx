@@ -80,7 +80,7 @@ export function TopBar() {
             whiteSpace: "nowrap",
           }}
         >
-          Jump to a project or component…
+          Jump to a project or feature…
         </span>
         <kbd
           className="kbd-hint"
