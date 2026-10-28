@@ -131,6 +131,12 @@ jobs:
           echo "$html" | grep -q 'data-brand="fst"'
           echo "$html" | grep -q 'Full Stack Technologies'
           echo "$html" | grep -q '"@type":"Organization"'
+          echo "$html" | grep -q 'href="/brand/fst/favicon.svg?v=2"'
+          echo "$html" | grep -q 'href="/brand/fst/apple-touch-icon.png"'
+          echo "$html" | grep -q '/og/fst.png'
+          curl -fsS -H "Host: fst.localhost:3000" http://localhost:3000/favicon.ico | cmp - public/brand/fst/favicon.ico
+          curl -fsS http://localhost:3000/favicon.ico | cmp - public/brand/personal/favicon.ico
+          curl -fsS -H "Host: preview.example" -H "Cookie: brand=fst" http://localhost:3000/favicon.ico | cmp - public/brand/fst/favicon.ico
       - name: Contact API validates
         run: |
           set -euo pipefail
@@ -146,6 +152,8 @@ jobs:
           set -euo pipefail
           html=$(curl -s http://localhost:3000/)
           echo "$html" | grep -q 'Nicholas Howell'
+          echo "$html" | grep -q 'href="/brand/personal/icon.png"'
+          echo "$html" | grep -q 'href="/brand/personal/apple-touch-icon.png"'
           echo "$html" | grep -q 'rel="canonical"'
           echo "$html" | grep -q 'application/ld+json'
           # product pages carry their own structured data (FAQ + breadcrumbs)

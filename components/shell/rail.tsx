@@ -45,8 +45,7 @@ function ThemeButton() {
 
 const MARK_BG: Record<BrandId, string> = {
   personal: "url('/uploads/avatar-circle-96.png') center/cover no-repeat, #1c2435",
-  // the logo is black-on-white, so it sits on a white tile in both themes
-  fst: "url('/brand/fst-mark.svg') center/70% no-repeat, #fff",
+  fst: "url('/brand/fst-mark-reverse.svg') center/84% no-repeat, #171717",
 };
 
 function BrandMark({ id, size }: { id: BrandId; size: number }) {

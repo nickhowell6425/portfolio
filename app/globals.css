@@ -17,6 +17,9 @@
   --faint: #5e6b84;
   --accent: #5b8def;
   --accent-soft: rgba(91, 141, 239, 0.13);
+  --action: var(--accent);
+  --action-text: #fff;
+  --fst-mark: url("/brand/fst-mark-reverse.svg");
   /* 0 in dark, 1 in light — lets an inline color pick a light-theme ink
      (see accentText in lib/content.ts) without a stylesheet rule per product */
   --light: 0;
@@ -50,39 +53,58 @@
   --shadow: 0 16px 40px -16px rgba(30, 44, 82, 0.18), 0 2px 8px rgba(30, 44, 82, 0.08);
 }
 
-/* Full Stack Technologies — same grammar, the logo's orange on warm graphite.
+/* Full Stack Technologies — brand kit v1 palette and typography.
    Comes after the light block: brand-dark (0,1,0) beats [data-theme="light"]
    by order, so brand-light needs the compound (0,2,0) selector. */
 [data-brand="fst"] {
-  --bg0: #0b0b0c;
-  --bg1: #151516;
-  --bg2: #101011;
-  --surface: #1a1a1c;
-  --surface2: #222225;
-  --border: rgba(214, 200, 182, 0.12);
-  --border2: rgba(214, 200, 182, 0.22);
-  --text: #f2efea;
-  --dim: #a8a29a;
-  --faint: #6d6862;
-  --accent: #f7931e;
-  --accent-soft: rgba(247, 147, 30, 0.13);
-  --shadow: 0 16px 44px -14px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+  --bg0: #111214;
+  --bg1: #171717;
+  --bg2: #111214;
+  --surface: #1d1f23;
+  --surface2: #282b31;
+  --border: #393d45;
+  --border2: #858c98;
+  --text: #fafaf7;
+  --dim: #bcc2cc;
+  --faint: #858c98;
+  --accent: #f7931a;
+  --accent-soft: rgba(247, 147, 26, 0.13);
+  --action: #f7931a;
+  --action-text: #171717;
+  --fst-wordmark: url("/brand/fst-wordmark-reverse.svg");
+  --font-stack-sans: var(--font-inter), system-ui, sans-serif;
+  --shadow: 0 8px 28px rgb(0 0 0 / 28%);
 }
 
 [data-brand="fst"][data-theme="light"] {
-  --bg0: #161616;
-  --bg1: #f1efec;
-  --bg2: #f8f7f5;
+  --bg0: #171717;
+  --bg1: #f0f1ee;
+  --bg2: #fafaf7;
   --surface: #ffffff;
-  --surface2: #f0eeea;
-  --border: rgba(48, 38, 24, 0.12);
-  --border2: rgba(48, 38, 24, 0.22);
-  --text: #1b1a18;
-  --dim: #645f57;
-  --faint: #a19b91;
-  --accent: #d97a0b;
-  --accent-soft: rgba(217, 122, 11, 0.1);
-  --shadow: 0 16px 40px -16px rgba(40, 30, 16, 0.18), 0 2px 8px rgba(40, 30, 16, 0.08);
+  --surface2: #f0f1ee;
+  --border: #d8dbdf;
+  --border2: #737780;
+  --text: #171717;
+  --dim: #555a63;
+  --faint: #737780;
+  --accent: #a94b00;
+  --accent-soft: rgba(247, 147, 26, 0.1);
+  --fst-wordmark: url("/brand/fst-wordmark.svg");
+  --shadow: 0 8px 28px rgb(17 18 20 / 8%);
+}
+
+[data-theme="light"] {
+  --fst-mark: url("/brand/fst-mark.svg");
+}
+[data-brand="fst"] :is(h1, h2, h3, .company-wordmark) {
+  font-family: var(--font-manrope), var(--font-stack-sans);
+}
+.company-wordmark {
+  width: 100%;
+  max-width: 390px;
+  aspect-ratio: 2400 / 620;
+  margin-top: 14px;
+  background: var(--fst-wordmark) left center/contain no-repeat;
 }
 
 @media (max-width: 800px) {
@@ -133,7 +155,7 @@ body {
 }
 
 ::selection {
-  background: rgba(91, 141, 239, 0.3);
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 :focus-visible {

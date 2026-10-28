@@ -24,11 +24,15 @@ export function proxy(req: NextRequest) {
     brandForHost(req.headers.get("host")) ?? (isBrandId(cookie) ? cookie : DEFAULT_BRAND);
 
   const target = url.clone();
+  if (url.pathname === "/favicon.ico") {
+    target.pathname = `/brand/${brand}/favicon.ico`;
+    return NextResponse.rewrite(target);
+  }
   target.pathname = `/${brand}${url.pathname === "/" ? "" : url.pathname}`;
   return NextResponse.rewrite(target);
 }
 
 export const config = {
-  // pages only — skip the API, Next internals, and anything with a file extension
-  matcher: ["/((?!api/|_next/|.*\\.[^/]+$).*)"],
+  // Pages and the legacy favicon URL; other assets bypass brand routing.
+  matcher: ["/favicon.ico", "/((?!api/|_next/|.*\\.[^/]+$).*)"],
 };
