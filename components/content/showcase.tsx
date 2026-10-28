@@ -80,11 +80,13 @@ export function Showcase({
   /** The product's name — the page's <h1>. */
   name: string;
   accent: string;
-  liveHref: string;
+  /** The live demo; without one the CTAs lead into the feature sections. */
+  liveHref?: string;
   builtBy: string;
   next?: ShowcaseNext;
 }) {
   const faq = [...item.faq, { q: "Who built it?", a: builtBy }];
+  const tour = `#${item.sections[0]?.id ?? "sc-what"}`;
   return (
     <article className="sc" style={{ display: "flex", flexDirection: "column" }}>
       {/* cover + identity */}
@@ -135,7 +137,9 @@ export function Showcase({
           style={{
             flex: "0 0 auto",
             border: "5px solid var(--bg2)",
-            background: `radial-gradient(circle at 50% 50%, #e9fff6 0, ${accent} 14%, color-mix(in srgb, ${accent} 30%, #04140d) 38%, #04140d 72%)`,
+            background:
+              item.mark ??
+              `radial-gradient(circle at 50% 50%, #e9fff6 0, ${accent} 14%, color-mix(in srgb, ${accent} 30%, #04140d) 38%, #04140d 72%)`,
             boxShadow: `0 16px 40px -10px color-mix(in srgb, ${accent} 50%, transparent)`,
           }}
         />
@@ -158,7 +162,7 @@ export function Showcase({
           <p style={{ margin: 0, fontSize: 16, color: "var(--dim)" }}>{item.tagline}</p>
         </div>
         <Link
-          href={liveHref}
+          href={liveHref ?? tour}
           className="hov-bright"
           style={{
             marginBottom: 6,
@@ -175,7 +179,15 @@ export function Showcase({
             textDecoration: "none",
           }}
         >
-          <span aria-hidden="true">▶</span> Try it live
+          {liveHref ? (
+            <>
+              <span aria-hidden="true">▶</span> Try it live
+            </>
+          ) : (
+            <>
+              See how it works <span aria-hidden="true">↓</span>
+            </>
+          )}
         </Link>
       </header>
 
@@ -241,7 +253,7 @@ export function Showcase({
           {item.tiles.map((t) => (
             <Link
               key={t.title}
-              href={t.target ? `#${t.target}` : liveHref}
+              href={t.target ? `#${t.target}` : (liveHref ?? tour)}
               className={t.lead ? "sc-tile sc-tile-lead hov-raise" : "sc-tile hov-raise"}
               style={{
                 position: "relative",
@@ -415,26 +427,28 @@ export function Showcase({
             alignItems: "center",
           }}
         >
-          <Link
-            href={liveHref}
-            className="hov-bright"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: 40,
-              margin: "8px 0 4px",
-              padding: "0 20px",
-              borderRadius: 10,
-              border: "1px solid var(--border2)",
-              background: "var(--surface)",
-              color: "var(--text)",
-              fontWeight: 600,
-              fontSize: 14,
-              textDecoration: "none",
-            }}
-          >
-            ▶ Try it live
-          </Link>
+          {liveHref ? (
+            <Link
+              href={liveHref}
+              className="hov-bright"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                height: 40,
+                margin: "8px 0 4px",
+                padding: "0 20px",
+                borderRadius: 10,
+                border: "1px solid var(--border2)",
+                background: "var(--surface)",
+                color: "var(--text)",
+                fontWeight: 600,
+                fontSize: 14,
+                textDecoration: "none",
+              }}
+            >
+              ▶ Try it live
+            </Link>
+          ) : null}
           <MessageCta label="Let’s talk" />
         </div>
       </section>

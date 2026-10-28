@@ -39,14 +39,13 @@ In order:
 Confirm before building — these are content decisions, not code decisions:
 
 - **Workspace**: id, name, one-line desc, and an honest status chip
-  (existing patterns: `concept · 2026`, `acquired 2023`, `3 of 9 shown`).
+  (existing patterns: `concept · 2026`, `self-hosted · v0.1 beta`).
 - **Accent**: one distinctive color, ideally from the design's own palette. Taken hues:
-  blue `#5b8def` (home), emerald `#3edba6` (paradox), amber `#e3a84e` (shiftsum),
-  purple `#a98bf5` (clients).
+  blue `#5b8def` (home), emerald `#3edba6` (paradox), amber `#ffb454` (timetrack).
 - **Tags**: the real stack/framework chips for the sidebar.
 - **Pieces**: which screen becomes the **overview hero** (the app's "home screen,
   running") and which 2–4 parts become component miniatures. Favor range: auth,
-  dashboards, commerce, onboarding, admin, discovery (the library `KINDS`).
+  dashboards, discovery (the library `KINDS` — add a kind when a piece needs one).
 
 ## 4. Build (follow /new-fragment conventions for each piece)
 

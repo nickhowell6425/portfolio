@@ -157,7 +157,7 @@ export default async function WorkspacePage({ params }: Props) {
           item={item}
           name={ws.name}
           accent={ws.accent}
-          liveHref={hrefFor(ws.id, item.live)}
+          liveHref={item.live ? hrefFor(ws.id, item.live) : undefined}
           builtBy={item.builtBy[brand]}
           next={
             nextWs

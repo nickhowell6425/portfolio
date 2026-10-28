@@ -25,7 +25,7 @@ build against those references.
    bash .claude/skills/pixel-check/shots.sh http://localhost:4123 /tmp/pixel-check
    ```
 
-   This produces 8 shots: `{home,paradox,admin,library}-{desktop,mobile}.png`.
+   This produces 8 shots: `{home,paradox,timetrack,library}-{desktop,mobile}.png`.
 
 3. **Compare each pair visually.** For every capture, Read both the new shot
    (`/tmp/pixel-check/<name>.png`) and its reference
