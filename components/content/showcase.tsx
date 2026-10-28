@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MONO } from "@/components/fragments/ui";
-import type { ShowcaseItem, ShowcaseSection } from "@/lib/content";
+import { accentText, type ShowcaseItem, type ShowcaseSection } from "@/lib/content";
 import { ProductMark } from "@/components/shell/product-mark";
 import { LiveFragment } from "./live-fragment";
 import { MessageCta } from "./message-cta";
 
 const GOLD = "#e9b949";
+/** Gold as text: the same darkened in the light theme so it stays readable. */
+const GOLD_TEXT = accentText({ accent: GOLD, accentInk: "#7d5d00" });
 
 export interface ShowcaseNext {
   id: string;
@@ -319,7 +321,7 @@ export function Showcase({
 
       {/* feature sections: media then text in the DOM, alternated by CSS */}
       {item.sections.map((sec, i) => {
-        const tint = sec.gold ? GOLD : ink;
+        const tint = sec.gold ? GOLD_TEXT : ink;
         return (
           <section
             key={sec.id}
