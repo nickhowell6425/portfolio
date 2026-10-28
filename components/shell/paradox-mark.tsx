@@ -1,229 +1,121 @@
-"use client";
+import { useId } from "react";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
-
-// ---- the Paradox mark is alive -------------------------------------------
-// A temporal nexus — the Sacred Timeline's core at the tile's center: an
-// emerald nucleus, three spiral arms swirling into it, the canon strand
-// threading through, and a few motes funneling inward along the arms.
-
-const ARMS = 3;
-
-const PARADOX_MOTES: { arm: number; ph: number; sp: number; r: number }[] = (() => {
-  let seed = 20260612;
-  const rnd = () => {
-    seed |= 0;
-    seed = (seed + 0x6d2b79f5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-  return Array.from({ length: 5 }, (_, i) => ({
-    arm: i % ARMS,
-    ph: rnd(),
-    sp: 0.05 + rnd() * 0.05,
-    r: 0.7 + rnd() * 0.45,
-  }));
-})();
-
-// spiral arm geometry: angle + radius at parameter u (0 = core, 1 = rim)
-function armPoint(arm: number, u: number, rot: number) {
-  const th = (arm / ARMS) * Math.PI * 2 + rot + u * 4.2;
-  const r = 2.2 + u * 22;
-  return { x: 20 + Math.cos(th) * r, y: 20 + Math.sin(th) * r * 0.86 };
-}
-
-/**
- * Paradox's mark. Drawn in a 40-unit space. The canvas backing size follows
- * its rendered size × devicePixelRatio, so the mark is sharp at any size on
- * any screen; `res` is only the first-paint guess.
- */
-export function ParadoxMark({
-  active = true,
-  res = 80,
-  delay = 0,
-}: {
-  active?: boolean;
-  res?: number;
-  /** ms before the animation starts (a still frame shows until then) */
-  delay?: number;
-}) {
-  const rm = useReducedMotion();
-  const ref = useRef<HTMLCanvasElement | null>(null);
-  const [px, setPx] = useState(res);
-  const activeRef = useRef(active);
-  useEffect(() => {
-    activeRef.current = active;
-  }, [active]);
-
-  const draw = useCallback(
-    (t: number) => {
-      const nd = ref.current;
-      if (!nd) return;
-      const ctx = nd.getContext("2d");
-      if (!ctx) return;
-      const S = 40;
-      const C = 20;
-      ctx.setTransform(px / S, 0, 0, px / S, 0, 0);
-      ctx.clearRect(0, 0, S, S);
-
-      // the void, brightening toward the nexus
-      const bg = ctx.createRadialGradient(C, C, 0, C, C, S * 0.72);
-      bg.addColorStop(0, "oklch(0.15 0.035 158)");
-      bg.addColorStop(0.55, "oklch(0.085 0.02 159)");
-      bg.addColorStop(1, "oklch(0.045 0.012 160)");
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, S, S);
-
-      const boost = activeRef.current ? 1.25 : 0.95;
-      const rot = t * 0.2; // the whole vortex turns, slowly
-      ctx.lineJoin = "round";
-      ctx.globalCompositeOperation = "lighter";
-
-      // spiral arms: one continuous stroke each, faded by a radial gradient
-      // from the core outward (the arm's radius grows with its length), so the
-      // fade is smooth and there are no joins to show.
-      ctx.lineCap = "round";
-      const fade = (alpha: number, l: number, c: number, h: number) => {
-        const g = ctx.createRadialGradient(C, C, 1, C, C, 24);
-        g.addColorStop(0, `oklch(${l} ${c} ${h} / ${alpha * boost})`);
-        g.addColorStop(0.45, `oklch(${l} ${c} ${h} / ${alpha * 0.45 * boost})`);
-        g.addColorStop(1, `oklch(${l} ${c} ${h} / 0)`);
-        return g;
-      };
-      const glow = fade(0.2, 0.8, 0.16, 158);
-      const line = fade(0.75, 0.9, 0.16, 156);
-      for (let arm = 0; arm < ARMS; arm++) {
-        ctx.beginPath();
-        for (let k = 0; k <= 40; k++) {
-          const p = armPoint(arm, k / 40, rot);
-          if (k === 0) ctx.moveTo(p.x, p.y);
-          else ctx.lineTo(p.x, p.y);
-        }
-        ctx.strokeStyle = glow;
-        ctx.lineWidth = 2.6;
-        ctx.stroke();
-        ctx.strokeStyle = line;
-        ctx.lineWidth = 0.85;
-        ctx.stroke();
-      }
-
-      // the canon strand threading through the nexus
-      ctx.lineCap = "round";
-      ctx.beginPath();
-      for (let k = 0; k <= 24; k++) {
-        const u = k / 24 - 0.5;
-        const wave = Math.sin(u * 4.5 + t * 0.6) * 1.1;
-        const x = C + u * 46;
-        const y = C - u * 7 + wave;
-        if (k === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.strokeStyle = `oklch(0.78 0.16 158 / ${0.14 * boost})`;
-      ctx.lineWidth = 3;
-      ctx.stroke();
-      ctx.strokeStyle = `oklch(0.93 0.14 156 / ${0.55 * boost})`;
-      ctx.lineWidth = 0.9;
-      ctx.stroke();
-
-      // motes funneling inward along the arms
-      for (const m of PARADOX_MOTES) {
-        const u = 1 - ((t * m.sp + m.ph) % 1);
-        const p = armPoint(m.arm, u, rot);
-        const a = (0.3 + 0.6 * (1 - u)) * boost;
-        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, m.r * 2.4);
-        g.addColorStop(0, `oklch(0.96 0.12 156 / ${a})`);
-        g.addColorStop(1, "oklch(0.85 0.17 158 / 0)");
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, m.r * 2.4, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // the nucleus — a soft bloom around a crisp, gently beating core
-      const pump = 0.94 + 0.08 * Math.sin(t * 1.8);
-      const bloom = ctx.createRadialGradient(C, C, 0, C, C, 11);
-      bloom.addColorStop(0, `oklch(0.78 0.16 158 / ${0.34 * boost})`);
-      bloom.addColorStop(1, "oklch(0.6 0.14 158 / 0)");
-      ctx.fillStyle = bloom;
-      ctx.beginPath();
-      ctx.arc(C, C, 11, 0, Math.PI * 2);
-      ctx.fill();
-      const core = ctx.createRadialGradient(C, C, 0, C, C, 3.6 * pump);
-      core.addColorStop(0, `oklch(0.99 0.03 158 / ${boost})`);
-      core.addColorStop(0.55, `oklch(0.86 0.15 158 / ${0.85 * boost})`);
-      core.addColorStop(1, "oklch(0.75 0.15 158 / 0)");
-      ctx.fillStyle = core;
-      ctx.beginPath();
-      ctx.arc(C, C, 3.6 * pump, 0, Math.PI * 2);
-      ctx.fill();
-
-      // vignette to sink the corners
-      ctx.globalCompositeOperation = "source-over";
-      const v = ctx.createRadialGradient(C, C, S * 0.3, C, C, S * 0.78);
-      v.addColorStop(0, "oklch(0.04 0.015 160 / 0)");
-      v.addColorStop(1, "oklch(0.03 0.012 160 / 0.4)");
-      ctx.fillStyle = v;
-      ctx.fillRect(0, 0, S, S);
-    },
-    [px],
-  );
-
-  // match the backing store to the rendered size on this screen
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([e]) => {
-      const next = Math.round(e.contentRect.width * (window.devicePixelRatio || 1));
-      if (next > 0) setPx(Math.min(512, next));
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  useEffect(() => {
-    draw(0);
-    if (rm) return;
-    let raf = 0;
-    let onScreen = true;
-    const step = (ts: number) => {
-      raf = requestAnimationFrame(step);
-      if (document.hidden || !onScreen) return;
-      draw(ts / 1000);
-    };
-    // A big mark waits for the page to settle before it starts moving, so
-    // its frames never compete with first load; until then it holds a still.
-    const start = window.setTimeout(() => {
-      raf = requestAnimationFrame(step);
-    }, delay);
-    const io = new IntersectionObserver(([e]) => {
-      onScreen = e.isIntersecting;
-    });
-    if (ref.current) io.observe(ref.current);
-    return () => {
-      window.clearTimeout(start);
-      cancelAnimationFrame(raf);
-      io.disconnect();
-    };
-  }, [rm, draw, delay]);
-
-  // redraw the static frame when the active boost changes under reduced motion
-  useEffect(() => {
-    if (rm) draw(0);
-  }, [rm, active, draw]);
-
+/** Layered timelines, orbiting light, and a bright nexus at their crossing. */
+export function ParadoxMark() {
+  const id = useId();
   return (
-    <span
-      aria-hidden="true"
-      style={{ position: "absolute", inset: 0, borderRadius: "inherit", overflow: "hidden" }}
-    >
-      <canvas
-        ref={ref}
-        width={px}
-        height={px}
-        style={{ display: "block", width: "100%", height: "100%" }}
+    <svg viewBox="0 0 100 100" fill="none">
+      <defs>
+        <radialGradient id={`${id}-space`} cx="48%" cy="48%" r="70%">
+          <stop stopColor="#154c38" />
+          <stop offset=".46" stopColor="#071e19" />
+          <stop offset="1" stopColor="#030a0d" />
+        </radialGradient>
+        <radialGradient id={`${id}-bloom`}>
+          <stop stopColor="#acffdb" stopOpacity=".6" />
+          <stop offset=".25" stopColor="#36e8a2" stopOpacity=".26" />
+          <stop offset="1" stopColor="#19c68d" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient
+          id={`${id}-arm`}
+          x1="22"
+          y1="18"
+          x2="76"
+          y2="83"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#229e7e" stopOpacity=".1" />
+          <stop offset=".42" stopColor="#45dfac" />
+          <stop offset=".72" stopColor="#c7ffe8" />
+          <stop offset="1" stopColor="#3ddd9b" stopOpacity=".25" />
+        </linearGradient>
+        <linearGradient
+          id={`${id}-strand`}
+          x1="4"
+          y1="62"
+          x2="96"
+          y2="38"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#31dba2" stopOpacity="0" />
+          <stop offset=".5" stopColor="#e3fff0" />
+          <stop offset="1" stopColor="#31dba2" stopOpacity="0" />
+        </linearGradient>
+        <filter id={`${id}-glow`} x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="1.8" />
+        </filter>
+        <path
+          id={`${id}-spiral`}
+          d="M50 50C37 58 27 42 37 29C52 10 83 22 85 46C86 64 73 80 55 83"
+          pathLength="100"
+        />
+      </defs>
+      <path fill={`url(#${id}-space)`} d="M0 0H100V100H0Z" />
+      <circle cx="50" cy="50" r="37" stroke="#5be4b1" strokeOpacity=".12" strokeWidth=".6" />
+      <ellipse
+        cx="50"
+        cy="50"
+        rx="44"
+        ry="19"
+        transform="rotate(-19 50 50)"
+        stroke="#72e8c2"
+        strokeOpacity=".15"
+        strokeWidth=".6"
       />
-    </span>
+      <circle className="pm-nexus" cx="50" cy="50" r="31" fill={`url(#${id}-bloom)`} />
+      <g className="pm-vortex">
+        {[0, 120, 240].map((angle) => (
+          <g key={angle} transform={`rotate(${angle} 50 50)`}>
+            <use
+              href={`#${id}-spiral`}
+              stroke="#34e8a4"
+              strokeOpacity=".35"
+              strokeWidth="3.5"
+              filter={`url(#${id}-glow)`}
+            />
+            <use
+              href={`#${id}-spiral`}
+              stroke={`url(#${id}-arm)`}
+              strokeWidth="1.15"
+              strokeLinecap="round"
+            />
+            <use
+              className="pm-flow"
+              href={`#${id}-spiral`}
+              stroke="#d6ffec"
+              strokeWidth="1.8"
+              strokeDasharray="1 99"
+              strokeLinecap="round"
+            />
+          </g>
+        ))}
+      </g>
+      <path
+        d="M4 62C29 61 68 39 96 38"
+        stroke="#21e8a1"
+        strokeWidth="5"
+        filter={`url(#${id}-glow)`}
+        strokeOpacity=".65"
+      />
+      <path d="M4 62C29 61 68 39 96 38" stroke={`url(#${id}-strand)`} strokeWidth="1.1" />
+      <ellipse
+        cx="50"
+        cy="50"
+        rx="8"
+        ry="5"
+        transform="rotate(-19 50 50)"
+        stroke="#8dffd0"
+        strokeWidth=".7"
+        strokeOpacity=".8"
+      />
+      <circle cx="50" cy="50" r="3" fill="#afffd9" filter={`url(#${id}-glow)`} />
+      <circle cx="50" cy="50" r="1.8" fill="#edfff5" />
+      <g fill="#b7ffe3">
+        <circle cx="16" cy="27" r=".7" opacity=".5" />
+        <circle cx="78" cy="14" r=".6" opacity=".6" />
+        <circle cx="86" cy="73" r=".8" opacity=".45" />
+        <circle cx="27" cy="84" r=".5" opacity=".55" />
+      </g>
+    </svg>
   );
 }
