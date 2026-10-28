@@ -629,12 +629,12 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       {
         title: "Features",
         items: [
+          "a-canvas",
           "a-signin",
           "a-search",
           "a-details",
           "a-activity",
           "a-filters",
-          "a-canvas",
           "a-branches",
         ],
       },
@@ -687,10 +687,10 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             contain: true,
           },
           {
-            title: "Branch cards",
-            line: "Every fork says what changed.",
-            img: "/showcase/paradox/branches.webp",
-            target: "user-content",
+            title: "Command palette",
+            line: "Everything, two keystrokes away.",
+            img: "/showcase/paradox/command-palette.webp",
+            target: "command-palette",
           },
           {
             title: "Explore",
@@ -699,18 +699,30 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             target: "filters",
           },
           {
+            title: "Branch cards",
+            line: "Every fork says what changed.",
+            img: "/showcase/paradox/branches.webp",
+            target: "user-content",
+          },
+          {
             title: "Homepage",
             line: "The graph is the front door.",
             img: "/showcase/paradox/home.webp",
           },
-          {
-            title: "Command palette",
-            line: "Everything, two keystrokes away.",
-            img: "/showcase/paradox/command-palette.webp",
-            target: "command-palette",
-          },
         ],
         sections: [
+          {
+            id: "interactive-data",
+            kicker: "Interactive data",
+            title: "Complex data people want to explore.",
+            line: "A pannable canvas with a minimap underneath. It never gets lost. Try it.",
+            points: [
+              "Minimap at 1:1 with the canvas",
+              "Drag, scrub and guided tour",
+              "Color that carries meaning",
+            ],
+            media: { frag: "spine" },
+          },
           {
             id: "sign-up",
             kicker: "Sign-up & onboarding",
@@ -811,18 +823,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 },
               ],
             },
-          },
-          {
-            id: "interactive-data",
-            kicker: "Interactive data",
-            title: "Complex data people want to explore.",
-            line: "A pannable canvas with a minimap underneath. It never gets lost. Try it.",
-            points: [
-              "Minimap at 1:1 with the canvas",
-              "Drag, scrub and guided tour",
-              "Color that carries meaning",
-            ],
-            media: { frag: "spine" },
           },
           {
             id: "user-content",
@@ -948,7 +948,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       { title: "Project", items: ["overview"] },
       {
         title: "Features",
-        items: ["a-signin", "a-dashboard", "a-log", "a-manual", "a-reports", "a-rules"],
+        items: ["a-dashboard", "a-signin", "a-log", "a-reports", "a-manual", "a-rules"],
       },
       { title: "Library", items: ["component-library"] },
     ],
@@ -1026,21 +1026,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ],
         sections: [
           {
-            id: "sign-in",
-            kicker: "Authentication",
-            title: "Sign-in that fits the product.",
-            line: "A one-owner app doesn’t need accounts. One key, set into a split-flap board that answers for itself. Try it.",
-            points: [
-              "The key never appears on screen",
-              "Signed session cookie, real sign-out",
-              "Still works with JavaScript off",
-            ],
-            media: {
-              frag: "flap",
-              poster: { src: "/showcase/timetrack/flap.webp", width: 460, height: 178 },
-            },
-          },
-          {
             id: "dashboard",
             kicker: "Dashboard",
             title: "A whole day in one glance.",
@@ -1053,6 +1038,21 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             media: {
               frag: "dial",
               poster: { src: "/showcase/timetrack/dial.webp", width: 480, height: 535 },
+            },
+          },
+          {
+            id: "sign-in",
+            kicker: "Authentication",
+            title: "Sign-in that fits the product.",
+            line: "A one-owner app doesn’t need accounts. One key, set into a split-flap board that answers for itself. Try it.",
+            points: [
+              "The key never appears on screen",
+              "Signed session cookie, real sign-out",
+              "Still works with JavaScript off",
+            ],
+            media: {
+              frag: "flap",
+              poster: { src: "/showcase/timetrack/flap.webp", width: 460, height: 178 },
             },
           },
           {
@@ -1072,27 +1072,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                   alt: "Time log: sessions by client with the pull request that evidences each one",
                   width: 1440,
                   height: 900,
-                },
-              ],
-            },
-          },
-          {
-            id: "manual-entry",
-            kicker: "Forms",
-            title: "For the time the tracker can’t see.",
-            line: "Calls and meetings go in by hand, tagged so they’re never mistaken for tracked time.",
-            points: [
-              "Find a client as you type",
-              "Duration worked out for you",
-              "Marked “by hand” everywhere it shows",
-            ],
-            media: {
-              imgs: [
-                {
-                  src: "/showcase/timetrack/manual-entry.webp",
-                  alt: "Manual entry drawer: work, client, time range, kind and project",
-                  width: 640,
-                  height: 894,
                 },
               ],
             },
@@ -1120,6 +1099,27 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                   alt: "Detail of Work report: every session listed under its client",
                   width: 1200,
                   height: 1038,
+                },
+              ],
+            },
+          },
+          {
+            id: "manual-entry",
+            kicker: "Forms",
+            title: "For the time the tracker can’t see.",
+            line: "Calls and meetings go in by hand, tagged so they’re never mistaken for tracked time.",
+            points: [
+              "Find a client as you type",
+              "Duration worked out for you",
+              "Marked “by hand” everywhere it shows",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/timetrack/manual-entry.webp",
+                  alt: "Manual entry drawer: work, client, time range, kind and project",
+                  width: 640,
+                  height: 894,
                 },
               ],
             },

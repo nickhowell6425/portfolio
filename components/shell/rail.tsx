@@ -494,7 +494,7 @@ export function Rail() {
                       width: 4,
                       height: 22,
                       borderRadius: "0 4px 4px 0",
-                      background: "#e8edf7",
+                      background: w.accent,
                     }}
                   />
                 ) : null}
