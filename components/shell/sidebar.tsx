@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MONO } from "@/components/fragments/ui";
 import { useUI } from "@/components/providers/ui-provider";
+import { useActiveSection } from "@/hooks/use-active-section";
 import { useWsSticky } from "@/hooks/use-ws-transition";
 import { useNav } from "@/components/providers/brand-provider";
 import { PH } from "@/lib/content";
@@ -21,6 +22,15 @@ export function Sidebar() {
   const resolved = resolvePathname(pathname);
   const W = resolved?.ws ?? workspaces[0];
   const currentItem = resolved?.itemId;
+
+  // feature anchors on the page being read, in sidebar (= page) order
+  const sectionIds = W.groups.flatMap((g) =>
+    g.items.flatMap((id) => {
+      const it = W.items[id];
+      return it.type === "anchor" && it.page === currentItem ? [it.hash] : [];
+    }),
+  );
+  const activeSection = useActiveSection(sectionIds, pathname);
 
   let si = 0;
 
@@ -65,9 +75,13 @@ export function Sidebar() {
             </div>
             {g.items.map((id) => {
               const it = W.items[id];
-              const active = id === currentItem;
+              // a section being read takes the highlight from its page
+              const active =
+                it.type === "anchor"
+                  ? it.page === currentItem && it.hash === activeSection
+                  : id === currentItem && !activeSection;
               const target = it.type === "ws" ? workspaceById(it.ws) : null;
-              const itemAccent = target ? target.accent : it.type === "library" ? W.accent : null;
+              const itemAccent = target ? target.accent : null;
               const icon =
                 it.type === "page" || it.type === "showcase"
                   ? "#"
@@ -141,7 +155,15 @@ export function Sidebar() {
                       ? `${hrefFor(W.id, it.page)}#${it.hash}`
                       : hrefFor(W.id, id)
                   }
-                  aria-current={active ? "page" : undefined}
+                  aria-current={
+                    it.type === "anchor"
+                      ? active
+                        ? "location"
+                        : undefined
+                      : id === currentItem
+                        ? "page"
+                        : undefined
+                  }
                   onClick={() => setNavOpen(false)}
                   className="anim-side-item hov-accent-bg"
                   style={style}

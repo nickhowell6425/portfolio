@@ -80,7 +80,7 @@ function PaletteDialog() {
               closeSearch();
             }
           }}
-          placeholder="Jump to a project or component…"
+          placeholder="Jump to a project or feature…"
           aria-label="Search"
           style={{
             width: "100%",

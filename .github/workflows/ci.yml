@@ -100,7 +100,7 @@ jobs:
           check /                        200
           check /paradox/overview        200
           check /timetrack/overview      200
-          check /home/component-library  200
+          check /home/component-library  308
           check /uploads/Resume.pdf      200
           check /sitemap.xml             200
           check /robots.txt              200
