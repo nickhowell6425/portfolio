@@ -46,6 +46,41 @@
   --shadow: 0 16px 40px -16px rgba(30, 44, 82, 0.18), 0 2px 8px rgba(30, 44, 82, 0.08);
 }
 
+/* Full Stack Technologies — same grammar, the logo's orange on warm graphite.
+   Comes after the light block: brand-dark (0,1,0) beats [data-theme="light"]
+   by order, so brand-light needs the compound (0,2,0) selector. */
+[data-brand="fst"] {
+  --bg0: #0b0b0c;
+  --bg1: #151516;
+  --bg2: #101011;
+  --surface: #1a1a1c;
+  --surface2: #222225;
+  --border: rgba(214, 200, 182, 0.12);
+  --border2: rgba(214, 200, 182, 0.22);
+  --text: #f2efea;
+  --dim: #a8a29a;
+  --faint: #6d6862;
+  --accent: #f7931e;
+  --accent-soft: rgba(247, 147, 30, 0.13);
+  --shadow: 0 16px 44px -14px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-brand="fst"][data-theme="light"] {
+  --bg0: #161616;
+  --bg1: #f1efec;
+  --bg2: #f8f7f5;
+  --surface: #ffffff;
+  --surface2: #f0eeea;
+  --border: rgba(48, 38, 24, 0.12);
+  --border2: rgba(48, 38, 24, 0.22);
+  --text: #1b1a18;
+  --dim: #645f57;
+  --faint: #a19b91;
+  --accent: #d97a0b;
+  --accent-soft: rgba(217, 122, 11, 0.1);
+  --shadow: 0 16px 40px -16px rgba(40, 30, 16, 0.18), 0 2px 8px rgba(40, 30, 16, 0.08);
+}
+
 @media (max-width: 800px) {
   :root {
     --nav-pos: fixed;
@@ -328,6 +363,150 @@ input::placeholder {
   }
 }
 
+/* ---------- product showcase (landing-style project pages) ---------- */
+
+.sc-cover {
+  height: 320px;
+}
+.sc-identity {
+  margin-top: -48px;
+}
+.sc-mark {
+  width: 112px;
+  height: 112px;
+  border-radius: 28px;
+}
+.sc-name {
+  font-size: clamp(30px, 4.2vw, 40px);
+}
+.sc-h2 {
+  font-size: clamp(24px, 3vw, 30px);
+}
+.sc-h3 {
+  font-size: clamp(26px, 3.4vw, 36px);
+}
+.sc-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.sc-tile {
+  min-height: 210px;
+}
+.sc-tile-lead {
+  grid-column: span 2;
+  grid-row: span 2;
+  min-height: 434px;
+}
+.sc-tile:hover {
+  transform: translateY(-2px);
+}
+.sc-section {
+  margin-top: 96px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: center;
+  scroll-margin-top: 24px;
+}
+/* alternate sides; when the row wraps, media still lands on top */
+.sc-flip {
+  flex-direction: row-reverse;
+}
+.sc-media {
+  flex: 3 1 420px;
+  min-width: 0;
+}
+.sc-text {
+  flex: 2 1 280px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sc-live {
+  padding: 32px 20px;
+}
+.sc-shots {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 40px 28px;
+}
+.sc-shot {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 82%;
+  max-height: 460px;
+  border-radius: 10px;
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.9);
+}
+.sc-shots-pair .sc-shot {
+  max-width: 46%;
+}
+.sc-shots-pair .sc-shot + .sc-shot {
+  margin-top: 48px;
+}
+.sc-faq {
+  margin-top: 112px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 56px;
+}
+.sc-qa > summary::marker {
+  color: var(--faint);
+}
+
+@media (max-width: 900px) {
+  .sc-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sc-tile-lead {
+    grid-row: span 1;
+    min-height: 300px;
+  }
+}
+@media (max-width: 700px) {
+  .sc-cover {
+    height: 190px;
+  }
+  .sc-identity {
+    margin-top: -36px;
+  }
+  .sc-mark {
+    width: 84px;
+    height: 84px;
+    border-radius: 22px;
+  }
+  .sc-section {
+    margin-top: 64px;
+    gap: 22px;
+  }
+  .sc-live {
+    padding: 22px 12px;
+  }
+  .sc-shots {
+    padding: 26px 16px;
+  }
+  .sc-shot {
+    max-height: 380px;
+  }
+  .sc-faq {
+    margin-top: 72px;
+  }
+}
+@media (max-width: 560px) {
+  .sc-tiles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sc-tile-lead {
+    grid-column: span 1;
+    min-height: 260px;
+  }
+}
+
 /* ---------- accessibility preferences ---------- */
 
 @media (prefers-contrast: more) {
@@ -338,6 +517,14 @@ input::placeholder {
   [data-theme="light"] {
     --faint: #5d6a82;
     --dim: #3c4a64;
+  }
+  [data-brand="fst"] {
+    --faint: #9c968d;
+    --dim: #c9c3ba;
+  }
+  [data-brand="fst"][data-theme="light"] {
+    --faint: #645f57;
+    --dim: #45403a;
   }
 }
 
@@ -355,6 +542,10 @@ input::placeholder {
 }
 .hov-bright:hover {
   filter: brightness(1.08);
+}
+.hov-row:hover,
+.hov-row:focus-visible {
+  background: var(--surface2) !important;
 }
 .hov-accent-bg:hover {
   background: var(--accent-soft) !important;

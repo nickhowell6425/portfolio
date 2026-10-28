@@ -3379,7 +3379,8 @@ export function BranchCards() {
                 <span
                   style={{
                     display: "flex",
-                    gap: 13,
+                    flexWrap: "wrap",
+                    gap: "8px 13px",
                     marginTop: 11,
                     paddingTop: 9,
                     borderTop: `1px solid ${PX.LINE_SOFT}`,
@@ -3408,7 +3409,14 @@ export function BranchCards() {
                     </span>
                   ))}
                   <span
-                    style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 6 }}
+                    style={{
+                      marginLeft: "auto",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      minWidth: 0,
+                      maxWidth: "100%",
+                    }}
                   >
                     <span
                       aria-hidden="true"
@@ -3421,7 +3429,18 @@ export function BranchCards() {
                         background: `radial-gradient(circle at 34% 30%, oklch(0.74 0.12 ${b.hue} / 0.95), oklch(0.4 0.08 ${b.hue}))`,
                       }}
                     />
-                    <span style={{ fontSize: 9.5, color: PX.DIM }}>{b.creator}</span>
+                    <span
+                      style={{
+                        fontSize: 9.5,
+                        color: PX.DIM,
+                        minWidth: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {b.creator}
+                    </span>
                   </span>
                 </span>
               </button>

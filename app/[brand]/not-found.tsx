@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { useBrand } from "@/components/providers/brand-provider";
 
 export default function NotFound() {
+  const fst = useBrand().id === "fst";
   return (
     <div style={{ padding: "60px 16px", textAlign: "center", color: "var(--dim)", fontSize: 13.5 }}>
-      <p style={{ margin: 0 }}>Nothing here — yet. That&apos;s usually where I come in.</p>
+      <p style={{ margin: 0 }}>
+        Nothing here — yet. That&apos;s usually where {fst ? "we" : "I"} come in.
+      </p>
       <Link
         href="/"
         style={{

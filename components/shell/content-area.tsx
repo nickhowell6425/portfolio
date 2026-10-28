@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useNavSwap } from "@/hooks/use-ws-transition";
-import { resolvePathname } from "@/lib/navigation";
+import { useNav } from "@/components/providers/brand-provider";
 
 /**
  * The scrolling content stage. Keyed by pathname so every visit
@@ -15,7 +15,11 @@ import { resolvePathname } from "@/lib/navigation";
 export function ContentArea({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const swap = useNavSwap();
-  const fullBleed = resolvePathname(pathname)?.item.type === "demo";
+  const { resolvePathname } = useNav();
+  const type = resolvePathname(pathname)?.item.type;
+  const fullBleed = type === "demo";
+  // product pages (showcase) run wider: they're landing pages, not prose
+  const maxWidth = type === "showcase" ? 1080 : 880;
   return (
     <div
       key={pathname}
@@ -35,7 +39,7 @@ export function ContentArea({ children }: { children: React.ReactNode }) {
       ) : (
         <div
           style={{
-            maxWidth: 880,
+            maxWidth,
             margin: "0 auto",
             display: "flex",
             flexDirection: "column",
