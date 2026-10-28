@@ -66,7 +66,8 @@ jump to a section (`page` + `hash`); they aren't routes but do appear in ⌘K. R
 are the `.sc-*` classes in `globals.css`. Paradox's old per-component URLs 308 to their
 sections, and the retired Shiftsum / Client builds workspaces 308 to Timetrack
 (`next.config.ts`). Without `live`, a product page's CTAs lead into its first feature section
-instead of a demo; `mark` overrides the identity mark's background.
+instead of a demo. A product's mark (`components/shell/product-mark.tsx`) is the same in the
+rail tile, the product page's identity mark, and the "Next product" card.
 
 **Server/client split.** Pages render prose server-side (`components/content/sections.tsx`,
 `portrait-hero.tsx`); everything interactive is a client island. The persistent shell
