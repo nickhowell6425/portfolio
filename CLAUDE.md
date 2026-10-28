@@ -44,8 +44,7 @@ routes, search, and sitemap follow automatically.
 
 **Two brands, one app.** The personal portfolio and Full Stack Technologies, LLC
 (`fullstacktechnologiesllc.com`) share every project workspace and fragment; each brand has
-its own home workspace, theme, metadata/JSON-LD, top-bar document (résumé PDF vs capabilities
-sheet), and contact inbox. `lib/brands.ts` holds per-brand config; `workspacesFor(brand)` in
+its own home workspace, theme, metadata/JSON-LD, and contact inbox. `lib/brands.ts` holds per-brand config; `workspacesFor(brand)` in
 `lib/content.ts` assembles the rail. `proxy.ts` maps the request host to a brand and rewrites
 into `app/[brand]/…` (the root layout lives there and sets `data-brand` on `<html>`); visible
 URLs never carry the brand. Unknown hosts (Vercel previews) take `?brand=fst|personal`,
@@ -73,7 +72,7 @@ rail tile, the product page's identity mark, and the "Next product" card.
 `portrait-hero.tsx`); everything interactive is a client island. The persistent shell
 (`components/shell/workspace-shell.tsx`: rail → sidebar → top bar → content stage) lives in
 the root layout and never remounts across navigation. Overlays (message drawer, ⌘K palette,
-résumé modal, toast) are siblings of the shell; the shell gets `inert` while any is open.
+toast) are siblings of the shell; the shell gets `inert` while any is open.
 
 **Fragments** (`components/fragments/`) are the live component miniatures. Conventions:
 

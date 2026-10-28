@@ -401,7 +401,7 @@ input::placeholder {
   .kbd-hint {
     display: none;
   }
-  /* Résumé / Send a message collapse to icon-only buttons,
+  /* Send a message collapses to an icon-only button,
      matched to the 38px menu button; search gets the same height */
   .topbar-label,
   .topbar-icon-d {
