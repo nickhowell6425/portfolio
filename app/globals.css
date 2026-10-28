@@ -250,30 +250,99 @@ input::placeholder {
   }
 }
 
-/* Timetrack's mark: session rings turning at their own pace, a live core */
-.ttm-spin {
+/* Shared SVG marks stay crisp from the rail to the product header. */
+.product-mark {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.product-mark > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.product-mark::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  border: 1px solid rgb(220 255 238 / 0.09);
+  pointer-events: none;
+}
+.product-mark svg * {
+  animation-delay: var(--mark-delay, 0ms);
+}
+.pm-vortex,
+.pm-nexus,
+.ttm-spin,
+.ttm-live,
+.ttm-hand,
+.cnm-star {
   transform-box: view-box;
   transform-origin: 50px 50px;
-  animation: ttmSpin 7s linear infinite;
+}
+.pm-vortex {
+  animation: markSpin 42s linear infinite;
+}
+.pm-nexus {
+  animation: markBreathe 4s ease-in-out infinite;
+}
+.pm-flow {
+  animation: markSignal 7s linear infinite reverse;
+}
+.ttm-spin {
+  animation: markSpin 24s linear infinite;
 }
 .ttm-rev {
-  animation-duration: 4.6s;
+  animation-duration: 16s;
   animation-direction: reverse;
 }
-.ttm-slow {
-  animation-duration: 10s;
-}
-.ttm-gold {
-  animation-duration: 16s;
+.ttm-inner {
+  animation-duration: 12s;
 }
 .ttm-live {
-  transform-box: view-box;
-  transform-origin: 50px 50px;
-  animation: ttmPing 2.4s ease-out infinite;
+  animation: ttmPing 3s ease-out infinite;
 }
-@keyframes ttmSpin {
+.ttm-hand {
+  animation: markSpin 60s linear infinite;
+}
+.cnm-signal {
+  animation: markSignal 6s linear infinite;
+}
+.cnm-dust {
+  animation: starTwinkle 5s ease-in-out infinite;
+}
+.cnm-star {
+  transform-origin: 56px 47px;
+  animation: markBreathe 4s ease-in-out infinite;
+}
+@keyframes markSpin {
+  from {
+    transform: rotate(0deg);
+  }
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes markBreathe {
+  50% {
+    transform: scale(1.12);
+    opacity: 0.7;
+  }
+}
+@keyframes markSignal {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+@keyframes starTwinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
   }
 }
 @keyframes ttmPing {
@@ -636,6 +705,9 @@ input::placeholder {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .product-mark svg * {
+    animation: none !important;
+  }
   *,
   *::before,
   *::after {
