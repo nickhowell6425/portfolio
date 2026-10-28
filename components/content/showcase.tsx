@@ -75,6 +75,7 @@ export function Showcase({
   liveHref,
   builtBy,
   next,
+  markNode,
 }: {
   item: ShowcaseItem;
   /** The product's name — the page's <h1>. */
@@ -84,6 +85,8 @@ export function Showcase({
   liveHref?: string;
   builtBy: string;
   next?: ShowcaseNext;
+  /** The product's own live mark (the same one its rail tile shows). */
+  markNode?: React.ReactNode;
 }) {
   const faq = [...item.faq, { q: "Who built it?", a: builtBy }];
   const tour = `#${item.sections[0]?.id ?? "sc-what"}`;
@@ -135,6 +138,8 @@ export function Showcase({
           aria-hidden="true"
           className="sc-mark"
           style={{
+            position: "relative",
+            overflow: "hidden",
             flex: "0 0 auto",
             border: "5px solid var(--bg2)",
             background:
@@ -142,7 +147,9 @@ export function Showcase({
               `radial-gradient(circle at 50% 50%, #e9fff6 0, ${accent} 14%, color-mix(in srgb, ${accent} 30%, #04140d) 38%, #04140d 72%)`,
             boxShadow: `0 16px 40px -10px color-mix(in srgb, ${accent} 50%, transparent)`,
           }}
-        />
+        >
+          {markNode}
+        </div>
         <div
           style={{
             flex: "1 1 260px",

@@ -7,6 +7,7 @@ import { OverviewHero } from "@/components/content/overview-hero";
 import { PortraitHero } from "@/components/content/portrait-hero";
 import { Sections } from "@/components/content/sections";
 import { CompanyHero } from "@/components/content/company-hero";
+import { ParadoxMark } from "@/components/shell/paradox-mark";
 import { Showcase } from "@/components/content/showcase";
 import { BRAND_IDS, BRANDS, isBrandId, type BrandId } from "@/lib/brands";
 import type { ShowcaseItem, Workspace } from "@/lib/content";
@@ -159,6 +160,7 @@ export default async function WorkspacePage({ params }: Props) {
           accent={ws.accent}
           liveHref={item.live ? hrefFor(ws.id, item.live) : undefined}
           builtBy={item.builtBy[brand]}
+          markNode={ws.id === "paradox" ? <ParadoxMark res={224} delay={3000} /> : undefined}
           next={
             nextWs
               ? {
