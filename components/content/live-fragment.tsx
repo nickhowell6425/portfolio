@@ -49,6 +49,7 @@ export function LiveFragment({
           width={poster.width}
           height={poster.height}
           sizes="(max-width: 700px) 90vw, 560px"
+          quality={90}
           style={{ width: "100%", maxWidth: poster.width, height: "auto", borderRadius: 12 }}
         />
       ) : (
