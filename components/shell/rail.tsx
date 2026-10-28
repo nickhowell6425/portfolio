@@ -9,10 +9,7 @@ import { useUI } from "@/components/providers/ui-provider";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { BRANDS, brandForHost, otherBrand, BRAND_PARAM, type BrandId } from "@/lib/brands";
 import { navFor } from "@/lib/navigation";
-import { ParadoxMark } from "./paradox-mark";
-
-// Timetrack's own mark: its conic orb with the dark core.
-const TIMETRACK_ORB = "conic-gradient(from 210deg, #ffc96b, #ff9e6b, #b69cff, #5fd4e8, #ffc96b)";
+import { ProductMark } from "./product-mark";
 
 const THEME_GLYPH: Record<string, string> = { system: "◐", light: "○", dark: "●" };
 const NEXT_THEME: Record<string, string> = { system: "light", light: "dark", dark: "system" };
@@ -215,7 +212,6 @@ export function Rail() {
         const active = w.id === currentWs;
         const isHome = w.id === "home";
         const isParadox = w.id === "paradox";
-        const isTimetrack = w.id === "timetrack";
         return (
           <Fragment key={w.id}>
             {i === 1 ? (
@@ -267,11 +263,9 @@ export function Rail() {
                     ? MARK_BG[brand.id]
                     : isParadox
                       ? "oklch(0.06 0.014 158)"
-                      : isTimetrack
-                        ? TIMETRACK_ORB
-                        : active
-                          ? w.accent
-                          : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
+                      : active
+                        ? w.accent
+                        : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
                   color: active ? "#fff" : w.accent,
                   fontWeight: 800,
                   fontSize: 13,
@@ -282,23 +276,12 @@ export function Rail() {
                   fontFamily: MONO,
                 }}
               >
-                {isParadox ? (
-                  <ParadoxMark active={active} />
-                ) : isTimetrack ? (
-                  <span
-                    style={{
-                      display: "block",
-                      margin: "0 auto",
-                      width: 13,
-                      height: 13,
-                      borderRadius: "50%",
-                      background: "#050508",
-                    }}
-                  />
-                ) : isHome ? (
+                {isHome ? (
                   ""
                 ) : (
-                  w.initials
+                  <ProductMark wsId={w.id} active={active}>
+                    {w.initials}
+                  </ProductMark>
                 )}
                 {active ? (
                   <span

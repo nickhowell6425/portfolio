@@ -141,8 +141,6 @@ export interface ShowcaseItem {
   cover: { src: string; alt: string };
   /** Where "Try it live" goes (an item id in the same workspace); omitted = no live demo. */
   live?: string;
-  /** CSS background for the identity mark (defaults to an accent glow). */
-  mark?: string;
   stack: string[];
   tiles: ShowcaseTile[];
   sections: ShowcaseSection[];
@@ -965,7 +963,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           src: "/showcase/timetrack/cover.webp",
           alt: "Timetrack Command Center: a week of work sessions on one dial, with hours, overlap and billing",
         },
-        mark: "radial-gradient(circle at 50% 50%, #050508 0 15%, transparent 16%), conic-gradient(from 210deg, #ffc96b, #ff9e6b, #b69cff, #5fd4e8, #ffc96b)",
         stack: [
           "Next.js",
           "React",
