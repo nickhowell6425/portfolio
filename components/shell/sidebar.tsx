@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { MONO } from "@/components/fragments/ui";
 import { useUI } from "@/components/providers/ui-provider";
 import { useActiveSection } from "@/hooks/use-active-section";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useWsSticky } from "@/hooks/use-ws-transition";
 import { useNav } from "@/components/providers/brand-provider";
 import { PH } from "@/lib/content";
@@ -31,6 +32,18 @@ export function Sidebar() {
     }),
   );
   const activeSection = useActiveSection(sectionIds, pathname);
+  const rm = useReducedMotion();
+
+  // A section on the page already open: scroll just the content stage to it,
+  // rather than a hash navigation that lets the browser scroll the frame too.
+  const jumpTo = (e: React.MouseEvent, hash: string) => {
+    const el = document.getElementById(hash);
+    if (!el) return; // a different page: let the link navigate
+    e.preventDefault();
+    el.scrollIntoView({ behavior: rm ? "auto" : "smooth", block: "start" });
+    history.replaceState(history.state, "", `#${hash}`);
+    setNavOpen(false);
+  };
 
   let si = 0;
 
@@ -164,7 +177,10 @@ export function Sidebar() {
                         ? "page"
                         : undefined
                   }
-                  onClick={() => setNavOpen(false)}
+                  onClick={(e) => {
+                    if (it.type === "anchor" && it.page === currentItem) jumpTo(e, it.hash);
+                    else setNavOpen(false);
+                  }}
                   className="anim-side-item hov-accent-bg"
                   style={style}
                 >

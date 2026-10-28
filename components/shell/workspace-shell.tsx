@@ -26,7 +26,6 @@ export function WorkspaceShell({ children }: { children: React.ReactNode }) {
         position: "fixed",
         inset: 0,
         display: "flex",
-        overflow: "hidden",
         background: "var(--bg2)",
         color: "var(--text)",
         fontSize: 15,
