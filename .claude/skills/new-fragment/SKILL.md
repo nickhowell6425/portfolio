@@ -23,9 +23,10 @@ anything missing — especially what the fragment shows and the story behind it.
      so state survives navigation and is shared with the library view.
    - Wrap in `FCard(w, accent, productName)` from `./ui` — pick `w` from the design's
      scale (360/380/400/430/480/560). Paradox fragments use `PCard` and the `PX` palette.
-   - Use the workspace accent: home `#5b8def`, paradox `#3edba6`, timetrack `#ffb454`.
+   - Use the workspace accent: home `#5b8def`, paradox `#3edba6`, timetrack `#ffb454`,
+     constellation `#c8f542` (lime: put ink text on it, never white).
      Product-styled fragments use their product's card (`PCard` for Paradox, `TTCard` for
-     Timetrack).
+     Timetrack, `CNCard` for Constellation).
    - Inline style objects, matching the density/sizing of existing fragments
      (12–15px type, 8–10px radii). Respect `useReducedMotion()` for any animation.
 

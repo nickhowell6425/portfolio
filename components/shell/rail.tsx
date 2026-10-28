@@ -400,6 +400,7 @@ export function Rail() {
         const isHome = w.id === "home";
         const isParadox = w.id === "paradox";
         const isTimetrack = w.id === "timetrack";
+        const isConstellation = w.id === "constellation";
         return (
           <Fragment key={w.id}>
             {i === 1 ? (
@@ -453,9 +454,11 @@ export function Rail() {
                       ? "oklch(0.06 0.014 158)"
                       : isTimetrack
                         ? TIMETRACK_ORB
-                        : active
+                        : isConstellation
                           ? w.accent
-                          : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
+                          : active
+                            ? w.accent
+                            : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
                   color: active ? "#fff" : w.accent,
                   fontWeight: 800,
                   fontSize: 13,
@@ -479,6 +482,26 @@ export function Rail() {
                       background: "#050508",
                     }}
                   />
+                ) : isConstellation ? (
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 30 30"
+                    aria-hidden="true"
+                    style={{ display: "block", margin: "0 auto" }}
+                  >
+                    <path
+                      d="M8 20 L14 9 L22 14 L18 22 Z"
+                      fill="none"
+                      stroke="#0d0f14"
+                      strokeWidth="1.8"
+                      strokeLinejoin="round"
+                    />
+                    <circle cx="8" cy="20" r="2.6" fill="#0d0f14" />
+                    <circle cx="14" cy="9" r="2.6" fill="#0d0f14" />
+                    <circle cx="22" cy="14" r="2.6" fill="#0d0f14" />
+                    <circle cx="18" cy="22" r="2.6" fill="#0d0f14" />
+                  </svg>
                 ) : isHome ? (
                   ""
                 ) : (
