@@ -225,6 +225,39 @@ function ConstellationMark() {
   );
 }
 
+// Helm: the app's ring and orange core, with the arc it draws around
+// anything an agent is working on.
+function HelmMark() {
+  const id = useId();
+  return (
+    <svg viewBox="0 0 100 100" fill="none">
+      <defs>
+        <radialGradient id={`${id}-face`} cx="40%" cy="30%" r="80%">
+          <stop stopColor="#2a1b16" />
+          <stop offset=".5" stopColor="#111014" />
+          <stop offset="1" stopColor="#08090b" />
+        </radialGradient>
+        <filter id={`${id}-glow`} x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="2.2" />
+        </filter>
+      </defs>
+      <path fill={`url(#${id}-face)`} d="M0 0H100V100H0Z" />
+      <circle cx="50" cy="50" r="35" stroke="#f2f2f0" strokeOpacity=".1" strokeWidth="1" />
+      <circle cx="50" cy="50" r="23" stroke="#f2f2f0" strokeWidth="4.5" />
+      <circle cx="50" cy="50" r="9" fill="#ff6b3d" opacity=".55" filter={`url(#${id}-glow)`} />
+      <circle cx="50" cy="50" r="7" fill="#ff6b3d" />
+      <g className="hmm-orbit">
+        <path
+          d="M50 15A35 35 0 0 1 85 50"
+          stroke="#d6d6d3"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+        />
+      </g>
+    </svg>
+  );
+}
+
 /** Shared by rail tiles, product headers, and “Next product” cards. */
 export function ProductMark({
   wsId,
@@ -238,7 +271,7 @@ export function ProductMark({
   delay?: number;
   children?: ReactNode;
 }) {
-  if (wsId !== "paradox" && wsId !== "timetrack" && wsId !== "constellation")
+  if (wsId !== "paradox" && wsId !== "timetrack" && wsId !== "constellation" && wsId !== "helm")
     return <>{children}</>;
   return (
     <span
@@ -256,8 +289,10 @@ export function ProductMark({
         <ParadoxMark />
       ) : wsId === "timetrack" ? (
         <TimetrackMark />
-      ) : (
+      ) : wsId === "constellation" ? (
         <ConstellationMark />
+      ) : (
+        <HelmMark />
       )}
     </span>
   );

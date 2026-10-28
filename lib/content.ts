@@ -23,7 +23,10 @@ export type FragmentId =
   | "dial"
   | "rank"
   | "branches"
-  | "forecast";
+  | "forecast"
+  | "deck"
+  | "rule"
+  | "voice";
 
 export interface Section {
   heading?: string;
@@ -167,7 +170,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     accent: "#5b8def",
     groups: [
       { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
-      { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation"] },
+      { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm"] },
     ],
     items: {
       about: {
@@ -186,7 +189,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               `${PH.YEARS}+ years building. ${PH.STATUS_LINE}. As CTO and founding engineer at AccountTouch I solely architected and shipped the whole platform — a cross-platform mobile app, a serverless backend, and a web portal, all Dockerized and in production.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
-              "The left rail is real work: three products, each with a page on how it's built and why. The components inside are live — click through any of them.",
+              "The left rail is real work: four products, each with a page on how it's built and why. The components inside are live — click through any of them.",
             ],
           },
           {
@@ -322,6 +325,12 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         type: "ws",
         ws: "constellation",
         desc: "Prioritization across every client",
+      },
+      "go-helm": {
+        label: "Helm",
+        type: "ws",
+        ws: "helm",
+        desc: "One decision at a time, every client and agent",
       },
     },
   },
@@ -1188,7 +1197,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
           fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
         },
-        next: "paradox",
+        next: "helm",
       },
       "a-queue": {
         type: "anchor",
@@ -1248,6 +1257,271 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       },
     },
   },
+  {
+    id: "helm",
+    initials: "HM",
+    name: "Helm",
+    desc: "One decision at a time, every client and agent",
+    status: "client operations · 2026",
+    accent: "#ff6b3d",
+    accentInk: "#b4471f",
+    groups: [
+      { title: "Project", items: ["overview"] },
+      {
+        title: "Features",
+        items: ["a-deck", "a-client", "a-rules", "a-voice", "a-settings", "a-setup"],
+      },
+    ],
+    items: {
+      overview: {
+        type: "showcase",
+        label: "Overview",
+        desc: "One decision at a time, every client and agent",
+        seoTitle: "Helm — one decision at a time across every client and AI agent",
+        tagline: "One decision at a time, across every client and every agent.",
+        summary:
+          "Helm, designed and built end to end: one deck of decisions drawn from every client’s email and Slack and every agent run across Claude, OpenAI and Grok, a board and concierge for each client, plain-language rules that keep every client hearing from you, and people, voice and access set up once per client.",
+        cover: {
+          src: "/showcase/helm/cover.webp",
+          alt: "Helm’s deck: projects as rings across the top, one decision card in the middle with a drafted client update, and running agents in a dock below",
+        },
+        stack: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Zod",
+          "PostgreSQL",
+          "Background jobs",
+          "Claude, OpenAI & Grok APIs",
+          "GitHub API",
+          "Gmail & Slack APIs",
+          "Encrypted key vault",
+          "Vercel",
+          "GitHub Actions CI/CD",
+        ],
+        tiles: [
+          {
+            title: "Deck",
+            line: "One decision at a time.",
+            img: "/showcase/helm/cover.webp",
+            target: "deck",
+            lead: true,
+          },
+          {
+            title: "Client",
+            line: "A board and a concierge.",
+            img: "/showcase/helm/client.webp",
+            target: "client",
+          },
+          {
+            title: "Rules",
+            line: "Written in plain words.",
+            img: "/showcase/helm/rules.webp",
+            target: "rules",
+          },
+          {
+            title: "People",
+            line: "@ anyone, in their voice.",
+            img: "/showcase/helm/settings.webp",
+            target: "voice",
+          },
+          {
+            title: "Setup",
+            line: "Six questions per client.",
+            img: "/showcase/helm/setup.webp",
+            target: "setup",
+          },
+          {
+            title: "Phone",
+            line: "The deck, in one hand.",
+            img: "/showcase/helm/phone.webp",
+            target: "deck",
+            contain: true,
+          },
+        ],
+        sections: [
+          {
+            id: "deck",
+            kicker: "Decisions",
+            title: "One decision at a time.",
+            line: "Helm reads every client thread and every agent run, then deals you only what needs a person, most urgent first. Answer one and the next is up. Try it.",
+            points: [
+              "Drafts, failing checks and agent questions, one tap each",
+              "Every running agent in the dock, whatever the model",
+              "Starting work puts a new agent in the dock",
+            ],
+            media: {
+              frag: "deck",
+              poster: { src: "/showcase/helm/deck-poster.webp", width: 520, height: 431 },
+            },
+          },
+          {
+            id: "client",
+            kicker: "Client view",
+            title: "Dive into any client.",
+            line: "A board of what they asked for, what’s building, what’s in review and what shipped, with Helm’s suggestions beside it in priority order.",
+            points: [
+              "Suggestions that move the board when you act",
+              "This week’s update rhythm at a glance",
+              "Ask anything about the client",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/helm/client.webp",
+                  alt: "Kestrel Labs client view: a board of asked-for, building, review and shipped work, with Helm’s prioritised suggestions beside it",
+                  width: 1440,
+                  height: 740,
+                },
+              ],
+            },
+          },
+          {
+            id: "rules",
+            kicker: "Rules",
+            title: "Rules you write in plain words.",
+            line: "Say it the way you’d say it. Helm asks only what it needs, writes the rule out and shows exactly which days it will step in. Try it.",
+            points: [
+              "When, what counts, then, always",
+              "A two-week preview before it’s on",
+              "Nothing sends without your review",
+            ],
+            media: {
+              frag: "rule",
+              poster: { src: "/showcase/helm/rule-poster.webp", width: 520, height: 574 },
+            },
+          },
+          {
+            id: "voice",
+            kicker: "People & voice",
+            title: "The right person, in their voice.",
+            line: "@ anyone at a client and Helm knows how they like to hear from you: the channel, the tone, what they get. Try it.",
+            points: [
+              "@ mentions for everyone at every client",
+              "Channel and tone per person",
+              "Learns from what you’ve already sent",
+            ],
+            media: {
+              frag: "voice",
+              poster: { src: "/showcase/helm/voice-poster.webp", width: 480, height: 432 },
+            },
+          },
+          {
+            id: "settings",
+            kicker: "Client settings",
+            title: "Everything about a client, in one place.",
+            line: "People, channels and quiet hours, voice, scoped access keys, rules and docs, set once and used by every agent that works for them.",
+            points: [
+              "Keys scoped per client, rotated in place",
+              "Quiet hours in the client’s time zone",
+              "Briefs and contracts the agents can read",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/helm/settings.webp",
+                  alt: "Client settings for Kestrel Labs: people with their channel and tone, and an @ mention picker suggesting Jordan and Josie",
+                  width: 1440,
+                  height: 500,
+                },
+              ],
+            },
+          },
+          {
+            id: "setup",
+            kicker: "Onboarding",
+            title: "Add a client in six questions.",
+            line: "Who they are, how they talk, who you write to, how you sound, what Helm can touch and any rules, one card at a time.",
+            points: [
+              "Channels, with one marked primary",
+              "People added by @handle",
+              "Access connected as you go",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/helm/setup.webp",
+                  alt: "Adding a client, step two of six: how do they talk? Email marked primary, Slack on",
+                  width: 1440,
+                  height: 800,
+                },
+              ],
+            },
+            gold: true,
+          },
+        ],
+        faq: [
+          {
+            q: "Why one decision at a time instead of a dashboard?",
+            a: "Because a dashboard leaves the sorting to you. Helm ranks what needs a person (an update you promised, an agent waiting on an answer, a failing check) and shows one at a time, so you clear the morning instead of scanning it.",
+          },
+          {
+            q: "How does it decide what comes first?",
+            a: "Promised update rhythms that are due, agents blocked on a question, failing checks, how long a client has gone without hearing from you, and how big the engagement is.",
+          },
+          {
+            q: "Which AI agents does it work with?",
+            a: "Claude, OpenAI and Grok in the cloud, and agents running on your own machine. Every run shows its model, and you can hand a session to a different model without losing the conversation or the sandbox.",
+          },
+          {
+            q: "Does it ever message a client on its own?",
+            a: "Only if a rule you wrote says so. By default Helm drafts and you send, and either way it respects each client’s quiet hours.",
+          },
+          {
+            q: "Where do client keys live?",
+            a: "Scoped per client, encrypted at rest and never shown in full. Each key says what it can touch and when it was last used, and rotates in place.",
+          },
+        ],
+        builtBy: {
+          personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
+          fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
+        },
+        next: "paradox",
+      },
+      "a-deck": {
+        type: "anchor",
+        label: "The deck",
+        desc: "One decision at a time",
+        page: "overview",
+        hash: "deck",
+      },
+      "a-client": {
+        type: "anchor",
+        label: "Client view",
+        desc: "A board and a concierge",
+        page: "overview",
+        hash: "client",
+      },
+      "a-rules": {
+        type: "anchor",
+        label: "Rules",
+        desc: "Written in plain words",
+        page: "overview",
+        hash: "rules",
+      },
+      "a-voice": {
+        type: "anchor",
+        label: "People & voice",
+        desc: "@ anyone, in their voice",
+        page: "overview",
+        hash: "voice",
+      },
+      "a-settings": {
+        type: "anchor",
+        label: "Client settings",
+        desc: "Keys, channels, docs",
+        page: "overview",
+        hash: "settings",
+      },
+      "a-setup": {
+        type: "anchor",
+        label: "Onboarding",
+        desc: "Six questions per client",
+        page: "overview",
+        hash: "setup",
+      },
+    },
+  },
 ];
 
 const [PERSONAL_HOME, ...PROJECTS] = PERSONAL_WORKSPACES;
@@ -1272,7 +1546,7 @@ const FST_HOME: Workspace = {
   accent: FST.ACCENT,
   groups: [
     { title: "Company", items: ["about", "services", "engagements", "straight-answers"] },
-    { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation"] },
+    { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm"] },
   ],
   items: {
     about: {
@@ -1289,7 +1563,7 @@ const FST_HOME: Workspace = {
         {
           heading: "The work speaks first",
           paras: [
-            "The left rail is real work — three products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; and Constellation, prioritization and planning across every client. The components inside are live: click through any of them.",
+            "The left rail is real work — four products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; Constellation, prioritization and planning across every client; and Helm, one decision at a time across every client and AI agent. The components inside are live: click through any of them.",
           ],
         },
         {
@@ -1408,6 +1682,7 @@ const FST_HOME: Workspace = {
     "go-paradox": PERSONAL_HOME.items["go-paradox"],
     "go-timetrack": PERSONAL_HOME.items["go-timetrack"],
     "go-constellation": PERSONAL_HOME.items["go-constellation"],
+    "go-helm": PERSONAL_HOME.items["go-helm"],
   },
 };
 

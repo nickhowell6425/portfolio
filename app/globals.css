@@ -377,6 +377,21 @@ input::placeholder {
     opacity: 0;
   }
 }
+/* Helm: an arc turning while agents work, a pulse while something waits on you */
+.hmm-orbit {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+  animation: markSpin 9s linear infinite;
+}
+@keyframes hmBreathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
 /* Timetrack's split-flap leaf: arrives rotated back on its hinge, swings down */
 @keyframes ttLeaf {
   0% {
