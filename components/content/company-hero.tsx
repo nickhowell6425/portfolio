@@ -46,17 +46,7 @@ export function CompanyHero() {
         >
           Product engineering studio
         </div>
-        <div
-          style={{
-            margin: "9px 0 0",
-            fontSize: 32,
-            fontWeight: 800,
-            letterSpacing: "-.022em",
-            lineHeight: 1.04,
-          }}
-        >
-          {FST.NAME}
-        </div>
+        <div role="img" aria-label={FST.LEGAL} className="company-wordmark" />
         <p
           style={{
             margin: "11px 0 0",
@@ -100,7 +90,7 @@ export function CompanyHero() {
           zIndex: 3,
           flex: "0 0 auto",
           borderRadius: "20%",
-          background: "url('/brand/fst-mark.svg') center/64% no-repeat, #fff",
+          background: "var(--fst-mark) center/84% no-repeat, var(--surface)",
           border: "1px solid color-mix(in srgb, var(--accent) 35%, var(--border2))",
           boxShadow:
             "0 0 0 5px color-mix(in srgb, var(--accent) 14%, transparent), 0 18px 36px -12px rgba(0,0,0,.55)",

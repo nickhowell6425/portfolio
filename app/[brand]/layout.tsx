@@ -17,6 +17,20 @@ const schibsted = localFont({
   ],
 });
 
+const inter = localFont({
+  variable: "--font-inter",
+  src: "../fonts/Inter-Variable.woff2",
+  weight: "100 900",
+  preload: false,
+});
+
+const manrope = localFont({
+  variable: "--font-manrope",
+  src: "../fonts/Manrope-Variable.woff2",
+  weight: "200 800",
+  preload: false,
+});
+
 const splineMono = localFont({
   variable: "--font-spline-mono",
   src: [{ path: "../fonts/SplineSansMono-Variable.woff2", weight: "400 700", style: "normal" }],
@@ -64,6 +78,22 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
       template: `%s · ${b.short}`,
     },
     description: b.description,
+    icons: {
+      icon: [
+        {
+          url: `/brand/${b.id}/favicon.ico${b.id === "fst" ? "?v=2" : ""}`,
+          sizes: "16x16 32x32 48x48",
+          type: "image/x-icon",
+        },
+        ...(b.id === "fst"
+          ? [
+              { url: "/brand/fst/favicon-32.png?v=2", sizes: "32x32", type: "image/png" },
+              { url: "/brand/fst/favicon.svg?v=2", sizes: "any", type: "image/svg+xml" },
+            ]
+          : [{ url: "/brand/personal/icon.png", sizes: "512x512", type: "image/png" }]),
+      ],
+      apple: [{ url: `/brand/${b.id}/apple-touch-icon.png`, sizes: "180x180", type: "image/png" }],
+    },
     alternates: { canonical: "/" },
     openGraph: {
       type: "website",
@@ -117,6 +147,7 @@ const JSONLD: Record<BrandId, object> = {
     name: BRANDS.fst.name,
     url: BRANDS.fst.url,
     description: BRANDS.fst.description,
+    logo: new URL("/brand/fst-mark.svg", BRANDS.fst.url).href,
     email: `mailto:${BRANDS.fst.email}`,
     founder: PERSON,
     address: PERSON.address,
@@ -125,7 +156,7 @@ const JSONLD: Record<BrandId, object> = {
 
 const THEME_COLOR: Record<BrandId, { dark: string; light: string }> = {
   personal: { dark: "#0f141f", light: "#f6f8fc" },
-  fst: { dark: "#101011", light: "#f8f7f5" },
+  fst: { dark: "#111214", light: "#fafaf7" },
 };
 
 export async function generateViewport({ params }: Pick<Props, "params">): Promise<Viewport> {
@@ -145,7 +176,7 @@ export default async function RootLayout({ children, params }: Readonly<Props>) 
       lang="en"
       data-brand={b.id}
       suppressHydrationWarning
-      className={`${schibsted.variable} ${splineMono.variable} ${cormorant.variable}`}
+      className={`${schibsted.variable} ${splineMono.variable} ${cormorant.variable} ${b.id === "fst" ? `${inter.variable} ${manrope.variable}` : ""}`}
     >
       <body>
         <script

@@ -157,7 +157,7 @@ export function Showcase({
             boxShadow: `0 16px 40px -10px color-mix(in srgb, ${accent} 50%, transparent)`,
           }}
         >
-          <ProductMark wsId={wsId} res={224} delay={3000} />
+          <ProductMark wsId={wsId} delay={3000} />
         </div>
         <div
           style={{
@@ -475,7 +475,7 @@ export function Showcase({
               fontWeight: 800,
             }}
           >
-            <ProductMark wsId={next.id} res={88} delay={3000}>
+            <ProductMark wsId={next.id} delay={3000}>
               {next.initials}
             </ProductMark>
           </span>
