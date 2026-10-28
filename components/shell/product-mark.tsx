@@ -98,6 +98,37 @@ function ConstellationMark() {
   );
 }
 
+// Helm's mark: the app's own ring and orange core on its near-black, with
+// the arc the app draws around anything an agent is working on.
+function HelmMark() {
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        inset: 0,
+        borderRadius: "inherit",
+        overflow: "hidden",
+        background: "#0a0a0b",
+      }}
+    >
+      <svg viewBox="0 0 100 100" style={{ display: "block", width: "100%", height: "100%" }}>
+        <circle cx="50" cy="50" r="24" fill="none" stroke="#f2f2f0" strokeWidth="5" />
+        <circle cx="50" cy="50" r="7.5" fill="#ff6b3d" />
+        <g className="hmm-orbit">
+          <path
+            d="M50 15 A35 35 0 0 1 85 50"
+            fill="none"
+            stroke="#cfcfcc"
+            strokeWidth="4"
+            strokeLinecap="round"
+          />
+        </g>
+      </svg>
+    </span>
+  );
+}
+
 /**
  * A product's mark, identical wherever it appears (rail tile, product page,
  * "Next product" card). Fills its positioned parent; products without one
@@ -121,5 +152,6 @@ export function ProductMark({
   if (wsId === "paradox") return <ParadoxMark active={active} res={res} delay={delay} />;
   if (wsId === "timetrack") return <TimetrackMark />;
   if (wsId === "constellation") return <ConstellationMark />;
+  if (wsId === "helm") return <HelmMark />;
   return <>{children}</>;
 }
