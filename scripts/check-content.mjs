@@ -77,6 +77,17 @@ for (const host of [personalHost, fstHost]) {
     );
   }
   const home = await read("/", host);
+  for (const label of ["S — Services", "B — Blog", "AI — AI playbook", "PR — Prompt library"]) {
+    assert(!home.includes(`aria-label="${label}"`), `The project rail must not contain ${label}`);
+  }
+  assert(
+    home.includes('aria-label="HM — Helm"'),
+    "The project rail must preserve the Helm workspace",
+  );
+  if (host === fstHost) {
+    for (const path of ["/blog", "/ai", "/prompts", "/services/product-development"])
+      assert(home.includes(`href="${path}"`), `FST home must expose ${path}`);
+  }
   const homeTwitterTitle = home.match(/name="twitter:title" content="([^"]+)"/)?.[1];
   const routes = new Set(sitemap);
   const links = new Set();
@@ -206,7 +217,7 @@ for (const host of [personalHost, fstHost]) {
   const demo = await read("/paradox/demo", host);
   assert(demo.includes('name="robots" content="noindex'), "Demo wrapper must be noindex");
 }
-for (const product of ["paradox", "timetrack", "constellation"]) {
+for (const product of ["paradox", "timetrack", "constellation", "helm"]) {
   const path = `/${product}/overview`;
   const personal = await read(path, personalHost);
   const studio = await read(path, fstHost);

@@ -190,6 +190,10 @@ export function Rail() {
   const brand = useBrand();
   const { resolvePathname, workspaces } = useNav();
   const currentWs = resolvePathname(pathname)?.ws.id;
+  const railWorkspaces = workspaces.filter(
+    (w) => w.id === "home" || w.items.overview?.type === "showcase",
+  );
+  const activeWs = railWorkspaces.some((w) => w.id === currentWs) ? currentWs : "home";
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
@@ -207,8 +211,8 @@ export function Rail() {
         flex: "0 0 auto",
       }}
     >
-      {workspaces.map((w, i) => {
-        const active = w.id === currentWs;
+      {railWorkspaces.map((w, i) => {
+        const active = w.id === activeWs;
         const isHome = w.id === "home";
         const isParadox = w.id === "paradox";
         return (
