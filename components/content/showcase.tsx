@@ -81,7 +81,6 @@ export function Showcase({
   item,
   name,
   accent,
-  liveHref,
   builtBy,
   next,
   wsId,
@@ -93,8 +92,6 @@ export function Showcase({
   accent: string;
   /** Accent as text (theme-aware); defaults to `accent`. */
   ink?: string;
-  /** The live demo; without one the CTAs lead into the feature sections. */
-  liveHref?: string;
   builtBy: string;
   next?: ShowcaseNext;
   /** Workspace id — picks the product's mark (the same one its rail tile shows). */
@@ -179,7 +176,7 @@ export function Showcase({
           <p style={{ margin: 0, fontSize: 16, color: "var(--dim)" }}>{item.tagline}</p>
         </div>
         <Link
-          href={liveHref ?? tour}
+          href={tour}
           className="hov-bright"
           style={{
             marginBottom: 6,
@@ -196,15 +193,7 @@ export function Showcase({
             textDecoration: "none",
           }}
         >
-          {liveHref ? (
-            <>
-              <span aria-hidden="true">▶</span> Try it live
-            </>
-          ) : (
-            <>
-              See how it works <span aria-hidden="true">↓</span>
-            </>
-          )}
+          See how it works <span aria-hidden="true">↓</span>
         </Link>
       </header>
 
@@ -270,7 +259,7 @@ export function Showcase({
           {item.tiles.map((t) => (
             <Link
               key={t.title}
-              href={t.target ? `#${t.target}` : (liveHref ?? tour)}
+              href={t.target ? `#${t.target}` : tour}
               className={t.lead ? "sc-tile sc-tile-lead hov-raise" : "sc-tile hov-raise"}
               style={{
                 position: "relative",
@@ -447,28 +436,6 @@ export function Showcase({
             alignItems: "center",
           }}
         >
-          {liveHref ? (
-            <Link
-              href={liveHref}
-              className="hov-bright"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                height: 40,
-                margin: "8px 0 4px",
-                padding: "0 20px",
-                borderRadius: 10,
-                border: "1px solid var(--border2)",
-                background: "var(--surface)",
-                color: "var(--text)",
-                fontWeight: 600,
-                fontSize: 14,
-                textDecoration: "none",
-              }}
-            >
-              ▶ Try it live
-            </Link>
-          ) : null}
           <MessageCta label="Let’s talk" />
         </div>
       </section>

@@ -99,8 +99,6 @@ export interface ShowcaseItem {
   /** One factual paragraph — also the meta description. */
   summary: string;
   cover: { src: string; alt: string };
-  /** Where "Try it live" goes (an item id in the same workspace); omitted = no live demo. */
-  live?: string;
   stack: string[];
   tiles: ShowcaseTile[];
   sections: ShowcaseSection[];
@@ -332,7 +330,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     initials: "P",
     name: "Paradox",
     desc: "A living multiverse of stories",
-    status: "concept · 2026",
+    status: "storytelling · 2026",
     accent: "#3edba6",
     groups: [
       { title: "Project", items: ["overview", "demo"] },
@@ -362,7 +360,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           src: "/showcase/paradox/home.webp",
           alt: "Paradox homepage: a living graph of story timelines",
         },
-        live: "demo",
         stack: [
           "Next.js",
           "React",
@@ -592,7 +589,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         desc: "The whole app, running in the browser",
         kicker: "the app, running",
         src: "/demos/paradox/02-Marketing/Homepage.html",
-        lead: "The full Paradox concept, live and edge-to-edge — traverse the multiverse, open a timeline, fork a reality.",
+        lead: "Paradox, live and edge-to-edge — traverse the multiverse, open a timeline, fork a reality.",
       },
       "a-signin": {
         type: "anchor",
@@ -650,7 +647,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     initials: "TT",
     name: "Timetrack",
     desc: "Time tracking for the age of AI",
-    status: "self-hosted · v0.1 beta",
+    status: "time tracking · 2026",
     accent: "#ffb454",
     groups: [
       { title: "Project", items: ["overview"] },
@@ -932,7 +929,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     initials: "CN",
     name: "Constellation",
     desc: "Prioritization across every client",
-    status: "concept · 2026",
+    status: "planning · 2026",
     accent: "#c8f542",
     accentInk: "#3f5c00",
     groups: [
@@ -959,7 +956,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         seoTitle: "Constellation — prioritization and project planning across every client",
         tagline: "Know what to work on next, across every client.",
         summary:
-          "Constellation, designed end to end: one ranked queue across every client, plans that branch like code, ship dates with honest error bars, client messages turned into proposed changes, and a live status page clients check for themselves.",
+          "Constellation, designed and built end to end: one ranked queue across every client, plans that branch like code, ship dates with honest error bars, client messages turned into proposed changes, and a live status page clients check for themselves.",
         cover: {
           src: "/showcase/constellation/cover.webp",
           alt: "Constellation queue: every client's issues in one ranked list, with forecasts and a capacity-planned Today",
@@ -1165,10 +1162,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ],
         faq: [
           {
-            q: "Is Constellation a shipped product?",
-            a: "Not yet. It’s a product concept, designed end to end as a working prototype. The ranking, the plan branches and the forecasts on this page are real code running in your browser; the client data is made up.",
-          },
-          {
             q: "How is the rank score worked out?",
             a: "A weighted average of four signals scored 0 to 10: deadline pressure, client value, whether someone is waiting, and effort. You set the weights, and every issue shows its score and the main reason for it, so the order is never a black box.",
           },
@@ -1190,8 +1183,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           },
         ],
         builtBy: {
-          personal: `${PH.NAME}, designed end to end. It’s how I’d build your product, too.`,
-          fst: "Full Stack Technologies, LLC, designed end to end. It’s how we’d build your product, too.",
+          personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
+          fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
         },
         next: "paradox",
       },
@@ -1294,7 +1287,7 @@ const FST_HOME: Workspace = {
         {
           heading: "The work speaks first",
           paras: [
-            "The left rail is real work — three products designed end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; and Constellation, prioritization and planning across every client. The components inside are live: click through any of them.",
+            "The left rail is real work — three products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; and Constellation, prioritization and planning across every client. The components inside are live: click through any of them.",
           ],
         },
         {
@@ -1443,8 +1436,7 @@ export const CAPABILITIES: { heading: string; items: string[] }[] = [
       `${PH.YEARS}+ years shipping production software`,
       "Multiple multi-million-dollar valuations",
       "Scaled a fintech startup from 3 to 20+ people into an acquisition",
-      "Designed and built Paradox and Timetrack end to end",
-      "Designed Constellation, a planning engine for multi-client work",
+      "Designed and built Paradox, Timetrack and Constellation end to end",
       "0 abandoned codebases",
     ],
   },

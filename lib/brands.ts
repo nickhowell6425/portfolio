@@ -55,7 +55,7 @@ export const BRANDS: Record<BrandId, Brand> = {
     url: PERSONAL_URL,
     title: "Nicholas Howell — Portfolio",
     description:
-      "The Workspace — a portfolio you open and poke around in. Live components from shipped products, the decisions behind them, and the person who builds with AI agents and makes it hold up.",
+      "The Workspace — a portfolio you open and poke around in. Live components from real products, the decisions behind them, and the person who builds with AI agents and makes it hold up.",
     siteName: "Nicholas Howell — The Workspace",
     ogImage: "/og/personal.png",
     doc: {
