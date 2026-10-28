@@ -216,6 +216,42 @@ input::placeholder {
     opacity: 1;
   }
 }
+/* Timetrack's mark: session rings turning at their own pace, a live core */
+.ttm-spin {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+  animation: ttmSpin 7s linear infinite;
+}
+.ttm-rev {
+  animation-duration: 4.6s;
+  animation-direction: reverse;
+}
+.ttm-slow {
+  animation-duration: 10s;
+}
+.ttm-gold {
+  animation-duration: 16s;
+}
+.ttm-live {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+  animation: ttmPing 2.4s ease-out infinite;
+}
+@keyframes ttmSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ttmPing {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
 /* Timetrack's split-flap leaf: arrives rotated back on its hinge, swings down */
 @keyframes ttLeaf {
   0% {
