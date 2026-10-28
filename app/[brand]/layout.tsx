@@ -1,30 +1,39 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Schibsted_Grotesk, Spline_Sans_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { Providers } from "@/components/providers/providers";
 import { WorkspaceShell } from "@/components/shell/workspace-shell";
 import { BRAND_IDS, BRANDS, isBrandId, type BrandId } from "@/lib/brands";
 import { PH } from "@/lib/content";
 import "../globals.css";
 
-const schibsted = Schibsted_Grotesk({
+// Fonts are committed (app/fonts, SIL OFL) rather than fetched from Google at
+// build time — a failed download there fails the whole build.
+const schibsted = localFont({
   variable: "--font-schibsted",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  style: ["normal", "italic"],
+  src: [
+    { path: "../fonts/SchibstedGrotesk-Variable.woff2", weight: "400 800", style: "normal" },
+    { path: "../fonts/SchibstedGrotesk-Italic-Variable.woff2", weight: "400 800", style: "italic" },
+  ],
 });
 
-const splineMono = Spline_Sans_Mono({
+const splineMono = localFont({
   variable: "--font-spline-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  src: [{ path: "../fonts/SplineSansMono-Variable.woff2", weight: "400 700", style: "normal" }],
+  adjustFontFallback: false,
 });
 
-const cormorant = Cormorant_Garamond({
+const cormorant = localFont({
   variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["500", "600"],
-  style: ["normal", "italic"],
+  src: [
+    { path: "../fonts/CormorantGaramond-Variable.woff2", weight: "500 600", style: "normal" },
+    {
+      path: "../fonts/CormorantGaramond-Italic-Variable.woff2",
+      weight: "500 600",
+      style: "italic",
+    },
+  ],
+  adjustFontFallback: "Times New Roman",
   // only used inside the Paradox fragments — no need to block on it
   preload: false,
 });
