@@ -216,6 +216,28 @@ input::placeholder {
     opacity: 1;
   }
 }
+/* demo header: the description gives way to a small-screen note on phones */
+.pc-demo-note {
+  display: none;
+}
+@media (max-width: 700px) {
+  .pc-desc-demo {
+    display: none;
+  }
+  .pc-demo-note {
+    display: block;
+  }
+  /* the back button says where you are; the title stays for screen readers */
+  .pc-title-demo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
 /* Timetrack's mark: session rings turning at their own pace, a live core */
 .ttm-spin {
   transform-box: view-box;

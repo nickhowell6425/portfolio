@@ -1,7 +1,7 @@
 // ============================================================
 // THE WORKSPACE v2 — all copy & content, ported from the design.
-// Items are pages ("page"), live components ("comp"), or the
-// cross-project library ("library").
+// Items are pages ("page"), product pages ("showcase"), section anchors
+// ("anchor"), demos ("demo"), or links to another workspace ("ws").
 // ============================================================
 
 import type { BrandId } from "./brands";
@@ -12,38 +12,10 @@ export const PH = {
   YEARS: "10",
   EMAIL: "nickhowell6425@gmail.com",
   STATUS_LINE: "Multiple multi-million valuations · 0 abandoned codebases",
-  FOOTER: "⌘K — jump to any project or component",
+  FOOTER: "⌘K — jump to any project or feature",
 } as const;
 
-export const KINDS = ["All", "Auth", "Discovery", "Dashboards"] as const;
-
-export type Kind = (typeof KINDS)[number];
-
-export type FragmentId =
-  | "multiverse"
-  | "spine"
-  | "ribbon"
-  | "gateway"
-  | "divergence"
-  | "flap"
-  | "dial";
-
-export interface FragmentCode {
-  file: string;
-  lang: string;
-  src: string;
-}
-
-export interface FragmentMeta {
-  title: string;
-  kind: Exclude<Kind, "All">;
-  product: string;
-  year: string;
-  /** still in production */
-  prod: boolean;
-  accent: string;
-  code: FragmentCode;
-}
+export type FragmentId = "spine" | "gateway" | "divergence" | "flap" | "dial";
 
 export interface Section {
   heading?: string;
@@ -52,31 +24,11 @@ export interface Section {
   ctaLabel?: string;
 }
 
-export interface OverviewHero {
-  /** A live fragment mounted in the hero (the default treatment). */
-  frag?: FragmentId;
-  /** OR a static screenshot of the real screen (path under public/). */
-  img?: string;
-  kicker: string;
-  lead: string;
-  /** Optional call-to-action link — e.g. through to the interactive demo. */
-  cta?: { label: string; href: string };
-}
-
 export interface PageItem {
   type: "page";
   label: string;
   desc: string;
-  hero?: OverviewHero;
   sections: Section[];
-}
-
-export interface CompItem {
-  type: "comp";
-  label: string;
-  desc: string;
-  frag: FragmentId;
-  paras: string[];
 }
 
 export interface DemoItem {
@@ -169,20 +121,7 @@ export interface WsLinkItem {
   ws: string;
 }
 
-export interface LibraryItem {
-  type: "library";
-  label: string;
-  desc: string;
-}
-
-export type SidebarItem =
-  | PageItem
-  | CompItem
-  | DemoItem
-  | ShowcaseItem
-  | AnchorItem
-  | WsLinkItem
-  | LibraryItem;
+export type SidebarItem = PageItem | DemoItem | ShowcaseItem | AnchorItem | WsLinkItem;
 
 export interface SidebarGroup {
   title: string;
@@ -200,255 +139,6 @@ export interface Workspace {
   items: Record<string, SidebarItem>;
 }
 
-// ---- Component fragments (the bits & pieces) ----------------
-
-export const FRAGMENTS: Record<FragmentId, FragmentMeta> = {
-  multiverse: {
-    title: "The Sacred Timeline",
-    kind: "Discovery",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "timeline-engine.ts",
-      lang: "tsx",
-      src: `// The homepage is the graph itself — no feed, no grid.
-// One canvas, additive blending, a beating core at the origin.
-function frame(t: number) {
-  drawVoid(ctx)                          // radial green-black, brighter at the core
-  ctx.globalCompositeOperation = 'lighter'
-  for (const s of strands) drawStrand(s, t)     // glow halo pass + bright core pass
-  for (const s of strands) drawParticles(s, t)  // light flowing toward the future
-  drawCore(t)                            // 26 woven fibers round a pulsing nucleus
-  for (const n of nodes) drawNode(n, t)  // emerald = canon, gold = divergence
-  ctx.globalCompositeOperation = 'source-over'
-}
-
-// ten timelines fan out from a tight band around the core, then
-// grow organically — each limb forks into smaller and dimmer kids
-function grow(origin: Pt, ang: number, len: number, depth: number) {
-  const end = reach(origin, ang, len)
-  strands.push(bowedBezier(origin, end, {
-    w: 3.4 - depth * 0.7,
-    bright: 0.62 - depth * 0.1,
-  }))
-  for (const spread of spreads(depth)) grow(end, ang + spread, len * 0.6, depth + 1)
-  return end
-}`,
-    },
-  },
-  spine: {
-    title: "Timeline View",
-    kind: "Dashboards",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "tlv2-spine.ts",
-      lang: "tsx",
-      src: `// "Forget everything and reimagine it." One universe, full-bleed:
-// canon flows left → right, branches fork off their divergence point.
-const GAP = 460                              // px between canon events
-
-// hero framing: open punchy and centered on the great divergence —
-// whole-canon orientation lives in the minimap, not the first frame
-const heroScale = () => clamp(Math.min(0.95, W / (2.6 * GAP)))
-const heroNode = () => nodes.find((n) => n.type === 'event' && n.gold)
-
-// the bottom scrubber is the same world at 1:1 — a draggable window
-function syncMinimap() {
-  const cw = content.maxX - content.minX
-  win.style.left = \`\${((cam.x - W / 2 - content.minX) / cw) * 100}%\`
-  win.style.width = \`\${(W / cw) * 100}%\`
-}
-
-function scrubTo(f: number) {
-  cam.tx = content.minX + f * (content.maxX - content.minX)
-}
-
-// guided tour: fly the camera down the canon, one chapter at a time,
-// the inspector following — first interaction hands control back
-const tour = setInterval(() => focusEvent(chronology[i++ % 8]), 3600)`,
-    },
-  },
-  ribbon: {
-    title: "Reality ribbon",
-    kind: "Dashboards",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "BranchHero.tsx",
-      lang: "tsx",
-      src: `// A branch is a fork of the canon. The hero says it in one strip:
-// shared chapters → gold divergence diamond → this reality, unfolding.
-type Phase = 'canon' | 'split' | 'reality' | 'live'
-
-function phaseOf(node: RibbonNode, divergence: Divergence): Phase {
-  if (node.chapter < divergence.chapter) return 'canon'   // dashed jade — shared
-  if (node.chapter === divergence.chapter) return 'split' // the 02:09 diamond
-  return node.live ? 'live' : 'reality'                   // emerald — ours now
-}
-
-export function RealityRibbon({ nodes, divergence }: Props) {
-  return (
-    <ol className='ribbon'>
-      {nodes.map((n) => (
-        <li key={n.id} data-phase={phaseOf(n, divergence)}>
-          <Knob />          {/* jade dot · gold diamond · emerald glow */}
-          <Chapter n={n} />
-        </li>
-      ))}
-    </ol>
-  )
-}`,
-    },
-  },
-  gateway: {
-    title: "Sign-in gateway",
-    kind: "Auth",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "SignInGateway.tsx",
-      lang: "tsx",
-      src: `// Guest first. Magic link second. Passwords never.
-export function SignInGateway() {
-  const [step, setStep] = useState<'gate' | 'sent' | 'in'>('gate')
-  const [email, setEmail] = useState('')
-
-  async function sendLink() {
-    if (!email.includes('@')) return setError(true)
-    await auth.sendMagicLink(email)
-    setStep('sent')
-  }
-
-  if (step === 'in') return <Welcome name={forgeKeeperName()} />
-  return (
-    <Gate>
-      <Provider id='google' recommended />
-      <Provider id='discord' />
-      <EmailField value={email} onChange={setEmail} onSubmit={sendLink} />
-      <GuestLink onClick={enterAsGuest} />
-    </Gate>
-  )
-}`,
-    },
-  },
-  divergence: {
-    title: "Branch cards",
-    kind: "Discovery",
-    product: "Paradox",
-    year: "2026",
-    prod: false,
-    accent: "#3edba6",
-    code: {
-      file: "BranchCard.tsx",
-      lang: "tsx",
-      src: `// Design rule: every branch answers "what changed?" — it is never optional.
-interface Branch {
-  title: string
-  divergence: string      // one sentence, serif, emerald-railed
-  log: string
-  stats: { readers: number; events: number; variants: number }
-  hot?: boolean           // the data decides what's trending, not the layout
-}
-
-export function BranchCard({ b, onOpen }: { b: Branch; onOpen: () => void }) {
-  return (
-    <Card hot={b.hot} onClick={onOpen}>
-      <Origin from='The Ninth Signal' trending={b.hot} />
-      <Title>{b.title}</Title>
-      <Divergence>{b.divergence}</Divergence>   {/* the load-bearing line */}
-      <Logline>{b.log}</Logline>
-      <Stats {...b.stats} creator={<Sigil seed={b.creator} />} />
-    </Card>
-  )
-}
-
-const sorters = {
-  popular: (a, b) => b.stats.readers - a.stats.readers,
-  newest: (a, b) => b.forkedAt - a.forkedAt,
-  active: (a, b) => b.stats.contributors - a.stats.contributors,
-}`,
-    },
-  },
-  flap: {
-    title: "Split-flap sign-in",
-    kind: "Auth",
-    product: "Timetrack",
-    year: "2026",
-    prod: true,
-    accent: "#ffb454",
-    code: {
-      file: "CypherLock.tsx",
-      lang: "tsx",
-      src: `// One owner, one key. The board IS the form: no button, no status line.
-// Every filled leaf shows a random character, so the key never appears.
-export function CypherLock({ cells, next }: { cells: number; next: string }) {
-  const [deck, setDeck] = useState<'' | 'working' | 'granted' | 'denied'>('')
-
-  function onInput(value: string) {
-    riffleTo(value.length, pick)                 // ciphertext, not the typed char
-    if (value.length === cells) submit(value)    // the last leaf commits
-  }
-
-  async function submit(key: string) {
-    setDeck('working')                           // every leaf turning, in cyan
-    const res = await fetch('/api/auth', { method: 'POST', body: JSON.stringify({ key, next }) })
-    if (res.ok) return word('ACCEPTED', 'granted'), router.push(next)
-    word('DENIED', 'denied')                     // the board answers for itself
-  }
-
-  // still a real <form> posting to /api/auth: with JS off it is a password field
-  return <form method='post' action='/api/auth'>{/* leaves + invisible input */}</form>
-}`,
-    },
-  },
-  dial: {
-    title: "The day as one dial",
-    kind: "Dashboards",
-    product: "Timetrack",
-    year: "2026",
-    prod: true,
-    accent: "#ffb454",
-    code: {
-      file: "DayDial.tsx",
-      lang: "tsx",
-      src: `// A day of sessions as one dial: outer ring by hand, one ring per client.
-// The dial only draws. Deciding what a mark means is the screen's job.
-const angle = (min: number) => ((min - WINDOW_START) / WINDOW_LEN) * 100
-
-const marks = sessions.map((s) => ({
-  angle: angle(s.start + s.dur / 2),         // placed by when it happened
-  radius: s.byHand ? rings[0] : rings[ringOf(s.client)],
-  size: clamp(5 + s.dur / 12, 6, 15),        // longer sessions, bigger dots
-  hue: s.byHand ? GOLD : s.client.hue,       // hue is identity, never status
-  opacity: s.evidence ? 1 : 0.5,             // a gappy day reads faint at a glance
-}))
-
-// overlapping sessions all count: two matters in one hour are two billable hours
-const worked = sum(sessions, (s) => s.dur)
-const atOnce = worked / unionOf(sessions)    // concurrency, shown, not hidden
-
-return <RadialDial figure={fmt(worked / 60)} caption='Hours worked' marks={marks} />`,
-    },
-  },
-};
-
-// ---- Shared library item -------------------------------------
-
-const LIBRARY: LibraryItem = {
-  label: "Component library",
-  type: "library",
-  desc: "Every piece from every project — filter by what your product needs.",
-};
-
 // ---- Workspaces ----------------------------------------------
 // The personal home first, then the projects every brand shares.
 
@@ -462,7 +152,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     accent: "#5b8def",
     groups: [
       { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
-      { title: "Library", items: ["go-paradox", "go-timetrack", "component-library"] },
+      { title: "Work", items: ["go-paradox", "go-timetrack"] },
     ],
     items: {
       about: {
@@ -481,7 +171,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               `${PH.YEARS}+ years building. ${PH.STATUS_LINE}. As CTO and founding engineer at AccountTouch I solely architected and shipped the whole platform — a cross-platform mobile app, a serverless backend, and a web portal, all Dockerized and in production.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
-              "The left rail is real work. The components inside are live — click through any of them, then flip from Preview to Code to read how it's built.",
+              "The left rail is real work: two products, each with a page on how it's built and why. The components inside are live — click through any of them.",
             ],
           },
           {
@@ -612,7 +302,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ws: "timetrack",
         desc: "Time tracking for the age of AI",
       },
-      "component-library": LIBRARY,
     },
   },
   {
@@ -636,7 +325,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           "a-branches",
         ],
       },
-      { title: "Library", items: ["component-library"] },
     ],
     items: {
       overview: {
@@ -932,7 +620,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         page: "overview",
         hash: "user-content",
       },
-      "component-library": LIBRARY,
     },
   },
   {
@@ -948,7 +635,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         title: "Features",
         items: ["a-dashboard", "a-signin", "a-log", "a-reports", "a-manual", "a-rules"],
       },
-      { title: "Library", items: ["component-library"] },
     ],
     items: {
       overview: {
@@ -1216,7 +902,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         page: "overview",
         hash: "client-rules",
       },
-      "component-library": LIBRARY,
     },
   },
 ];
@@ -1243,7 +928,7 @@ const FST_HOME: Workspace = {
   accent: FST.ACCENT,
   groups: [
     { title: "Company", items: ["about", "services", "engagements", "straight-answers"] },
-    { title: "Work", items: ["go-paradox", "go-timetrack", "component-library"] },
+    { title: "Work", items: ["go-paradox", "go-timetrack"] },
   ],
   items: {
     about: {
@@ -1378,7 +1063,6 @@ const FST_HOME: Workspace = {
     },
     "go-paradox": PERSONAL_HOME.items["go-paradox"],
     "go-timetrack": PERSONAL_HOME.items["go-timetrack"],
-    "component-library": LIBRARY,
   },
 };
 

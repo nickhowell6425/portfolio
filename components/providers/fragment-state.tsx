@@ -13,8 +13,7 @@ const Ctx = createContext<FragmentStateCtx | null>(null);
 
 /**
  * Fragment state lives above the page tree so a component keeps its
- * state when you navigate away and back, and the library view shares
- * state with the per-channel view — exactly like the prototype.
+ * state when you navigate away and back — exactly like the prototype.
  */
 export function FragmentStateProvider({ children }: { children: React.ReactNode }) {
   const [frag, setFrag] = useState<FragMap>({});

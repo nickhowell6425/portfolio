@@ -23,7 +23,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       })),
     );
-    return [...paradox, ...retired];
+    // The component library was retired; its pages land on the work itself
+    const library = [
+      ["home", "/"],
+      ["paradox", "/paradox/overview"],
+      ["timetrack", "/timetrack/overview"],
+    ].map(([ws, destination]) => ({
+      source: `/${ws}/component-library`,
+      destination,
+      permanent: true,
+    }));
+    return [...paradox, ...retired, ...library];
   },
 };
 

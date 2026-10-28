@@ -10,7 +10,6 @@ import {
   useRef,
   useState,
 } from "react";
-import type { Kind } from "@/lib/content";
 import { defaultItemId, hrefFor } from "@/lib/navigation";
 import { useNav } from "./brand-provider";
 
@@ -26,8 +25,6 @@ interface UICtx {
   chatClosing: boolean;
   openChat: () => void;
   closeChat: () => void;
-  libFilter: Kind;
-  setLibFilter: (kind: Kind) => void;
   toast: string | null;
   showToast: (msg: string) => void;
   goWorkspace: (wsId: string) => void;
@@ -45,7 +42,6 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
   const [resumeOpen, setResumeOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [chatClosing, setChatClosing] = useState(false);
-  const [libFilter, setLibFilter] = useState<Kind>("All");
   const [toast, setToast] = useState<string | null>(null);
 
   const lastCh = useRef<Record<string, string>>({});
@@ -141,8 +137,6 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
       chatClosing,
       openChat,
       closeChat,
-      libFilter,
-      setLibFilter,
       toast,
       showToast,
       goWorkspace,
@@ -157,7 +151,6 @@ export function UIProvider({ children }: { children: React.ReactNode }) {
       chatClosing,
       openChat,
       closeChat,
-      libFilter,
       toast,
       showToast,
       goWorkspace,
