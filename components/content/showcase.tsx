@@ -365,7 +365,8 @@ export function Showcase({
         );
       })}
 
-      {/* FAQ — server-rendered <details>, mirrored as FAQPage JSON-LD */}
+      {/* FAQ — server-rendered <details>, mirrored as FAQPage JSON-LD. A shared
+          `name` makes them one exclusive group: opening one closes the rest. */}
       <section aria-labelledby="sc-faq" className="sc-faq">
         <div style={{ flex: "1 1 220px", display: "flex", flexDirection: "column", gap: 8 }}>
           <span style={kicker(accent)}>FAQ</span>
@@ -381,6 +382,7 @@ export function Showcase({
           {faq.map((f, i) => (
             <details
               key={f.q}
+              name="sc-faq"
               open={i === 0}
               className="sc-qa"
               style={{ borderBottom: "1px solid var(--border2)", padding: "16px 0" }}
