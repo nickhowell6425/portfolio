@@ -110,6 +110,8 @@ jobs:
           check /brand/fst-mark.svg      200
           check /nope                    404
           check /paradox                 307
+          check /paradox/timeline-view   308
+          check /showcase/paradox/command-palette.webp 200
           check /home/services           404
       - name: Brand routing (Full Stack Technologies host)
         run: |
@@ -145,6 +147,11 @@ jobs:
           echo "$html" | grep -q 'Nicholas Howell'
           echo "$html" | grep -q 'rel="canonical"'
           echo "$html" | grep -q 'application/ld+json'
+          # product pages carry their own structured data (FAQ + breadcrumbs)
+          p=$(curl -s http://localhost:3000/paradox/overview)
+          echo "$p" | grep -q '"@type":"FAQPage"'
+          echo "$p" | grep -q '"@type":"BreadcrumbList"'
+          echo "$p" | grep -q '<h1[^>]*>Paradox</h1>'
 
   lighthouse:
     name: Lighthouse

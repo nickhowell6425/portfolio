@@ -17,6 +17,8 @@ export function PageChrome() {
   const W = resolved?.ws ?? workspaces[0];
   const item = resolved?.item ?? W.items[W.groups[0].items[0]];
   const isLibrary = item.type === "library";
+  // a showcase page owns its <h1> (the product name); the strip steps down
+  const Title = item.type === "showcase" ? "div" : "h1";
 
   return (
     <>
@@ -34,7 +36,7 @@ export function PageChrome() {
           minWidth: 0,
         }}
       >
-        <h1
+        <Title
           style={{
             margin: 0,
             fontWeight: 800,
@@ -44,7 +46,7 @@ export function PageChrome() {
           }}
         >
           {item.label}
-        </h1>
+        </Title>
         <div
           style={{
             color: "var(--dim)",

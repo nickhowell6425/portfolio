@@ -69,7 +69,13 @@ export function Sidebar() {
               const target = it.type === "ws" ? workspaceById(it.ws) : null;
               const itemAccent = target ? target.accent : it.type === "library" ? W.accent : null;
               const icon =
-                it.type === "page" ? "#" : it.type === "ws" ? "→" : it.type === "demo" ? "▶" : "▣";
+                it.type === "page" || it.type === "showcase"
+                  ? "#"
+                  : it.type === "ws"
+                    ? "→"
+                    : it.type === "demo"
+                      ? "▶"
+                      : "▣";
               const style: React.CSSProperties = {
                 display: "flex",
                 width: "100%",
@@ -130,7 +136,11 @@ export function Sidebar() {
               ) : (
                 <Link
                   key={id}
-                  href={hrefFor(W.id, id)}
+                  href={
+                    it.type === "anchor"
+                      ? `${hrefFor(W.id, it.page)}#${it.hash}`
+                      : hrefFor(W.id, id)
+                  }
                   aria-current={active ? "page" : undefined}
                   onClick={() => setNavOpen(false)}
                   className="anim-side-item hov-accent-bg"

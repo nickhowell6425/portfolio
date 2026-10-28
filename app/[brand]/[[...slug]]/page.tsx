@@ -7,11 +7,62 @@ import { OverviewHero } from "@/components/content/overview-hero";
 import { PortraitHero } from "@/components/content/portrait-hero";
 import { Sections } from "@/components/content/sections";
 import { CompanyHero } from "@/components/content/company-hero";
-import { BRAND_IDS, isBrandId, type BrandId } from "@/lib/brands";
+import { Showcase } from "@/components/content/showcase";
+import { BRAND_IDS, BRANDS, isBrandId, type BrandId } from "@/lib/brands";
+import type { ShowcaseItem, Workspace } from "@/lib/content";
 import { defaultItemId, hrefFor, navFor } from "@/lib/navigation";
 
 interface Props {
   params: Promise<{ brand: string; slug?: string[] }>;
+}
+
+/** CreativeWork + FAQPage + breadcrumbs for a product page (SEO and AI answer engines). */
+function showcaseJsonLd(brand: BrandId, ws: Workspace, itemId: string, item: ShowcaseItem) {
+  const b = BRANDS[brand];
+  const url = `${b.url}${hrefFor(ws.id, itemId)}`;
+  const creator =
+    brand === "fst"
+      ? { "@type": "Organization", name: b.name, url: b.url }
+      : { "@type": "Person", name: b.name, url: b.url };
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CreativeWork",
+        "@id": `${url}#work`,
+        name: ws.name,
+        headline: item.seoTitle,
+        description: item.summary,
+        url,
+        image: `${b.url}${item.cover.src}`,
+        keywords: [...item.sections.map((s) => s.kicker), ...item.stack].join(", "),
+        creator,
+        hasPart: item.sections.map((s) => ({
+          "@type": "WebPageElement",
+          name: s.kicker,
+          headline: s.title,
+          description: s.line,
+          url: `${url}#${s.id}`,
+        })),
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        mainEntity: [...item.faq, { q: "Who built it?", a: item.builtBy[brand] }].map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: b.short, item: b.url },
+          { "@type": "ListItem", position: 2, name: ws.name, item: url },
+        ],
+      },
+    ],
+  };
 }
 
 // Unknown slugs fall through to notFound() so the 404 renders inside the
@@ -35,6 +86,29 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!resolved) return {};
   const title = `${resolved.item.label} — ${resolved.ws.name}`;
   const canonical = hrefFor(resolved.ws.id, resolved.itemId);
+  const { item } = resolved;
+  if (item.type === "showcase") {
+    const images = [{ url: item.cover.src, alt: item.cover.alt }];
+    return {
+      title: item.seoTitle,
+      description: item.summary,
+      keywords: [...item.sections.map((s) => s.kicker), ...item.stack],
+      alternates: { canonical },
+      openGraph: {
+        type: "article",
+        title: item.seoTitle,
+        description: item.summary,
+        url: canonical,
+        images,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: item.seoTitle,
+        description: item.summary,
+        images,
+      },
+    };
+  }
   return {
     title,
     description: resolved.item.desc,
@@ -65,6 +139,40 @@ export default async function WorkspacePage({ params }: Props) {
     return <InteractiveDemo item={item} wsName={ws.name} accent={ws.accent} />;
 
   if (item.type === "comp") return <ComponentCard fid={item.frag} notes={item.paras} />;
+
+  if (item.type === "showcase") {
+    const nextWs = item.next ? nav.workspaceById(item.next) : undefined;
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(showcaseJsonLd(brand, ws, itemId, item)).replace(
+              /</g,
+              "\\u003c",
+            ),
+          }}
+        />
+        <Showcase
+          item={item}
+          name={ws.name}
+          accent={ws.accent}
+          liveHref={hrefFor(ws.id, item.live)}
+          builtBy={item.builtBy[brand]}
+          next={
+            nextWs
+              ? {
+                  name: nextWs.name,
+                  initials: nextWs.initials,
+                  accent: nextWs.accent,
+                  href: hrefFor(nextWs.id, defaultItemId(nextWs)),
+                }
+              : undefined
+          }
+        />
+      </>
+    );
+  }
 
   return (
     <>

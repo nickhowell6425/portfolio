@@ -5,10 +5,11 @@ import {
   type DemoItem,
   type LibraryItem,
   type PageItem,
+  type ShowcaseItem,
   type Workspace,
 } from "./content";
 
-export type RoutableItem = PageItem | CompItem | DemoItem | LibraryItem;
+export type RoutableItem = PageItem | CompItem | DemoItem | ShowcaseItem | LibraryItem;
 
 export interface Resolved {
   ws: Workspace;
@@ -30,8 +31,7 @@ export interface SearchEntry {
   icon: string;
   label: string;
   sub: string;
-  ws: string;
-  ch: string;
+  href: string;
 }
 
 /** Route/search resolution over one brand's workspaces. */
@@ -61,7 +61,7 @@ function buildNav(brand: BrandId): Nav {
     if (!ws) return null;
     const itemId = path[1] ?? defaultItemId(ws);
     const item = ws.items[itemId];
-    if (!item || item.type === "ws") return null;
+    if (!item || item.type === "ws" || item.type === "anchor") return null;
     return { ws, itemId, item };
   };
 
@@ -80,7 +80,7 @@ function buildNav(brand: BrandId): Nav {
       for (const g of ws.groups) {
         for (const id of g.items) {
           const item = ws.items[id];
-          if (item.type === "ws") continue;
+          if (item.type === "ws" || item.type === "anchor") continue;
           out.push([ws.id, id]);
         }
       }
@@ -98,8 +98,18 @@ function buildNav(brand: BrandId): Nav {
           const it = w.items[id];
           if (it.type === "ws") continue;
           if (it.type === "library" && w.id !== "home") continue;
+          if (it.type === "anchor") {
+            out.push({
+              icon: "▣",
+              label: it.label,
+              sub: `${w.name} · feature`,
+              href: `${hrefFor(w.id, it.page)}#${it.hash}`,
+            });
+            continue;
+          }
           out.push({
-            icon: it.type === "page" ? "#" : it.type === "demo" ? "▶" : "▣",
+            icon:
+              it.type === "page" || it.type === "showcase" ? "#" : it.type === "demo" ? "▶" : "▣",
             label: it.label,
             sub:
               it.type === "comp"
@@ -107,8 +117,7 @@ function buildNav(brand: BrandId): Nav {
                 : it.type === "demo"
                   ? `${w.name} · interactive demo`
                   : w.name,
-            ws: w.id,
-            ch: id,
+            href: hrefFor(w.id, id),
           });
         }
       }
