@@ -648,7 +648,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         summary:
           "Paradox, designed and built end to end: sign-up, search, a details panel, real-time activity and an interactive canvas, built the way production apps need it.",
         cover: {
-          src: "/uploads/paradox-home.jpg",
+          src: "/showcase/paradox/home.webp",
           alt: "Paradox homepage: a living graph of story timelines",
         },
         live: "demo",
@@ -816,8 +816,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 {
                   src: "/showcase/paradox/filters.webp",
                   alt: "Explore screen: faceted filters with counts beside trending timelines",
-                  width: 1000,
-                  height: 838,
+                  width: 1520,
+                  height: 1280,
                 },
               ],
             },
@@ -834,7 +834,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             ],
             media: {
               frag: "divergence",
-              poster: { src: "/showcase/paradox/branches.webp", width: 560, height: 558 },
+              poster: { src: "/showcase/paradox/branches.webp", width: 560, height: 743 },
             },
             gold: true,
           },
@@ -1067,8 +1067,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 {
                   src: "/showcase/timetrack/time-log.webp",
                   alt: "Audit trail: each session with the pull request that proves it",
-                  width: 1440,
-                  height: 900,
+                  width: 2390,
+                  height: 1670,
                 },
               ],
             },
@@ -1088,14 +1088,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 {
                   src: "/showcase/timetrack/reports.webp",
                   alt: "Time report: hours and amount per client for the period",
-                  width: 1200,
-                  height: 1038,
-                },
-                {
-                  src: "/showcase/timetrack/reports-detailed.webp",
-                  alt: "Detail of Work report: every session listed under its client",
-                  width: 1200,
-                  height: 1038,
+                  width: 1700,
+                  height: 1470,
                 },
               ],
             },
@@ -1115,8 +1109,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 {
                   src: "/showcase/timetrack/manual-entry.webp",
                   alt: "Manual entry form: work, client, time range, kind and project",
-                  width: 640,
-                  height: 894,
+                  width: 859,
+                  height: 1200,
                 },
               ],
             },
