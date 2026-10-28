@@ -141,8 +141,6 @@ export interface ShowcaseItem {
   cover: { src: string; alt: string };
   /** Where "Try it live" goes (an item id in the same workspace); omitted = no live demo. */
   live?: string;
-  /** CSS background for the identity mark (defaults to an accent glow). */
-  mark?: string;
   stack: string[];
   tiles: ShowcaseTile[];
   sections: ShowcaseSection[];
@@ -612,7 +610,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         label: "Timetrack",
         type: "ws",
         ws: "timetrack",
-        desc: "Time tracking for AI coding work",
+        desc: "Time tracking for the age of AI",
       },
       "component-library": LIBRARY,
     },
@@ -629,12 +627,12 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       {
         title: "Features",
         items: [
+          "a-canvas",
           "a-signin",
           "a-search",
           "a-details",
           "a-activity",
           "a-filters",
-          "a-canvas",
           "a-branches",
         ],
       },
@@ -687,10 +685,10 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             contain: true,
           },
           {
-            title: "Branch cards",
-            line: "Every fork says what changed.",
-            img: "/showcase/paradox/branches.webp",
-            target: "user-content",
+            title: "Command palette",
+            line: "Everything, two keystrokes away.",
+            img: "/showcase/paradox/command-palette.webp",
+            target: "command-palette",
           },
           {
             title: "Explore",
@@ -699,18 +697,30 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             target: "filters",
           },
           {
+            title: "Branch cards",
+            line: "Every fork says what changed.",
+            img: "/showcase/paradox/branches.webp",
+            target: "user-content",
+          },
+          {
             title: "Homepage",
             line: "The graph is the front door.",
             img: "/showcase/paradox/home.webp",
           },
-          {
-            title: "Command palette",
-            line: "Everything, two keystrokes away.",
-            img: "/showcase/paradox/command-palette.webp",
-            target: "command-palette",
-          },
         ],
         sections: [
+          {
+            id: "interactive-data",
+            kicker: "Interactive data",
+            title: "Complex data people want to explore.",
+            line: "A pannable canvas with a minimap underneath. It never gets lost. Try it.",
+            points: [
+              "Minimap at 1:1 with the canvas",
+              "Drag, scrub and guided tour",
+              "Color that carries meaning",
+            ],
+            media: { frag: "spine" },
+          },
           {
             id: "sign-up",
             kicker: "Sign-up & onboarding",
@@ -811,18 +821,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 },
               ],
             },
-          },
-          {
-            id: "interactive-data",
-            kicker: "Interactive data",
-            title: "Complex data people want to explore.",
-            line: "A pannable canvas with a minimap underneath. It never gets lost. Try it.",
-            points: [
-              "Minimap at 1:1 with the canvas",
-              "Drag, scrub and guided tour",
-              "Color that carries meaning",
-            ],
-            media: { frag: "spine" },
           },
           {
             id: "user-content",
@@ -941,14 +939,14 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     id: "timetrack",
     initials: "TT",
     name: "Timetrack",
-    desc: "Time tracking for AI coding work",
+    desc: "Time tracking for the age of AI",
     status: "self-hosted · v0.1 beta",
     accent: "#ffb454",
     groups: [
       { title: "Project", items: ["overview"] },
       {
         title: "Features",
-        items: ["a-signin", "a-dashboard", "a-log", "a-manual", "a-reports", "a-rules"],
+        items: ["a-dashboard", "a-signin", "a-log", "a-reports", "a-manual", "a-rules"],
       },
       { title: "Library", items: ["component-library"] },
     ],
@@ -956,16 +954,15 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       overview: {
         type: "showcase",
         label: "Overview",
-        desc: "Billable hours from AI coding sessions",
-        seoTitle: "Timetrack — time tracking and client billing for AI coding agents",
-        tagline: "Billable hours for work done with AI coding agents.",
+        desc: "Tracks every AI session, even several at once",
+        seoTitle: "Timetrack — key sign-in, live dashboards, audit trails and reports",
+        tagline: "Time tracking for the age of AI, all on your machine.",
         summary:
-          "Timetrack, designed and built end to end: a secure sign-in, a live dashboard, an audit-ready time log, client reports and billing rules, built the way production apps need it.",
+          "Timetrack, designed and built end to end: key sign-in, a live dashboard, an audit trail, reports and a rules engine, built the way production apps need it.",
         cover: {
           src: "/showcase/timetrack/cover.webp",
-          alt: "Timetrack Command Center: a week of work sessions on one dial, with hours, overlap and billing",
+          alt: "Timetrack dashboard: a week of sessions on one dial, with totals, overlap and billing",
         },
-        mark: "radial-gradient(circle at 50% 50%, #050508 0 15%, transparent 16%), conic-gradient(from 210deg, #ffc96b, #ff9e6b, #b69cff, #5fd4e8, #ffc96b)",
         stack: [
           "Next.js",
           "React",
@@ -985,40 +982,40 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ],
         tiles: [
           {
-            title: "Command Center",
-            line: "A whole week on one dial.",
+            title: "Dashboard",
+            line: "Raw activity, one clear picture.",
             img: "/showcase/timetrack/command-center.webp",
             target: "dashboard",
             lead: true,
           },
           {
             title: "Sign-in",
-            line: "A board that never shows the key.",
+            line: "Secure, no accounts.",
             img: "/showcase/timetrack/sign-in.webp",
             target: "sign-in",
             contain: true,
           },
           {
-            title: "Time log",
-            line: "Every hour, with receipts.",
+            title: "Audit trail",
+            line: "Every record, with receipts.",
             img: "/showcase/timetrack/time-log.webp",
             target: "time-log",
           },
           {
             title: "Reports",
-            line: "Frozen the moment you export.",
+            line: "Frozen the moment they’re sent.",
             img: "/showcase/timetrack/reports.webp",
             target: "reports",
           },
           {
-            title: "Manual entry",
-            line: "For time the tracker can’t see.",
+            title: "Forms",
+            line: "Forms that do the math.",
             img: "/showcase/timetrack/manual-entry.webp",
             target: "manual-entry",
           },
           {
-            title: "Client rules",
-            line: "Attribution by rule, not guesswork.",
+            title: "Rules engine",
+            line: "Automation that asks, not guesses.",
             img: "/showcase/timetrack/client-rules.webp",
             target: "client-rules",
             contain: true,
@@ -1026,13 +1023,28 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ],
         sections: [
           {
-            id: "sign-in",
-            kicker: "Authentication",
-            title: "Sign-in that fits the product.",
-            line: "A one-owner app doesn’t need accounts. One key, set into a split-flap board that answers for itself. Try it.",
+            id: "dashboard",
+            kicker: "Dashboards & data viz",
+            title: "Raw activity, one clear picture.",
+            line: "Hundreds of events become one dial: each session placed by when it ran, one ring per client. Point at any dot.",
             points: [
-              "The key never appears on screen",
+              "Totals, overlap and money in one view",
+              "Weak data dims on its own",
+              "Same view for a day or a week",
+            ],
+            media: {
+              frag: "dial",
+              poster: { src: "/showcase/timetrack/dial.webp", width: 480, height: 535 },
+            },
+          },
+          {
+            id: "sign-in",
+            kicker: "Key authentication",
+            title: "Secure sign-in, no accounts.",
+            line: "Not every app needs sign-up. One owner, one key, and a sign-in that never shows what you type. Try it.",
+            points: [
               "Signed session cookie, real sign-out",
+              "Nothing secret ever on screen",
               "Still works with JavaScript off",
             ],
             media: {
@@ -1041,35 +1053,20 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             },
           },
           {
-            id: "dashboard",
-            kicker: "Dashboard",
-            title: "A whole day in one glance.",
-            line: "Every session lands on a dial by when it happened, one ring per client. Point at any dot for the story behind it.",
-            points: [
-              "Hours, overlap and billing together",
-              "Unproven time dims on its own",
-              "Day or week, same dial",
-            ],
-            media: {
-              frag: "dial",
-              poster: { src: "/showcase/timetrack/dial.webp", width: 480, height: 535 },
-            },
-          },
-          {
             id: "time-log",
             kicker: "Audit trail",
-            title: "Every hour, with receipts.",
-            line: "The log ties each session to the pull request or commit that proves the work happened.",
+            title: "Every record, with receipts.",
+            line: "Each entry links to the proof behind it, so anything can be checked later.",
             points: [
-              "Filter to what lacks evidence",
-              "Attach a PR in one click",
-              "Search by work, client or project",
+              "Filter to what’s missing proof",
+              "Attach proof in one click",
+              "Search across everything",
             ],
             media: {
               imgs: [
                 {
                   src: "/showcase/timetrack/time-log.webp",
-                  alt: "Time log: sessions by client with the pull request that evidences each one",
+                  alt: "Audit trail: each session with the pull request that proves it",
                   width: 1440,
                   height: 900,
                 },
@@ -1077,35 +1074,14 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             },
           },
           {
-            id: "manual-entry",
-            kicker: "Forms",
-            title: "For the time the tracker can’t see.",
-            line: "Calls and meetings go in by hand, tagged so they’re never mistaken for tracked time.",
-            points: [
-              "Find a client as you type",
-              "Duration worked out for you",
-              "Marked “by hand” everywhere it shows",
-            ],
-            media: {
-              imgs: [
-                {
-                  src: "/showcase/timetrack/manual-entry.webp",
-                  alt: "Manual entry drawer: work, client, time range, kind and project",
-                  width: 640,
-                  height: 894,
-                },
-              ],
-            },
-          },
-          {
             id: "reports",
-            kicker: "Client reports",
-            title: "Invoices clients don’t argue with.",
-            line: "Time, detailed and summary reports, rendered as real documents and frozen the moment you export.",
+            kicker: "Reports & exports",
+            title: "Reports nobody argues with.",
+            line: "Real documents generated from live data, then frozen the moment they’re sent.",
             points: [
               "Three report types, one click",
-              "A sent figure never changes",
-              "Every report says how hours were counted",
+              "A sent number never changes",
+              "Each one says how it was counted",
             ],
             media: {
               imgs: [
@@ -1125,20 +1101,41 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             },
           },
           {
+            id: "manual-entry",
+            kicker: "Forms",
+            title: "Forms that do the math.",
+            line: "Manual entry for what automation can’t see, clearly marked so it never mixes with tracked data.",
+            points: [
+              "Search-as-you-type pickers",
+              "Durations worked out live",
+              "Hand-entered data stays labeled",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/timetrack/manual-entry.webp",
+                  alt: "Manual entry form: work, client, time range, kind and project",
+                  width: 640,
+                  height: 894,
+                },
+              ],
+            },
+          },
+          {
             id: "client-rules",
-            kicker: "Billing rules",
-            title: "Attribution by rule, not guesswork.",
-            line: "Ordered rules map each repository to a client and a rate. Anything unmatched becomes a draft, never an invented client.",
+            kicker: "Rules engine",
+            title: "Automation people can trust.",
+            line: "Ordered rules sort incoming data on their own. Anything they can’t place waits for a person instead of a guess.",
             points: [
               "First match wins, in order",
-              "No rate means tracked, never billed",
-              "Change a rule and history recomputes",
+              "No guessing where money is involved",
+              "Change a rule, history updates",
             ],
             media: {
               imgs: [
                 {
                   src: "/showcase/timetrack/client-rules.webp",
-                  alt: "Client rules: each client with its hourly rate and the repositories it matches",
+                  alt: "Rules engine: each client with its rate and the repositories it matches",
                   width: 1460,
                   height: 585,
                 },
@@ -1149,32 +1146,32 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         ],
         faq: [
           {
-            q: "Why count overlapping sessions in full?",
-            a: "Two agents working two clients’ code in the same hour is two hours of billable work. Timetrack counts both, then shows the overlap right next to the total, so nothing is hidden from you or your client.",
+            q: "Why sign in with a key instead of accounts?",
+            a: "A one-owner tool doesn’t need sign-up, password resets or a user table. One key behind a signed session cookie is less to build, less to leak and nothing to forget.",
           },
           {
-            q: "What makes an hour “defensible”?",
-            a: "It carries proof: a pull request or a commit. The dashboard shows how much of your time has it, and the log makes the rest easy to fix before a client ever asks.",
+            q: "Why count parallel sessions in full?",
+            a: "Several jobs running at once is real work. Each one counts in full, and the overlap sits right beside the total, so nothing is hidden.",
           },
           {
-            q: "Why never invent a client or a rate?",
-            a: "A wrong name on an invoice costs more trust than a missing one. Unmatched work becomes an unbilled draft you confirm, and a client without a rate is tracked but never charged.",
+            q: "Why keep the raw data untouched?",
+            a: "Every number is rebuilt from the original record. Change a rule and history updates cleanly; nothing is ever patched by hand or lost.",
           },
           {
-            q: "Why freeze reports at export?",
-            a: "Once a client has a number, it can’t quietly change. Edits after export only touch new drafts, so every invoice you’ve sent stays exactly as sent.",
+            q: "Why freeze reports once they’re sent?",
+            a: "Once someone has a number, it shouldn’t quietly change. Later edits only touch new drafts, so everything you’ve sent stays exactly as sent.",
           },
           {
-            q: "Why keep the raw events untouched?",
-            a: "Every figure is rebuilt from the original record. Change a rule and history recomputes cleanly; nothing is ever patched by hand or lost.",
+            q: "Why make automation ask instead of guess?",
+            a: "A wrong guess costs more trust than a gap. Anything the rules can’t place waits for a person to confirm, and nothing gets billed by accident.",
           },
           {
-            q: "What about privacy?",
-            a: "Capture is deny-by-default: only folders you allow are tracked, file paths are redacted, and prompt text is thrown away. It’s self-hosted, so the data never leaves your own database.",
+            q: "Why keep the data on your machine?",
+            a: "Activity data is sensitive. Hooks capture only what you allow, file paths are stripped, prompt text is thrown away, and it all stays local.",
           },
           {
-            q: "What happens if it’s misconfigured?",
-            a: "It fails closed. A half-configured deployment shows an error, never an open dashboard full of client names and rates.",
+            q: "What happens if it’s set up wrong?",
+            a: "It fails closed. A half-configured install shows an error, never an open dashboard full of names and rates.",
           },
         ],
         builtBy: {
@@ -1185,43 +1182,43 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       },
       "a-signin": {
         type: "anchor",
-        label: "Sign-in",
-        desc: "A split-flap board, key never shown",
+        label: "Key sign-in",
+        desc: "Secure, no accounts",
         page: "overview",
         hash: "sign-in",
       },
       "a-dashboard": {
         type: "anchor",
         label: "Dashboard",
-        desc: "The day as one dial",
+        desc: "Raw activity, one clear picture",
         page: "overview",
         hash: "dashboard",
       },
       "a-log": {
         type: "anchor",
-        label: "Time log",
-        desc: "Every hour, with receipts",
+        label: "Audit trail",
+        desc: "Every record, with receipts",
         page: "overview",
         hash: "time-log",
       },
       "a-manual": {
         type: "anchor",
-        label: "Manual entry",
-        desc: "Time the tracker can’t see",
+        label: "Forms",
+        desc: "Forms that do the math",
         page: "overview",
         hash: "manual-entry",
       },
       "a-reports": {
         type: "anchor",
         label: "Reports",
-        desc: "Frozen at export",
+        desc: "Frozen once sent",
         page: "overview",
         hash: "reports",
       },
       "a-rules": {
         type: "anchor",
-        label: "Client rules",
-        desc: "Attribution by rule",
+        label: "Rules engine",
+        desc: "Automation that asks, not guesses",
         page: "overview",
         hash: "client-rules",
       },
@@ -1269,7 +1266,7 @@ const FST_HOME: Workspace = {
         {
           heading: "The work speaks first",
           paras: [
-            "The left rail is real work — two products designed and built end to end: Paradox, a storytelling platform built around interactive data, and Timetrack, self-hosted time tracking for AI coding agents. The components inside are live: click through any of them.",
+            "The left rail is real work — two products designed and built end to end: Paradox, a storytelling platform built around interactive data, and Timetrack, time tracking for the age of AI. The components inside are live: click through any of them.",
           ],
         },
         {

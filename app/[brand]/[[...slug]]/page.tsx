@@ -159,9 +159,11 @@ export default async function WorkspacePage({ params }: Props) {
           accent={ws.accent}
           liveHref={item.live ? hrefFor(ws.id, item.live) : undefined}
           builtBy={item.builtBy[brand]}
+          wsId={ws.id}
           next={
             nextWs
               ? {
+                  id: nextWs.id,
                   name: nextWs.name,
                   initials: nextWs.initials,
                   accent: nextWs.accent,
