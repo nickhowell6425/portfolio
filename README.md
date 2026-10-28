@@ -3,7 +3,7 @@
 A portfolio you open and poke around in, not a page you scroll. The interface borrows the
 grammar of a team workspace: a left rail of projects, a per-project sidebar of pages and
 components, and a content stage where shipped work runs **live** — sign-in flows, dashboards,
-booking widgets — each with a `Preview / Code` flip.
+interactive data — on a landing-style product page per project (Paradox, Timetrack).
 
 Built from the Claude Design prototype `The Workspace v2.dc.html`, ported pixel-for-pixel to
 Next.js.
@@ -32,7 +32,7 @@ components/
   shell/                   rail · sidebar · top bar · page chrome · content stage · ambient canvas
   overlays/                ⌘K search · résumé modal · message drawer · toast
   content/                 sections · heroes · component card · code view · library grid
-  fragments/               the nine live component miniatures (Paradox, Shiftsum, client builds)
+  fragments/               the live component miniatures (Paradox, Timetrack)
   providers/               theme · UI orchestration · contact thread · shared fragment state
 hooks/                     reduced-motion, hydration, workspace-transition helpers
 lib/                       typed content model · route/search resolution

@@ -99,8 +99,7 @@ jobs:
           }
           check /                        200
           check /paradox/overview        200
-          check /shiftsum/admin          200
-          check /clients/booking-widget  200
+          check /timetrack/overview      200
           check /home/component-library  200
           check /uploads/Resume.pdf      200
           check /sitemap.xml             200
@@ -111,6 +110,9 @@ jobs:
           check /nope                    404
           check /paradox                 307
           check /paradox/timeline-view   308
+          check /shiftsum/admin          308
+          check /clients                 308
+          check /showcase/timetrack/cover.webp 200
           check /showcase/paradox/command-palette.webp 200
           check /home/services           404
       - name: Brand routing (Full Stack Technologies host)
@@ -152,6 +154,9 @@ jobs:
           echo "$p" | grep -q '"@type":"FAQPage"'
           echo "$p" | grep -q '"@type":"BreadcrumbList"'
           echo "$p" | grep -q '<h1[^>]*>Paradox</h1>'
+          t=$(curl -s http://localhost:3000/timetrack/overview)
+          echo "$t" | grep -q '"@type":"FAQPage"'
+          echo "$t" | grep -q '<h1[^>]*>Timetrack</h1>'
 
   lighthouse:
     name: Lighthouse

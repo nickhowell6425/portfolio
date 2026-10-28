@@ -63,8 +63,10 @@ an FAQ, and a close. It renders server-side with `CreativeWork` + `FAQPage` + `B
 JSON-LD and its own title/description/keywords; it owns the page's `<h1>` (the page-chrome strip
 steps down to a `div`), and `ContentArea` widens to 1080 for it. Sidebar `type: "anchor"` items
 jump to a section (`page` + `hash`); they aren't routes but do appear in ⌘K. Responsive rules
-are the `.sc-*` classes in `globals.css`. Paradox's old per-component URLs 308 to their sections
-(`next.config.ts`).
+are the `.sc-*` classes in `globals.css`. Paradox's old per-component URLs 308 to their
+sections, and the retired Shiftsum / Client builds workspaces 308 to Timetrack
+(`next.config.ts`). Without `live`, a product page's CTAs lead into its first feature section
+instead of a demo; `mark` overrides the identity mark's background.
 
 **Server/client split.** Pages render prose server-side (`components/content/sections.tsx`,
 `portrait-hero.tsx`); everything interactive is a client island. The persistent shell
