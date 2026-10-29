@@ -225,32 +225,70 @@ function ConstellationMark() {
   );
 }
 
-// Helm: the app's ring and orange core, with the arc it draws around
-// anything an agent is working on.
+// A compass held inside a ship's wheel; the orange needle keeps a clear heading.
 function HelmMark() {
   const id = useId();
   return (
     <svg viewBox="0 0 100 100" fill="none">
       <defs>
         <radialGradient id={`${id}-face`} cx="40%" cy="30%" r="80%">
-          <stop stopColor="#2a1b16" />
-          <stop offset=".5" stopColor="#111014" />
+          <stop stopColor="#35241e" />
+          <stop offset=".5" stopColor="#171416" />
           <stop offset="1" stopColor="#08090b" />
         </radialGradient>
-        <filter id={`${id}-glow`} x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur stdDeviation="2.2" />
-        </filter>
+        <linearGradient
+          id={`${id}-rim`}
+          x1="22"
+          y1="18"
+          x2="78"
+          y2="82"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#fff0dc" />
+          <stop offset=".45" stopColor="#b7a494" />
+          <stop offset="1" stopColor="#65534b" />
+        </linearGradient>
+        <linearGradient
+          id={`${id}-needle`}
+          x1="50"
+          y1="22"
+          x2="50"
+          y2="53"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#ffc18a" />
+          <stop offset="1" stopColor="#ff6b3d" />
+        </linearGradient>
       </defs>
       <path fill={`url(#${id}-face)`} d="M0 0H100V100H0Z" />
-      <circle cx="50" cy="50" r="35" stroke="#f2f2f0" strokeOpacity=".1" strokeWidth="1" />
-      <circle cx="50" cy="50" r="23" stroke="#f2f2f0" strokeWidth="4.5" />
-      <circle cx="50" cy="50" r="9" fill="#ff6b3d" opacity=".55" filter={`url(#${id}-glow)`} />
-      <circle cx="50" cy="50" r="7" fill="#ff6b3d" />
+      <circle cx="50" cy="50" r="42" stroke="#ffb18a" strokeOpacity=".1" strokeWidth=".6" />
+      <g stroke={`url(#${id}-rim)`} strokeLinecap="round">
+        <path
+          d="M50 12V24M50 76V88M12 50H24M76 50H88M23 23L31 31M69 69L77 77M23 77L31 69M69 31L77 23"
+          strokeWidth="4"
+        />
+        <circle cx="50" cy="50" r="31" strokeWidth="5" />
+      </g>
+      <circle cx="50" cy="50" r="25" stroke="#f9d9bb" strokeOpacity=".15" strokeWidth=".75" />
+      <path
+        d="M50 28V33M50 67V72M28 50H33M67 50H72"
+        stroke="#f9d9bb"
+        strokeOpacity=".45"
+        strokeWidth="1"
+      />
+      <g transform="rotate(28 50 50)">
+        <path d="M50 22L60 50L50 55L40 50Z" fill={`url(#${id}-needle)`} />
+        <path d="M50 22V55L40 50Z" fill="#ff6b3d" />
+        <path d="M40 50L50 78L60 50L50 55Z" fill="#b8b0a5" />
+        <path d="M50 55V78L60 50Z" fill="#6d6661" />
+      </g>
+      <circle cx="50" cy="50" r="5" fill="#201917" stroke="#ffe0be" strokeWidth="1.5" />
+      <circle cx="50" cy="50" r="2" fill="#ff6b3d" />
       <g className="hmm-orbit">
         <path
-          d="M50 15A35 35 0 0 1 85 50"
-          stroke="#d6d6d3"
-          strokeWidth="3.5"
+          d="M50 8A42 42 0 0 1 79.7 20.3"
+          stroke="#ff9a66"
+          strokeWidth="1.5"
           strokeLinecap="round"
         />
       </g>
