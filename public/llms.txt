@@ -1,28 +1,82 @@
-# Nicholas Howell — The Workspace
+# Nicholas Howell and Full Stack Technologies
 
-> Portfolio of Nicholas Howell: CTO, founding engineer, and senior full-stack developer
-> (10+ years, multiple multi-million-dollar valuations, 0 abandoned codebases). The site is
-> an interactive workspace — projects in a left rail, live runnable UI components from
-> each product, each project presented as a product page.
+> Nicholas Howell is a CTO, founding engineer, and full-stack developer based in
+> Saint Petersburg, Florida. Full Stack Technologies, LLC is the studio he leads.
 
-## Who
+## Brand boundaries
 
-- CTO and founding engineer at AccountTouch — solely architected and shipped the platform
-  (cross-platform mobile app, serverless backend, web portal).
-- Helped scale a fintech startup from 3 to 20+ people into a multi-million-dollar acquisition.
-- Runs the Pinnacle studio since 2019; embedded with client teams at Good Code.
-- Positioning: masters AI as an accelerator and — the harder half — evaluates, hardens, and
-  scales what it produces. Works greenfield or in existing codebases, solo or embedded in teams.
-- Contact: nickhowell6425@gmail.com (or the in-site message drawer).
+The personal site explains Nicholas's experience, contribution, engineering decisions,
+and interests. Full Stack Technologies explains studio services and delivery, and owns
+the practical blog, AI playbook, and prompt library. Nicholas authors the FST articles.
+The personal site links to selected FST resources rather than hosting those libraries.
+Valid former personal resource URLs permanently redirect to FST; unknown paths remain 404s.
+Use each page's canonical URL when citing it.
 
-## Pages
+## Personal pages (relative to the personal site's origin)
 
-- /: About — who you'd be working with
-- /home/how-i-work: How an engagement actually looks
-- /home/straight-answers: Honest FAQ
-- /home/off-clock: The human running the agents
-- /paradox/overview: Paradox — a full product designed and built end to end, shown as a product page: passwordless sign-up, ⌘K command palette, details panel, real-time activity, faceted filters with live counts, an interactive canvas with a 1:1 minimap, and user-generated content. Includes an FAQ on why each was built that way (e.g. magic links over passwords, guest access first).
-- /paradox/demo: Paradox — the whole app as one interactive demo, running edge-to-edge (traverse the multiverse, open a timeline, fork a reality)
-- /timetrack/overview: Timetrack — time tracking for the age of AI, designed and built end to end: hooks capture every AI coding session (even several running at once) and keep the data on your machine. Shown as a product page of reusable patterns: key-based sign-in without accounts, a live data-viz dashboard, an audit trail with linked proof, forms, reports frozen once sent, and a rules engine that asks instead of guessing. Includes an FAQ on why each was built that way (e.g. a key instead of accounts, failing closed when misconfigured).
-- /constellation/overview: Constellation — prioritization and project planning across many clients, designed and built end to end and shown as a product page: one ranked queue across every client with tunable weights, plan branches you can diff and merge like code, ship-date forecasts with p10–p90 ranges, an inbox that turns client messages into proposed changes, a timeline and capacity view, a read-only client portal, a client workspace and onboarding. Includes an FAQ on why each was built that way (e.g. ranges instead of single dates, branches instead of a what-if mode, never messaging a client without approval).
-- /helm/overview: Helm — one decision at a time across every client and AI agent, designed and built end to end and shown as a product page: a deck of decisions drawn from client email and Slack and from agent runs across Claude, OpenAI and Grok (with running agents in a dock), a per-client board with prioritised suggestions, rules written in plain language with a preview of the days they act on, @ mentions that know each person's channel and tone, client settings for channels, quiet hours, scoped access keys, rules and docs, and a six-question client setup. Includes an FAQ on why each was built that way (e.g. one decision at a time instead of a dashboard, drafting by default instead of sending).
+- /: Nicholas's profile, experience, selected work, and links to writing at FST.
+- /home/how-i-work: How Nicholas approaches engineering work and technical decisions.
+- /home/straight-answers: Questions about fit and working with Nicholas.
+- /home/off-clock: Family, travel, and ice hockey.
+
+## Studio pages (Full Stack Technologies only)
+
+- https://fullstacktechnologiesllc.com/: Studio positioning, work, and contact.
+- https://fullstacktechnologiesllc.com/home/services: Service overview.
+- https://fullstacktechnologiesllc.com/home/engagements: Scope, delivery, and handoff.
+- https://fullstacktechnologiesllc.com/home/straight-answers: Pricing, ownership, and fit.
+- https://fullstacktechnologiesllc.com/services/product-development: Web and mobile development.
+- https://fullstacktechnologiesllc.com/services/codebase-rescue: Codebase review and focused repairs.
+- https://fullstacktechnologiesllc.com/services/fractional-cto: Technical leadership and embedded engineering.
+
+## Practical blog (Full Stack Technologies only)
+
+- https://fullstacktechnologiesllc.com/blog: Product engineering guides by Nicholas Howell.
+- https://fullstacktechnologiesllc.com/blog/scope-first-software-release: Scope a complete user journey.
+- https://fullstacktechnologiesllc.com/blog/review-ai-generated-code: Review behavior, access, writes, tests, and recovery.
+- https://fullstacktechnologiesllc.com/blog/repair-or-rewrite: Compare repairs, component replacement, and rewrite.
+
+## Product examples (both sites, with distinct framing)
+
+The personal pages explain Nicholas's contribution and design/engineering decisions.
+The studio pages explain the user problems and capabilities relevant to a product engagement.
+The interfaces are shared; their presence is not a claim of adoption or client outcomes.
+
+- /paradox/overview: Interactive storytelling, branching timelines, onboarding, and search.
+- /timetrack/overview: AI session activity, parallel time, audit records, and reports.
+  Session time differs from elapsed human time; billing depends on the client agreement.
+- /constellation/overview: Multi-client priorities, plan branches, forecast ranges, and client status.
+- /helm/overview: One decision at a time across clients and AI agents, with a decision deck, client boards, plain-language rules, and scoped access.
+
+## AI playbook (Full Stack Technologies only)
+
+- https://fullstacktechnologiesllc.com/ai: Workflow, people, and tool choices.
+- https://fullstacktechnologiesllc.com/ai/workflow: AI across discovery, design, build, review, release, and maintenance.
+- https://fullstacktechnologiesllc.com/ai/models: Dated tool and model examples with official sources.
+- https://fullstacktechnologiesllc.com/ai/why-an-engineer: Architecture, data boundaries, verification, and ownership.
+- https://fullstacktechnologiesllc.com/ai/why-a-designer: Usability, design systems, accessibility, and handoff.
+- https://fullstacktechnologiesllc.com/ai/lean-team: Smaller delivery teams versus in-house capacity.
+- https://fullstacktechnologiesllc.com/ai/offshore-tradeoffs: Delivery setup, direct access, overlap, and ownership.
+- https://fullstacktechnologiesllc.com/ai/resources: Tools and project-level usage and billing questions.
+- https://fullstacktechnologiesllc.com/ai/community-research: Linked Reddit accounts, distinct from benchmarks.
+
+Nicholas uses Claude /design for product design, Claude Code generally for implementation,
+and Codex for reviews, images and logo exploration, landing pages, and websites. Some tasks
+use both. Model examples are dated guidance, not a claim about every project's settings.
+There is no universal savings figure or AI billing policy asserted here.
+
+## Prompt library (Full Stack Technologies only)
+
+- https://fullstacktechnologiesllc.com/prompts: Timing, inputs, and checks for each template.
+- https://fullstacktechnologiesllc.com/prompts/discovery: Brief and acceptance criteria.
+- https://fullstacktechnologiesllc.com/prompts/design: Product design and visual/page briefs.
+- https://fullstacktechnologiesllc.com/prompts/implementation: Bounded changes and tool-to-tool handoff.
+- https://fullstacktechnologiesllc.com/prompts/review-release: Evidence-based review and release readiness.
+
+Templates are starting points. People own design acceptance, engineering verification,
+access decisions, and release authorization.
+
+## Contact
+
+Use the current site's message drawer or email nickhowell6425@gmail.com. Include the users,
+problem, current system, and constraints. Commercial studio services are described on FST.

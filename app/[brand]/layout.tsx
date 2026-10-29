@@ -115,12 +115,13 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
 // Person / Organization schema for search engines and AI assistants (GEO)
 const PERSON = {
   "@type": "Person",
+  "@id": `${BRANDS.personal.url}/#person`,
   name: PH.NAME,
   email: `mailto:${PH.EMAIL}`,
   url: BRANDS.personal.url,
   jobTitle: "CTO · Founding Engineer · Senior Full-Stack Developer",
   description:
-    "CTO, founding engineer, and senior full-stack developer with 10+ years shipping products — greenfield builds and established codebases — and multiple multi-million-dollar valuations. Builds with AI agents and makes the output hold up at scale.",
+    "CTO, founding engineer, and full-stack developer based in Saint Petersburg, Florida, with 10+ years of experience in web and mobile products, backend systems, and technical leadership.",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Saint Petersburg",
@@ -144,6 +145,7 @@ const JSONLD: Record<BrandId, object> = {
   fst: {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${BRANDS.fst.url}/#organization`,
     name: BRANDS.fst.name,
     url: BRANDS.fst.url,
     description: BRANDS.fst.description,

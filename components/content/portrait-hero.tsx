@@ -47,7 +47,7 @@ export function PortraitHero() {
         >
           The person behind the products
         </div>
-        <div
+        <h1
           style={{
             margin: "9px 0 0",
             fontSize: 32,
@@ -56,8 +56,8 @@ export function PortraitHero() {
             lineHeight: 1.04,
           }}
         >
-          {PH.NAME}
-        </div>
+          {PH.NAME} — full-stack developer & technical leader
+        </h1>
         <p
           style={{
             margin: "11px 0 0",
@@ -68,9 +68,9 @@ export function PortraitHero() {
             textWrap: "pretty",
           }}
         >
-          CTO · founding engineer · senior full-stack. Greenfield build or an existing codebase,
-          running solo with AI agents or embedded in your team — I ship products that reach real
-          customers and multi-million-dollar valuations, and make them hold up.
+          I help founders and small teams build web and mobile products, improve existing codebases,
+          and make technical decisions. Work directly with a CTO and founding engineer with{" "}
+          {PH.YEARS}+ years of experience, based in Saint Petersburg, Florida.
         </p>
         <div style={{ display: "flex", gap: 7, flexWrap: "wrap", marginTop: 15 }}>
           <span

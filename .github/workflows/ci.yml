@@ -137,6 +137,8 @@ jobs:
           curl -fsS -H "Host: fst.localhost:3000" http://localhost:3000/favicon.ico | cmp - public/brand/fst/favicon.ico
           curl -fsS http://localhost:3000/favicon.ico | cmp - public/brand/personal/favicon.ico
           curl -fsS -H "Host: preview.example" -H "Cookie: brand=fst" http://localhost:3000/favicon.ico | cmp - public/brand/fst/favicon.ico
+      - name: Content and search metadata
+        run: pnpm test:content
       - name: Contact API validates
         run: |
           set -euo pipefail

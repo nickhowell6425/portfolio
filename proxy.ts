@@ -29,7 +29,11 @@ export function proxy(req: NextRequest) {
     return NextResponse.rewrite(target);
   }
   target.pathname = `/${brand}${url.pathname === "/" ? "" : url.pathname}`;
-  return NextResponse.rewrite(target);
+  const res = NextResponse.rewrite(target);
+  if (!brandForHost(req.headers.get("host"))) {
+    res.headers.set("X-Robots-Tag", "noindex");
+  }
+  return res;
 }
 
 export const config = {

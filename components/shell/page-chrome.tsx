@@ -16,8 +16,12 @@ export function PageChrome() {
   const resolved = resolvePathname(pathname);
   const W = resolved?.ws ?? workspaces[0];
   const item = resolved?.item ?? W.items[W.groups[0].items[0]];
-  // a showcase page owns its <h1> (the product name); the strip steps down
-  const Title = item.type === "showcase" ? "div" : "h1";
+  // Content headings can wrap on mobile; the compact strip remains a label.
+  const Title =
+    item.type === "showcase" ||
+    (item.type === "page" && (item.title || (W.id === "home" && resolved?.itemId === "about")))
+      ? "div"
+      : "h1";
   const isDemo = item.type === "demo";
 
   return (

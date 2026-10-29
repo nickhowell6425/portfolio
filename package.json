@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "test:content": "node scripts/check-content.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

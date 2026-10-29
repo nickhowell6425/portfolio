@@ -47,6 +47,9 @@ export function CompanyHero() {
           Product engineering studio
         </div>
         <div role="img" aria-label={FST.LEGAL} className="company-wordmark" />
+        <h1 style={{ margin: "12px 0 0", fontSize: 26, lineHeight: 1.15, letterSpacing: "-.02em" }}>
+          Custom software for founders and small teams
+        </h1>
         <p
           style={{
             margin: "11px 0 0",
@@ -57,8 +60,8 @@ export function CompanyHero() {
             textWrap: "pretty",
           }}
         >
-          New builds, rescues, and scale-ups — senior engineers working with AI agents, accountable
-          for every line. Fixed scope wherever possible, and you own the code from day one.
+          Web and mobile product development, codebase rescue, and technical leadership. Work
+          directly with {PH.NAME}, from the first technical decision through delivery and handoff.
         </p>
         <div style={{ display: "flex", gap: 7, flexWrap: "wrap", marginTop: 15 }}>
           <span
