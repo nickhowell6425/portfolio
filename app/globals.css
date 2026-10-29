@@ -377,11 +377,41 @@ input::placeholder {
     opacity: 0;
   }
 }
-/* Helm: an arc turning while agents work, a pulse while something waits on you */
-.hmm-orbit {
-  transform-box: view-box;
-  transform-origin: 50px 50px;
-  animation: markSpin 9s linear infinite;
+/* Helm's three cards fan out, then spring back into their H. */
+.hm-card {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: helmShuffle 5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+.hm-card-left {
+  --card-x: -7px;
+  --card-y: -5px;
+  --card-turn: -14deg;
+}
+.hm-card-right {
+  --card-x: 7px;
+  --card-y: 5px;
+  --card-turn: 14deg;
+}
+.hm-card-bridge {
+  --card-x: 0px;
+  --card-y: -10px;
+  --card-turn: -18deg;
+}
+@keyframes helmShuffle {
+  0%,
+  18%,
+  76%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  38%,
+  46% {
+    transform: translate(var(--card-x), var(--card-y)) rotate(var(--card-turn));
+  }
+  61% {
+    transform: translate(0, 2px) rotate(calc(var(--card-turn) * -0.15));
+  }
 }
 @keyframes hmBreathe {
   0%,

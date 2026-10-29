@@ -225,73 +225,66 @@ function ConstellationMark() {
   );
 }
 
-// A compass held inside a ship's wheel; the orange needle keeps a clear heading.
+// A folded H on coral: a standalone app tile that stays legible in the rail.
 function HelmMark() {
   const id = useId();
   return (
     <svg viewBox="0 0 100 100" fill="none">
       <defs>
-        <radialGradient id={`${id}-face`} cx="40%" cy="30%" r="80%">
-          <stop stopColor="#35241e" />
-          <stop offset=".5" stopColor="#171416" />
-          <stop offset="1" stopColor="#08090b" />
-        </radialGradient>
         <linearGradient
-          id={`${id}-rim`}
-          x1="22"
-          y1="18"
-          x2="78"
-          y2="82"
+          id={`${id}-face`}
+          x1="20"
+          y1="0"
+          x2="80"
+          y2="100"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#fff0dc" />
-          <stop offset=".45" stopColor="#b7a494" />
-          <stop offset="1" stopColor="#65534b" />
+          <stop stopColor="#ff9966" />
+          <stop offset=".45" stopColor="#fa633e" />
+          <stop offset="1" stopColor="#db382c" />
         </linearGradient>
         <linearGradient
-          id={`${id}-needle`}
-          x1="50"
+          id={`${id}-paper`}
+          x1="40"
           y1="22"
-          x2="50"
-          y2="53"
+          x2="65"
+          y2="80"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#ffc18a" />
-          <stop offset="1" stopColor="#ff6b3d" />
+          <stop stopColor="#fffdf4" />
+          <stop offset="1" stopColor="#ffe4cc" />
         </linearGradient>
+        <filter id={`${id}-shadow`} x="-50%" y="-30%" width="200%" height="180%">
+          <feDropShadow dx="0" dy="3" stdDeviation="2.5" floodColor="#8b211c" floodOpacity=".3" />
+        </filter>
       </defs>
       <path fill={`url(#${id}-face)`} d="M0 0H100V100H0Z" />
-      <circle cx="50" cy="50" r="42" stroke="#ffb18a" strokeOpacity=".1" strokeWidth=".6" />
-      <g stroke={`url(#${id}-rim)`} strokeLinecap="round">
-        <path
-          d="M50 12V24M50 76V88M12 50H24M76 50H88M23 23L31 31M69 69L77 77M23 77L31 69M69 31L77 23"
-          strokeWidth="4"
+      <g filter={`url(#${id}-shadow)`}>
+        <rect
+          className="hm-card hm-card-left"
+          x="27"
+          y="22"
+          width="15"
+          height="56"
+          rx="3"
+          fill={`url(#${id}-paper)`}
         />
-        <circle cx="50" cy="50" r="31" strokeWidth="5" />
-      </g>
-      <circle cx="50" cy="50" r="25" stroke="#f9d9bb" strokeOpacity=".15" strokeWidth=".75" />
-      <path
-        d="M50 28V33M50 67V72M28 50H33M67 50H72"
-        stroke="#f9d9bb"
-        strokeOpacity=".45"
-        strokeWidth="1"
-      />
-      <g transform="rotate(28 50 50)">
-        <path d="M50 22L60 50L50 55L40 50Z" fill={`url(#${id}-needle)`} />
-        <path d="M50 22V55L40 50Z" fill="#ff6b3d" />
-        <path d="M40 50L50 78L60 50L50 55Z" fill="#b8b0a5" />
-        <path d="M50 55V78L60 50Z" fill="#6d6661" />
-      </g>
-      <circle cx="50" cy="50" r="5" fill="#201917" stroke="#ffe0be" strokeWidth="1.5" />
-      <circle cx="50" cy="50" r="2" fill="#ff6b3d" />
-      <g className="hmm-orbit">
-        <path
-          d="M50 8A42 42 0 0 1 79.7 20.3"
-          stroke="#ff9a66"
-          strokeWidth="1.5"
-          strokeLinecap="round"
+        <rect
+          className="hm-card hm-card-right"
+          x="58"
+          y="22"
+          width="15"
+          height="56"
+          rx="3"
+          fill={`url(#${id}-paper)`}
         />
+        <g className="hm-card hm-card-bridge">
+          <path d="M42 62L58 55V61L42 68Z" fill="#a94628" fillOpacity=".18" />
+          <path d="M42 44L58 37V55L42 62Z" fill="#fffaf0" />
+          <path d="M42 44V62" stroke="#d85c35" strokeOpacity=".18" strokeWidth=".7" />
+        </g>
       </g>
+      <path d="M1 1H99" stroke="#fff4df" strokeOpacity=".25" />
     </svg>
   );
 }
