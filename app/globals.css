@@ -446,6 +446,37 @@ input::placeholder {
     transform: translate(0, 0) scale(1.3);
   }
 }
+/* A glint runs tail to head along the pixel S, then the head blinks. */
+.snm-glint {
+  animation: markSignal 4.5s linear infinite;
+}
+.snm-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: snmBlink 4.5s ease-in-out infinite;
+}
+@keyframes snmBlink {
+  0%,
+  88%,
+  100% {
+    transform: scaleY(1);
+  }
+  93% {
+    transform: scaleY(0.15);
+  }
+}
+/* Snake n Friends' grid: a firewall warns before it goes live. */
+.snf-warn {
+  animation: snfWarn 0.5s steps(2, jump-none) infinite alternate;
+}
+@keyframes snfWarn {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
 @keyframes hmBreathe {
   0%,
   100% {

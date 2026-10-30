@@ -314,6 +314,87 @@ function NemoMark() {
   );
 }
 
+// The game's own pixel S: a snake of glossy green cells with a glint running
+// tail to head.
+const SNAKE_CELLS = [
+  [1, 0],
+  [2, 0],
+  [3, 0],
+  [0, 1],
+  [1, 1],
+  [0, 2],
+  [1, 2],
+  [1, 3],
+  [2, 3],
+  [3, 3],
+  [4, 3],
+  [3, 4],
+  [4, 4],
+  [5, 4],
+  [3, 5],
+  [4, 5],
+  [5, 5],
+  [0, 6],
+  [1, 6],
+  [2, 6],
+  [3, 6],
+  [4, 6],
+];
+
+function SnakeMark() {
+  const id = useId();
+  return (
+    <svg viewBox="0 0 100 100" fill="none">
+      <defs>
+        <radialGradient id={`${id}-face`} cx="50%" cy="45%" r="75%">
+          <stop stopColor="#0f2209" />
+          <stop offset="1" stopColor="#030603" />
+        </radialGradient>
+        <linearGradient id={`${id}-cell`} x1="0" y1="0" x2="0" y2="1">
+          <stop stopColor="#c4ff4a" />
+          <stop offset="1" stopColor="#52d81c" />
+        </linearGradient>
+        <filter id={`${id}-glow`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2.2" />
+        </filter>
+      </defs>
+      <path fill={`url(#${id}-face)`} d="M0 0H100V100H0Z" />
+      <g fill="#59f425" opacity=".45" filter={`url(#${id}-glow)`}>
+        {SNAKE_CELLS.map(([c, r]) => (
+          <rect key={`${c}-${r}`} x={20.6 + c * 10} y={15.6 + r * 10} width="8.8" height="8.8" />
+        ))}
+        <rect x="60.6" y="15.6" width="11" height="8.8" rx="4" />
+      </g>
+      <g fill={`url(#${id}-cell)`}>
+        {SNAKE_CELLS.map(([c, r]) => (
+          <rect
+            key={`${c}-${r}`}
+            x={20.6 + c * 10}
+            y={15.6 + r * 10}
+            width="8.8"
+            height="8.8"
+            rx="1.4"
+          />
+        ))}
+        <rect x="60.6" y="15.6" width="11" height="8.8" rx="4" />
+      </g>
+      <path
+        className="snm-glint"
+        d="M25 80H65V50H35V20H66"
+        pathLength="100"
+        stroke="#f4ffd6"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeDasharray="6 94"
+        opacity=".8"
+      />
+      <circle className="snm-eye" cx="67" cy="20" r="1.9" fill="#061004" />
+      <circle cx="67" cy="20" r=".7" fill="#c4ff4a" />
+    </svg>
+  );
+}
+
 /** Shared by rail tiles, product headers, and “Next product” cards. */
 export function ProductMark({
   wsId,
@@ -327,7 +408,7 @@ export function ProductMark({
   delay?: number;
   children?: ReactNode;
 }) {
-  if (!["paradox", "timetrack", "constellation", "helm", "nemo"].includes(wsId))
+  if (!["paradox", "timetrack", "constellation", "helm", "nemo", "snakenfriends"].includes(wsId))
     return <>{children}</>;
   return (
     <span
@@ -349,8 +430,10 @@ export function ProductMark({
         <ConstellationMark />
       ) : wsId === "helm" ? (
         <HelmMark />
-      ) : (
+      ) : wsId === "nemo" ? (
         <NemoMark />
+      ) : (
+        <SnakeMark />
       )}
     </span>
   );
