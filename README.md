@@ -50,8 +50,9 @@ pnpm build && pnpm start
 ## Contact form delivery
 
 To send inquiries, copy `.env.example` to `.env.local` and set `RESEND_API_KEY`, a verified
-`CONTACT_FROM_EMAIL`, and optionally `CONTACT_TO_EMAIL` / `CONTACT_TO_EMAIL_FST`. Without
-the provider key, valid requests return 503. Failed submissions preserve the draft for retry
+`CONTACT_FROM_EMAIL`, and optionally `CONTACT_TO_EMAIL` / `CONTACT_TO_EMAIL_FST`. Both
+brands default to `admin@fullstacktechnologiesllc.com`. Without the provider key, valid
+requests return 503. Failed submissions preserve the draft for retry
 and show a direct-email fallback; a success confirms provider acceptance, not inbox delivery.
 
 `pnpm test:contact` checks accepted and failed client responses without sending email. To

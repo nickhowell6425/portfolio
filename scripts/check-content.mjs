@@ -62,6 +62,7 @@ for (const path of [
   "/services/ai-development-coaching",
   "/blog/ai-prototype-to-production",
   "/blog/build-vs-buy-software",
+  "/blog/timetrack-session-reporting",
 ]) {
   assert(studioPaths.includes(path), `${path}: new founder resources must be discoverable`);
 }
@@ -78,6 +79,10 @@ for (const host of [personalHost, fstHost]) {
     "Demo wrappers must not be in the sitemap",
   );
   if (host === personalHost) {
+    assert(
+      sitemap.includes("/home/working-through-a-build"),
+      "The personal working-style story must be discoverable",
+    );
     assert(
       !sitemap.some((path) => studioPaths.includes(path)),
       "Studio resources must not appear in the personal sitemap",
