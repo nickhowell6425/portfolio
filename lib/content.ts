@@ -10,7 +10,7 @@ export const PH = {
   NAME: "Nicholas Howell",
   FIRST: "Nicholas",
   YEARS: "10",
-  EMAIL: "nickhowell6425@gmail.com",
+  EMAIL: BRANDS.personal.email,
   STATUS_LINE: "One-on-one · hands-on engineering · clear next steps",
   FOOTER: "⌘K — jump to any project or feature",
 } as const;
@@ -181,7 +181,10 @@ const PERSONAL_WORKSPACES: Workspace[] = [
     status: "a living showcase",
     accent: "#5b8def",
     groups: [
-      { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
+      {
+        title: "Profile",
+        items: ["about", "how-i-work", "working-through-a-build", "straight-answers", "off-clock"],
+      },
       {
         title: "Explore",
         items: [
@@ -206,6 +209,12 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               "Bring a rough sketch, an AI prototype, or a problem you haven't quite figured out how to explain yet. We'll talk it through directly, decide what to try, and look at working software together. You don't need to speak developer to take part in the decisions.",
               "Ask questions as we go. I'll explain my recommendation, what it would change, and what we still need to find out. If you want to get into the tools yourself, we can work through a real task together. If you want me to own the build, we'll agree on the checkpoints that keep you involved.",
+            ],
+            links: [
+              {
+                label: "A real example: working through the details",
+                href: "/home/working-through-a-build",
+              },
             ],
           },
           {
@@ -267,6 +276,65 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               "I use AI for planning, implementation, and review, and stay responsible for the result. We agree on the tools, access, and costs before work starts. I check the behavior that matters to your users, including permissions, failed requests, and what happens if a release needs to be undone.",
             ],
+            links: [
+              {
+                label: "See that approach in a Timetrack decision",
+                href: "/home/working-through-a-build",
+              },
+            ],
+          },
+        ],
+      },
+      "working-through-a-build": {
+        label: "Working through a build",
+        type: "page",
+        title: "Working through the details, together",
+        seoTitle: "How I explain engineering decisions: a Timetrack example",
+        desc: "A concrete decision from Timetrack shows how I make technical tradeoffs understandable, check the result, and keep you involved in a build.",
+        sections: [
+          {
+            heading: "Something concrete to talk through",
+            paras: [
+              "When we work together, I want you to be able to question a recommendation without needing to read the code first. A small example from Timetrack shows what that conversation can be about: should a short manual entry disappear from a summary just because automated sessions ran longer?",
+              "Timetrack turns recorded AI sessions and manual entries into reports. A check in the project puts a fifteen-minute manual entry beside ten long agent sessions and makes sure all eleven entries remain available to the summary. Duration alone doesn't tell us which work matters to the reader.",
+            ],
+            links: [{ label: "Explore Timetrack's interface", href: "/timetrack/overview" }],
+          },
+          {
+            heading: "Put the tradeoff where you can see it",
+            paras: [
+              "The detailed report raises another useful question: should its total match the numbers someone can add up on the page? One test uses twenty sample entries of 59 seconds each. Each entry displays as 0.02 hours, so the visible rows add up to 0.40. Add the underlying seconds first and round only the total, and you get 0.33.",
+              "The report adds its displayed line values so a reader can check the total from the document itself. That is an explicit display choice, with a tradeoff: rounding many short entries can move the total away from the underlying duration. If a requirement calls for unrounded duration, we'd need a different display or rounding rule. We can discuss that with an example everyone can follow.",
+            ],
+          },
+          {
+            heading: "Connect the decision to a check",
+            paras: [
+              "Both examples have regression tests: one keeps the short manual entry, and one checks the total against the displayed rows. These are small checks for behavior a person would notice, not just whether the screen renders.",
+              "This is the kind of evidence we can review together: what should happen, a concrete example, and a check that would catch the wrong result. You can change your mind about the requirement while the consequences are still easy to discuss.",
+            ],
+          },
+          {
+            heading: "Be clear about where AI fits",
+            paras: [
+              "I used AI assistance while building Timetrack, including work on session attribution and reconciliation. That is part of how the software was built. It doesn't decide what a recorded hour means or which rounding rule fits the report. I remain responsible for those choices and the checks around them.",
+              "When we work on your app, we can use AI to explore and implement a change while keeping those decisions understandable. I'll explain the proposed behavior and what we've checked. If you want to use the tools yourself, we can work through the same task together.",
+            ],
+            links: [
+              {
+                label: "The fuller Timetrack engineering walkthrough at FST",
+                href: new URL("/blog/timetrack-session-reporting", BRANDS.fst.url).href,
+              },
+            ],
+          },
+          {
+            heading: "Bring the part you're unsure about",
+            paras: [
+              "It might be a number that doesn't look right, a user flow that feels awkward, or a feature you're not sure you need. We can start there, make the choices concrete, and work out the next useful step. No finished specification required.",
+            ],
+            links: [{ label: "More about how I work", href: "/home/how-i-work" }],
+            cta: "message",
+            ctaLabel: "Tell me what you're working on →",
           },
         ],
       },
@@ -726,11 +794,11 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       overview: {
         type: "showcase",
         label: "Overview",
-        desc: "Tracks every AI session, even several at once",
+        desc: "Inspect AI session records, including parallel activity",
         seoTitle: "Timetrack — AI coding session tracking",
-        tagline: "Time tracking for the age of AI, all on your machine.",
+        tagline: "Self-hosted AI session tracking, with records you can inspect.",
         summary:
-          "Explore Timetrack, a local-first tool for tracking AI coding sessions, reviewing parallel activity, and creating reports backed by an audit trail.",
+          "Explore Timetrack, a self-hosted tool for tracking AI coding sessions, reviewing parallel activity, and creating reports from inspectable records. Selected activity metadata flows from local hooks to a Supabase collector and a Vercel-hosted dashboard.",
         cover: {
           src: "/showcase/timetrack/cover.webp",
           alt: "Timetrack dashboard: a week of sessions on one dial, with totals, overlap and billing",
@@ -775,7 +843,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           },
           {
             title: "Reports",
-            line: "Frozen the moment they’re sent.",
+            line: "A stored snapshot at export.",
             img: "/showcase/timetrack/reports.webp",
             target: "reports",
           },
@@ -787,7 +855,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           },
           {
             title: "Rules engine",
-            line: "Automation that asks, not guesses.",
+            line: "Attribution with reviewable rules.",
             img: "/showcase/timetrack/client-rules.webp",
             target: "client-rules",
             contain: true,
@@ -828,7 +896,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             id: "time-log",
             kicker: "Audit trail",
             title: "Every record, with receipts.",
-            line: "Each entry links to the proof behind it, so anything can be checked later.",
+            line: "Session records can carry repository, commit, or pull-request references so the work behind an entry is easier to inspect.",
             points: [
               "Filter to what’s missing proof",
               "Attach proof in one click",
@@ -838,7 +906,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
               imgs: [
                 {
                   src: "/showcase/timetrack/time-log.webp",
-                  alt: "Audit trail: each session with the pull request that proves it",
+                  alt: "Session records with evidence references in the audit trail",
                   width: 2390,
                   height: 1670,
                 },
@@ -849,10 +917,10 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             id: "reports",
             kicker: "Reports & exports",
             title: "Reports with a traceable calculation.",
-            line: "Real documents generated from live data, then frozen the moment they’re sent.",
+            line: "Export saves the report document. Reopening that saved report reads its stored snapshot instead of recalculating it from current activity.",
             points: [
               "Three report types, one click",
-              "A sent number never changes",
+              "Reopen the stored export snapshot",
               "Each one says how it was counted",
             ],
             media: {
@@ -870,7 +938,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             id: "manual-entry",
             kicker: "Forms",
             title: "Forms that do the math.",
-            line: "Manual entry for what automation can’t see, clearly marked so it never mixes with tracked data.",
+            line: "Manual entry for what automation can’t see, labeled separately from automatically captured sessions.",
             points: [
               "Search-as-you-type pickers",
               "Durations worked out live",
@@ -890,11 +958,11 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             id: "client-rules",
             kicker: "Rules engine",
-            title: "Automation people can trust.",
-            line: "Ordered rules sort incoming data on their own. Anything they can’t place waits for a person instead of a guess.",
+            title: "Attribution you can review.",
+            line: "Ordered rules match incoming activity to projects. An unrecognized project can become a reviewable draft without a rate, leaving that decision to a person.",
             points: [
               "First match wins, in order",
-              "No guessing where money is involved",
+              "Draft projects start without a rate",
               "Change a rule, history updates",
             ],
             media: {
@@ -920,19 +988,23 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           },
           {
             q: "Why keep the raw data untouched?",
-            a: "Every number is rebuilt from the original record. Change a rule and history updates cleanly; nothing is ever patched by hand or lost.",
+            a: "Source events are kept separately from derived session records. Attribution can be rebuilt when rules change, while the original events remain available for inspection.",
           },
           {
-            q: "Why freeze reports once they’re sent?",
-            a: "Once someone has a number, it shouldn’t quietly change. Later edits only touch new drafts, so everything you’ve sent stays exactly as sent.",
+            q: "What does saving a report preserve?",
+            a: "Export stores a snapshot of the report document. Reopening it reads that saved document instead of recalculating against current data. Saved reports can also be deleted.",
           },
           {
-            q: "Why make automation ask instead of guess?",
-            a: "A wrong guess costs more trust than a gap. Anything the rules can’t place waits for a person to confirm, and nothing gets billed by accident.",
+            q: "What happens to an unrecognized project?",
+            a: "It can become a draft for review, without an automatically assigned rate. A person can review the attribution and set the relevant configuration. Recorded activity alone does not establish what a client has agreed to pay for.",
           },
           {
-            q: "Why keep the data on your machine?",
-            a: "Activity data is sensitive. Hooks capture only what you allow, file paths are stripped, prompt text is thrown away, and it all stays local.",
+            q: "Where does captured activity go?",
+            a: "Local hooks capture activity within configured repository roots, then selected metadata is sent to a Supabase collector and shown in a Vercel-hosted dashboard. Paths are shortened or aliased, rather than removed entirely. Default hook capture discards prompt and tool contents. Self-hosted here means you control the configured services; it does not mean all data stays on the device.",
+          },
+          {
+            q: "Can optional AI features send text to a model provider?",
+            a: "Yes. Optional title generation is off by default and, when explicitly enabled, can send bounded excerpts of human messages to a model provider. Report narration is a separate optional model feature. Review the enabled features, provider, and data flow before using either with sensitive work.",
           },
           {
             q: "What happens if it’s set up wrong?",
@@ -976,14 +1048,14 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       "a-reports": {
         type: "anchor",
         label: "Reports",
-        desc: "Frozen once sent",
+        desc: "A stored snapshot at export",
         page: "overview",
         hash: "reports",
       },
       "a-rules": {
         type: "anchor",
         label: "Rules engine",
-        desc: "Automation that asks, not guesses",
+        desc: "Attribution with reviewable rules",
         page: "overview",
         hash: "client-rules",
       },
@@ -2361,6 +2433,12 @@ const FST_HOME: Workspace = {
           paras: [
             "The left rail is real work — seven products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; Constellation, prioritization and planning across every client; Helm, one decision at a time across every client and AI agent; Nemo, your AI identities, portable to any model; Snake n Friends, a mobile snake game played head to head; and Coverly, every insurance policy in one place with answers on demand. The components inside are live: click through any of them.",
           ],
+          links: [
+            {
+              label: "Inside Timetrack: records, reports, and decisions you can check",
+              href: "/blog/timetrack-session-reporting",
+            },
+          ],
         },
         {
           heading: "AI is part of the process. So is engineering judgment.",
@@ -2448,6 +2526,12 @@ const FST_HOME: Workspace = {
           heading: "3 · Build in the open",
           paras: [
             "Review working software at agreed checkpoints. Use those reviews to confirm behavior, resolve questions, and make any change in scope explicit before it changes the schedule.",
+          ],
+          links: [
+            {
+              label: "A concrete example: Timetrack's reporting decisions",
+              href: "/blog/timetrack-session-reporting",
+            },
           ],
         },
         {
@@ -2812,6 +2896,7 @@ const BLOG: Workspace = {
       title: "Guides",
       items: [
         "index",
+        "timetrack-session-reporting",
         "ai-prototype-to-production",
         "scope-first-software-release",
         "build-vs-buy-software",
@@ -2826,12 +2911,24 @@ const BLOG: Workspace = {
       label: "All articles",
       title: "Practical guides for taking your app forward",
       seoTitle: "App development and AI guides for founders",
-      desc: "Guides from Nicholas Howell on taking AI prototypes into production, scoping a first release, reviewing code, and deciding whether to build or buy.",
+      desc: "Guides and a Timetrack engineering walkthrough from Nicholas Howell: taking AI prototypes into production, reviewing code, and deciding whether to build or buy.",
       sections: [
         {
           heading: "For founders and small engineering teams",
           paras: [
             "Use these guides to decide what to build first, what your prototype needs before launch, and where AI helps with the work. The examples make the checks and tradeoffs concrete so you can discuss them with an engineer or use them on your own project.",
+          ],
+        },
+        {
+          heading: "Inside a real build: Timetrack",
+          paras: [
+            "See how session records become a report you can check: keep short manual entries visible, distinguish parallel session time from human time, and make the rounding rule explicit.",
+          ],
+          links: [
+            {
+              label: "Read: Timetrack's session records and reporting decisions",
+              href: "/blog/timetrack-session-reporting",
+            },
           ],
         },
         {
@@ -2916,6 +3013,96 @@ const BLOG: Workspace = {
           ],
           cta: "message",
           ctaLabel: "Discuss your project →",
+        },
+      ],
+    },
+    "timetrack-session-reporting": {
+      type: "page",
+      label: "Inside Timetrack",
+      title: "Inside Timetrack: a report should explain its numbers",
+      seoTitle: "Timetrack walkthrough: AI session records and reporting decisions",
+      desc: "A concrete engineering walkthrough: preserve short manual entries, explain parallel AI sessions, and make report totals reproducible from their displayed rows.",
+      article: { published: "2026-10-30", modified: "2026-10-30" },
+      sections: [
+        {
+          heading: "Start with the detail a reader could lose",
+          paras: [
+            "A fifteen-minute manual entry can matter even when automated sessions run for hours. Timetrack records AI coding sessions and manual activity, then turns those records into views and reports. One engineering decision is to preserve the short entry when preparing a summary, rather than take only the longest sessions.",
+            "A regression check uses ten long agent sessions and one fifteen-minute manual entry. All eleven remain in the summary's starting data. The test proves that specific behavior with sample records; it does not establish what the work achieved or what anyone should pay for it.",
+            "For a founder building an app, this is a useful review question: does the transformation preserve the information a person needs to make a decision? A clear screen can still hide an important record.",
+          ],
+        },
+        {
+          heading: "Define what the recorded time means",
+          paras: [
+            "Concurrent AI sessions keep their own durations. Two sessions running during the same hour can add up to more than one hour of session time. The dashboard makes overlap visible so the reader can distinguish recorded activity from elapsed human time.",
+            "Manual entries carry a separate source label. Session attribution connects the selected project to that project's client, keeping those two labels consistent. An unrecognized project can become a draft without an assigned rate, ready for review. These are explicit data rules; session duration alone is not a measure of human effort or a billing agreement.",
+          ],
+        },
+        {
+          heading: "Make the displayed total reproducible",
+          paras: [
+            "The detailed report displays hours to two decimal places and sums those displayed line values. A reader can add the rows and reproduce the total. That choice has a visible tradeoff, demonstrated by a test with twenty entries of 59 seconds each.",
+          ],
+          table: {
+            headers: ["Calculation", "Result"],
+            rows: [
+              ["One 59-second entry, displayed to two decimal hours", "0.02 hours"],
+              ["Twenty displayed entries: 20 × 0.02", "0.40 hours"],
+              ["Underlying duration: 20 × 59 seconds", "1,180 seconds"],
+              ["Underlying duration converted to hours, then rounded once", "0.33 hours"],
+            ],
+          },
+        },
+        {
+          paras: [
+            "Rounding every short line can move the displayed total away from the underlying duration. The report favors a total that matches its visible rows. A requirement for precise aggregate duration would call for a different display or rounding rule. The useful engineering work is to name that choice and test it, rather than leave two competing totals unexplained.",
+          ],
+        },
+        {
+          heading: "Keep an exported report separate from a fresh calculation",
+          paras: [
+            "Export stores a snapshot of the report document. Opening that saved report retrieves the stored document instead of recalculating it against today's records and rules. A fresh draft can reflect later changes without silently replacing the saved document.",
+            "This is a stored export snapshot, not an immutable archive: saved reports can be deleted. The broader lesson is to decide whether a historical view should show what was recorded then or what the system would calculate now.",
+          ],
+        },
+        {
+          heading: "Separate AI-assisted development from AI product features",
+          paras: [
+            "Nicholas used AI assistance while building Timetrack, including work on session attribution and reconciliation. AI assistance is part of the implementation process; the meaning of a session, the display rule, and the checks around them still require engineering judgment.",
+            "The product also has separate, optional model features, including title generation and report narration. A summary can start from recorded labels with blank descriptions and next steps, without inventing a narrative. Generated prose still needs review: a model's sentence is not independent evidence that an outcome occurred.",
+          ],
+        },
+        {
+          heading: "Describe where the data actually goes",
+          paras: [
+            "Timetrack is self-hosted across configured services, rather than entirely on-device. Local hooks collect activity within allowed repository roots; selected metadata goes to a Supabase collector and is shown in a Vercel-hosted dashboard. Default hook capture discards prompt and tool contents, while paths are shortened or aliased rather than removed entirely.",
+            "Optional title generation is off by default. When explicitly enabled, it can send bounded excerpts of human messages to a model provider. Report narration is another optional model feature. Deciding which features to enable requires understanding their inputs and destinations, not relying on a broad privacy label.",
+          ],
+        },
+        {
+          heading: "Explore the interface, then apply the questions to your app",
+          paras: [
+            "The public Timetrack page includes an interactive dashboard with sample data: switch between day and week, then inspect a point on the dial. The other views illustrate the interface. That demonstration is separate from the capture, authentication, and export systems described here; clicking through it does not exercise those integrations.",
+            "For your app, choose one consequential result and trace it back to its inputs. Decide what each label means, which records must survive a summary, how totals are calculated, and what a saved document preserves. A small, repeatable check can make the next product decision much clearer.",
+          ],
+          links: [
+            { label: "Explore Timetrack's sample-data interface", href: "/timetrack/overview" },
+            {
+              label: "How Nick works through these decisions with you",
+              href: new URL("/home/working-through-a-build", BRANDS.personal.url).href,
+            },
+            {
+              label: "Review your AI prototype before launch",
+              href: "/blog/ai-prototype-to-production",
+            },
+            {
+              label: "Work through a real task together",
+              href: "/services/ai-development-coaching",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss the part of your app that needs a closer look →",
         },
       ],
     },
@@ -4403,6 +4590,16 @@ const PROJECT_FRAMING: Record<
             "I designed and built the product end to end. My focus here is how to turn session activity into a view that can be understood and checked, including when several sessions overlap.",
             "The dashboard, audit trail, and reporting views make the source of a total visible. Separating session duration from elapsed human time is part of presenting the data honestly.",
           ],
+          links: [
+            {
+              label: "How I work through a decision like this with you",
+              href: "/home/working-through-a-build",
+            },
+            {
+              label: "Read the full Timetrack walkthrough at FST",
+              href: new URL("/blog/timetrack-session-reporting", BRANDS.fst.url).href,
+            },
+          ],
         },
       ],
     },
@@ -4412,7 +4609,13 @@ const PROJECT_FRAMING: Record<
           heading: "The problem this approach addresses",
           paras: [
             "Operational software often needs to turn activity records into decisions and reports. Timetrack demonstrates dashboards, an audit trail, and reporting rules that keep the calculation inspectable.",
-            "These patterns are useful discussion points for an internal tool or reporting workflow: what counts, which source records support the result, and how a correction affects previously issued reports. Billable time still depends on the client agreement.",
+            "For a founder building an app, these patterns turn a vague requirement into decisions you can check: what counts, which records support the result, and how a correction affects a saved report. Recorded session time remains distinct from human effort and any commercial agreement.",
+          ],
+          links: [
+            {
+              label: "Inside Timetrack: the session records and reporting decisions",
+              href: "/blog/timetrack-session-reporting",
+            },
           ],
         },
       ],

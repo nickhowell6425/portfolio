@@ -17,6 +17,7 @@ Use each page's canonical URL when citing it.
 
 - /: Meet Nick, what working together feels like, experience, and selected work.
 - /home/how-i-work: Direct collaboration, progress, decisions, and handoff with Nicholas.
+- /home/working-through-a-build: A Timetrack example of explaining decisions and checking behavior together.
 - /home/straight-answers: Questions about fit and working with Nicholas.
 - /home/off-clock: Family, travel, and ice hockey.
 
@@ -34,6 +35,7 @@ Use each page's canonical URL when citing it.
 ## Practical blog (Full Stack Technologies only)
 
 - https://fullstacktechnologiesllc.com/blog: Product engineering guides by Nicholas Howell.
+- https://fullstacktechnologiesllc.com/blog/timetrack-session-reporting: Preserve short manual entries, explain parallel sessions, and make report calculations inspectable.
 - https://fullstacktechnologiesllc.com/blog/scope-first-software-release: Scope a complete user journey.
 - https://fullstacktechnologiesllc.com/blog/review-ai-generated-code: Review behavior, access, writes, tests, and recovery.
 - https://fullstacktechnologiesllc.com/blog/repair-or-rewrite: Compare repairs, component replacement, and rewrite.
@@ -49,6 +51,8 @@ The interfaces are shared; their presence is not a claim of adoption or client o
 - /paradox/overview: Interactive storytelling, branching timelines, onboarding, and search.
 - /timetrack/overview: AI session activity, parallel time, audit records, and reports.
   Session time differs from elapsed human time; billing depends on the client agreement.
+  Selected metadata flows from local hooks to user-controlled hosted services. Optional
+  model features have separate data flows; self-hosted does not mean entirely on-device.
 - /constellation/overview: Multi-client priorities, plan branches, forecast ranges, and client status.
 - /helm/overview: One decision at a time across clients and AI agents, with a decision deck, client boards, plain-language rules, and scoped access.
 - /nemo/overview: Portable AI memory: imported ChatGPT, Claude, Gemini and Grok history distilled into identities, assembled into compact context for any model, encrypted on device.
@@ -85,5 +89,5 @@ access decisions, and release authorization.
 
 ## Contact
 
-Use the current site's message drawer or email nickhowell6425@gmail.com. Include the users,
+Use the current site's message drawer or email admin@fullstacktechnologiesllc.com. Include the users,
 problem, current system, and constraints. Commercial studio services are described on FST.
