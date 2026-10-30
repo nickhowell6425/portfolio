@@ -1,11 +1,13 @@
+import Link from "next/link";
 import { MONO } from "@/components/fragments/ui";
 import { FST, PH } from "@/lib/content";
+import { MessageCta } from "./message-cta";
 
 /** FST Home/About hero — the company, its mark, and who leads it. Server-rendered. */
 export function CompanyHero() {
   return (
     <div
-      className="anim-swap portrait-hero"
+      className="anim-swap portrait-hero company-hero"
       style={{
         position: "relative",
         overflow: "hidden",
@@ -31,9 +33,7 @@ export function CompanyHero() {
           pointerEvents: "none",
         }}
       />
-      <div
-        style={{ position: "relative", zIndex: 2, padding: "30px 30px 30px 34px", maxWidth: 580 }}
-      >
+      <div className="portrait-copy" style={{ position: "relative", zIndex: 2, maxWidth: 580 }}>
         <div
           style={{
             fontFamily: MONO,
@@ -44,11 +44,11 @@ export function CompanyHero() {
             color: "var(--accent)",
           }}
         >
-          Product engineering studio
+          AI-assisted development for founders
         </div>
         <div role="img" aria-label={FST.LEGAL} className="company-wordmark" />
         <h1 style={{ margin: "12px 0 0", fontSize: 26, lineHeight: 1.15, letterSpacing: "-.02em" }}>
-          Custom software for founders and small teams
+          Turn your app idea or AI prototype into software people can use.
         </h1>
         <p
           style={{
@@ -60,8 +60,9 @@ export function CompanyHero() {
             textWrap: "pretty",
           }}
         >
-          Web and mobile product development, codebase rescue, and technical leadership. Work
-          directly with {PH.NAME}, from the first technical decision through delivery and handoff.
+          Work directly with {PH.NAME} to scope, build, and launch your product. We use AI openly to
+          reduce repetitive work, with experienced engineering behind the decisions, testing, and
+          release. Build with us, or learn how to take it further yourself.
         </p>
         <div style={{ display: "flex", gap: 7, flexWrap: "wrap", marginTop: 15 }}>
           <span
@@ -81,6 +82,12 @@ export function CompanyHero() {
           >
             Led by {PH.NAME}
           </span>
+        </div>
+        <div className="hero-actions">
+          <MessageCta label="Discuss your app" />
+          <Link href="/services/codebase-rescue" className="hero-secondary">
+            Already have a prototype? →
+          </Link>
         </div>
       </div>
       <span style={{ flex: 1 }} />

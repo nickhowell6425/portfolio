@@ -49,9 +49,20 @@ pnpm build && pnpm start
 
 ## Contact form delivery
 
-Without configuration, messages are validated and logged server-side. To deliver them by
-email, copy `.env.example` to `.env.local` and set `RESEND_API_KEY` (plus optionally
-`CONTACT_TO_EMAIL` / `CONTACT_FROM_EMAIL`).
+To send inquiries, copy `.env.example` to `.env.local` and set `RESEND_API_KEY`, a verified
+`CONTACT_FROM_EMAIL`, and optionally `CONTACT_TO_EMAIL` / `CONTACT_TO_EMAIL_FST`. Without
+the provider key, valid requests return 503. Failed submissions preserve the draft for retry
+and show a direct-email fallback; a success confirms provider acceptance, not inbox delivery.
+
+`pnpm test:contact` checks accepted and failed client responses without sending email. To
+also check the local API, start a server with `RESEND_API_KEY= pnpm dev`, then run
+`CONTACT_CHECK_URL=http://localhost:3000 pnpm test:contact`. This optional API check requires
+an unconfigured local provider. Verify actual inbox receipt separately before promotion.
+
+Contact events use the installed Vercel Analytics integration: `contact_open`,
+`contact_start`, `contact_success`, and `contact_error`. Their properties contain only the
+brand and a resolved canonical source path, never inquiry details or URL query parameters.
+The analytics URL filter also removes query parameters and fragments from automatic event URLs.
 
 ## Notes
 

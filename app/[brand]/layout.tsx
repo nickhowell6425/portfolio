@@ -1,4 +1,4 @@
-import { Analytics } from "@vercel/analytics/next";
+import { SiteAnalytics } from "@/components/providers/site-analytics";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers/providers";
@@ -78,6 +78,7 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
       template: `%s · ${b.short}`,
     },
     description: b.description,
+    verification: { other: { "msvalidate.01": "CE7DBB03C8F5C6C4BD6B341C7DA604DF" } },
     icons: {
       icon: [
         {
@@ -121,7 +122,7 @@ const PERSON = {
   url: BRANDS.personal.url,
   jobTitle: "CTO · Founding Engineer · Senior Full-Stack Developer",
   description:
-    "CTO, founding engineer, and full-stack developer based in Saint Petersburg, Florida, with 10+ years of experience in web and mobile products, backend systems, and technical leadership.",
+    "Hands-on developer, CTO, and founding engineer in Saint Petersburg, Florida. Nicholas works one-on-one with founders on apps, technical decisions, and thoughtful AI-assisted development, backed by 10+ years of product experience.",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Saint Petersburg",
@@ -189,7 +190,7 @@ export default async function RootLayout({ children, params }: Readonly<Props>) 
         <Providers brand={b.id}>
           <WorkspaceShell>{children}</WorkspaceShell>
         </Providers>
-        <Analytics />
+        <SiteAnalytics />
       </body>
     </html>
   );

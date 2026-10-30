@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MONO } from "@/components/fragments/ui";
 import { useContact, type ChatMsg } from "@/components/providers/contact-provider";
 import { useUI } from "@/components/providers/ui-provider";
+import { useBrand } from "@/components/providers/brand-provider";
 import { PH } from "@/lib/content";
 
 const ME_AVATAR: React.CSSProperties = {
@@ -74,17 +75,46 @@ function Message({
 /** Right-hand "Message Nicholas" drawer — not a live chat, replies by email. */
 export function MessageDrawer() {
   const { chatOpen, chatClosing, closeChat } = useUI();
-  const { first, last, email, emailErr, thread, setFirst, setLast, setEmail, send } = useContact();
+  const {
+    first,
+    last,
+    email,
+    emailErr,
+    sending,
+    sendError,
+    thread,
+    setFirst,
+    setLast,
+    setEmail,
+    send,
+    trackContact,
+  } = useContact();
+  const brand = useBrand();
+  const inbox = brand.email;
+  const [draft, setDraft] = useState("");
+  const opened = useRef(false);
+  const started = useRef(false);
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const emailRef = useRef<HTMLInputElement | null>(null);
   const firstRef = useRef<HTMLInputElement | null>(null);
 
-  // auto-focus the email field once the drawer has slid in
+  // Count one open and first interaction per drawer visit, without form contents.
+  useEffect(() => {
+    if (!chatOpen) {
+      opened.current = false;
+      started.current = false;
+    } else if (!opened.current) {
+      opened.current = true;
+      trackContact("contact_open");
+    }
+  }, [chatOpen, trackContact]);
+
+  // Focus the first field once the drawer has slid in.
   useEffect(() => {
     if (!chatOpen) return;
-    const t = setTimeout(() => emailRef.current?.focus(), 320);
+    const t = setTimeout(() => firstRef.current?.focus(), 320);
     return () => clearTimeout(t);
   }, [chatOpen]);
 
@@ -100,15 +130,14 @@ export function MessageDrawer() {
   const youInit = `${first.trim()[0] ?? ""}${last.trim()[0] ?? ""}`.toUpperCase() || "Y";
 
   const onSend = async () => {
-    const el = inputRef.current;
-    if (!el) return;
-    const result = await send(el.value);
+    const result = await send(draft);
     if (result.ok) {
-      el.value = "";
+      setDraft("");
       return;
     }
     if (result.error === "name") firstRef.current?.focus();
     else if (result.error === "email") emailRef.current?.focus();
+    else if (result.error === "empty") inputRef.current?.focus();
   };
 
   const renderMsg = (m: ChatMsg, i: number) =>
@@ -226,13 +255,29 @@ export function MessageDrawer() {
           <Message
             name={PH.FIRST}
             time="pinned"
-            text="Heads-up before you type: this isn't a live chat — nobody's lurking behind it. Leave a note with your email and it lands in my real inbox. I reply personally, usually same day."
+            text={
+              brand.id === "personal"
+                ? "Tell me what you’re working on and where you’re stuck. A few sentences are enough. Leave your email so I can reply personally."
+                : "Tell me who your app is for, what works today, and what is stopping your next step. Leave your email so I can respond. Replies come by email."
+            }
             avStyle={ME_AVATAR}
             avText=""
           />
           {thread.map(renderMsg)}
         </div>
-        <div
+        <form
+          noValidate
+          aria-busy={sending}
+          onSubmit={(event) => {
+            event.preventDefault();
+            void onSend();
+          }}
+          onInput={() => {
+            if (!started.current) {
+              started.current = true;
+              trackContact("contact_start");
+            }
+          }}
           style={{
             padding: "10px 16px 14px",
             flex: "0 0 auto",
@@ -257,11 +302,15 @@ export function MessageDrawer() {
                 onChange={(e) => setFirst(e.target.value)}
                 placeholder="First name"
                 aria-label="First name"
+                name="given-name"
+                autoComplete="given-name"
+                maxLength={100}
+                required
+                disabled={sending}
                 style={{
                   flex: 1,
                   minWidth: 0,
                   border: "none",
-                  outline: "none",
                   background: "transparent",
                   height: 34,
                   padding: "0 14px",
@@ -274,11 +323,14 @@ export function MessageDrawer() {
                 onChange={(e) => setLast(e.target.value)}
                 placeholder="Last name"
                 aria-label="Last name"
+                name="family-name"
+                autoComplete="family-name"
+                maxLength={100}
+                disabled={sending}
                 style={{
                   flex: 1,
                   minWidth: 0,
                   border: "none",
-                  outline: "none",
                   background: "transparent",
                   height: 34,
                   padding: "0 14px",
@@ -292,9 +344,15 @@ export function MessageDrawer() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="your@email.com — so I can reply"
               aria-label="Your email"
+              type="email"
+              name="email"
+              autoComplete="email"
+              maxLength={200}
+              required
+              disabled={sending}
+              aria-invalid={emailErr || undefined}
               style={{
                 border: "none",
-                outline: "none",
                 background: "transparent",
                 height: 34,
                 padding: "0 14px",
@@ -307,25 +365,31 @@ export function MessageDrawer() {
             <div
               style={{ display: "flex", gap: 8, alignItems: "center", padding: "5px 5px 5px 14px" }}
             >
-              <input
+              <textarea
                 ref={inputRef}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") onSend();
-                }}
+                value={draft}
+                onChange={(event) => setDraft(event.target.value)}
                 placeholder="What are you building?"
                 aria-label="Your message"
+                name="message"
+                maxLength={5000}
+                required
+                disabled={sending}
+                rows={3}
                 style={{
                   flex: 1,
                   border: "none",
-                  outline: "none",
                   background: "transparent",
                   minWidth: 0,
-                  height: 34,
+                  minHeight: 78,
+                  resize: "vertical",
+                  fontFamily: "inherit",
                   fontSize: 13.5,
                 }}
               />
               <button
-                onClick={onSend}
+                type="submit"
+                disabled={sending}
                 style={{
                   border: "none",
                   cursor: "pointer",
@@ -338,11 +402,26 @@ export function MessageDrawer() {
                   fontSize: 12.5,
                 }}
               >
-                Send
+                {sending ? "Sending…" : "Send"}
               </button>
             </div>
           </div>
-        </div>
+          {sendError ? (
+            <p role="alert" style={{ fontSize: 12.5, margin: "10px 0", color: "var(--text)" }}>
+              Your note could not be sent. It is still here to retry, or you can email me directly.
+            </p>
+          ) : null}
+          <p style={{ fontSize: 12, margin: "10px 0 0", color: "var(--dim)" }}>
+            Prefer email?{" "}
+            <a href={`mailto:${inbox}`} style={{ color: "var(--text)" }}>
+              {inbox}
+            </a>
+          </p>
+          <p style={{ fontSize: 11.5, margin: "6px 0 0", color: "var(--dim)" }}>
+            Your details and note are used to respond to your inquiry. Do not include passwords or
+            sensitive customer data.
+          </p>
+        </form>
       </aside>
     </>
   );

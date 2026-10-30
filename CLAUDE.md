@@ -25,7 +25,8 @@ CI (`.github/workflows/ci.yml`) runs lint + typecheck → build → route/API sm
 Lighthouse budgets on every push/PR. Vercel deploys via its git integration — CI does
 not deploy.
 
-There is no unit-test suite. Verification is browser-driven:
+Content and contact regression checks run through `pnpm test:content` and
+`pnpm test:contact`; visual verification is browser-driven:
 
 - `/pixel-check` skill — screenshots key routes and compares against approved references.
 - `audit-runner` agent — Lighthouse vs recorded baselines (see `.claude/agents/audit-runner.md`).
@@ -91,7 +92,7 @@ toast) are siblings of the shell; the shell gets `inert` while any is open.
 open/close state, global keyboard (⌘K, `/`, Escape priority order), toasts, and the
 per-workspace last-visited-channel memory the rail uses. `contact-provider` owns the message
 thread + POST to `/api/contact` (zod-validated, rate-limited, honeypot; Resend when
-`RESEND_API_KEY` is set, otherwise logs).
+`RESEND_API_KEY` is set, otherwise returns 503 without logging the message).
 
 **Animation choreography** is remount-driven, defined in `app/globals.css`:
 

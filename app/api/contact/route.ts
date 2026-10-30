@@ -62,23 +62,27 @@ export async function POST(req: Request) {
     ];
 
   const apiKey = process.env.RESEND_API_KEY;
-  if (apiKey) {
+  if (!apiKey) {
+    return NextResponse.json({ ok: false, error: "Email unavailable" }, { status: 503 });
+  }
+
+  try {
     const { Resend } = await import("resend");
     const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>",
       to: process.env[brand.inboxEnv] ?? brand.email,
       replyTo: email,
       subject: `${brand.short} message from ${fullName}`,
       text: `From: ${fullName} <${email}>\n\n${message}`,
     });
-    if (error) {
-      console.error("[contact] resend error:", error);
+    if (error || !data?.id) {
+      console.error("[contact] email provider did not accept message");
       return NextResponse.json({ ok: false, error: "Send failed" }, { status: 502 });
     }
-  } else {
-    // No email provider configured — log so messages aren't silently dropped in dev.
-    console.log(`[contact:${brand.id}] ${fullName} <${email}>: ${message}`);
+  } catch {
+    console.error("[contact] email provider request failed");
+    return NextResponse.json({ ok: false, error: "Send failed" }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true });

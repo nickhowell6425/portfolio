@@ -228,7 +228,7 @@ export default async function WorkspacePage({ params }: Props) {
   if (!resolved) notFound();
   const { ws, itemId, item } = resolved;
   if (slug?.length === 2 && hrefFor(ws.id, itemId) !== `/${slug.join("/")}`) {
-    redirect(hrefFor(ws.id, itemId));
+    permanentRedirect(hrefFor(ws.id, itemId));
   }
 
   if (item.type === "demo")

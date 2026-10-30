@@ -1,6 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
 import { MONO } from "@/components/fragments/ui";
 import { PH } from "@/lib/content";
+import { MessageCta } from "./message-cta";
 
 /** Home/About hero — the person behind the products. Server-rendered. */
 export function PortraitHero() {
@@ -32,9 +34,7 @@ export function PortraitHero() {
           pointerEvents: "none",
         }}
       />
-      <div
-        style={{ position: "relative", zIndex: 2, padding: "30px 30px 30px 34px", maxWidth: 580 }}
-      >
+      <div className="portrait-copy" style={{ position: "relative", zIndex: 2, maxWidth: 580 }}>
         <div
           style={{
             fontFamily: MONO,
@@ -45,7 +45,7 @@ export function PortraitHero() {
             color: "var(--accent)",
           }}
         >
-          The person behind the products
+          {PH.NAME} · Hands-on developer
         </div>
         <h1
           style={{
@@ -56,7 +56,7 @@ export function PortraitHero() {
             lineHeight: 1.04,
           }}
         >
-          {PH.NAME} — full-stack developer & technical leader
+          A technical partner you can talk things through with.
         </h1>
         <p
           style={{
@@ -68,9 +68,9 @@ export function PortraitHero() {
             textWrap: "pretty",
           }}
         >
-          I help founders and small teams build web and mobile products, improve existing codebases,
-          and make technical decisions. Work directly with a CTO and founding engineer with{" "}
-          {PH.YEARS}+ years of experience, based in Saint Petersburg, Florida.
+          Hey, I’m Nick. I work one-on-one with founders to turn ideas into working products. I
+          write the code, explain the tradeoffs, and keep you in the loop—including where AI helps
+          and where it needs a closer look.
         </p>
         <div style={{ display: "flex", gap: 7, flexWrap: "wrap", marginTop: 15 }}>
           <span
@@ -88,8 +88,14 @@ export function PortraitHero() {
               padding: "3px 10px",
             }}
           >
-            CTO · founding engineer
+            {PH.YEARS}+ years building products · Saint Petersburg, FL
           </span>
+        </div>
+        <div className="hero-actions">
+          <MessageCta label="Tell me what you’re working on" />
+          <Link href="/home/how-i-work" className="hero-secondary">
+            What working together looks like →
+          </Link>
         </div>
       </div>
       <span style={{ flex: 1 }} />
