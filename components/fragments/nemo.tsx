@@ -72,20 +72,20 @@ const PROFILES: Profile[] = [
     capture: "Switched the HVAC service window to the first week of each quarter.",
   },
   {
-    name: "Wife",
+    name: "Hockey League",
     hue: -36,
     memories: 27,
     ctxK: 1.9,
     rawK: 26,
-    capture: "Leaning toward a coastal cabin for the March 14 trip.",
+    capture: "Saturday games moved to the 7pm ice slot for the spring season.",
   },
   {
-    name: "Dad",
+    name: "Spring Trip",
     hue: 64,
     memories: 19,
     ctxK: 1.4,
     rawK: 22,
-    capture: "Cardiology follow-up moved to the second week of spring.",
+    capture: "Leaning toward a coastal cabin over a city hotel.",
   },
 ];
 const profByName = (n: string) => PROFILES.find((p) => p.name === n);
@@ -114,7 +114,7 @@ const DOCUMENTS = [
   { name: "RN_rate_card.pdf", kind: "PDF" },
   { name: "Fintech_RFP.pdf", kind: "PDF" },
   { name: "Home_maintenance_log.md", kind: "MD" },
-  { name: "Family_calendar_2026.xlsx", kind: "XLS" },
+  { name: "Trip_itinerary_2026.xlsx", kind: "XLS" },
 ];
 const DOC_TOK = 2.4;
 const DOC_RAW = 18;
