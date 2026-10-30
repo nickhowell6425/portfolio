@@ -7,10 +7,65 @@ import { MONO } from "@/components/fragments/ui";
 import { useBrand, useNav } from "@/components/providers/brand-provider";
 import { useUI } from "@/components/providers/ui-provider";
 import { useHydrated } from "@/hooks/use-hydrated";
-import { BRANDS, brandForHost, otherBrand, BRAND_PARAM, type BrandId } from "@/lib/brands";
+import {
+  BRANDS,
+  brandForHost,
+  otherBrand,
+  BRAND_PARAM,
+  THEME_PARAM,
+  type BrandId,
+} from "@/lib/brands";
 import { ProductMark } from "./product-mark";
 
-const THEME_GLYPH: Record<string, string> = { system: "◐", light: "○", dark: "●" };
+// Sun for light, moon for dark, half-filled circle for system. Inline SVG so
+// they render identically everywhere (text glyphs fell back to arbitrary fonts).
+function ThemeGlyph({ name }: { name: string }) {
+  if (name === "light") {
+    return (
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        style={{ display: "block" }}
+      >
+        <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <path
+          d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.06 1.06M11.54 11.54l1.06 1.06M3.4 12.6l1.06-1.06M11.54 4.46l1.06-1.06"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+  if (name === "dark") {
+    return (
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        style={{ display: "block" }}
+      >
+        <path
+          d="M13.5 9.6A5.75 5.75 0 1 1 6.4 2.5a4.5 4.5 0 0 0 7.1 7.1z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style={{ display: "block" }}>
+      <circle cx="7" cy="7" r="5.75" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M7 1.25a5.75 5.75 0 0 0 0 11.5z" fill="currentColor" />
+    </svg>
+  );
+}
+
 const NEXT_THEME: Record<string, string> = { system: "light", light: "dark", dark: "system" };
 
 function ThemeButton() {
@@ -30,10 +85,12 @@ function ThemeButton() {
         background: "transparent",
         color: "#93a1ba",
         cursor: "pointer",
-        fontSize: 15,
+        display: "grid",
+        placeItems: "center",
+        padding: 0,
       }}
     >
-      {THEME_GLYPH[name] ?? "◐"}
+      <ThemeGlyph name={name} />
     </button>
   );
 }
@@ -64,21 +121,27 @@ function BrandMark({ id, size }: { id: BrandId; size: number }) {
   );
 }
 
-/** The other brand's home page. */
-function switchHref(target: BrandId): string {
+/**
+ * The other brand's home page. The brands live on separate origins, so the
+ * theme choice (localStorage) is carried across as ?theme= and picked up by
+ * THEME_HANDOFF in the layout.
+ */
+function switchHref(target: BrandId, theme: string): string {
   const path = "/";
   const { protocol, hostname, port } = window.location;
   const here = brandForHost(hostname);
   if (!here) return `${path}?${BRAND_PARAM}=${target}`; // previews: one host, cookie-picked
+  const q = `?${THEME_PARAM}=${theme}`;
   if (BRANDS[here].devHosts.includes(hostname)) {
-    return `${protocol}//${BRANDS[target].devHosts[0]}${port ? `:${port}` : ""}${path}`;
+    return `${protocol}//${BRANDS[target].devHosts[0]}${port ? `:${port}` : ""}${path}${q}`;
   }
-  return `${BRANDS[target].url}${path}`;
+  return `${BRANDS[target].url}${path}${q}`;
 }
 
 function BrandMenu({ onClose }: { onClose: () => void }) {
   const brand = useBrand();
   const { goWorkspace } = useUI();
+  const { theme } = useTheme();
   const ref = useRef<HTMLDivElement | null>(null);
   const other = BRANDS[otherBrand(brand.id)];
 
@@ -165,7 +228,7 @@ function BrandMenu({ onClose }: { onClose: () => void }) {
         role="menuitem"
         className="hov-row"
         style={row}
-        href={switchHref(other.id)}
+        href={switchHref(other.id, theme ?? "system")}
         onClick={onClose}
       >
         <BrandMark id={other.id} size={28} />

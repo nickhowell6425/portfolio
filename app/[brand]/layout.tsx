@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers/providers";
 import { WorkspaceShell } from "@/components/shell/workspace-shell";
-import { BRAND_IDS, BRANDS, isBrandId, type BrandId } from "@/lib/brands";
+import { BRAND_IDS, BRANDS, THEME_HANDOFF, isBrandId, type BrandId } from "@/lib/brands";
 import { PH } from "@/lib/content";
 import "../globals.css";
 
@@ -181,6 +181,7 @@ export default async function RootLayout({ children, params }: Readonly<Props>) 
       className={`${schibsted.variable} ${splineMono.variable} ${cormorant.variable} ${b.id === "fst" ? `${inter.variable} ${manrope.variable}` : ""}`}
     >
       <body>
+        <script dangerouslySetInnerHTML={{ __html: THEME_HANDOFF }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSONLD[b.id]) }}

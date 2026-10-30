@@ -395,41 +395,48 @@ function SnakeMark() {
   );
 }
 
-// Coverly's own shield on its blue, with the check drawing itself in.
+// A folded coverage shield with a C cut into its face.
 function CoverlyMark() {
   const id = useId();
   return (
     <svg viewBox="0 0 100 100" fill="none">
       <defs>
-        <linearGradient id={`${id}-face`} x1="0" y1="0" x2="1" y2="1">
-          <stop stopColor="#3b82f6" />
-          <stop offset=".55" stopColor="#2563eb" />
-          <stop offset="1" stopColor="#1e3a8a" />
+        <linearGradient id={`${id}-face`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop stopColor="#60a5fa" />
+          <stop offset=".5" stopColor="#2563eb" />
+          <stop offset="1" stopColor="#172e81" />
         </linearGradient>
-        <radialGradient id={`${id}-glow`} cx="80%" cy="0%" r="70%">
-          <stop stopColor="#7cb0ff" stopOpacity=".55" />
-          <stop offset="1" stopColor="#7cb0ff" stopOpacity="0" />
-        </radialGradient>
+        <linearGradient id={`${id}-shield`} x1="15%" y1="0%" x2="85%" y2="100%">
+          <stop stopColor="#ffffff" />
+          <stop offset=".55" stopColor="#e0efff" />
+          <stop offset="1" stopColor="#93c5fd" />
+        </linearGradient>
+        <filter id={`${id}-shadow`} x="-50%" y="-30%" width="200%" height="180%">
+          <feDropShadow dx="0" dy="5" stdDeviation="3" floodColor="#102467" floodOpacity=".35" />
+        </filter>
+        <path
+          id={`${id}-outline`}
+          d="M50 17L77 27V47C77 64 65 76 50 83C35 76 23 64 23 47V27Z"
+          pathLength="100"
+        />
       </defs>
       <path fill={`url(#${id}-face)`} d="M0 0H100V100H0Z" />
-      <path fill={`url(#${id}-glow)`} d="M0 0H100V100H0Z" />
-      <path
-        d="M50 19l23 7.7v17.2c0 15.3-10 25.2-23 28.7-13-3.5-23-13.4-23-28.7V26.7L50 19z"
-        fill="rgba(255,255,255,.14)"
-        stroke="#fff"
-        strokeWidth="4.6"
-        strokeLinejoin="round"
-      />
-      <path
-        className="cvm-check"
-        d="M39.5 45.5l7.6 7.6 14.4-15.3"
-        pathLength="100"
-        stroke="#fff"
-        strokeWidth="4.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeDasharray="100"
-      />
+      <path d="M0 0H100L0 100Z" fill="#bfdbfe" fillOpacity=".08" />
+      <g className="cvm-shield">
+        <use href={`#${id}-outline`} fill={`url(#${id}-shield)`} filter={`url(#${id}-shadow)`} />
+        <path d="M50 17L77 27V47C77 64 65 76 50 83Z" fill="#2563eb" fillOpacity=".1" />
+        <path d="M63 36A16 16 0 1 0 63 60" stroke="#245cce" strokeWidth="8" strokeLinecap="round" />
+        <path d="M50 17L77 27L65 34Z" fill="#fff" fillOpacity=".75" />
+        <use href={`#${id}-outline`} stroke="#fff" strokeOpacity=".45" strokeWidth="1" />
+        <use
+          className="cvm-glint"
+          href={`#${id}-outline`}
+          stroke="#fff"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeDasharray="12 88"
+        />
+      </g>
     </svg>
   );
 }
