@@ -15,7 +15,6 @@ import {
   THEME_PARAM,
   type BrandId,
 } from "@/lib/brands";
-import { navFor } from "@/lib/navigation";
 import { ProductMark } from "./product-mark";
 
 // Sun for light, moon for dark, half-filled circle for system. Inline SVG so
@@ -98,7 +97,7 @@ function ThemeButton() {
 
 // ---- brand switcher -------------------------------------------------------
 // The top tile is the brand's mark. Clicking it opens a small menu: home,
-// or the same page on the other brand's domain.
+// or the other brand's home page.
 
 const MARK_BG: Record<BrandId, string> = {
   personal: "url('/uploads/avatar-circle-96.png') center/cover no-repeat, #1c2435",
@@ -123,12 +122,12 @@ function BrandMark({ id, size }: { id: BrandId; size: number }) {
 }
 
 /**
- * The same page on the other brand's front door (home if it has no such page).
- * The brands live on separate origins, so the theme choice (localStorage) is
- * carried across as ?theme= and picked up by THEME_HANDOFF in the layout.
+ * The other brand's home page. The brands live on separate origins, so the
+ * theme choice (localStorage) is carried across as ?theme= and picked up by
+ * THEME_HANDOFF in the layout.
  */
-function switchHref(target: BrandId, pathname: string, theme: string): string {
-  const path = navFor(target).resolvePathname(pathname) ? pathname : "/";
+function switchHref(target: BrandId, theme: string): string {
+  const path = "/";
   const { protocol, hostname, port } = window.location;
   const here = brandForHost(hostname);
   if (!here) return `${path}?${BRAND_PARAM}=${target}`; // previews: one host, cookie-picked
@@ -141,7 +140,6 @@ function switchHref(target: BrandId, pathname: string, theme: string): string {
 
 function BrandMenu({ onClose }: { onClose: () => void }) {
   const brand = useBrand();
-  const pathname = usePathname();
   const { goWorkspace } = useUI();
   const { theme } = useTheme();
   const ref = useRef<HTMLDivElement | null>(null);
@@ -230,7 +228,7 @@ function BrandMenu({ onClose }: { onClose: () => void }) {
         role="menuitem"
         className="hov-row"
         style={row}
-        href={switchHref(other.id, pathname, theme ?? "system")}
+        href={switchHref(other.id, theme ?? "system")}
         onClick={onClose}
       >
         <BrandMark id={other.id} size={28} />

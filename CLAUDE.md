@@ -51,7 +51,7 @@ URLs never carry the brand. Unknown hosts (Vercel previews) take `?brand=fst|per
 remembered in a cookie. Locally, `fst.localhost:3000` is the FST host. Client code gets the
 brand via `useBrand()` and route resolution via `useNav()` (`components/providers/brand-provider.tsx`)
 — never import a workspace list directly. The rail's top tile is the brand switcher: home, or
-the same path on the other domain. FST tokens are `[data-brand="fst"]` overrides in
+the other domain's home page. FST tokens are `[data-brand="fst"]` overrides in
 `globals.css`; its official light/dark SVG marks and wordmarks are in `public/brand/`. Its brand-kit
 typography is Inter (UI) and Manrope (headings). Each brand’s favicon and Apple touch icon
 live under `public/brand/{personal,fst}/`; `/favicon.ico` follows the host/preview brand via
