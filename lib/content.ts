@@ -29,7 +29,9 @@ export type FragmentId =
   | "voice"
   | "launch"
   | "import"
-  | "grid";
+  | "grid"
+  | "extract"
+  | "ask";
 
 export interface Section {
   heading?: string;
@@ -189,6 +191,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           "go-helm",
           "go-nemo",
           "go-snakenfriends",
+          "go-coverly",
         ],
       },
     ],
@@ -209,7 +212,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               `At AccountTouch, I served as CTO and founding engineer and architected the platform: a cross-platform mobile app, a serverless backend, and a web portal. My ${PH.YEARS}+ years of experience span product architecture, implementation, and technical leadership.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
-              "Explore Paradox for interactive data and onboarding, Timetrack for activity records and reporting, Constellation for prioritization and planning, Helm for decisions across clients and AI agents, Nemo for AI memory you can take into any model, and Snake n Friends for head-to-head mobile play. Each product page explains the decisions and includes interfaces you can explore.",
+              "Explore Paradox for interactive data and onboarding, Timetrack for activity records and reporting, Constellation for prioritization and planning, Helm for decisions across clients and AI agents, Nemo for AI memory you can take into any model, Snake n Friends for head-to-head mobile play, and Coverly for insurance policies you can actually read. Each product page explains the decisions and includes interfaces you can explore.",
             ],
           },
           {
@@ -371,6 +374,12 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         type: "ws",
         ws: "snakenfriends",
         desc: "Classic snake, rebuilt for head-to-head play",
+      },
+      "go-coverly": {
+        label: "Coverly",
+        type: "ws",
+        ws: "coverly",
+        desc: "Every insurance policy, readable and answerable",
       },
     },
   },
@@ -2018,7 +2027,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
           fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
         },
-        next: "paradox",
+        next: "coverly",
       },
       "a-grid": {
         type: "anchor",
@@ -2047,6 +2056,280 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         desc: "Streaks, cards and loadouts",
         page: "overview",
         hash: "friends",
+      },
+    },
+  },
+  {
+    id: "coverly",
+    initials: "CO",
+    name: "Coverly",
+    desc: "Every insurance policy, readable and answerable",
+    status: "insurance · 2026",
+    accent: "#3b82f6",
+    accentInk: "#1d4ed8",
+    groups: [
+      { title: "Project", items: ["overview"] },
+      {
+        title: "Features",
+        items: ["a-extract", "a-ask", "a-wallet", "a-plain", "a-renewal", "a-privacy"],
+      },
+    ],
+    items: {
+      overview: {
+        type: "showcase",
+        label: "Overview",
+        desc: "Every insurance policy, readable and answerable",
+        seoTitle: "Coverly — every insurance policy in one place, with answers on demand",
+        tagline: "Every policy. One place. Answers on demand.",
+        summary:
+          "Coverly, designed and built end to end: a mobile wallet for home, auto, health, life and pet insurance. It reads a declarations page into fields you confirm, explains each policy in plain English, and answers coverage questions with a quote from the page it came from, then tells you who to call and what to say.",
+        cover: {
+          src: "/showcase/coverly/cover.webp",
+          alt: "The Coverly shield and wordmark beside three phone screens: a wallet of home, pet and auto policy passes, a plain-English answer about a kitchen-sink leak citing page 14 of the home policy, and an auto policy’s detail page",
+        },
+        stack: [
+          "Expo",
+          "React Native",
+          "TypeScript",
+          "Expo Router",
+          "Claude API",
+          "Document extraction",
+          "Camera & PDF capture",
+          "On-device encryption",
+          "Face ID",
+          "Push notifications",
+          "RevenueCat",
+          "EAS Build",
+        ],
+        tiles: [
+          {
+            title: "Wallet",
+            line: "Every policy, one stack.",
+            img: "/showcase/coverly/cover.webp",
+            target: "wallet",
+            lead: true,
+          },
+          {
+            title: "Add a policy",
+            line: "Read in, checked by you.",
+            img: "/showcase/coverly/review.webp",
+            target: "extract",
+            contain: true,
+          },
+          {
+            title: "Ask",
+            line: "Answers that cite the page.",
+            img: "/showcase/coverly/answer.webp",
+            target: "ask",
+            contain: true,
+          },
+          {
+            title: "Plain English",
+            line: "What you’re actually covered for.",
+            img: "/showcase/coverly/detail.webp",
+            target: "plain",
+            contain: true,
+          },
+          {
+            title: "Renewals",
+            line: "Thirty days’ notice.",
+            img: "/showcase/coverly/renewal.webp",
+            target: "renewal",
+            contain: true,
+          },
+          {
+            title: "Privacy",
+            line: "Never sold, never shared.",
+            img: "/showcase/coverly/settings.webp",
+            target: "privacy",
+            contain: true,
+          },
+        ],
+        sections: [
+          {
+            id: "extract",
+            kicker: "Add a policy",
+            title: "From paperwork to fields you can check.",
+            line: "Upload a PDF, scan the paper or forward the email. Coverly reads the declarations page field by field, then hands it back for review, with anything it’s less sure of marked in amber. Try it.",
+            points: [
+              "Carrier, limits, deductible, premium, renewal and contacts",
+              "Lower-confidence fields flagged for a second look",
+              "Nothing is saved until you confirm",
+            ],
+            media: {
+              frag: "extract",
+              poster: { src: "/showcase/coverly/extract-poster.webp", width: 360, height: 363 },
+            },
+          },
+          {
+            id: "ask",
+            kicker: "Ask Coverly",
+            title: "Answers that show their source.",
+            line: "Ask a plain question across every policy. The answer names the policy it used, quotes the language and page, pulls out the numbers that matter and, for a claim, gives you the number to call and what to say. Try it.",
+            points: [
+              "Every answer cites your own documents",
+              "Deductibles and limits pulled out as numbers",
+              "A script ready for the claims call",
+            ],
+            media: {
+              frag: "ask",
+              poster: { src: "/showcase/coverly/ask-poster.webp", width: 360, height: 424 },
+            },
+          },
+          {
+            id: "wallet",
+            kicker: "Wallet",
+            title: "Every policy in one stack.",
+            line: "Policies sit together like passes in a wallet, each in its own color, with the next renewal and the total yearly premium at the top. The one renewing soonest opens first, with its claims line one tap away.",
+            points: [
+              "Home, auto, health, life and pet side by side",
+              "Total premium across every policy",
+              "Call claims straight from the pass",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/coverly/wallet.webp",
+                  alt: "Your wallet: three policies totalling $3,508 a year, stacked passes for Cascade Mutual home and HappyTails pet, and an open Meridian auto pass renewing in 26 days with its policy number and a Call claims button",
+                  width: 780,
+                  height: 1688,
+                },
+              ],
+            },
+          },
+          {
+            id: "plain",
+            kicker: "Plain English",
+            title: "What you’re covered for, in a paragraph.",
+            line: "Each policy opens with a short explanation of what it pays for and what you pay first, then the four numbers worth knowing, the claims line, your agent and the original document.",
+            points: [
+              "A summary written for people, not underwriters",
+              "How far through the policy year you are",
+              "The original document kept alongside",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/coverly/detail.webp",
+                  alt: "Meridian auto policy detail: renews in 26 days, a plain-English summary of liability, collision and theft coverage after a $500 deductible, key numbers, the claims line and the agent",
+                  width: 780,
+                  height: 1688,
+                },
+              ],
+            },
+          },
+          {
+            id: "renewal",
+            kicker: "Renewals",
+            title: "No more surprise auto-charges.",
+            line: "Thirty days before a policy renews, Coverly says when and how much will be charged, so there’s time to review the coverage or shop for quotes.",
+            points: [
+              "A reminder for every policy",
+              "The amount, not just the date",
+              "Opens straight to the policy",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/coverly/renewal.webp",
+                  alt: "A lock-screen notification from Coverly: the Meridian auto policy renews July 28 and will auto-charge $1,320, with a Review policy button",
+                  width: 780,
+                  height: 1688,
+                },
+              ],
+            },
+          },
+          {
+            id: "privacy",
+            kicker: "Privacy & plans",
+            title: "Your data stays yours.",
+            line: "Documents are encrypted on the device and never sold or shared, so insurers can’t tell you use Coverly. Face ID guards the app, and a policy summary can be exported for a broker when you want quotes.",
+            points: [
+              "Face ID required to open",
+              "Export a summary to share with a broker",
+              "Free for three policies; Pro for unlimited",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/coverly/settings.webp",
+                  alt: "Settings: account, export policy summary, Face ID lock switched on, a note that data is never sold or shared, and an upgrade to Pro at $4.99 a month or $39 a year",
+                  width: 780,
+                  height: 1688,
+                },
+              ],
+            },
+          },
+        ],
+        faq: [
+          {
+            q: "How does Coverly read a policy?",
+            a: "From the declarations page: the summary page every policy has. AI pulls out the carrier, policy number, limits, deductible, premium, renewal date and contacts, then shows you every field to check. Fields it is less sure of are marked, and nothing is saved until you confirm.",
+          },
+          {
+            q: "Where do the answers come from?",
+            a: "Only from your own documents. Each answer names the policy it used and quotes the language and page, so you can check it yourself. It’s guidance, not a coverage decision; your carrier still decides claims.",
+          },
+          {
+            q: "Who can see my policies?",
+            a: "No one but you. Documents are encrypted on your device, Face ID can lock the app, and nothing is sold or shared with insurers.",
+          },
+          {
+            q: "What does it cost?",
+            a: "The free plan holds up to three policies and a few questions a month. Pro is $4.99 a month or $39 a year for unlimited policies and questions.",
+          },
+          {
+            q: "What kinds of insurance does it handle?",
+            a: "Home, auto, health, life and pet. Each gets its own pass in the wallet, its own plain-English summary and its own renewal reminder.",
+          },
+        ],
+        builtBy: {
+          personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
+          fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
+        },
+        next: "paradox",
+      },
+      "a-extract": {
+        type: "anchor",
+        label: "Add a policy",
+        desc: "Read in, checked by you",
+        page: "overview",
+        hash: "extract",
+      },
+      "a-ask": {
+        type: "anchor",
+        label: "Ask Coverly",
+        desc: "Answers that cite the page",
+        page: "overview",
+        hash: "ask",
+      },
+      "a-wallet": {
+        type: "anchor",
+        label: "Wallet",
+        desc: "Every policy in one stack",
+        page: "overview",
+        hash: "wallet",
+      },
+      "a-plain": {
+        type: "anchor",
+        label: "Plain English",
+        desc: "What you’re covered for",
+        page: "overview",
+        hash: "plain",
+      },
+      "a-renewal": {
+        type: "anchor",
+        label: "Renewals",
+        desc: "Thirty days’ notice",
+        page: "overview",
+        hash: "renewal",
+      },
+      "a-privacy": {
+        type: "anchor",
+        label: "Privacy & plans",
+        desc: "Encrypted, never shared",
+        page: "overview",
+        hash: "privacy",
       },
     },
   },
@@ -2084,6 +2367,7 @@ const FST_HOME: Workspace = {
         "go-helm",
         "go-nemo",
         "go-snakenfriends",
+        "go-coverly",
       ],
     },
   ],
@@ -2102,7 +2386,7 @@ const FST_HOME: Workspace = {
         {
           heading: "The work speaks first",
           paras: [
-            "The left rail is real work — six products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; Constellation, prioritization and planning across every client; Helm, one decision at a time across every client and AI agent; Nemo, your AI identities, portable to any model; and Snake n Friends, a mobile snake game played head to head. The components inside are live: click through any of them.",
+            "The left rail is real work — seven products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; Constellation, prioritization and planning across every client; Helm, one decision at a time across every client and AI agent; Nemo, your AI identities, portable to any model; Snake n Friends, a mobile snake game played head to head; and Coverly, every insurance policy in one place with answers on demand. The components inside are live: click through any of them.",
           ],
         },
         {
@@ -2254,6 +2538,7 @@ const FST_HOME: Workspace = {
     "go-helm": PERSONAL_HOME.items["go-helm"],
     "go-nemo": PERSONAL_HOME.items["go-nemo"],
     "go-snakenfriends": PERSONAL_HOME.items["go-snakenfriends"],
+    "go-coverly": PERSONAL_HOME.items["go-coverly"],
   },
 };
 
@@ -3757,6 +4042,7 @@ for (const home of [PERSONAL_HOME, FST_HOME]) {
       { label: "Helm: client and agent decisions", href: "/helm/overview" },
       { label: "Nemo: portable AI identities", href: "/nemo/overview" },
       { label: "Snake n Friends: a head-to-head mobile game", href: "/snakenfriends/overview" },
+      { label: "Coverly: insurance policies, answered", href: "/coverly/overview" },
       ...(personal
         ? PERSONAL_RESOURCES
         : [
@@ -3967,6 +4253,34 @@ const PROJECT_FRAMING: Record<
           paras: [
             "Competitive mobile games have to trust a score that was produced on a player’s phone. Snake n Friends demonstrates a deterministic engine the server replays before a result counts, alongside matchmaking, seasons and a store.",
             "The examples provide discussion points for a consumer mobile product: what runs on the device and what the server verifies, how purchases are granted once even when the store calls back twice, and how a release reaches nine languages.",
+          ],
+        },
+      ],
+    },
+  },
+  coverly: {
+    personal: {
+      seoTitle: "Coverly — my approach to AI answers you can check against the policy",
+      summary:
+        "I designed and built Coverly, a mobile wallet for every insurance policy. Explore my approach to reading documents into fields people confirm, answers that quote the page they came from, and a privacy model where insurers never see the data.",
+      tagline: "My approach to AI that shows its source.",
+      context: [
+        {
+          heading: "My contribution and decisions",
+          paras: [
+            "I designed and built Coverly end to end: capture and document extraction, the review step, the wallet and policy pages, cited answers, renewal reminders, Face ID and the subscription.",
+            "The central decision is that the AI never has the last word. Extraction is handed back for review with its uncertain fields marked, and every answer quotes the policy language and page it relied on, so a person can check it before acting on it.",
+          ],
+        },
+      ],
+    },
+    fst: {
+      context: [
+        {
+          heading: "The problem this approach addresses",
+          paras: [
+            "Insurance documents are long, scattered across inboxes and drawers, and hard to read when something has just gone wrong. Coverly demonstrates turning them into structured, confirmed records and answering questions from them with citations.",
+            "The examples provide discussion points for an AI product in a regulated area: where a person confirms what the model extracted, how answers are grounded in and traced to source documents, and how sensitive data is kept on the device.",
           ],
         },
       ],

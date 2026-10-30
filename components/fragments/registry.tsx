@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import type { FragmentId } from "@/lib/content";
 import { PlanBranches, RankQueue, ShipForecast } from "./constellation";
+import { CoverlyAsk, CoverlyExtract } from "./coverly";
 import { HelmDeck, HelmRule, HelmVoice } from "./helm";
 import { NemoImport, NemoLaunch } from "./nemo";
 import { BranchCards, SignInGateway, TimelineSpine } from "./paradox";
@@ -23,4 +24,6 @@ export const FRAGMENT_COMPONENTS: Record<FragmentId, ComponentType> = {
   launch: NemoLaunch,
   import: NemoImport,
   grid: SnakeGrid,
+  extract: CoverlyExtract,
+  ask: CoverlyAsk,
 };

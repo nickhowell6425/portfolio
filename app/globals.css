@@ -477,6 +477,39 @@ input::placeholder {
     opacity: 1;
   }
 }
+/* Coverly's check draws itself inside the shield, then holds. */
+.cvm-check {
+  animation: cvmCheck 4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes cvmCheck {
+  0%,
+  8% {
+    stroke-dashoffset: 100;
+  }
+  32%,
+  86% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -100;
+  }
+}
+/* Coverly's typing dots while an answer is read from the policies. */
+.cv-dot {
+  animation: cvDot 1s ease-in-out infinite;
+}
+@keyframes cvDot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
 @keyframes hmBreathe {
   0%,
   100% {

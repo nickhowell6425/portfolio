@@ -49,6 +49,7 @@ The interfaces are shared; their presence is not a claim of adoption or client o
 - /helm/overview: One decision at a time across clients and AI agents, with a decision deck, client boards, plain-language rules, and scoped access.
 - /nemo/overview: Portable AI memory: imported ChatGPT, Claude, Gemini and Grok history distilled into identities, assembled into compact context for any model, encrypted on device.
 - /snakenfriends/overview: Mobile snake game: a 60-sector campaign, ranked 1v1 arena series, and a deterministic engine whose runs are replayed on the server before a score counts.
+- /coverly/overview: Insurance policy wallet: declarations pages read into fields you confirm, plain-English summaries, answers that quote the policy page they came from, and renewal reminders.
 
 ## AI playbook (Full Stack Technologies only)
 
