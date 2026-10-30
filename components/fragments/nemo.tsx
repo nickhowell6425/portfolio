@@ -40,7 +40,7 @@ interface Profile {
 
 const PROFILES: Profile[] = [
   {
-    name: "Nick Howell",
+    name: "Alex Rivera",
     hue: 0,
     memories: 134,
     ctxK: 6.4,
@@ -48,7 +48,7 @@ const PROFILES: Profile[] = [
     capture: "Keep weekly planning to 20 minutes, Monday mornings.",
   },
   {
-    name: "Full Stack Technologies",
+    name: "Northwind Studio",
     hue: -18,
     memories: 58,
     ctxK: 5.1,
@@ -56,12 +56,12 @@ const PROFILES: Profile[] = [
     capture: "Moving new clients to fixed-bid over time-and-materials.",
   },
   {
-    name: "TwigGlue",
+    name: "Lumen",
     hue: 22,
     memories: 41,
     ctxK: 3.4,
     rawK: 121,
-    capture: "Supplier quoted a six-week lead time on carbon stock.",
+    capture: "Supplier quoted a six-week lead time on aluminum stock.",
   },
   {
     name: "Home Concierge",
@@ -94,25 +94,25 @@ const KITS = [
   {
     id: "kit1",
     name: "Business Strategy",
-    profiles: ["Full Stack Technologies"],
+    profiles: ["Northwind Studio"],
     fromK: 540,
     toK: 14.221,
   },
   {
     id: "kit2",
-    name: "React Native Consulting",
-    profiles: ["Full Stack Technologies"],
+    name: "Studio Consulting",
+    profiles: ["Northwind Studio"],
     fromK: 240,
     toK: 7.2,
   },
-  { id: "kit3", name: "TwigGlue Product Brief", profiles: ["TwigGlue"], fromK: 360, toK: 8.4 },
-  { id: "kit4", name: "Personal Context", profiles: ["Nick Howell"], fromK: 96, toK: 6.4 },
+  { id: "kit3", name: "Lumen Product Brief", profiles: ["Lumen"], fromK: 360, toK: 8.4 },
+  { id: "kit4", name: "Personal Context", profiles: ["Alex Rivera"], fromK: 96, toK: 6.4 },
 ];
 const DOCUMENTS = [
-  { name: "Full Stack_proposal_v4.pdf", kind: "PDF" },
-  { name: "TwigGlue_spec_sheet.pdf", kind: "PDF" },
-  { name: "RN_rate_card.pdf", kind: "PDF" },
-  { name: "Fintech_RFP.pdf", kind: "PDF" },
+  { name: "Northwind_proposal_v4.pdf", kind: "PDF" },
+  { name: "Lumen_spec_sheet.pdf", kind: "PDF" },
+  { name: "Rate_card.pdf", kind: "PDF" },
+  { name: "Clinic_RFP.pdf", kind: "PDF" },
   { name: "Home_maintenance_log.md", kind: "MD" },
   { name: "Trip_itinerary_2026.xlsx", kind: "XLS" },
 ];
@@ -278,7 +278,7 @@ interface Capture {
 
 const LAUNCH_DEFAULTS = {
   phase: "assemble" as Phase,
-  profs: ["Full Stack Technologies"] as string[],
+  profs: ["Northwind Studio"] as string[],
   kits: [] as string[],
   docs: [] as string[],
   net: "gpt" as Src,
