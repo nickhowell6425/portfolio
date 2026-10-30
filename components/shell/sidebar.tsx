@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useLayoutEffect, useRef } from "react";
 import { MONO } from "@/components/fragments/ui";
 import { useUI } from "@/components/providers/ui-provider";
 import { useActiveSection } from "@/hooks/use-active-section";
@@ -13,44 +12,6 @@ import { PH, accentText } from "@/lib/content";
 import { hrefFor } from "@/lib/navigation";
 
 const itemDelay = (si: number) => 70 + si * 26;
-
-const DESC_SIZE = 12.5;
-const DESC_MIN = 9.5;
-
-/** The workspace tagline on one line: shrinks only as far as needed to fit the header. */
-function FitLine({ text }: { text: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const fit = () => {
-      el.style.fontSize = `${DESC_SIZE}px`;
-      const ratio = el.clientWidth / el.scrollWidth;
-      if (ratio < 1) el.style.fontSize = `${Math.max(DESC_MIN, DESC_SIZE * ratio - 0.05)}px`;
-    };
-    fit();
-    const ro = new ResizeObserver(fit);
-    ro.observe(el);
-    document.fonts?.ready.then(fit);
-    return () => ro.disconnect();
-  }, [text]);
-  return (
-    <div
-      ref={ref}
-      style={{
-        color: "var(--dim)",
-        fontSize: DESC_SIZE,
-        lineHeight: 1.25,
-        marginTop: 1,
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-      }}
-    >
-      {text}
-    </div>
-  );
-}
 
 /** Per-workspace project panel: identity, stack tags, and the nav. */
 export function Sidebar() {
@@ -129,7 +90,21 @@ export function Sidebar() {
         <div style={{ fontWeight: 800, fontSize: 16.5, letterSpacing: "-.01em", lineHeight: 1.2 }}>
           {W.name}
         </div>
-        {W.desc && <FitLine text={W.desc} />}
+        {W.desc && (
+          <div
+            style={{
+              color: "var(--dim)",
+              fontSize: 12.5,
+              lineHeight: 1.25,
+              marginTop: 1,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {W.desc}
+          </div>
+        )}
       </div>
       <div style={{ flex: 1, overflowY: "auto", padding: "10px 8px 14px" }}>
         {W.groups.map((g) => (
