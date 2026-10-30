@@ -10,7 +10,7 @@ export const PH = {
   NAME: "Nicholas Howell",
   FIRST: "Nicholas",
   YEARS: "10",
-  EMAIL: "nickhowell6425@gmail.com",
+  EMAIL: BRANDS.personal.email,
   STATUS_LINE: "One-on-one · hands-on engineering · clear next steps",
   FOOTER: "⌘K — jump to any project or feature",
 } as const;
