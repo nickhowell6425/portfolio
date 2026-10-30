@@ -100,6 +100,24 @@ for (const host of [personalHost, fstHost]) {
     home.includes('aria-label="HM — Helm"'),
     "The project rail must preserve the Helm workspace",
   );
+  const homeAnchors = [...home.matchAll(/<a\b[^>]*>/g)].map((match) => match[0]);
+  assert(
+    homeAnchors.some(
+      (tag) =>
+        tag.includes('aria-label="TT — Timetrack"') && tag.includes('href="/timetrack/overview"'),
+    ),
+    `${host}: project rail navigation needs a canonical anchor destination`,
+  );
+  const sidebarPaths =
+    host === fstHost
+      ? ["/blog", "/ai", "/prompts", "/services/product-development"]
+      : ["/timetrack/overview"];
+  for (const path of sidebarPaths) {
+    assert(
+      homeAnchors.some((tag) => tag.includes("anim-side-item") && tag.includes(`href="${path}"`)),
+      `${host}: sidebar workspace navigation needs a canonical anchor for ${path}`,
+    );
+  }
   if (host === fstHost) {
     for (const path of ["/blog", "/ai", "/prompts", "/services/product-development"])
       assert(home.includes(`href="${path}"`), `FST home must expose ${path}`);
@@ -174,7 +192,11 @@ for (const host of [personalHost, fstHost]) {
     checked++;
   }
   for (const path of links) await read(path, host);
-  const aliases = [["/home/about", "/"]];
+  const aliases = [
+    ["/home/about", "/"],
+    ["/home", "/"],
+    ["/timetrack", "/timetrack/overview"],
+  ];
   if (host === fstHost)
     aliases.push(["/blog/index", "/blog"], ["/ai/index", "/ai"], ["/prompts/index", "/prompts"]);
   for (const [alias, target] of aliases) {

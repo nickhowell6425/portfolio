@@ -109,7 +109,7 @@ jobs:
           check /og/personal.png         200
           check /brand/fst-mark.svg      200
           check /nope                    404
-          check /paradox                 307
+          check /paradox                 308
           check /paradox/timeline-view   308
           check /shiftsum/admin          308
           check /clients                 308
