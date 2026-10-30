@@ -35,7 +35,7 @@ Use each page's canonical URL when citing it.
 ## Practical blog (Full Stack Technologies only)
 
 - https://fullstacktechnologiesllc.com/blog: Product engineering guides by Nicholas Howell.
-- https://fullstacktechnologiesllc.com/blog/timetrack-session-reporting: Preserve short manual entries, explain parallel sessions, and make report calculations inspectable.
+- https://fullstacktechnologiesllc.com/blog/timetrack-session-reporting: Preserve short manual entries, explain parallel sessions, and keep exported reports available for review.
 - https://fullstacktechnologiesllc.com/blog/scope-first-software-release: Scope a complete user journey.
 - https://fullstacktechnologiesllc.com/blog/review-ai-generated-code: Review behavior, access, writes, tests, and recovery.
 - https://fullstacktechnologiesllc.com/blog/repair-or-rewrite: Compare repairs, component replacement, and rewrite.
