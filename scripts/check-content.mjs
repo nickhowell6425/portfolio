@@ -217,7 +217,7 @@ for (const host of [personalHost, fstHost]) {
   const demo = await read("/paradox/demo", host);
   assert(demo.includes('name="robots" content="noindex'), "Demo wrapper must be noindex");
 }
-for (const product of ["paradox", "timetrack", "constellation", "helm", "nemo"]) {
+for (const product of ["paradox", "timetrack", "constellation", "helm", "nemo", "snakenfriends"]) {
   const path = `/${product}/overview`;
   const personal = await read(path, personalHost);
   const studio = await read(path, fstHost);

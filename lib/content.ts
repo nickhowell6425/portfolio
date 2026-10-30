@@ -28,7 +28,8 @@ export type FragmentId =
   | "rule"
   | "voice"
   | "launch"
-  | "import";
+  | "import"
+  | "grid";
 
 export interface Section {
   heading?: string;
@@ -181,7 +182,14 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
       {
         title: "Explore",
-        items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm", "go-nemo"],
+        items: [
+          "go-paradox",
+          "go-timetrack",
+          "go-constellation",
+          "go-helm",
+          "go-nemo",
+          "go-snakenfriends",
+        ],
       },
     ],
     items: {
@@ -201,7 +209,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               `At AccountTouch, I served as CTO and founding engineer and architected the platform: a cross-platform mobile app, a serverless backend, and a web portal. My ${PH.YEARS}+ years of experience span product architecture, implementation, and technical leadership.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
-              "Explore Paradox for interactive data and onboarding, Timetrack for activity records and reporting, Constellation for prioritization and planning, Helm for decisions across clients and AI agents, and Nemo for AI memory you can take into any model. Each product page explains the decisions and includes interfaces you can explore.",
+              "Explore Paradox for interactive data and onboarding, Timetrack for activity records and reporting, Constellation for prioritization and planning, Helm for decisions across clients and AI agents, Nemo for AI memory you can take into any model, and Snake n Friends for head-to-head mobile play. Each product page explains the decisions and includes interfaces you can explore.",
             ],
           },
           {
@@ -357,6 +365,12 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         type: "ws",
         ws: "nemo",
         desc: "Your AI identities, portable to any model",
+      },
+      "go-snakenfriends": {
+        label: "Snake n Friends",
+        type: "ws",
+        ws: "snakenfriends",
+        desc: "Classic snake, rebuilt for head-to-head play",
       },
     },
   },
@@ -1765,7 +1779,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
           fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
         },
-        next: "paradox",
+        next: "snakenfriends",
       },
       "a-launch": {
         type: "anchor",
@@ -1811,6 +1825,231 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       },
     },
   },
+  {
+    id: "snakenfriends",
+    initials: "SN",
+    name: "Snake n Friends",
+    desc: "Classic snake, rebuilt for head-to-head play",
+    status: "mobile game · 2026",
+    accent: "#59f425",
+    accentInk: "#2b8a0e",
+    groups: [
+      { title: "Project", items: ["overview"] },
+      {
+        title: "Features",
+        items: ["a-grid", "a-sectors", "a-arena", "a-friends"],
+      },
+    ],
+    items: {
+      overview: {
+        type: "showcase",
+        label: "Overview",
+        desc: "Classic snake, rebuilt for head-to-head play",
+        seoTitle: "Snake n Friends — a mobile snake game with a campaign and ranked 1v1",
+        tagline: "Classic snake, rebuilt for a phone and played head to head.",
+        summary:
+          "Snake n Friends, designed and built end to end: a mobile snake game with a 60-sector campaign and a 1v1 arena where friends and strangers play best-of series for skill rating. Firewalls, glitches and decoy cores make every grid a puzzle, and every run is replayed on the server from its seed and inputs before the score counts.",
+        cover: {
+          src: "/showcase/snakenfriends/cover.webp",
+          alt: "The Snake n Friends pixel logo beside three phone screens: the sector map, a game grid with the snake and a core, and a head-to-head arena with game history",
+        },
+        stack: [
+          "Expo",
+          "React Native",
+          "TypeScript",
+          "React Native Skia",
+          "Reanimated",
+          "Expo Router",
+          "Firebase Auth & Firestore",
+          "Cloud Functions",
+          "RevenueCat",
+          "App Store Connect API",
+          "react-i18next",
+          "Sentry",
+          "EAS Build",
+        ],
+        tiles: [
+          {
+            title: "The grid",
+            line: "Steer, eat, don’t crash.",
+            img: "/showcase/snakenfriends/cover.webp",
+            target: "grid",
+            lead: true,
+          },
+          {
+            title: "Sectors",
+            line: "Sixty levels, three stars each.",
+            img: "/showcase/snakenfriends/sectors.webp",
+            target: "sectors",
+            contain: true,
+          },
+          {
+            title: "Arena",
+            line: "Best-of series, 1v1.",
+            img: "/showcase/snakenfriends/arena.webp",
+            target: "arena",
+            contain: true,
+          },
+          {
+            title: "Home",
+            line: "Rewards, challenges, play.",
+            img: "/showcase/snakenfriends/home.webp",
+            target: "friends",
+            contain: true,
+          },
+          {
+            title: "In game",
+            line: "Score, stars, touch controls.",
+            img: "/showcase/snakenfriends/game.webp",
+            target: "grid",
+            contain: true,
+          },
+          {
+            title: "Replay check",
+            line: "Every run, re-simulated.",
+            img: "/showcase/snakenfriends/grid-poster.webp",
+            target: "grid",
+            contain: true,
+          },
+        ],
+        sections: [
+          {
+            id: "grid",
+            kicker: "The grid",
+            title: "A game you can check.",
+            line: "The engine is a seeded, tick-based simulation: a run is its seed plus the turns you made. Firewalls flash a warning before they go live. Play a round and watch it get replayed. Try it.",
+            points: [
+              "The same seed always produces the same grid",
+              "The server re-runs every run before the score counts",
+              "Drawn on a Skia canvas, glows and all",
+            ],
+            media: {
+              frag: "grid",
+              poster: { src: "/showcase/snakenfriends/grid-poster.webp", width: 340, height: 533 },
+            },
+          },
+          {
+            id: "sectors",
+            kicker: "Campaign",
+            title: "Sixty sectors, one at a time.",
+            line: "The campaign climbs through easy, medium, hard and expert tiers. Each sector has its own firewall layout, earns up to three stars, and unlocks the next.",
+            points: [
+              "Firewalls, glitches and decoy cores raise the stakes",
+              "Stars and best scores saved to your account",
+              "Seasons with a live countdown",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/snakenfriends/sectors.webp",
+                  alt: "The sector map for season 1: Grid Engine cleared with three stars, Byte Lane highlighted as the current sector, and Circuit Path, Node Zero and Pulse Gate locked",
+                  width: 780,
+                  height: 1696,
+                },
+              ],
+            },
+          },
+          {
+            id: "arena",
+            kicker: "Arena",
+            title: "Head to head, a game at a time.",
+            line: "Challenge a friend with an invite code or get matched by rank, then play a series of games in the same arena. Ranked games move your skill rating from Bronze up to Iridescent and the Top 250.",
+            points: [
+              "Wins, score and rating change for both players",
+              "Ranked and casual games in one series",
+              "Matchmaking within your rank band",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/snakenfriends/arena.webp",
+                  alt: "An arena between two players: 2 wins to 3, scores 7 to 11, a 32-point rating gain, a Start game button for game 6, and the history of games 1 to 5",
+                  width: 780,
+                  height: 1688,
+                },
+              ],
+            },
+          },
+          {
+            id: "friends",
+            kicker: "Friends & rewards",
+            title: "Reasons to come back tomorrow.",
+            line: "Daily rewards and challenges sit one tap from Play. Playing a friend every day builds a streak with milestone rewards, and calling cards, themes and power-ups fill out your loadout.",
+            points: [
+              "Friend streaks with milestone rewards",
+              "Calling cards on weekly, monthly and seasonal rotation",
+              "In-app purchases granted on the server, once",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/snakenfriends/home.webp",
+                  alt: "The home screen: player name and sector, a 6 of 180 star count, the pixel logo, Rewards and Challenges buttons, and a large Play button above the Home, Sectors, Arena and Store tabs",
+                  width: 780,
+                  height: 1688,
+                },
+              ],
+            },
+          },
+        ],
+        faq: [
+          {
+            q: "How do you keep scores honest?",
+            a: "The game engine is deterministic. The app sends a run’s seed and inputs, and a Cloud Function replays them on the same engine. The score that counts is the one the server gets.",
+          },
+          {
+            q: "How do arena games work?",
+            a: "Two players share an arena and play a series of games in it. Each game is settled on the server, and ranked games adjust both players’ skill rating with an Elo-style formula.",
+          },
+          {
+            q: "Why Skia instead of plain React Native views?",
+            a: "The grid redraws every tick with glows, particles and shaders. Skia draws it on a GPU-backed canvas, and Reanimated runs the animation off the JavaScript thread, so effects don’t wait on game logic.",
+          },
+          {
+            q: "How are purchases handled?",
+            a: "RevenueCat handles the store. The app asks a Cloud Function to grant the item, and the store’s webhook is a backstop; both write to one ledger, so a purchase is never granted twice.",
+          },
+          {
+            q: "Which languages does it support?",
+            a: "Nine: English, Spanish, French, German, Portuguese, Japanese, Korean, Chinese and Arabic.",
+          },
+        ],
+        builtBy: {
+          personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
+          fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
+        },
+        next: "paradox",
+      },
+      "a-grid": {
+        type: "anchor",
+        label: "The grid",
+        desc: "Play a replayable run",
+        page: "overview",
+        hash: "grid",
+      },
+      "a-sectors": {
+        type: "anchor",
+        label: "Campaign",
+        desc: "Sixty sectors, three stars each",
+        page: "overview",
+        hash: "sectors",
+      },
+      "a-arena": {
+        type: "anchor",
+        label: "Arena",
+        desc: "Ranked 1v1 series",
+        page: "overview",
+        hash: "arena",
+      },
+      "a-friends": {
+        type: "anchor",
+        label: "Friends & rewards",
+        desc: "Streaks, cards and loadouts",
+        page: "overview",
+        hash: "friends",
+      },
+    },
+  },
 ];
 
 const [PERSONAL_HOME, ...PROJECTS] = PERSONAL_WORKSPACES;
@@ -1838,7 +2077,14 @@ const FST_HOME: Workspace = {
     { title: "Resources", items: ["go-services", "go-blog", "go-ai", "go-prompts"] },
     {
       title: "Work",
-      items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm", "go-nemo"],
+      items: [
+        "go-paradox",
+        "go-timetrack",
+        "go-constellation",
+        "go-helm",
+        "go-nemo",
+        "go-snakenfriends",
+      ],
     },
   ],
   items: {
@@ -1856,7 +2102,7 @@ const FST_HOME: Workspace = {
         {
           heading: "The work speaks first",
           paras: [
-            "The left rail is real work — five products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; Constellation, prioritization and planning across every client; Helm, one decision at a time across every client and AI agent; and Nemo, your AI identities, portable to any model. The components inside are live: click through any of them.",
+            "The left rail is real work — six products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; Constellation, prioritization and planning across every client; Helm, one decision at a time across every client and AI agent; Nemo, your AI identities, portable to any model; and Snake n Friends, a mobile snake game played head to head. The components inside are live: click through any of them.",
           ],
         },
         {
@@ -2007,6 +2253,7 @@ const FST_HOME: Workspace = {
     "go-constellation": PERSONAL_HOME.items["go-constellation"],
     "go-helm": PERSONAL_HOME.items["go-helm"],
     "go-nemo": PERSONAL_HOME.items["go-nemo"],
+    "go-snakenfriends": PERSONAL_HOME.items["go-snakenfriends"],
   },
 };
 
@@ -3509,6 +3756,7 @@ for (const home of [PERSONAL_HOME, FST_HOME]) {
       { label: "Constellation: multi-client planning", href: "/constellation/overview" },
       { label: "Helm: client and agent decisions", href: "/helm/overview" },
       { label: "Nemo: portable AI identities", href: "/nemo/overview" },
+      { label: "Snake n Friends: a head-to-head mobile game", href: "/snakenfriends/overview" },
       ...(personal
         ? PERSONAL_RESOURCES
         : [
@@ -3691,6 +3939,34 @@ const PROJECT_FRAMING: Record<
           paras: [
             "People who work across several AI models end up repeating the same background in each one, and the context they build lives in separate silos. Nemo demonstrates importing that history, organizing it into identities and assembling a compact package for any model.",
             "The examples provide discussion points for an AI product: what gets distilled and how it is traced to its sources, what leaves the device and when, and how learning from a model is reviewed before it is kept.",
+          ],
+        },
+      ],
+    },
+  },
+  snakenfriends: {
+    personal: {
+      seoTitle: "Snake n Friends — my approach to a fair, replayable mobile game",
+      summary:
+        "I designed and built Snake n Friends, a mobile snake game with a 60-sector campaign and ranked 1v1 arenas. Explore my approach to a deterministic engine the server can replay, head-to-head series, and rewards that are granted exactly once.",
+      tagline: "My approach to a mobile game where every score can be checked.",
+      context: [
+        {
+          heading: "My contribution and decisions",
+          paras: [
+            "I designed and built the game end to end: the engine and renderer, the campaign and arena, the Cloud Functions behind them, purchases, notifications and the admin tools for the store.",
+            "The central decision is a deterministic engine. Because a run is just a seed and a list of turns, the server can replay it to settle scores and rating changes, and the same tests that pin the engine down protect both the app and the backend.",
+          ],
+        },
+      ],
+    },
+    fst: {
+      context: [
+        {
+          heading: "The problem this approach addresses",
+          paras: [
+            "Competitive mobile games have to trust a score that was produced on a player’s phone. Snake n Friends demonstrates a deterministic engine the server replays before a result counts, alongside matchmaking, seasons and a store.",
+            "The examples provide discussion points for a consumer mobile product: what runs on the device and what the server verifies, how purchases are granted once even when the store calls back twice, and how a release reaches nine languages.",
           ],
         },
       ],

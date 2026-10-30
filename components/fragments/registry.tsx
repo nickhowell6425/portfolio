@@ -4,6 +4,7 @@ import { PlanBranches, RankQueue, ShipForecast } from "./constellation";
 import { HelmDeck, HelmRule, HelmVoice } from "./helm";
 import { NemoImport, NemoLaunch } from "./nemo";
 import { BranchCards, SignInGateway, TimelineSpine } from "./paradox";
+import { SnakeGrid } from "./snake";
 import { DayDial, SplitFlapSignIn } from "./timetrack";
 
 /** Live fragment implementations, keyed by fragment id. */
@@ -21,4 +22,5 @@ export const FRAGMENT_COMPONENTS: Record<FragmentId, ComponentType> = {
   voice: HelmVoice,
   launch: NemoLaunch,
   import: NemoImport,
+  grid: SnakeGrid,
 };
