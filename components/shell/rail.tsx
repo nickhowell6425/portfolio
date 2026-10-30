@@ -11,24 +11,43 @@ import { BRANDS, brandForHost, otherBrand, BRAND_PARAM, type BrandId } from "@/l
 import { navFor } from "@/lib/navigation";
 import { ProductMark } from "./product-mark";
 
-// The prototype drew these as text glyphs (◐ ○ ●), which fall back to whatever
-// font has them and sit off-centre or swap to emoji on some platforms. Same
-// shapes, drawn as SVG so they render identically everywhere.
+// Sun for light, moon for dark, half-filled circle for system. Inline SVG so
+// they render identically everywhere (text glyphs fell back to arbitrary fonts).
 function ThemeGlyph({ name }: { name: string }) {
+  if (name === "light") {
+    return (
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style={{ display: "block" }}>
+        <circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <path
+          d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.06 1.06M11.54 11.54l1.06 1.06M3.4 12.6l1.06-1.06M11.54 4.46l1.06-1.06"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    );
+  }
+  if (name === "dark") {
+    return (
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" style={{ display: "block" }}>
+        <path
+          d="M13.5 9.6A5.75 5.75 0 1 1 6.4 2.5a4.5 4.5 0 0 0 7.1 7.1z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style={{ display: "block" }}>
-      <circle
-        cx="7"
-        cy="7"
-        r="5.75"
-        fill={name === "dark" ? "currentColor" : "none"}
-        stroke="currentColor"
-        strokeWidth="1.5"
-      />
-      {name === "system" ? <path d="M7 1.25a5.75 5.75 0 0 0 0 11.5z" fill="currentColor" /> : null}
+      <circle cx="7" cy="7" r="5.75" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M7 1.25a5.75 5.75 0 0 0 0 11.5z" fill="currentColor" />
     </svg>
   );
 }
+
 const NEXT_THEME: Record<string, string> = { system: "light", light: "dark", dark: "system" };
 
 function ThemeButton() {
