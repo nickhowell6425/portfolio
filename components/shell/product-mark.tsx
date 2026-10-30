@@ -289,47 +289,26 @@ function HelmMark() {
   );
 }
 
-// Nemo's faceted amethyst gem on obsidian; a glint crosses it now and then.
+// Separate memories merge into one shared context.
 function NemoMark() {
   const id = useId();
-  const gem = "M50 14L82 39L70 88H30L18 39Z";
   return (
     <svg viewBox="0 0 100 100" fill="none">
       <defs>
-        <radialGradient id={`${id}-face`} cx="70%" cy="10%" r="95%">
-          <stop stopColor="#2f2650" />
-          <stop offset=".55" stopColor="#16121f" />
-          <stop offset="1" stopColor="#0d0b13" />
+        <radialGradient id={`${id}-face`} cx="30%" cy="15%" r="100%">
+          <stop stopColor="#302546" />
+          <stop offset="1" stopColor="#100e19" />
         </radialGradient>
-        <linearGradient id={`${id}-glint`} x1="0" y1="0" x2="1" y2="0">
-          <stop stopColor="#fff" stopOpacity="0" />
-          <stop offset=".5" stopColor="#fff" stopOpacity=".55" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        <linearGradient id={`${id}-memory`} x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#eee5ff" />
+          <stop offset="1" stopColor="#af91ed" />
         </linearGradient>
-        <clipPath id={`${id}-gem`}>
-          <path d={gem} />
-        </clipPath>
       </defs>
       <path fill={`url(#${id}-face)`} d="M0 0H100V100H0Z" />
-      <path d={gem} fill="#735ed1" stroke="#fff" strokeOpacity=".28" strokeWidth="1.6" />
-      <path d="M50 14L82 39L50 48L18 39Z" fill="#9b8af5" fillOpacity=".95" />
-      <path d="M50 48L70 88H30Z" fill="#5a46b4" fillOpacity=".55" />
-      <path
-        d="M50 14V48L70 88M50 48L30 88M18 39L50 48L82 39"
-        stroke="#fff"
-        strokeOpacity=".3"
-        strokeWidth="1.4"
-      />
-      <g clipPath={`url(#${id}-gem)`}>
-        <rect
-          className="nmk-glint"
-          x="-30"
-          y="0"
-          width="22"
-          height="100"
-          fill={`url(#${id}-glint)`}
-          transform="skewX(-18)"
-        />
+      <g fill={`url(#${id}-memory)`}>
+        <circle className="nmk-piece nmk-top" cx="50" cy="50" r="15" />
+        <circle className="nmk-piece nmk-left" cx="50" cy="50" r="15" />
+        <circle className="nmk-piece nmk-right" cx="50" cy="50" r="15" />
       </g>
     </svg>
   );
