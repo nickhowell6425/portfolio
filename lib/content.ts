@@ -26,7 +26,9 @@ export type FragmentId =
   | "forecast"
   | "deck"
   | "rule"
-  | "voice";
+  | "voice"
+  | "launch"
+  | "import";
 
 export interface Section {
   heading?: string;
@@ -181,7 +183,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       { title: "Profile", items: ["about", "how-i-work", "straight-answers", "off-clock"] },
       {
         title: "Explore",
-        items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm"],
+        items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm", "go-nemo"],
       },
     ],
     items: {
@@ -201,7 +203,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               `At AccountTouch, I served as CTO and founding engineer and architected the platform: a cross-platform mobile app, a serverless backend, and a web portal. My ${PH.YEARS}+ years of experience span product architecture, implementation, and technical leadership.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
-              "Explore Paradox for interactive data and onboarding, Timetrack for activity records and reporting, Constellation for prioritization and planning, and Helm for decisions across clients and AI agents. Each product page explains the decisions and includes interfaces you can explore.",
+              "Explore Paradox for interactive data and onboarding, Timetrack for activity records and reporting, Constellation for prioritization and planning, Helm for decisions across clients and AI agents, and Nemo for AI memory you can take into any model. Each product page explains the decisions and includes interfaces you can explore.",
             ],
           },
           {
@@ -351,6 +353,12 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         type: "ws",
         ws: "helm",
         desc: "One decision at a time, every client and agent",
+      },
+      "go-nemo": {
+        label: "Nemo",
+        type: "ws",
+        ws: "nemo",
+        desc: "Your AI identities, portable to any model",
       },
     },
   },
@@ -1496,7 +1504,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
           fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
         },
-        next: "paradox",
+        next: "nemo",
       },
       "a-deck": {
         type: "anchor",
@@ -1542,6 +1550,274 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       },
     },
   },
+  {
+    id: "nemo",
+    initials: "NE",
+    name: "Nemo",
+    desc: "Your AI identities, portable to any model",
+    status: "AI memory · 2026",
+    accent: "#8979e4",
+    accentInk: "#624bbc",
+    groups: [
+      { title: "Project", items: ["overview"] },
+      {
+        title: "Features",
+        items: ["a-launch", "a-import", "a-knows", "a-growth", "a-kits", "a-launches"],
+      },
+    ],
+    items: {
+      overview: {
+        type: "showcase",
+        label: "Overview",
+        desc: "Your AI identities, portable to any model",
+        seoTitle: "Nemo — your AI memory, as identities you can take into any model",
+        tagline: "Your AI memory, kept in one place and carried into any model.",
+        summary:
+          "Nemo, designed and built end to end: it imports your ChatGPT, Claude, Gemini and Grok history, distills it into identities for the people, companies and projects you talk about, and assembles a compact copy of any of them to launch into whichever model you choose. What you learn there comes back as new memories, and everything stays encrypted on your device.",
+        cover: {
+          src: "/showcase/nemo/cover.webp",
+          alt: "Nemo’s identity page for Full Stack Technologies: memories, launches and context size, a health line, what Nemo knows grouped into pricing, pipeline, hiring and positioning, and a portable-context card with a Launch button",
+        },
+        stack: [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Zod",
+          "Claude, OpenAI, Gemini & Grok APIs",
+          "Conversation export parsing",
+          "On-device encryption",
+          "Vercel",
+          "GitHub Actions CI/CD",
+        ],
+        tiles: [
+          {
+            title: "Identity",
+            line: "Who and what Nemo knows.",
+            img: "/showcase/nemo/cover.webp",
+            target: "knows",
+            lead: true,
+          },
+          {
+            title: "Knows",
+            line: "Understanding, not storage.",
+            img: "/showcase/nemo/knows.webp",
+            target: "knows",
+          },
+          {
+            title: "Growth",
+            line: "Sharper every month.",
+            img: "/showcase/nemo/growth.webp",
+            target: "growth",
+          },
+          {
+            title: "Kits",
+            line: "Context packaged for a job.",
+            img: "/showcase/nemo/kits.webp",
+            target: "kits",
+          },
+          {
+            title: "Launches",
+            line: "Where it went, what came back.",
+            img: "/showcase/nemo/launches.webp",
+            target: "launches",
+          },
+          {
+            title: "Launch",
+            line: "Into any model.",
+            img: "/showcase/nemo/launch-poster.webp",
+            target: "launch",
+            contain: true,
+          },
+        ],
+        sections: [
+          {
+            id: "launch",
+            kicker: "Assemble & launch",
+            title: "Take an identity into any model.",
+            line: "Pick identities, kits and documents, watch them compress into one small package, then launch into ChatGPT, Claude, Gemini or Grok. What you learn there comes back to Nemo. Try it.",
+            points: [
+              "Hundreds of thousands of tokens of history, sent as a few thousand",
+              "Any model, and any version of it",
+              "New learning reviewed before it’s kept",
+            ],
+            media: {
+              frag: "launch",
+              poster: { src: "/showcase/nemo/launch-poster.webp", width: 566, height: 821 },
+            },
+          },
+          {
+            id: "import",
+            kicker: "Import",
+            title: "Bring your AI history with you.",
+            line: "Connect ChatGPT, Claude, Gemini or Grok, or drop an export. Nemo reads every conversation, distills the facts worth keeping and sorts them into identities. Try it.",
+            points: [
+              "Conversations, memories and identities, counted as they land",
+              "Processed and encrypted on your device",
+              "Or drop in an export file",
+            ],
+            media: {
+              frag: "import",
+              poster: { src: "/showcase/nemo/import-poster.webp", width: 540, height: 458 },
+            },
+          },
+          {
+            id: "knows",
+            kicker: "Identities",
+            title: "What Nemo knows, in plain words.",
+            line: "Each identity opens with Nemo’s own read of a person, company or project, then the themes it has pieced together, each with how many memories back it and which model they came from.",
+            points: [
+              "A summary, not a list of facts",
+              "Every theme traced to its sources",
+              "Goals and preferences kept beside it",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/nemo/knows.webp",
+                  alt: "What Nemo knows about Full Stack Technologies: a paragraph summary, four themes (pricing and terms, pipeline, hiring, positioning) and a portable-context card showing 5.1k tokens, 33 times smaller than the raw history",
+                  width: 1136,
+                  height: 480,
+                },
+              ],
+            },
+          },
+          {
+            id: "growth",
+            kicker: "Lifecycle",
+            title: "An identity that keeps getting sharper.",
+            line: "Every month Nemo shows what an identity gained, who it connects to, and a timeline of what it learned, refined, imported and built, so you can see how it got here.",
+            points: [
+              "A monthly recap of new memories, conversations and launches",
+              "Relationships written as a sentence",
+              "A health line that says when one is going stale",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/nemo/growth.webp",
+                  alt: "Identity improved this month: 18 memories, 9 conversations, 2 documents and 6 launches added, Full Stack Technologies connected to Nick Howell and TwigGlue, and a learning timeline from today back to earlier in May",
+                  width: 774,
+                  height: 745,
+                },
+              ],
+            },
+          },
+          {
+            id: "kits",
+            kicker: "Launch kits",
+            title: "Context packaged for the job.",
+            line: "Nemo suggests kits from what it knows: the identity, the right memories, a few conversations and the documents that matter, built for a strategy review or a client proposal.",
+            points: [
+              "Suggested from each identity",
+              "Shows exactly what goes in",
+              "Built in one click when it isn’t there yet",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/nemo/kits.webp",
+                  alt: "Suggested launch kits for Full Stack Technologies: Business Strategy Review and React Native Expert Context already in Nemo, and Client Proposal Assistant ready to build",
+                  width: 774,
+                  height: 490,
+                },
+              ],
+            },
+          },
+          {
+            id: "launches",
+            kicker: "Launches",
+            title: "Where it went, and what came back.",
+            line: "Every launch is logged with the model and version it went to and the learning it brought back, beside the conversations the identity was built from.",
+            points: [
+              "Each launch tagged with its model",
+              "Captured learning shown inline",
+              "Source conversations kept as reference",
+            ],
+            media: {
+              imgs: [
+                {
+                  src: "/showcase/nemo/launches.webp",
+                  alt: "Conversations, documents and launches for Full Stack Technologies: a launch into Claude Opus 4.5 that captured a move to fixed-bid pricing, and a launch into ChatGPT with no new learning",
+                  width: 774,
+                  height: 690,
+                },
+              ],
+            },
+            gold: true,
+          },
+        ],
+        faq: [
+          {
+            q: "Why identities instead of one big memory?",
+            a: "Because you rarely want everything at once. An identity is a person, a company or a project, so you can bring exactly the context a conversation needs and leave the rest at home.",
+          },
+          {
+            q: "Which models does it work with?",
+            a: "It imports from ChatGPT, Claude, Gemini and Grok, or from an export file, and launches into any of them, down to the model version.",
+          },
+          {
+            q: "How does the context get so small?",
+            a: "Nemo sends what it has distilled (the summary, the memories and the key conversations) instead of raw transcripts, so years of history travel as a few thousand tokens.",
+          },
+          {
+            q: "Where does my data live?",
+            a: "On your device, encrypted. A launch sends a copy of what you chose into the model; the identity itself stays in Nemo.",
+          },
+          {
+            q: "How does it learn from a launch?",
+            a: "When you come back, Nemo shows what it picked up from that conversation. You keep or dismiss each item before it’s added to an identity.",
+          },
+        ],
+        builtBy: {
+          personal: `${PH.NAME}, designed and built end to end. It’s how I’d build your product, too.`,
+          fst: "Full Stack Technologies, LLC, designed and built end to end. It’s how we’d build your product, too.",
+        },
+        next: "paradox",
+      },
+      "a-launch": {
+        type: "anchor",
+        label: "Assemble & launch",
+        desc: "Into any model",
+        page: "overview",
+        hash: "launch",
+      },
+      "a-import": {
+        type: "anchor",
+        label: "Import",
+        desc: "Your AI history, on device",
+        page: "overview",
+        hash: "import",
+      },
+      "a-knows": {
+        type: "anchor",
+        label: "Identities",
+        desc: "What Nemo knows",
+        page: "overview",
+        hash: "knows",
+      },
+      "a-growth": {
+        type: "anchor",
+        label: "Lifecycle",
+        desc: "Sharper every month",
+        page: "overview",
+        hash: "growth",
+      },
+      "a-kits": {
+        type: "anchor",
+        label: "Launch kits",
+        desc: "Context packaged for a job",
+        page: "overview",
+        hash: "kits",
+      },
+      "a-launches": {
+        type: "anchor",
+        label: "Launches",
+        desc: "Where it went, what came back",
+        page: "overview",
+        hash: "launches",
+      },
+    },
+  },
 ];
 
 const [PERSONAL_HOME, ...PROJECTS] = PERSONAL_WORKSPACES;
@@ -1567,7 +1843,10 @@ const FST_HOME: Workspace = {
   groups: [
     { title: "Company", items: ["about", "services", "engagements", "straight-answers"] },
     { title: "Resources", items: ["go-services", "go-blog", "go-ai", "go-prompts"] },
-    { title: "Work", items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm"] },
+    {
+      title: "Work",
+      items: ["go-paradox", "go-timetrack", "go-constellation", "go-helm", "go-nemo"],
+    },
   ],
   items: {
     about: {
@@ -1584,7 +1863,7 @@ const FST_HOME: Workspace = {
         {
           heading: "The work speaks first",
           paras: [
-            "The left rail is real work — four products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; Constellation, prioritization and planning across every client; and Helm, one decision at a time across every client and AI agent. The components inside are live: click through any of them.",
+            "The left rail is real work — five products designed and built end to end: Paradox, a storytelling platform built around interactive data; Timetrack, time tracking for the age of AI; Constellation, prioritization and planning across every client; Helm, one decision at a time across every client and AI agent; and Nemo, your AI identities, portable to any model. The components inside are live: click through any of them.",
           ],
         },
         {
@@ -1734,6 +2013,7 @@ const FST_HOME: Workspace = {
     "go-timetrack": PERSONAL_HOME.items["go-timetrack"],
     "go-constellation": PERSONAL_HOME.items["go-constellation"],
     "go-helm": PERSONAL_HOME.items["go-helm"],
+    "go-nemo": PERSONAL_HOME.items["go-nemo"],
   },
 };
 
@@ -3235,6 +3515,7 @@ for (const home of [PERSONAL_HOME, FST_HOME]) {
       { label: "Timetrack: AI session tracking and reports", href: "/timetrack/overview" },
       { label: "Constellation: multi-client planning", href: "/constellation/overview" },
       { label: "Helm: client and agent decisions", href: "/helm/overview" },
+      { label: "Nemo: portable AI identities", href: "/nemo/overview" },
       ...(personal
         ? PERSONAL_RESOURCES
         : [
@@ -3389,6 +3670,34 @@ const PROJECT_FRAMING: Record<
           paras: [
             "Client operations can span messages, delivery work, and agents that need an answer. Helm demonstrates bringing those inputs into a ranked decision deck while retaining a view of each client.",
             "The examples provide discussion points for an operations tool: how decisions are prioritized, what needs human review, and how client-specific access and communication rules stay visible.",
+          ],
+        },
+      ],
+    },
+  },
+  nemo: {
+    personal: {
+      seoTitle: "Nemo — my approach to portable AI memory",
+      summary:
+        "I designed and built Nemo around AI memory you own. Explore my approach to importing history, distilling it into identities, and carrying a compact copy into any model.",
+      tagline: "My approach to AI memory that travels between models.",
+      context: [
+        {
+          heading: "My contribution and decisions",
+          paras: [
+            "I designed and built the product end to end. My focus is making accumulated AI context something you own: kept in one place, organized by the people, companies and projects it describes, and readable in plain language.",
+            "The launch flow shows exactly what is being sent and how much smaller it is than the raw history, and nothing learned in a model is added back without review. Keeping identities encrypted on the device makes the boundary between what stays and what travels part of the interface.",
+          ],
+        },
+      ],
+    },
+    fst: {
+      context: [
+        {
+          heading: "The problem this approach addresses",
+          paras: [
+            "People who work across several AI models end up repeating the same background in each one, and the context they build lives in separate silos. Nemo demonstrates importing that history, organizing it into identities and assembling a compact package for any model.",
+            "The examples provide discussion points for an AI product: what gets distilled and how it is traced to its sources, what leaves the device and when, and how learning from a model is reviewed before it is kept.",
           ],
         },
       ],

@@ -289,6 +289,52 @@ function HelmMark() {
   );
 }
 
+// Nemo's faceted amethyst gem on obsidian; a glint crosses it now and then.
+function NemoMark() {
+  const id = useId();
+  const gem = "M50 14L82 39L70 88H30L18 39Z";
+  return (
+    <svg viewBox="0 0 100 100" fill="none">
+      <defs>
+        <radialGradient id={`${id}-face`} cx="70%" cy="10%" r="95%">
+          <stop stopColor="#2f2650" />
+          <stop offset=".55" stopColor="#16121f" />
+          <stop offset="1" stopColor="#0d0b13" />
+        </radialGradient>
+        <linearGradient id={`${id}-glint`} x1="0" y1="0" x2="1" y2="0">
+          <stop stopColor="#fff" stopOpacity="0" />
+          <stop offset=".5" stopColor="#fff" stopOpacity=".55" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
+        <clipPath id={`${id}-gem`}>
+          <path d={gem} />
+        </clipPath>
+      </defs>
+      <path fill={`url(#${id}-face)`} d="M0 0H100V100H0Z" />
+      <path d={gem} fill="#735ed1" stroke="#fff" strokeOpacity=".28" strokeWidth="1.6" />
+      <path d="M50 14L82 39L50 48L18 39Z" fill="#9b8af5" fillOpacity=".95" />
+      <path d="M50 48L70 88H30Z" fill="#5a46b4" fillOpacity=".55" />
+      <path
+        d="M50 14V48L70 88M50 48L30 88M18 39L50 48L82 39"
+        stroke="#fff"
+        strokeOpacity=".3"
+        strokeWidth="1.4"
+      />
+      <g clipPath={`url(#${id}-gem)`}>
+        <rect
+          className="nmk-glint"
+          x="-30"
+          y="0"
+          width="22"
+          height="100"
+          fill={`url(#${id}-glint)`}
+          transform="skewX(-18)"
+        />
+      </g>
+    </svg>
+  );
+}
+
 /** Shared by rail tiles, product headers, and “Next product” cards. */
 export function ProductMark({
   wsId,
@@ -302,7 +348,7 @@ export function ProductMark({
   delay?: number;
   children?: ReactNode;
 }) {
-  if (wsId !== "paradox" && wsId !== "timetrack" && wsId !== "constellation" && wsId !== "helm")
+  if (!["paradox", "timetrack", "constellation", "helm", "nemo"].includes(wsId))
     return <>{children}</>;
   return (
     <span
@@ -322,8 +368,10 @@ export function ProductMark({
         <TimetrackMark />
       ) : wsId === "constellation" ? (
         <ConstellationMark />
-      ) : (
+      ) : wsId === "helm" ? (
         <HelmMark />
+      ) : (
+        <NemoMark />
       )}
     </span>
   );
