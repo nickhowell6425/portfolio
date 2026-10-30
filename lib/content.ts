@@ -83,8 +83,6 @@ export interface ShowcaseSection {
   line: string;
   points: string[];
   media: ShowcaseMedia;
-  /** Gold treatment (Paradox's "divergence" colour). */
-  gold?: boolean;
 }
 
 export interface ShowcaseTile {
@@ -582,7 +580,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
               frag: "divergence",
               poster: { src: "/showcase/paradox/branches.webp", width: 560, height: 743 },
             },
-            gold: true,
           },
         ],
         faq: [
@@ -880,7 +877,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 },
               ],
             },
-            gold: true,
           },
         ],
         faq: [
@@ -1196,7 +1192,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 },
               ],
             },
-            gold: true,
           },
         ],
         faq: [
@@ -1475,7 +1470,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 },
               ],
             },
-            gold: true,
           },
         ],
         faq: [

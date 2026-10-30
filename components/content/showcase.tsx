@@ -1,15 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MONO } from "@/components/fragments/ui";
-import { accentText, type ShowcaseItem, type ShowcaseSection } from "@/lib/content";
+import type { ShowcaseItem, ShowcaseSection } from "@/lib/content";
 import { ProductMark } from "@/components/shell/product-mark";
 import { LiveFragment } from "./live-fragment";
 import { MessageCta } from "./message-cta";
 import { Sections } from "./sections";
-
-const GOLD = "#e9b949";
-/** Gold as text: the same darkened in the light theme so it stays readable. */
-const GOLD_TEXT = accentText({ accent: GOLD, accentInk: "#7d5d00" });
 
 export interface ShowcaseNext {
   id: string;
@@ -31,15 +27,14 @@ const kicker = (color: string): React.CSSProperties => ({
 });
 
 function SectionMedia({ sec, accent }: { sec: ShowcaseSection; accent: string }) {
-  const tint = sec.gold ? GOLD : accent;
   const { frag, imgs } = sec.media;
   return (
     <div
       className="sc-media"
       style={{
         borderRadius: 18,
-        border: `1px solid color-mix(in srgb, ${tint} ${sec.gold ? 32 : 18}%, var(--border2))`,
-        background: `radial-gradient(ellipse at 50% 22%, color-mix(in srgb, ${tint} 16%, #05080c) 0, #05080c 72%)`,
+        border: `1px solid color-mix(in srgb, ${accent} 18%, var(--border2))`,
+        background: `radial-gradient(ellipse at 50% 22%, color-mix(in srgb, ${accent} 16%, #05080c) 0, #05080c 72%)`,
         overflow: "hidden",
       }}
     >
@@ -323,52 +318,49 @@ export function Showcase({
       </section>
 
       {/* feature sections: media then text in the DOM, alternated by CSS */}
-      {item.sections.map((sec, i) => {
-        const tint = sec.gold ? GOLD_TEXT : ink;
-        return (
-          <section
-            key={sec.id}
-            id={sec.id}
-            aria-labelledby={`${sec.id}-title`}
-            className={i % 2 ? "sc-section sc-flip" : "sc-section"}
-          >
-            <SectionMedia sec={sec} accent={accent} />
-            <div className="sc-text">
-              <span style={kicker(tint)}>{sec.kicker}</span>
-              <h2
-                id={`${sec.id}-title`}
-                className="sc-h3"
-                style={{ margin: 0, fontWeight: 800, letterSpacing: "-.03em", lineHeight: 1.08 }}
-              >
-                {sec.title}
-              </h2>
-              <p style={{ margin: 0, fontSize: 16, color: "var(--dim)", textWrap: "pretty" }}>
-                {sec.line}
-              </p>
-              <ul
-                style={{
-                  margin: "4px 0 0",
-                  padding: 0,
-                  listStyle: "none",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 6,
-                  fontSize: 14.5,
-                }}
-              >
-                {sec.points.map((pt) => (
-                  <li key={pt} style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
-                    <span aria-hidden="true" style={{ color: tint }}>
-                      ✓
-                    </span>
-                    <span>{pt}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        );
-      })}
+      {item.sections.map((sec, i) => (
+        <section
+          key={sec.id}
+          id={sec.id}
+          aria-labelledby={`${sec.id}-title`}
+          className={i % 2 ? "sc-section sc-flip" : "sc-section"}
+        >
+          <SectionMedia sec={sec} accent={accent} />
+          <div className="sc-text">
+            <span style={kicker(ink)}>{sec.kicker}</span>
+            <h2
+              id={`${sec.id}-title`}
+              className="sc-h3"
+              style={{ margin: 0, fontWeight: 800, letterSpacing: "-.03em", lineHeight: 1.08 }}
+            >
+              {sec.title}
+            </h2>
+            <p style={{ margin: 0, fontSize: 16, color: "var(--dim)", textWrap: "pretty" }}>
+              {sec.line}
+            </p>
+            <ul
+              style={{
+                margin: "4px 0 0",
+                padding: 0,
+                listStyle: "none",
+                display: "flex",
+                flexDirection: "column",
+                gap: 6,
+                fontSize: 14.5,
+              }}
+            >
+              {sec.points.map((pt) => (
+                <li key={pt} style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
+                  <span aria-hidden="true" style={{ color: ink }}>
+                    ✓
+                  </span>
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ))}
 
       {/* FAQ — server-rendered <details>, mirrored as FAQPage JSON-LD. A shared
           `name` makes them one exclusive group: opening one closes the rest. */}
