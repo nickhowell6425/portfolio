@@ -11,7 +11,24 @@ import { BRANDS, brandForHost, otherBrand, BRAND_PARAM, type BrandId } from "@/l
 import { navFor } from "@/lib/navigation";
 import { ProductMark } from "./product-mark";
 
-const THEME_GLYPH: Record<string, string> = { system: "◐", light: "○", dark: "●" };
+// The prototype drew these as text glyphs (◐ ○ ●), which fall back to whatever
+// font has them and sit off-centre or swap to emoji on some platforms. Same
+// shapes, drawn as SVG so they render identically everywhere.
+function ThemeGlyph({ name }: { name: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style={{ display: "block" }}>
+      <circle
+        cx="7"
+        cy="7"
+        r="5.75"
+        fill={name === "dark" ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      {name === "system" ? <path d="M7 1.25a5.75 5.75 0 0 0 0 11.5z" fill="currentColor" /> : null}
+    </svg>
+  );
+}
 const NEXT_THEME: Record<string, string> = { system: "light", light: "dark", dark: "system" };
 
 function ThemeButton() {
@@ -31,10 +48,12 @@ function ThemeButton() {
         background: "transparent",
         color: "#93a1ba",
         cursor: "pointer",
-        fontSize: 15,
+        display: "grid",
+        placeItems: "center",
+        padding: 0,
       }}
     >
-      {THEME_GLYPH[name] ?? "◐"}
+      <ThemeGlyph name={name} />
     </button>
   );
 }
