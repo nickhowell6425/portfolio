@@ -10,6 +10,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test:content": "node scripts/check-content.mjs",
+    "test:contact": "node --experimental-strip-types --test scripts/check-contact.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

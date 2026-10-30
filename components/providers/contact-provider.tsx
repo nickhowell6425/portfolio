@@ -1,15 +1,11 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { useBrand } from "./brand-provider";
+import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
+import { track } from "@vercel/analytics";
+import { usePathname } from "next/navigation";
+import { sendContact } from "@/lib/contact";
+import { hrefFor } from "@/lib/navigation";
+import { useBrand, useNav } from "./brand-provider";
 import { useUI } from "./ui-provider";
 
 export interface ChatMsg {
@@ -18,18 +14,25 @@ export interface ChatMsg {
   text: string;
 }
 
-export type SendResult = { ok: true } | { ok: false; error: "empty" | "name" | "email" };
+export type SendResult =
+  | { ok: true }
+  | { ok: false; error: "empty" | "name" | "email" | "send" | "busy" };
+
+type ContactEvent = "contact_open" | "contact_start" | "contact_success" | "contact_error";
 
 interface ContactCtx {
   first: string;
   last: string;
   email: string;
   emailErr: boolean;
+  sending: boolean;
+  sendError: boolean;
   thread: ChatMsg[];
   setFirst: (v: string) => void;
   setLast: (v: string) => void;
   setEmail: (v: string) => void;
   send: (message: string) => Promise<SendResult>;
+  trackContact: (event: ContactEvent) => void;
 }
 
 const Ctx = createContext<ContactCtx | null>(null);
@@ -51,16 +54,30 @@ function nowStr() {
  */
 export function ContactProvider({ children }: { children: React.ReactNode }) {
   const { showToast } = useUI();
-  const inbox = useBrand().email;
+  const brand = useBrand();
+  const pathname = usePathname();
+  const nav = useNav();
   const [first, setFirstRaw] = useState("");
   const [last, setLast] = useState("");
   const [email, setEmailRaw] = useState("");
   const [emailErr, setEmailErr] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
   const [thread, setThread] = useState<ChatMsg[]>([]);
-  const threadRef = useRef(thread);
-  useEffect(() => {
-    threadRef.current = thread;
-  }, [thread]);
+  const pending = useRef(false);
+
+  const trackContact = useCallback(
+    (event: ContactEvent) => {
+      const source = nav.resolvePathname(pathname);
+      if (!source) return;
+      try {
+        track(event, { brand: brand.id, source_path: hrefFor(source.ws.id, source.itemId) });
+      } catch {
+        // Analytics availability must never prevent an inquiry.
+      }
+    },
+    [brand.id, nav, pathname],
+  );
 
   const setFirst = useCallback((v: string) => setFirstRaw(v), []);
   const setEmail = useCallback((v: string) => {
@@ -70,6 +87,7 @@ export function ContactProvider({ children }: { children: React.ReactNode }) {
 
   const send = useCallback(
     async (message: string): Promise<SendResult> => {
+      if (pending.current) return { ok: false, error: "busy" };
       const text = message.trim();
       if (!text) return { ok: false, error: "empty" };
       const fn = first.trim();
@@ -84,42 +102,66 @@ export function ContactProvider({ children }: { children: React.ReactNode }) {
         return { ok: false, error: "email" };
       }
 
-      const firstSend = !threadRef.current.some((m) => m.who === "auto");
-      setThread((p) => p.concat([{ who: "you", t: nowStr(), text }]));
-
-      const started = Date.now();
-      try {
-        const res = await fetch("/api/contact", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ firstName: fn, lastName: last.trim(), email: em, message: text }),
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        if (firstSend) {
-          const wait = Math.max(0, 900 - (Date.now() - started));
-          setTimeout(() => {
-            setThread((p) =>
-              p.concat([
-                {
-                  who: "auto",
-                  t: nowStr(),
-                  text: `Thanks, ${fn} — your note just landed in my real inbox. I'll reply to ${em}, usually same day. (This is the only automated message you'll see.)`,
-                },
-              ]),
-            );
-          }, wait);
-        }
-      } catch {
-        showToast(`Couldn't send just now — email me directly at ${inbox}.`);
+      pending.current = true;
+      setSending(true);
+      setSendError(false);
+      const accepted = await sendContact({
+        firstName: fn,
+        lastName: last.trim(),
+        email: em,
+        message: text,
+      });
+      pending.current = false;
+      setSending(false);
+      if (!accepted) {
+        setSendError(true);
+        trackContact("contact_error");
+        return { ok: false, error: "send" };
       }
+
+      setThread((p) => [
+        ...p,
+        { who: "you", t: nowStr(), text },
+        {
+          who: "auto",
+          t: nowStr(),
+          text: `Thanks, ${fn} — your note has been sent for delivery. I'll reply by email. (This confirmation is automatic.)`,
+        },
+      ]);
+      trackContact("contact_success");
       return { ok: true };
     },
-    [first, last, email, inbox, showToast],
+    [first, last, email, showToast, trackContact],
   );
 
   const value = useMemo(
-    () => ({ first, last, email, emailErr, thread, setFirst, setLast, setEmail, send }),
-    [first, last, email, emailErr, thread, setFirst, setEmail, send],
+    () => ({
+      first,
+      last,
+      email,
+      emailErr,
+      sending,
+      sendError,
+      thread,
+      setFirst,
+      setLast,
+      setEmail,
+      send,
+      trackContact,
+    }),
+    [
+      first,
+      last,
+      email,
+      emailErr,
+      sending,
+      sendError,
+      thread,
+      setFirst,
+      setEmail,
+      send,
+      trackContact,
+    ],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

@@ -11,7 +11,7 @@ export const PH = {
   FIRST: "Nicholas",
   YEARS: "10",
   EMAIL: "nickhowell6425@gmail.com",
-  STATUS_LINE: "Product architecture · web and mobile · technical leadership",
+  STATUS_LINE: "One-on-one · hands-on engineering · clear next steps",
   FOOTER: "⌘K — jump to any project or feature",
 } as const;
 
@@ -199,34 +199,35 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       about: {
         label: "About",
         type: "page",
-        desc: "Full-stack development and technical leadership for founders and small teams",
+        desc: "Work one-on-one with Nicholas Howell: hands-on engineering, honest advice, and help turning your app idea into a working product.",
         sections: [
           {
+            heading: "What working together feels like",
             paras: [
-              `I'm ${PH.NAME} — CTO, founding engineer, and senior full-stack developer. For ${PH.YEARS}+ years I've worked across web and mobile applications, backend systems, and the technical decisions that connect them.`,
-              "I help founders and small teams turn an idea into working software, improve an existing product, or make a difficult technical decision. That includes web and mobile applications, backend systems, and the infrastructure that keeps them running. I use AI agents to accelerate the work and review their output against the requirements, security boundaries, and behavior your users need.",
+              "Bring a rough sketch, an AI prototype, or a problem you haven't quite figured out how to explain yet. We'll talk it through directly, decide what to try, and look at working software together. You don't need to speak developer to take part in the decisions.",
+              "Ask questions as we go. I'll explain my recommendation, what it would change, and what we still need to find out. If you want to get into the tools yourself, we can work through a real task together. If you want me to own the build, we'll agree on the checkpoints that keep you involved.",
             ],
           },
           {
             heading: "Experience behind the work",
             paras: [
               `At AccountTouch, I served as CTO and founding engineer and architected the platform: a cross-platform mobile app, a serverless backend, and a web portal. My ${PH.YEARS}+ years of experience span product architecture, implementation, and technical leadership.`,
-              "Before that I helped scale a fintech startup from 3 people to 20+ and into a multi-million-dollar acquisition, embedded with client teams at Good Code, and have run my own studio — Pinnacle — since 2019.",
+              "Before that I helped scale a fintech startup from 3 people to 20+ and worked with it through an acquisition. I've also worked inside client teams and run my own studio. That experience gives us a practical starting point for talking about what your product needs now and what can wait.",
               "Explore Paradox for interactive data and onboarding, Timetrack for activity records and reporting, Constellation for prioritization and planning, Helm for decisions across clients and AI agents, Nemo for AI memory you can take into any model, Snake n Friends for head-to-head mobile play, and Coverly for insurance policies you can actually read. Each product page explains the decisions and includes interfaces you can explore.",
             ],
           },
           {
             heading: "Work directly with the engineer",
             paras: [
-              "You work directly with me on scope, architecture, implementation, and handoff. I can take ownership of a build or join your existing team and work within its stack and process.",
+              "You talk to the person doing the work. I can take a build forward, work alongside your team, or help you get comfortable building with AI yourself. We'll agree on the responsibility you need me to take, how we stay in touch, and when you'll see working software.",
             ],
           },
           {
             heading: "If you're building something",
             cta: "message",
-            ctaLabel: "Tell me about your project →",
+            ctaLabel: "Tell me what you're working on →",
             paras: [
-              "Send a short description of the problem, who the software is for, and what already exists. Include any deadline or budget constraints. We can then decide whether the next step is a focused build, a codebase review, or a smaller experiment.",
+              "Tell me who you're trying to help, what you've tried, and where you're stuck. A few sentences are enough. If you have a deadline or budget boundary, include it so we can find a sensible next step together.",
             ],
           },
         ],
@@ -234,37 +235,37 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       "how-i-work": {
         label: "How I work",
         type: "page",
-        title: "How I work with founders and engineering teams",
-        seoTitle: "Full-stack engineering engagements and process",
-        desc: "How we scope, review, build, and hand over your software project.",
+        title: "What working together feels like",
+        seoTitle: "Working one-on-one with a hands-on engineer",
+        desc: "Direct conversations, working software, and clear next steps: how Nicholas Howell collaborates with founders and small teams.",
         sections: [
           {
             paras: [
-              "Start with the problem your users need solved. Agree on the smallest useful outcome, review working software as it develops, and keep the code and operating knowledge with your team.",
+              "You work directly with me. We talk about the problem, decide what to try, and look at the result together. I'll explain my recommendation and the tradeoffs so you can question it and make an informed decision.",
             ],
           },
           {
             heading: "It starts with a conversation",
             paras: [
-              "Before anything else, we talk. If there's already something built, I'll be upfront about where it actually stands and what I'd do about it — no sugar-coating. If there's nothing yet, we figure out the shortest path to proof together.",
+              "Show me what you're working on, even if it's rough. We'll talk through who it helps, what already works, and what you're unsure about. If something needs a closer look before I can give you an answer, I'll say so.",
             ],
           },
           {
-            heading: "I mold to you and your team",
+            heading: "A working relationship that fits",
             paras: [
-              "I fit into how you already do things — your stack, your process, your people. You don't reshape your workflow around me; I shape mine around yours. Lead or follow, solo or embedded, I take the role the job actually needs.",
+              "Some founders want to learn as we build. Others want someone to own the technical work and keep them involved in product decisions. We can work out the right balance, including how we communicate and when we check in. If you have a team, I start with the tools and habits it already uses.",
             ],
           },
           {
             heading: "Review working software early",
             paras: [
-              "We break the work into reviewable steps and agree on acceptance criteria before building. Early demonstrations make it easier to catch misunderstandings while changes are still inexpensive. Delivery dates depend on the scope and what we learn about the existing system.",
+              "You'll have something concrete to react to at agreed checkpoints. We define what each step needs to do, try the important flows, and discuss what we learn. If a new idea changes the scope or timing, we talk it through before adding the work.",
             ],
           },
           {
             heading: "Use tools that earn their place",
             paras: [
-              "I reuse your existing stack where it works. AI-assisted changes get the same review as any other code: permissions, error handling, tests for important behavior, and a practical way to recover if a deployment goes wrong.",
+              "I use AI for planning, implementation, and review, and stay responsible for the result. We agree on the tools, access, and costs before work starts. I check the behavior that matters to your users, including permissions, failed requests, and what happens if a release needs to be undone.",
             ],
           },
         ],
@@ -273,20 +274,26 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         label: "Straight answers",
         type: "page",
         title: "Working with Nicholas Howell: common questions",
-        seoTitle: "Hiring a full-stack developer: common questions",
-        desc: "Answers about project fit, AI-assisted development, pricing, and maintenance.",
+        seoTitle: "Working with Nick: questions and answers",
+        desc: "Questions about working directly with Nick, learning to build with AI, project costs, and support after launch.",
         sections: [
+          {
+            heading: "“Do I need to know how to code?”",
+            paras: [
+              "No. You bring the understanding of your users and the problem you're solving. I'll help turn that into a practical plan and explain the technical choices in plain language. If you want to learn the tools as we go, we can make that part of the work.",
+            ],
+          },
           {
             heading: "“Should I just build it myself with AI?”",
             paras: [
               "If you need to test an idea with sample data, building a small experiment yourself can be a useful first step. Get feedback before committing to a larger build.",
-              "Where it bites is the moment real users, real money, or real data show up. That's when you want someone who's seen what breaks — and who knows where AI quietly cuts the wrong corner.",
+              "When you're ready for real users or private data, we can review what you've built and work through the gaps together. You don't have to throw your prototype away or pretend you built it without AI.",
             ],
           },
           {
             heading: "“Do you only do greenfield, solo builds?”",
             paras: [
-              "No — that's the smaller half. I join existing codebases and existing teams as readily as I start something new. Sometimes the job is leading; sometimes it's being one strong pair of hands inside your team. Both are the work.",
+              "I can start with an idea, pick up an existing app, or work alongside your team. We'll look at what you already have before deciding what needs to change.",
             ],
           },
           {
@@ -296,9 +303,9 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             ],
           },
           {
-            heading: "“When should I NOT hire you?”",
+            heading: "“How will we stay in touch?”",
             paras: [
-              "If you're a large corporate org looking to fill one more seat on a big engineering floor — that's honestly not where I do my best work. I move fast and close to the decisions: startups, small teams, founders shipping something real. Anywhere in that world, I'm your guy.",
+              "You communicate directly with me. Before starting, we'll agree on the channel, review checkpoints, and availability that fit the engagement. Bring questions as they come up; we'll keep the decisions and next steps clear.",
             ],
           },
           {
@@ -2071,7 +2078,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
       { title: "Project", items: ["overview"] },
       {
         title: "Features",
-        items: ["a-extract", "a-ask", "a-wallet", "a-plain", "a-renewal", "a-privacy"],
+        items: ["a-extract", "a-ask", "a-wallet", "a-plain", "a-renewal"],
       },
     ],
     items: {
@@ -2135,13 +2142,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             line: "Thirty days’ notice.",
             img: "/showcase/coverly/renewal.webp",
             target: "renewal",
-            contain: true,
-          },
-          {
-            title: "Privacy",
-            line: "Never sold, never shared.",
-            img: "/showcase/coverly/settings.webp",
-            target: "privacy",
             contain: true,
           },
         ],
@@ -2239,27 +2239,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
               ],
             },
           },
-          {
-            id: "privacy",
-            kicker: "Privacy & plans",
-            title: "Your data stays yours.",
-            line: "Documents are encrypted on the device and never sold or shared, so insurers can’t tell you use Coverly. Face ID guards the app, and a policy summary can be exported for a broker when you want quotes.",
-            points: [
-              "Face ID required to open",
-              "Export a summary to share with a broker",
-              "Free for three policies; Pro for unlimited",
-            ],
-            media: {
-              imgs: [
-                {
-                  src: "/showcase/coverly/settings.webp",
-                  alt: "Settings: account, export policy summary, Face ID lock switched on, a note that data is never sold or shared, and an upgrade to Pro at $4.99 a month or $39 a year",
-                  width: 780,
-                  height: 1688,
-                },
-              ],
-            },
-          },
         ],
         faq: [
           {
@@ -2269,10 +2248,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             q: "Where do the answers come from?",
             a: "Only from your own documents. Each answer names the policy it used and quotes the language and page, so you can check it yourself. It’s guidance, not a coverage decision; your carrier still decides claims.",
-          },
-          {
-            q: "Who can see my policies?",
-            a: "No one but you. Documents are encrypted on your device, Face ID can lock the app, and nothing is sold or shared with insurers.",
           },
           {
             q: "What does it cost?",
@@ -2324,13 +2299,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         page: "overview",
         hash: "renewal",
       },
-      "a-privacy": {
-        type: "anchor",
-        label: "Privacy & plans",
-        desc: "Encrypted, never shared",
-        page: "overview",
-        hash: "privacy",
-      },
     },
   },
 ];
@@ -2345,7 +2313,7 @@ export const FST = {
   LEGAL: "Full Stack Technologies, LLC",
   INITIALS: "FS",
   ACCENT: "#f7931e",
-  STATUS_LINE: "Senior product engineering · clear scope · code ownership",
+  STATUS_LINE: "App ideas to production · AI-assisted · engineer-led",
 } as const;
 
 const FST_HOME: Workspace = {
@@ -2375,12 +2343,17 @@ const FST_HOME: Workspace = {
     about: {
       label: "About",
       type: "page",
-      desc: "Custom software development and technical leadership for founders and small teams",
+      desc: "Take your app idea or AI prototype into production with clear scope, hands-on engineering, and practical AI guidance.",
       sections: [
         {
           paras: [
-            `${FST.LEGAL} builds custom web and mobile software for founders and small teams. Based in Saint Petersburg, Florida, the studio is led by ${PH.NAME}, a CTO and founding engineer with ${PH.YEARS}+ years of product development experience.`,
-            "Bring a new product idea, an application that needs attention, or a team that needs technical leadership. We define the next useful outcome, build within an agreed scope, and use AI agents with engineering review throughout the work.",
+            `${FST.LEGAL} helps founders take app ideas and AI prototypes into production. Work directly with ${PH.NAME}, a hands-on engineer with ${PH.YEARS}+ years of experience, based in Saint Petersburg, Florida.`,
+            "Bring what you have: a sketch, a working demo, or an app that's stuck before launch. We can review it, build the first useful release, or help you learn to develop it with AI. Start with one user journey and a clear definition of what needs to work.",
+          ],
+          links: [
+            { label: "Review my app or prototype", href: "/services/codebase-rescue" },
+            { label: "Build a first production release", href: "/services/product-development" },
+            { label: "Help me build with AI", href: "/services/ai-development-coaching" },
           ],
         },
         {
@@ -2390,17 +2363,19 @@ const FST_HOME: Workspace = {
           ],
         },
         {
-          heading: "Who you work with",
+          heading: "AI is part of the process. So is engineering judgment.",
           paras: [
-            `Work directly with ${PH.NAME} on technical decisions and delivery. Agree on who owns each part of the work, what success looks like, and how your team will operate the software afterward.`,
+            "We use AI openly to reduce repetitive work and test ideas sooner. Nicholas directs the work and reviews the result, including data access, failure handling, testing, and deployment. A quick demo is a starting point; a release needs evidence that the important behavior works.",
+            "We agree on scope, accounts, tool costs, and handoff before work starts. Any claim about saved time or money needs a comparable scope and the full cost of delivery, review, and ongoing operation.",
           ],
+          links: [{ label: "How we handle AI tools, usage, and costs", href: "/ai/resources" }],
         },
         {
-          heading: "Start a project",
+          heading: "What are you trying to launch?",
           cta: "message",
-          ctaLabel: "Start a conversation →",
+          ctaLabel: "Discuss your app →",
           paras: [
-            "Tell us who the product is for, what needs to work, and what already exists. Include your constraints so we can discuss a useful next step and whether the engagement is a fit.",
+            "Tell us who it's for, what works today, and what's stopping the launch. Include any deadline or budget boundary. You don't need a finished specification to start the conversation.",
           ],
         },
       ],
@@ -2408,59 +2383,65 @@ const FST_HOME: Workspace = {
     services: {
       label: "Services",
       type: "page",
-      title: "Software development and technical leadership services",
-      seoTitle: "Custom software development services",
-      desc: "Web and mobile product development, codebase rescue, embedded engineering, and fractional CTO support.",
+      title: "Help for your next app release",
+      seoTitle: "App development, prototype review, and AI coaching",
+      desc: "Choose a prototype review, first production release, hands-on AI coaching, or continuing technical leadership for your app.",
       sections: [
         {
-          heading: "New product builds",
+          heading: "Build a first production release",
           paras: [
-            "Scope and build the core user journey across web or mobile interfaces, backend systems, integrations, and deployment. Start with a focused release and an explicit plan for what follows.",
+            "Turn an idea, design, or prototype into a complete user journey. Define the scope, build and review working software, then prepare deployment and handoff around the behavior your first users need.",
+          ],
+          links: [{ label: "Explore app development", href: "/services/product-development" }],
+        },
+        {
+          heading: "Review an app or AI prototype",
+          paras: [
+            "Find out what stands between your demo and a usable release. Get findings ordered by launch risk, a recommendation on what to keep or repair, and a scoped next step. Existing applications with recurring failures fit here too.",
+          ],
+          links: [
+            {
+              label: "Explore prototype review and codebase rescue",
+              href: "/services/codebase-rescue",
+            },
           ],
         },
         {
-          heading: "Rescue & hardening",
+          heading: "Learn to build with AI",
           paras: [
-            "An existing codebase that's slowing down, breaking under load, or was generated faster than anyone could review. We assess it honestly, stabilize what matters, and leave it better documented than we found it.",
+            "Get your tools and repository set up, turn your idea into a reviewable task, and work through a real change together. Learn how to inspect, test, and maintain the result, with guidance that fits your experience.",
           ],
-        },
-        {
-          heading: "Embedded senior engineering",
-          paras: [
-            "A senior engineer inside your team — your stack, your process, your rituals. Lead or follow, whichever the work needs.",
-          ],
-        },
-        {
-          heading: "AI-assisted delivery",
-          paras: [
-            "Adopting AI agents in your engineering workflow without shipping what they get wrong: tooling, review practice, and guardrails that keep velocity and quality together.",
+          links: [
+            { label: "Explore AI development coaching", href: "/services/ai-development-coaching" },
           ],
         },
         {
           heading: "Fractional CTO",
           paras: [
-            "Technical leadership for founders without one: architecture calls, hiring, vendor decisions, and a roadmap that matches what the team can actually ship.",
+            "Work through architecture, hiring, vendor choices, and delivery priorities with a technical partner who can also implement the decisions. Agree on availability, decision ownership, and hands-on responsibilities.",
           ],
+          links: [{ label: "Explore technical leadership", href: "/services/fractional-cto" }],
         },
       ],
     },
     engagements: {
       label: "Engagements",
       type: "page",
-      title: "How a software development engagement works",
-      seoTitle: "Project scope, delivery, and software handoff",
-      desc: "What to expect from the first conversation through scoping, development, and handoff.",
+      title: "From your first conversation to a working release",
+      seoTitle: "App project scope, delivery, and handoff",
+      desc: "Agree on a useful first release, AI tools and costs, review checkpoints, deployment, and ownership before starting your app project.",
       sections: [
         {
           heading: "1 · Conversation",
           paras: [
-            "A short call about what you're building and where it stands. If something exists, you get an honest assessment. If nothing does, we map the shortest path to proof.",
+            "Talk through your intended users, what you've built, and what's blocking progress. A conversation establishes fit; an app with unknown risks may need a bounded review before a reliable build estimate is possible.",
           ],
         },
         {
-          heading: "2 · Fixed-scope proposal",
+          heading: "2 · Agree on the next useful outcome",
           paras: [
-            "A written scope identifies deliverables, acceptance criteria, assumptions, exclusions, and commercial terms. Where uncertainty is high, start with discovery or a codebase review before committing to a larger build.",
+            "Write down deliverables, acceptance criteria, assumptions, exclusions, and pricing. Use a focused review when uncertainty is high; agree on a defined build milestone once the important unknowns are understood. State how changes to scope will be handled.",
+            "Agree on the AI tools, project data access, account ownership, usage costs, spending approvals, and any third-party services before work starts. Set handoff and maintenance expectations at the same time.",
           ],
         },
         {
@@ -2472,7 +2453,7 @@ const FST_HOME: Workspace = {
         {
           heading: "4 · Launch & handoff",
           paras: [
-            "Confirm the release checks, deployment process, monitoring, and recovery plan. Then hand over the repository, infrastructure access, and operating notes, with maintenance responsibilities agreed in writing.",
+            "Check the agreed user journey, permissions, failure cases, deployment, and recovery process. Record what is verified and any remaining limits. Hand over the agreed repository and account access, setup and operating notes, and support responsibilities. A client should know how to continue without depending on undocumented knowledge.",
           ],
         },
       ],
@@ -2482,7 +2463,7 @@ const FST_HOME: Workspace = {
       type: "page",
       title: "Working with Full Stack Technologies: common questions",
       seoTitle: "Software development pricing, ownership, and fit",
-      desc: "Answers about custom software project pricing, who writes the code, and who owns it.",
+      desc: "Answers for founders about AI prototypes, delivery costs, code ownership, learning to build, and support after launch.",
       sections: [
         {
           heading: "“What does it cost?”",
@@ -2491,20 +2472,53 @@ const FST_HOME: Workspace = {
           ],
         },
         {
-          heading: "“Who actually writes the code?”",
+          heading: "“Do you use AI to build my app?”",
           paras: [
-            `Senior engineers, led by ${PH.NAME}, working with AI agents — and accountable for every line those agents produce.`,
+            `Yes. ${PH.NAME} uses AI for planning, implementation, and review, and takes responsibility for the engineering work. We agree on tool access and costs, inspect the generated changes, and check the behavior your release needs.`,
+            "AI can reduce repetitive work and shorten feedback cycles. The quote still needs to account for design, integrations, review, testing, and operation. We don't promise a universal savings percentage or billable-time formula.",
           ],
         },
         {
           heading: "“Who's a good fit?”",
           paras: [
-            "Startups, small teams, and founders shipping something real. If you're a large org looking to fill one more seat on a big engineering floor, we're honestly not the best fit.",
+            "Founders with an app idea or prototype, a clear user problem, and a need for hands-on help getting to a useful release. You can be technical or nontechnical. Bring your constraints and a willingness to choose a focused first scope.",
           ],
         },
         {
           heading: "“Who owns the code?”",
-          paras: ["You do — the repository, the infrastructure, and the IP, from day one."],
+          paras: [
+            "We agree on ownership, repository and hosting access, and handoff in the written scope. Client-controlled accounts are worth discussing from the start. Third-party software, assets, and services retain their own licenses and terms; a custom build does not remove those dependencies.",
+          ],
+        },
+        {
+          heading: "“Can you work with my AI-built prototype?”",
+          paras: [
+            "Yes. We review what it does, how it handles data, and what can be retained. The result may be a focused repair, a partial replacement, or further investigation. A rewrite is a decision to justify, not the default starting point.",
+          ],
+          links: [
+            {
+              label: "What changes between prototype and production",
+              href: "/blog/ai-prototype-to-production",
+            },
+          ],
+        },
+        {
+          heading: "“Can you show me how to build it myself?”",
+          paras: [
+            "We can make learning part of the engagement: tool and repository setup, a real task worked through together, and the checks needed to understand the result. Agree on a learning goal that matches your experience and the risk of the project.",
+          ],
+          links: [
+            {
+              label: "Hands-on AI development coaching",
+              href: "/services/ai-development-coaching",
+            },
+          ],
+        },
+        {
+          heading: "“What happens after launch?”",
+          paras: [
+            "Agree on maintenance, support availability, hosting and API costs, and who handles incidents before starting. A handoff should cover deployment, access, backups where needed, and recovery. Ongoing support is a defined engagement, not an unstated promise of unlimited availability.",
+          ],
         },
       ],
     },
@@ -2546,36 +2560,41 @@ const SERVICES: Workspace = {
   id: "services",
   initials: "S",
   name: "Services",
-  desc: "From first build to technical leadership",
+  desc: "App reviews, first releases, and building with AI",
   status: "work together",
   accent: "#f7931e",
   canonicalBrand: "fst",
   groups: [
     {
       title: "Ways to work together",
-      items: ["product-development", "codebase-rescue", "fractional-cto"],
+      items: [
+        "product-development",
+        "codebase-rescue",
+        "ai-development-coaching",
+        "fractional-cto",
+      ],
     },
   ],
   items: {
     "product-development": {
       type: "page",
-      label: "Product development",
-      title: "Custom web and mobile product development",
-      seoTitle: "Web and mobile product development",
-      desc: "Turn a focused product idea into a web or mobile application with clear scope, review points, and a practical handoff.",
+      label: "Build your app",
+      title: "Take your app idea to a first production release",
+      seoTitle: "AI-assisted app development for founders",
+      desc: "Build a focused web or mobile app with Nicholas Howell: clear scope, AI-assisted engineering, release checks, deployment, and handoff.",
       sections: [
         {
           heading: "Who this is for",
           paras: [
-            "Founders and small teams who know the problem they want to solve and need an engineer to turn it into usable software. Full Stack Technologies is led by Nicholas Howell, a CTO and founding engineer based in Saint Petersburg, Florida.",
-            "The starting point can be a new idea, a set of designs, or a product with a missing workflow. The first decision is which user outcome the next release must deliver.",
+            "For founders who have a specific problem to solve and need hands-on help putting an app in front of real users. Your starting point can be an idea, designs, an AI-built prototype, or a product with an unfinished workflow.",
+            "Work directly with Nicholas Howell through Full Stack Technologies. First, choose the user outcome the release must deliver. If an existing prototype has substantial unknowns, review it before committing to the build scope.",
           ],
         },
         {
           heading: "What the work can include",
           paras: [
-            "Product scoping, application architecture, web and mobile interfaces, backend APIs, data models, integrations, and deployment. The scope should identify which of those your project actually needs.",
-            "A useful deliverable is a complete user journey: someone can enter the application, do the core task, and see the result. Agree on the important failure cases alongside the happy path.",
+            "The agreed release can include product scoping, web or mobile interfaces, backend APIs, data storage, integrations, and deployment. We use AI to assist the work and engineering review to check the result. Choose the parts your app needs instead of buying a larger build by default.",
+            "Deliverables should include a complete user journey, checks for important permissions and failures, a deployable revision, and setup and operating notes. Hosting, external services, migration, and maintenance must be included in the scope or called out separately.",
           ],
         },
         {
@@ -2585,6 +2604,10 @@ const SERVICES: Workspace = {
             "You review working software at agreed checkpoints. Handoff should cover the repository, infrastructure access, setup instructions, and maintenance responsibilities.",
           ],
           links: [
+            {
+              label: "What an AI prototype needs before production",
+              href: "/blog/ai-prototype-to-production",
+            },
             {
               label: "How to scope the first version of a software product",
               href: "/blog/scope-first-software-release",
@@ -2596,27 +2619,34 @@ const SERVICES: Workspace = {
           ],
         },
         {
+          heading: "Agree on tools, costs, and ownership",
+          paras: [
+            "Before starting, agree on project accounts, what information AI tools may access, usage charges, repository access, and the handoff. A faster first draft does not remove the work of reviewing, testing, and operating the app. Price the agreed outcome with those responsibilities visible.",
+          ],
+          links: [{ label: "Our AI tools and cost transparency", href: "/ai/resources" }],
+        },
+        {
           heading: "Start with the problem",
           paras: [
             "Send a short brief: who the users are, what they need to do, what exists today, and the deadline or budget constraints. That is enough to begin a useful scoping conversation.",
           ],
           cta: "message",
-          ctaLabel: "Discuss your project →",
+          ctaLabel: "Discuss your app →",
         },
       ],
     },
     "codebase-rescue": {
       type: "page",
-      label: "Codebase rescue",
-      title: "Codebase review and software rescue",
-      seoTitle: "Codebase review and software rescue",
-      desc: "Assess an existing application, prioritize its risks, and plan focused repairs before committing to a rewrite.",
+      label: "App and prototype review",
+      title: "Find out what your app needs before launch",
+      seoTitle: "AI prototype review and codebase rescue",
+      desc: "Review an AI-built prototype or existing app, identify launch blockers, and plan focused repairs with findings you can act on.",
       sections: [
         {
-          heading: "When an existing application needs attention",
+          heading: "Your demo works. What needs to happen next?",
           paras: [
-            "Repeated regressions, unclear data ownership, fragile deployments, or a feature backlog nobody can estimate are reasons to inspect the system before adding more work. The same applies when AI-generated code has accumulated faster than the team can review it.",
-            "The goal is to understand what is failing, what is worth keeping, and what must change for the next business milestone.",
+            "An AI prototype can demonstrate the idea without proving that private data stays private, failed requests are recoverable, or a deployment will work outside your machine. A review helps you decide what is ready, what to keep, and what needs attention before real users depend on it.",
+            "This also fits an existing app with recurring bugs, unclear ownership, or fragile deployments. Bring the user journey and next milestone; the goal is a useful release decision rather than a list of cosmetic code changes.",
           ],
         },
         {
@@ -2627,12 +2657,16 @@ const SERVICES: Workspace = {
           ],
         },
         {
-          heading: "From findings to repairs",
+          heading: "What you should get from the review",
           paras: [
-            "Agree on a short repair sequence ordered by user impact and risk. Stabilize the critical path, add checks for the failures being repaired, and make deployments recoverable. A targeted replacement may be appropriate where the existing design cannot meet the requirement.",
-            "Deliverables and access needs depend on the system. Agree on a review scope and written findings before scheduling a broader remediation effort.",
+            "A written set of findings ordered by launch risk, with evidence, affected behavior, and recommended action. Separate verified defects from questions that need more access or testing. Identify what can stay, what needs repair, and whether a targeted replacement is justified.",
+            "Agree on the review boundaries first: repositories, environments, integrations, access, and the journey being examined. A review is not a blanket certification that every part of an app is secure or ready for every scale. The handoff should make those limits clear and propose the next release scope with estimate assumptions.",
           ],
           links: [
+            {
+              label: "From AI prototype to production: a practical checklist",
+              href: "/blog/ai-prototype-to-production",
+            },
             {
               label: "Repair or rewrite an existing application?",
               href: "/blog/repair-or-rewrite",
@@ -2653,21 +2687,21 @@ const SERVICES: Workspace = {
             "Share the symptoms, the affected workflow, the stack, and the next change you need to make. Keep credentials and sensitive customer data out of the initial message.",
           ],
           cta: "message",
-          ctaLabel: "Discuss your project →",
+          ctaLabel: "Discuss an app review →",
         },
       ],
     },
     "fractional-cto": {
       type: "page",
       label: "Fractional CTO",
-      title: "Fractional CTO and embedded senior engineering",
-      seoTitle: "Fractional CTO and senior engineering",
-      desc: "Technical direction and hands-on engineering for founders and small teams that need experienced product leadership.",
+      title: "A technical partner for the decisions beyond your first release",
+      seoTitle: "Fractional CTO and hands-on support for founders",
+      desc: "Work through architecture, app delivery, hiring, and AI workflow decisions with Nicholas Howell, with responsibilities and availability agreed up front.",
       sections: [
         {
           heading: "When technical leadership is the missing piece",
           paras: [
-            "You may need help turning product priorities into an engineering plan, choosing an architecture, evaluating a vendor, or deciding what to hire for. Sometimes you also need someone to implement the decision with your team.",
+            "You have an app to move forward and decisions that keep coming back: what to build next, which service to buy, whether a prototype can grow, or when to hire. You may need someone to implement the decision as well as help make it.",
             "Nicholas Howell works with founders and engineering teams through Full Stack Technologies. The role can focus on technical direction, hands-on delivery, or a clearly agreed combination.",
           ],
         },
@@ -2681,10 +2715,14 @@ const SERVICES: Workspace = {
         {
           heading: "Define the responsibility before the title",
           paras: [
-            "A useful engagement has a specific outcome: a technical plan the team can execute, a risky integration resolved, or a review process people can use. Ongoing responsibilities and implementation capacity should be explicit.",
+            "A useful engagement has a specific outcome: a technical plan the team can execute, a risky integration resolved, or a review process people can use. Agree on availability, which decisions Nicholas owns, implementation capacity, and who handles support. A fractional role does not imply full-time or on-call coverage.",
             "If you already have engineering leadership and need additional senior delivery capacity, the scope can focus on that work.",
           ],
           links: [
+            {
+              label: "Decide when to build, buy, or integrate",
+              href: "/blog/build-vs-buy-software",
+            },
             {
               label: "Constellation: prioritization and delivery planning",
               href: "/constellation/overview",
@@ -2705,6 +2743,59 @@ const SERVICES: Workspace = {
         },
       ],
     },
+    "ai-development-coaching": {
+      type: "page",
+      label: "Build with me",
+      title: "Learn to build your app with AI, alongside an engineer",
+      seoTitle: "Hands-on AI development coaching for founders",
+      desc: "Set up your AI development tools, work through a real app change with Nicholas Howell, and learn how to review, test, and maintain it.",
+      sections: [
+        {
+          heading: "Bring a project and a question",
+          paras: [
+            "For founders who want to understand and participate in building their app, and small teams improving how they use AI coding tools. You might be setting up for the first time, stuck with a prototype, or unsure how to check an agent's work.",
+            "Work one-on-one with Nicholas Howell on a bounded task from your project. Agree on a learning goal that fits your experience. A first session might focus on setup and a local change; releasing a feature needs the appropriate checks and access too.",
+          ],
+        },
+        {
+          heading: "Set up a workflow you can understand",
+          paras: [
+            "Review your existing tools and repository before adding anything. Agree on accounts, subscriptions or usage costs, permissions, and what information the tools may see. Use sample data while learning, and keep secrets out of prompts and source files.",
+            "Write down the app's purpose, current constraints, and how to run and test it. Turn one goal into a small task with expected behavior. The useful setup is one you can repeat, not a collection of agents you cannot explain.",
+          ],
+          links: [
+            { label: "AI tools, usage, and costs", href: "/ai/resources" },
+            { label: "The delivery workflow", href: "/ai/workflow" },
+          ],
+        },
+        {
+          heading: "Work through a real change together",
+          paras: [
+            "Give the tool the relevant context, inspect its proposal, and compare the result with the task. Read the important changes, try the user journey, and test the failure that would matter most. Keep the change small enough to understand and undo.",
+            "You'll practice asking for evidence, spotting unsupported assumptions, and deciding when to stop and investigate. If the task is ready for release, work through the existing deployment process; otherwise record the blockers and the next check.",
+          ],
+        },
+        {
+          heading: "Leave with a next step you can repeat",
+          paras: [
+            "The agreed outputs can include a working local setup, project instructions, a reviewed change, test results, and a short guide to the next task. Record unresolved questions and who owns deployment and ongoing maintenance.",
+            "Coaching does not make every generated change safe to ship or replace experience with sensitive data, payments, and complex infrastructure. We can identify where you can continue independently and where another review would help.",
+          ],
+          links: [
+            { label: "Prompts for each stage of delivery", href: "/prompts" },
+            { label: "Review an AI prototype before launch", href: "/services/codebase-rescue" },
+          ],
+        },
+        {
+          heading: "Tell me what you want to learn by doing",
+          paras: [
+            "Share your app idea or current project, your experience with coding and AI tools, and the task you'd like help with. We can agree on a useful goal, prerequisites, scope, and price before starting. Leave credentials and private customer data out of the message.",
+          ],
+          cta: "message",
+          ctaLabel: "Discuss building together →",
+        },
+      ],
+    },
   },
 };
 
@@ -2721,7 +2812,9 @@ const BLOG: Workspace = {
       title: "Guides",
       items: [
         "index",
+        "ai-prototype-to-production",
         "scope-first-software-release",
+        "build-vs-buy-software",
         "review-ai-generated-code",
         "repair-or-rewrite",
       ],
@@ -2731,14 +2824,35 @@ const BLOG: Workspace = {
     index: {
       type: "page",
       label: "All articles",
-      title: "Practical guides to building and improving software",
-      seoTitle: "Software engineering blog",
-      desc: "Product engineering guides from Nicholas Howell and Full Stack Technologies on software scope, AI code review, and codebase rescue.",
+      title: "Practical guides for taking your app forward",
+      seoTitle: "App development and AI guides for founders",
+      desc: "Guides from Nicholas Howell on taking AI prototypes into production, scoping a first release, reviewing code, and deciding whether to build or buy.",
       sections: [
         {
           heading: "For founders and small engineering teams",
           paras: [
-            "These guides help you make decisions before and during a software engagement: what to build first, what to check before release, and when an existing application needs repair. Each guide connects the decision to examples you can explore in this workspace.",
+            "Use these guides to decide what to build first, what your prototype needs before launch, and where AI helps with the work. The examples make the checks and tradeoffs concrete so you can discuss them with an engineer or use them on your own project.",
+          ],
+        },
+        {
+          heading: "Take a prototype into production",
+          paras: [
+            "Turn a convincing demo into a release decision: check real permissions, stored data, integrations, deployment, and the support plan around one useful journey.",
+          ],
+          links: [
+            {
+              label: "Read: from AI prototype to production",
+              href: "/blog/ai-prototype-to-production",
+            },
+          ],
+        },
+        {
+          heading: "Decide what to build and what to buy",
+          paras: [
+            "Compare the same workflow over 12 and 24 months, including subscriptions, build effort, hosting, maintenance, and migration. Follow a clearly illustrative cost example.",
+          ],
+          links: [
+            { label: "Read: build, buy, or integrate?", href: "/blog/build-vs-buy-software" },
           ],
         },
         {
@@ -2792,12 +2906,155 @@ const BLOG: Workspace = {
               href: "/services/codebase-rescue",
             },
             {
+              label: "Build with me: AI development coaching",
+              href: "/services/ai-development-coaching",
+            },
+            {
               label: "Fractional CTO and embedded engineering",
               href: "/services/fractional-cto",
             },
           ],
           cta: "message",
           ctaLabel: "Discuss your project →",
+        },
+      ],
+    },
+    "ai-prototype-to-production": {
+      type: "page",
+      label: "Prototype to production",
+      title: "Your AI prototype works. What does it need before launch?",
+      seoTitle: "From AI prototype to production: a founder's checklist",
+      desc: "Check the user journey, permissions, data writes, integrations, deployment, and support before putting an AI-built app in front of real users.",
+      article: { published: "2026-10-30", modified: "2026-10-30" },
+      sections: [
+        {
+          heading: "Start with the release you actually need",
+          paras: [
+            "A prototype can help you learn whether an idea makes sense. Production adds a different question: can people rely on the app to complete the intended task with their real accounts and data? Start by defining that task and the smallest audience you intend to support.",
+            "Write down what works today, what is mocked, and what still requires you to intervene. A small private pilot may need fewer features than a public launch, but it still needs appropriate access controls, honest error handling, and someone responsible when things go wrong.",
+          ],
+          links: [
+            { label: "Scope one useful first release", href: "/blog/scope-first-software-release" },
+          ],
+        },
+        {
+          heading: "Test the boundary between two users",
+          paras: [
+            "Use two test accounts with separate sample records. Confirm each can complete the intended task, then try requesting the other account's record directly. A hidden interface button is not protection; the server or data layer must enforce access to the record and action.",
+            "For an illustrative client portal, client A should not retrieve client B's document by changing an ID in a URL or API request. Test signed-out access and privileged actions too. Keep the sample fictional and record the result so the check can be repeated after changes.",
+          ],
+        },
+        {
+          heading: "Follow the data when a request fails",
+          paras: [
+            "Trace one important write from the form through storage and any external service. Try invalid input, a repeated submission, and an unavailable dependency. Check what was saved and what the user sees. A success message should reflect the operation that actually succeeded.",
+            "For example, an illustrative booking app must not silently create two bookings when a user retries after a timeout. If payment and booking are separate operations, define how you detect and resolve a partial failure. The required design depends on the provider and workflow; asking an agent to add a retry is not enough.",
+          ],
+          links: [
+            {
+              label: "Review AI-generated code and its failure paths",
+              href: "/blog/review-ai-generated-code",
+            },
+          ],
+        },
+        {
+          heading: "Make the app reproducible outside the demo",
+          paras: [
+            "Confirm that someone can set up the exact revision from documented steps. Identify required accounts, configuration, licenses, external APIs, and recurring charges. Keep secrets out of the browser bundle and repository, and use separate test credentials where available.",
+            "Try the important flow on a phone and with a keyboard. Labels, focus, loading states, and useful errors are part of a working release. Check expected usage and any slow or costly operation with representative data; do not infer capacity from a fast demo with three records.",
+          ],
+        },
+        {
+          heading: "Know how you will release and recover",
+          paras: [
+            "Record the candidate revision, checks run, unresolved findings, and required configuration or data changes. Decide who can deploy and what they will verify immediately afterward. Set up an appropriate way to detect failed requests and important user-flow failures without collecting unnecessary private data.",
+            "If the app stores valuable data, establish backups and test the relevant recovery steps. Reverting application code may not reverse a database change. Decide who responds to incidents, what support is available, and which operating costs continue after handoff.",
+          ],
+        },
+        {
+          heading: "Turn the findings into a launch decision",
+          paras: [
+            "Separate launch blockers from later improvements and unanswered questions. A useful note says what was tested, on which revision and environment, what failed, and who owns the next action. Avoid describing a limited review as a guarantee about every feature or future load level.",
+            "Keep the parts of the prototype that meet the requirements. Repair a contained failure where possible; investigate a replacement when the existing design cannot support the necessary behavior. You need an evidenced next step, not an automatic rewrite.",
+          ],
+          links: [
+            { label: "Get an app or prototype review", href: "/services/codebase-rescue" },
+            { label: "Build the first production release", href: "/services/product-development" },
+            {
+              label: "Work through the checks together",
+              href: "/services/ai-development-coaching",
+            },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss your prototype →",
+        },
+      ],
+    },
+    "build-vs-buy-software": {
+      type: "page",
+      label: "Build, buy, or integrate?",
+      title: "Before another subscription: should you build, buy, or integrate?",
+      seoTitle: "Build vs. buy software: a practical cost comparison",
+      desc: "Compare a custom tool with SaaS using the same workflow, ownership needs, and 12- and 24-month costs, with an explicitly illustrative example.",
+      article: { published: "2026-10-30", modified: "2026-10-30" },
+      sections: [
+        {
+          heading: "Compare the job, not the feature lists",
+          paras: [
+            "Before buying another subscription, write down the task you need to complete, who uses it, and what is wrong with the current workaround. Compare options against that same task. A quick custom demo and a mature service are not equivalent just because their screens look alike.",
+            "Buy standard capabilities when a suitable service solves the problem at an acceptable cost. Build when the workflow or product difference justifies ownership and ongoing work. Integrate existing services when a small connection closes the gap. The right answer can include all three.",
+          ],
+        },
+        {
+          heading: "Account for the work after the first build",
+          paras: [
+            "For buying, include the actual seat or usage tier, setup, migration, integration, administration, and the cost of leaving later. For building, include design, implementation, review, test work, AI tools, hosting, APIs, maintenance, support, and migration. Someone's time is still a cost when it does not produce a vendor invoice.",
+            "AI can reduce parts of implementation effort. It does not remove the need to understand the result, patch dependencies, handle incidents, or adapt when an external API changes. Compare a useful 12-month and 24-month horizon with the same service expectations.",
+          ],
+        },
+        {
+          heading: "An illustrative cost comparison",
+          paras: [
+            "These are fictional planning assumptions in US dollars, not FST prices, a quote, or observed client savings. Imagine a ten-person team choosing a simple internal reporting tool with the same required workflow in both options. No AI runs inside the finished app, and usage and scope stay constant.",
+            "The buy option assumes $500 for setup and migration, $50 per person per month, and $200 per month of internal administration and integration upkeep. The custom option assumes $8,000 for scoped design, implementation, review, and testing, $200 of initial AI-tool usage, $500 for migration and training, $75 per month of hosting and services, and $200 per month of maintenance and support effort.",
+          ],
+          table: {
+            headers: ["Cost under these assumptions", "Buy", "Custom build"],
+            rows: [
+              ["One-time setup / delivery", "$500", "$8,700"],
+              ["Monthly licenses / hosting and services", "$500", "$75"],
+              ["Monthly administration / maintenance effort", "$200", "$200"],
+              ["12-month total", "$8,900", "$12,000"],
+              ["24-month total", "$17,300", "$15,300"],
+            ],
+          },
+        },
+        {
+          heading: "Change the assumptions before trusting the answer",
+          paras: [
+            "Each total is the one-time cost plus the number of months multiplied by both monthly costs. Buying is cheaper at 12 months in this example; the custom option is cheaper at 24. That result depends on the assumptions. If custom maintenance were $400 rather than $200 per month, its 24-month total would become $20,100 and buying would stay cheaper.",
+            "This simplified comparison excludes taxes, financing, growth, new features, major incidents, and the cost of waiting for the build. Add them when relevant. If your app uses an AI API at runtime, include its usage separately from the AI tools used to develop it. Estimate a conservative case as well as the expected case, and write down who will own the ongoing work.",
+          ],
+        },
+        {
+          heading: "Check fit and ownership alongside cost",
+          paras: [
+            "Can the service export the data you need? Does the required integration exist on the plan you are comparing? Who can access the records, and what happens when a team member leaves? Can another engineer deploy and maintain the custom app? These questions can change the decision even when the totals are close.",
+            "Before replacing a working service, try the highest-risk workflow with representative data. Confirm migration and recovery, keep an appropriate transition path, and decide what evidence would justify the switch. You can build a narrow feature around an existing service without replacing the whole system.",
+          ],
+        },
+        {
+          heading: "Bring the workflow and the current bill",
+          paras: [
+            "List the task, the tools involved, current costs, workarounds, and what a successful change would look like. We can use that context to decide whether the next step is configuration, an integration, a focused build, or leaving a suitable service in place.",
+          ],
+          links: [
+            { label: "Discuss a focused app build", href: "/services/product-development" },
+            { label: "Work through technical decisions", href: "/services/fractional-cto" },
+            { label: "How we agree on AI tools and costs", href: "/ai/resources" },
+          ],
+          cta: "message",
+          ctaLabel: "Discuss your build-or-buy decision →",
         },
       ],
     },
@@ -3612,10 +3869,10 @@ const AI_PLAYBOOK: Workspace = {
           ],
         },
         {
-          heading: "What the commercial terms should make explicit",
+          heading: "Agree on scope, accounts, and tool costs before work starts",
           paras: [
-            "Ask the written scope to state whether subscriptions and usage are included, billed separately, or supplied through client-owned accounts. It should identify any pass-through charges or markup, spending limits, who approves extra usage, and who owns the accounts afterward.",
-            "This page does not set a universal usage allowance, subscription reimbursement policy, or markup. Those terms need to be confirmed for the engagement. Provider pricing and included limits can change, so compare the current plan and expected workload before setting a budget.",
+            "We agree on the deliverable, pricing basis, accounts, and expected tool costs before work starts. The written scope should state whether subscriptions and usage are included, separately billed, or supplied through your accounts, plus any pass-through charges or markup, spending limits, and who approves extra usage.",
+            "Record who owns each account and what access remains after handoff. Compare the current provider plan with the expected workload, including recurring services in the finished app. An engagement sets its own usage allowance and billing terms; a long-running agent session is not, by itself, a billable-time policy.",
           ],
         },
         {
@@ -3639,6 +3896,14 @@ const AI_PLAYBOOK: Workspace = {
             {
               label: "Review and handoff prompts",
               href: "/prompts/review-release",
+            },
+            {
+              label: "Set up and learn the workflow together",
+              href: "/services/ai-development-coaching",
+            },
+            {
+              label: "Compare the costs of building and buying",
+              href: "/blog/build-vs-buy-software",
             },
           ],
           cta: "message",
@@ -4020,6 +4285,10 @@ const PROMPTS: Workspace = {
 });
 
 const PERSONAL_RESOURCES = [
+  {
+    label: "At FST: build with me",
+    href: new URL("/services/ai-development-coaching", BRANDS.fst.url).href,
+  },
   { label: "At FST: my AI delivery workflow", href: new URL("/ai/workflow", BRANDS.fst.url).href },
   { label: "At FST: practical engineering articles", href: new URL("/blog", BRANDS.fst.url).href },
   { label: "At FST: prompts and when to use them", href: new URL("/prompts", BRANDS.fst.url).href },
@@ -4046,7 +4315,9 @@ for (const home of [PERSONAL_HOME, FST_HOME]) {
       ...(personal
         ? PERSONAL_RESOURCES
         : [
-            { label: "Software development services", href: "/services/product-development" },
+            { label: "Build your first app release", href: "/services/product-development" },
+            { label: "Review your app or prototype", href: "/services/codebase-rescue" },
+            { label: "Learn to build with AI", href: "/services/ai-development-coaching" },
             { label: "Read the product engineering blog", href: "/blog" },
             { label: "How we build with Claude Code and Codex", href: "/ai" },
             { label: "Prompts for each stage of delivery", href: "/prompts" },
@@ -4060,7 +4331,7 @@ for (const home of [PERSONAL_HOME, FST_HOME]) {
       heading: personal ? "Continue exploring" : "Choose the next step",
       paras: [
         personal
-          ? "Read the decisions behind my product work here. My practical guides and studio services live at Full Stack Technologies. You can also contact me directly about a role or project."
+          ? "Explore the decisions behind my product work, or use the guides at Full Stack Technologies. If you'd like to work through your own project together, tell me where you're starting."
           : "Bring the problem, what already exists, and the outcome you need. We can use that context to discuss a focused next step.",
       ],
       links: personal
@@ -4073,15 +4344,16 @@ for (const home of [PERSONAL_HOME, FST_HOME]) {
             },
           ]
         : [
-            { label: "Product development", href: "/services/product-development" },
-            { label: "Codebase review and rescue", href: "/services/codebase-rescue" },
+            { label: "Build your first app release", href: "/services/product-development" },
+            { label: "App review and codebase rescue", href: "/services/codebase-rescue" },
+            { label: "Build with me: AI coaching", href: "/services/ai-development-coaching" },
             { label: "Fractional CTO and embedded engineering", href: "/services/fractional-cto" },
             { label: "Practical product engineering guides", href: "/blog" },
             { label: "AI tools, workflow, and resources", href: "/ai" },
             { label: "Reusable prompts and when to use them", href: "/prompts" },
           ],
       cta: "message",
-      ctaLabel: personal ? "Get in touch with me →" : "Discuss your project →",
+      ctaLabel: personal ? "Tell me what you're working on →" : "Discuss your app →",
     });
   }
 }
@@ -4262,7 +4534,7 @@ const PROJECT_FRAMING: Record<
     personal: {
       seoTitle: "Coverly — my approach to AI answers you can check against the policy",
       summary:
-        "I designed and built Coverly, a mobile wallet for every insurance policy. Explore my approach to reading documents into fields people confirm, answers that quote the page they came from, and a privacy model where insurers never see the data.",
+        "I designed and built Coverly, a mobile wallet for every insurance policy. Explore my approach to reading documents into fields people confirm, answers that quote the page they came from, and renewal reminders that keep the next date visible.",
       tagline: "My approach to AI that shows its source.",
       context: [
         {

@@ -1,5 +1,7 @@
 # Marketing and content plan
 
+The [October 30 audit and growth plan](site-growth-audit-2026-10-30.md) sets the current priorities: founders taking apps and AI prototypes into production, transparent AI-assisted delivery, and a personal site centered on friendly, hands-on, one-on-one collaboration, supported by an anonymous experience story. It includes live search-console findings and the execution backlog. This document retains the existing content architecture and implementation history.
+
 Content pass: October 28, 2026. This is an intent-based editorial plan, not keyword-volume research. No traffic, ranking, or lead forecasts are implied.
 
 ## Positioning

@@ -5,8 +5,9 @@
 
 ## Brand boundaries
 
-The personal site explains Nicholas's experience, contribution, engineering decisions,
-and interests. Full Stack Technologies explains studio services and delivery, and owns
+The personal site explains what working one-on-one with Nicholas is like: hands-on
+building, candid conversation, guidance, and the experience behind his decisions.
+Full Stack Technologies helps founders take apps and AI prototypes into production, and owns
 the practical blog, AI playbook, and prompt library. Nicholas authors the FST articles.
 The personal site links to selected FST resources rather than hosting those libraries.
 Valid former personal resource URLs permanently redirect to FST; unknown paths remain 404s.
@@ -14,8 +15,8 @@ Use each page's canonical URL when citing it.
 
 ## Personal pages (relative to the personal site's origin)
 
-- /: Nicholas's profile, experience, selected work, and links to writing at FST.
-- /home/how-i-work: How Nicholas approaches engineering work and technical decisions.
+- /: Meet Nick, what working together feels like, experience, and selected work.
+- /home/how-i-work: Direct collaboration, progress, decisions, and handoff with Nicholas.
 - /home/straight-answers: Questions about fit and working with Nicholas.
 - /home/off-clock: Family, travel, and ice hockey.
 
@@ -25,8 +26,9 @@ Use each page's canonical URL when citing it.
 - https://fullstacktechnologiesllc.com/home/services: Service overview.
 - https://fullstacktechnologiesllc.com/home/engagements: Scope, delivery, and handoff.
 - https://fullstacktechnologiesllc.com/home/straight-answers: Pricing, ownership, and fit.
-- https://fullstacktechnologiesllc.com/services/product-development: Web and mobile development.
-- https://fullstacktechnologiesllc.com/services/codebase-rescue: Codebase review and focused repairs.
+- https://fullstacktechnologiesllc.com/services/product-development: A focused first production release for an app idea or prototype.
+- https://fullstacktechnologiesllc.com/services/codebase-rescue: App and AI prototype review, launch risks, and focused repairs.
+- https://fullstacktechnologiesllc.com/services/ai-development-coaching: Hands-on AI development setup and guidance through a real change.
 - https://fullstacktechnologiesllc.com/services/fractional-cto: Technical leadership and embedded engineering.
 
 ## Practical blog (Full Stack Technologies only)
@@ -35,6 +37,8 @@ Use each page's canonical URL when citing it.
 - https://fullstacktechnologiesllc.com/blog/scope-first-software-release: Scope a complete user journey.
 - https://fullstacktechnologiesllc.com/blog/review-ai-generated-code: Review behavior, access, writes, tests, and recovery.
 - https://fullstacktechnologiesllc.com/blog/repair-or-rewrite: Compare repairs, component replacement, and rewrite.
+- https://fullstacktechnologiesllc.com/blog/ai-prototype-to-production: Check access, data, integrations, deployment, and recovery before launch.
+- https://fullstacktechnologiesllc.com/blog/build-vs-buy-software: Compare building, buying, and integrating with an illustrative total-cost example.
 
 ## Product examples (both sites, with distinct framing)
 

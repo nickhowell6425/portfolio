@@ -58,6 +58,13 @@ assert(
   studioPaths.includes("/ai") && studioPaths.includes("/prompts"),
   "AI and prompt hubs must be discoverable",
 );
+for (const path of [
+  "/services/ai-development-coaching",
+  "/blog/ai-prototype-to-production",
+  "/blog/build-vs-buy-software",
+]) {
+  assert(studioPaths.includes(path), `${path}: new founder resources must be discoverable`);
+}
 const fstHome = canonical(await read("/", fstHost));
 assert(fstHome, "FST home needs a canonical URL");
 
@@ -77,6 +84,10 @@ for (const host of [personalHost, fstHost]) {
     );
   }
   const home = await read("/", host);
+  assert(
+    home.includes('<meta name="msvalidate.01" content="CE7DBB03C8F5C6C4BD6B341C7DA604DF"'),
+    `${host}: Bing verification tag must be present`,
+  );
   for (const label of ["S — Services", "B — Blog", "AI — AI playbook", "PR — Prompt library"]) {
     assert(!home.includes(`aria-label="${label}"`), `The project rail must not contain ${label}`);
   }
@@ -163,7 +174,7 @@ for (const host of [personalHost, fstHost]) {
     aliases.push(["/blog/index", "/blog"], ["/ai/index", "/ai"], ["/prompts/index", "/prompts"]);
   for (const [alias, target] of aliases) {
     const response = await request(alias, host);
-    assert([307, 308].includes(response.status), `${alias}: expected redirect`);
+    assert.equal(response.status, 308, `${alias}: canonical aliases must redirect permanently`);
     assert.equal(new URL(response.headers.get("location"), base).pathname, target);
   }
   if (host === personalHost) {
