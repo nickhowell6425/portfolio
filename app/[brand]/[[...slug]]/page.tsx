@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, permanentRedirect, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { InteractiveDemo } from "@/components/content/interactive-demo";
 import { PortraitHero } from "@/components/content/portrait-hero";
 import { Sections } from "@/components/content/sections";
@@ -221,7 +221,7 @@ export default async function WorkspacePage({ params }: Props) {
     const ws = nav.workspaceById(slug[0]);
     if (!ws) notFound();
     const destination = hrefFor(ws.id, defaultItemId(ws));
-    if (destination !== `/${slug[0]}`) redirect(destination);
+    if (destination !== `/${slug[0]}`) permanentRedirect(destination);
   }
 
   const resolved = nav.resolveSlug(slug);

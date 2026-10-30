@@ -9,7 +9,7 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useWsSticky } from "@/hooks/use-ws-transition";
 import { useNav } from "@/components/providers/brand-provider";
 import { PH, accentText } from "@/lib/content";
-import { hrefFor } from "@/lib/navigation";
+import { defaultItemId, hrefFor } from "@/lib/navigation";
 
 const itemDelay = (si: number) => 70 + si * 26;
 
@@ -183,14 +183,19 @@ export function Sidebar() {
               );
               return it.type === "ws" ? (
                 <div key={id}>
-                  <button
-                    onClick={() => goWorkspace(it.ws)}
+                  <Link
+                    href={target ? hrefFor(target.id, defaultItemId(target)) : "/"}
+                    prefetch={false}
+                    onNavigate={(event) => {
+                      event.preventDefault();
+                      goWorkspace(it.ws);
+                    }}
                     aria-current={active ? "page" : undefined}
                     className="anim-side-item hov-accent-bg"
                     style={style}
                   >
                     {inner}
-                  </button>
+                  </Link>
                   {active
                     ? subItems.map((sid) => {
                         const sub = open.items[sid];

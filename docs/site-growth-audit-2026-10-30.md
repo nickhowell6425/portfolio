@@ -4,9 +4,11 @@ October 30, 2026. Sites: [Nicholas Howell](https://www.nickhowell.dev/) and [Ful
 
 The opportunity is to turn an already crawlable portfolio into a clear route from founder problem to paid engineering help. Lead FST with taking apps and AI prototypes into production. Use Nicholas’s personal site to show what working directly with him feels like: one-on-one collaboration, hands-on engineering, candid conversation, and useful guidance. His experience and judgment support that working relationship. Be explicit about AI use, explain the economics, and show the checks that make the result usable.
 
-Nicholas selected founders needing an app or AI prototype brought to production as the primary audience. He wants the personal site to emphasize a friendly, direct, hands-on working relationship and the acquisition story to remain anonymous. These decisions govern this plan. The audit and planning goal is complete. He subsequently authorized implementation; the first release status is recorded below. Later sections preserve the original audit baseline and longer-term backlog.
+Nicholas selected founders needing an app or AI prototype brought to production as the primary audience. He wants the personal site to emphasize a friendly, direct, hands-on working relationship and the acquisition story to remain anonymous. These decisions govern this plan. The audit and planning goal is complete, and the authorized website changes have been published. The current inventory is **48 live pages: 12 personal and 36 FST**. The final live pass passed all core checks. Release checkpoints below distinguish completed work from the original baseline.
 
-## First release implementation — October 30
+**Current scope:** finish SEO/GEO, search-console follow-through, and site content. Nicholas has deferred all video, social posts, and outreach. The distribution ideas later in this document are optional backlog, not a publishing commitment or authorization to contact anyone.
+
+## First release implementation — October 30 historical checkpoint
 
 **Published.** [PR #65](https://github.com/nickhowell6425/portfolio/pull/65), commit `c84e589`, was deployed through the project's existing Git integration after Nicholas approved Vercel team access. Both canonical domains showed the new release, and the live crawl passed all 46 sitemap pages, 50 internal destinations, and 127 image URLs.
 
@@ -27,15 +29,27 @@ Validation: production build, lint, formatting, and TypeScript passed. All 46 si
 
 Local Lighthouse checks met every current CI budget. Personal desktop/mobile scores were 78/100 performance, 96/96 accessibility, 96/96 best practices, and 100/100 SEO. FST desktop/mobile scored 98/100 performance, 100/100 accessibility, 96/96 best practices, and 100/100 SEO. Observed LCP was 99–315 ms on the final runs; CLS was at most 0.000054. One noisy initial personal desktop run scored 54, then 78 on a single repeat. The known personal contrast finding and local analytics-script 404 explain the unchanged deductions; these are local lab results, not field performance or proof that analytics is receiving events.
 
-Release follow-through: recheck FST's processing Bing sitemap and Google's lagging discovered-page count, then retry the coaching indexing request when the reCAPTCHA service works. Continue inspecting priority URLs and record real inquiry sources and outcomes in the private lead ledger. Indexing eligibility and sitemap acceptance do not establish that every page is indexed.
+At this first-release checkpoint, follow-through was to recheck FST's processing Bing sitemap and Google's lagging discovered-page count, then retry the coaching indexing request when the reCAPTCHA service worked. The later console checkpoint below supersedes those observations where updated. Indexing eligibility and sitemap acceptance do not establish that every page is indexed.
 
-## Second sprint prepared — awaiting release
+## Published proof pages and contact routing — October 30
 
-The next content changes are prepared for the [FST Timetrack reporting walkthrough](https://fullstacktechnologiesllc.com/blog/timetrack-session-reporting) and [personal story about working through a build](https://www.nickhowell.dev/home/working-through-a-build). These are intended publication URLs; this checkpoint does not record the second sprint as published. The copy explains concrete engineering decisions and distinguishes the sample-data interface from capture, authentication, and export behavior.
+**Published.** [PR #66](https://github.com/nickhowell6425/portfolio/pull/66), commit `30d69a1`, added the [FST Timetrack reporting walkthrough](https://fullstacktechnologiesllc.com/blog/timetrack-session-reporting) and [personal story about working through a build](https://www.nickhowell.dev/home/working-through-a-build). [PR #67](https://github.com/nickhowell6425/portfolio/pull/67), commit `1cfa332`, published a subsequent copy cleanup. The sites now contain **48 pages: 12 personal and 36 FST**, and the final live pass passed all core checks. The proof pages explain concrete engineering decisions and distinguish the sample-data interface from capture, authentication, and export behavior.
 
-The [Timetrack launch draft](timetrack-content-launch.md) contains a 60–90-second demo script and three finished LinkedIn drafts; nothing has been posted. The [weekly growth review](weekly-growth-review.md) defines the first review for November 6, qualification stages, and test exclusions. It is a manual review plan, not an automatically scheduled task.
+Both forms now route to `admin@fullstacktechnologiesllc.com`. Direct API tests `SiteCheck-Admin-202610302044-personal` and `SiteCheck-Admin-202610302044-fst` at **20:44:16 UTC** both returned HTTP 200 with `ok: true`; both messages were independently verified in that inbox. Together with the two original delivery checks, **all four labeled submissions are excluded from leads**. Direct POST requests did not emit browser contact events. Exact exclusions are recorded in the [weekly review](weekly-growth-review.md#excluding-tests-and-interpreting-events).
 
-Both forms are configured to use the shared business admin inbox. The routing change awaits release and a new delivery check; the two confirmed original messages establish delivery before this recipient change.
+The existing [Timetrack launch draft](timetrack-content-launch.md) remains deferred reference material. No video has been recorded and no posts or outreach have been sent. The [weekly growth review](weekly-growth-review.md) retains a proposed manual review for November 6, qualification stages, and test exclusions; it does not create an automated schedule or a distribution commitment.
+
+### Final console checkpoint — October 30
+
+Both Google sitemaps were refreshed and show **Success: 12 personal pages and 36 FST pages**, matching the live inventories. Both Bing sitemaps were re-submitted and also show **Success: 12 personal URLs and 36 FST URLs**, with no sitemap errors or warnings.
+
+Google inspection confirms `/services/product-development` and `/services/codebase-rescue` are indexed. The new FST Timetrack walkthrough and personal working-through-a-build page are not yet indexed and were reported as unknown to Google. The personal page's live test passed on October 30 at 5:11 PM: available to Google, indexable, and one valid breadcrumb item. The earlier coaching live test also passed. These availability checks do not establish index inclusion.
+
+A selective indexing request for the FST walkthrough failed with Google's “problem submitting your indexing request” message and a reCAPTCHA service connection error. No accepted manual request is claimed. The successful sitemap submissions provide discovery without repeating the failing request.
+
+Bing reports the product-development service as discovered on October 29 but not yet crawled. Its October 30 live test at 17:12 says the URL can be indexed and reports no SEO/GEO issues; the separate markup-insights panel failed to load. A selective submission then returned **“Indexing requested.”** Sitemap acceptance and a successful request do not guarantee crawling, indexing, rankings, or AI citations.
+
+The finishing release simplifies personal copy, links services to the relevant proof pages, clarifies tool access and review, and corrects the remaining Coverly data-processing claim. Workspace navigation now renders canonical links while preserving remembered destinations and mobile behavior. Stable one-segment aliases redirect permanently. Build, lint, formatting, all 48 rendered-page checks, and desktop/mobile navigation checks passed before publication; the PR records the deployment receipt.
 
 ## Findings that determine the priorities
 
@@ -52,7 +66,7 @@ Both forms are configured to use the shared business admin inbox. The routing ch
 | P2       | Bing opens to onboarding with no properties in the account used                                                    | Add and verify both sites as an implementation task; measure ordinary search and supported AI citations.                                                                                   |
 | P2       | Stable aliases use temporary redirects, and some titles are lengthy                                                | Small cleanup during the content release, not a reason to rebuild the site.                                                                                                                |
 
-### Live technical baseline
+### Original live technical baseline
 
 The October 30 crawl covered all **43 sitemap URLs: 11 personal and 32 FST**. All returned HTTP 200, had distinct titles and descriptions within the crawl, one H1, and the intended self-canonical. All 47 unique internal linked destinations and 129 unique image URLs checked returned 200. Rendered images had alt attributes; that alone does not establish the quality of every description.
 
@@ -74,7 +88,7 @@ Desktop browser inspection confirms that the visual system is distinctive and pr
 
 ## Search Console and Bing baseline
 
-These are historical browser observations from the October 30 planning pass, before implementation. Search performance, sitemap discovery, and indexing reports have different update dates; their totals must not be treated as a single current inventory. Submission and verification changes completed afterward are recorded in the first release section above.
+These are historical browser observations from the October 30 planning pass, before implementation. Search performance, sitemap discovery, and indexing reports have different update dates; their totals must not be treated as a single current inventory. Submission, verification, and later inspection results are recorded in the release and final-console sections above.
 
 | Metric                          | Personal                                                                     | FST                                                        |
 | ------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------- |
@@ -97,13 +111,15 @@ FST homepage inspection also confirms “URL is on Google,” with an October 29
 
 Both properties’ Manual actions and Security issues reports say “No issues detected.” The personal discovered-but-not-indexed examples include old `/clients/*` pages, component-library pages, `/home/about`, and a demo. Reconcile them with today’s routes before treating them as failures. Do not try to index every historical URL.
 
-Two old URLs receiving impressions already resolve correctly: `/shiftsum/overview` permanently redirects to `/timetrack/overview`; `/paradox/timeline-view` permanently redirects to `/paradox/overview#interactive-data`. The current 11-URL personal sitemap is smaller than the 22-URL October 27 snapshot. That difference alone is not an error.
+Two old URLs receiving impressions already resolve correctly: `/shiftsum/overview` permanently redirects to `/timetrack/overview`; `/paradox/timeline-view` permanently redirects to `/paradox/overview#interactive-data`. The then-current 11-URL personal sitemap was smaller than the 22-URL October 27 snapshot. That difference alone was not an error.
 
 The FST overview also reports six HTTPS pages with zero non-HTTPS pages and six valid breadcrumb items with zero invalid items. These are report-specific counts, not the current number of indexable URLs.
 
 Bing sign-in succeeded using the Google identity already used for Search Console. The account shows the welcome screen and offers importing sites or adding them manually. No sites were listed. This does not establish that no other account has properties. No site imports, verification grants, sitemap submissions, or indexing requests were performed during this planning pass.
 
-### Search console implementation checklist
+### Original search console implementation checklist
+
+This preserves the planning checklist. Sitemap submissions and Bing verification are complete; use the current console checkpoint above for observed discovery and indexing results. Later monitoring and optional IndexNow work are not evidence of a current defect.
 
 1. Submit `https://fullstacktechnologiesllc.com/sitemap.xml` to its Google domain property. Keep the existing successful `https://www.nickhowell.dev/sitemap.xml` submission; confirm Google reads the updated inventory.
 2. Inspect the FST home, product-development service, codebase-rescue service, and first revised guide. Compare live availability, robots/noindex, declared canonical, Google-selected canonical, and current index status. Request indexing selectively after meaningful changes.
@@ -115,6 +131,8 @@ Bing sign-in succeeded using the Google identity already used for Search Console
 Useful destinations: [personal Search Console](https://search.google.com/search-console?resource_id=sc-domain%3Anickhowell.dev), [FST Search Console](https://search.google.com/search-console?resource_id=sc-domain%3Afullstacktechnologiesllc.com), [Bing Webmaster Tools](https://www.bing.com/webmasters/).
 
 ## Positioning and offers
+
+The following recommendations preserve the editorial reasoning behind the published positioning. Proposed wording is reference material, not a list of unpublished changes.
 
 ### FST serves founders moving toward real users
 
@@ -187,11 +205,11 @@ Write as “I” and “you,” with natural contractions, specific examples, an
 
 ### Let experience support the relationship
 
-Use the acquisition experience already on the site: helping an unnamed fintech startup grow from three people to more than 20 and through an acquisition. Keep the company anonymous. The current site’s “multi-million-dollar” description is an existing first-person assertion, not independently substantiated by this audit; it is unnecessary to the stronger engineering story and can be omitted. Do not upgrade “helped build through an acquisition” into “founded and sold multiple companies.”
+Use the acquisition experience already on the site: helping an unnamed fintech startup grow from three people to more than 20 and through an acquisition. Keep the company anonymous. The pre-release site’s “multi-million-dollar” description was a first-person assertion, not independently substantiated by this audit; it was removed from the published copy. Do not upgrade “helped build through an acquisition” into “founded and sold multiple companies.”
 
 The experience material should answer: What have you taken responsibility for? How do you make decisions? How will that help us work together? A short anonymous experience timeline can give stages, responsibilities, technical constraints, team changes, and lessons without revealing names or transaction terms. Retain already-public AccountTouch material only to the extent Nicholas wants it public; do not add newly researched employer/acquisition identities.
 
-Clarify the existing “Pinnacle since 2019” reference so visitors understand the relationship to today’s FST. Do not invent a rebrand, merger, or continuity statement. If that detail is distracting and not needed, remove it in the content pass.
+The earlier ambiguous company-history reference was removed from the published copy. Do not invent a rebrand, merger, or continuity statement to replace it.
 
 | Personal owns                                                                                                 | FST owns                                                                                              | Connection                                                                          |
 | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
@@ -234,7 +252,9 @@ Track AI referral visits when available and ask leads how they found Nicholas. O
 
 Keep Saint Petersburg as a truthful location signal. A Google Business Profile is appropriate only if the business meets its eligibility requirements, including in-person customer contact; an online-only studio is not eligible. Do not create fictitious offices or city-swapped pages. [Google eligibility guidance](https://support.google.com/business/answer/13763036)
 
-### Technical changes in the next release
+### Original technical change recommendations
+
+These recommendations describe the implementation scope identified during the audit. Completed release work is recorded above; this list does not imply that those fixes remain outstanding.
 
 - Preserve correct brand ownership, sitemap separation, noindex demo rules, historical redirects, and canonical URLs. Do not change service slugs merely for new wording.
 - Make stable `/home/about` and `/blog/index` aliases permanent rather than temporary redirects. Shorten long showcase titles for readable results, without treating a character threshold as a ranking rule.
@@ -243,11 +263,11 @@ Keep Saint Petersburg as a truthful location signal. A Google Business Profile i
 - Add a concise explanation near the form of how inquiry information is used, and ensure any privacy page reflects actual processing. Avoid sending inquiry text, names, or email addresses as analytics properties.
 - Test the revised hero, menus, service navigation, and contact drawer on mobile and keyboard. Use existing content tests plus targeted contact success/failure checks. No redesign or new analytics dependency is justified by this audit.
 
-## Marketing experiments and measurement
+## Optional marketing experiments and measurement
 
-Start with the founder’s voice and useful evidence. Organic search is a compounding channel; the current search history is too small to rely on for near-term pipeline.
+**Deferred by Nicholas.** No video, posts, outreach, workshop, or distribution schedule is active. The options below may be reconsidered if he resumes that work. The current search history is too small to support a near-term pipeline forecast.
 
-| Experiment                     | Six-week commitment                                                                           | Destination                                   | Decision signal                                                     |
+| Experiment                     | Possible test if resumed                                                                      | Destination                                   | Decision signal                                                     |
 | ------------------------------ | --------------------------------------------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------- |
 | Founder LinkedIn content       | Two substantive posts weekly, derived from real work; one short demo every two weeks          | Relevant guide, case study, or review offer   | Qualified founder conversations and booked reviews, not likes       |
 | Existing network and referrals | Plan 10–15 relevant conversations with prior collaborators and founders                       | Clear review/build offer                      | Repeated launch blockers and willingness to buy a bounded next step |
@@ -255,9 +275,11 @@ Start with the founder’s voice and useful evidence. Organic search is a compou
 | Public proof artifact          | One sanitized review example or small sample repository with an explanation                   | Case study and service page                   | Relevant questions, referrals, and resulting inquiries              |
 | Search-led articles            | One substantial evidence-based piece every two weeks                                          | Existing service pages                        | Indexing, relevant queries, and assisted qualified inquiries        |
 
-These are experiments, not claims that one channel is proven best for FST. Use the personal account for judgment and conversation; use the company site for the offer and evidence. Do not launch a separate podcast, daily AI-news feed, multiple social channels, paid ads, or a gated course now. No outreach messages were sent in this audit.
+These are uncommitted experiments, not claims that one channel is proven best for FST. If resumed, use the personal account for judgment and conversation and the company site for the offer and evidence. No outreach messages, social posts, or advertising were sent or published as part of this work.
 
-### Six-week publishing sequence
+### Deferred publishing sequence
+
+This preserves the original six-part idea sequence. The week numbers are historical planning order, not current dates or commitments; several site assets are already published.
 
 | Week | Main asset                                                     | Reuse and commercial link                                                                |
 | ---- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
@@ -268,7 +290,7 @@ These are experiments, not claims that one channel is proven best for FST. Use t
 | 5    | Build-with-me offer and actual setup walkthrough               | Show a real change from brief through review; link to coaching                           |
 | 6    | Build-versus-buy guide with complete cost assumptions          | Founder decision post or workshop; link to scope discussion                              |
 
-Pick the product for week two based on actual production evidence, not visual polish. Label prototype, internal tool, beta, and production accurately. If outcome data is unavailable, show the release process and limitations without substituting a business-success claim.
+Timetrack supplied the evidence for the published walkthrough. Future examples should describe supported behavior, contribution, checks, and limits without substituting a business-success claim. Follow the repository's rule against product maturity labels in public site copy.
 
 ### Measurement that can guide spending
 
@@ -278,34 +300,33 @@ Keep a minimal lead record: date, source, landing page, need, stage, qualified/u
 
 The weekly scorecard should show qualified inquiries, conversations, paid assessments, proposals, builds won, and channel effort. The monthly scorecard adds per-domain search clicks/impressions, current priority-page indexing, relevant queries, generative-search impressions where exposed, Bing citations, and conversion counts. Do not add AI-report impressions to Web impressions as though they were disjoint audiences.
 
-Initial management target, not a forecast: by day 90, seek eight qualified founder conversations, three paid assessments, and one production-build engagement. Recalibrate after the first four weeks against actual capacity, prices, and observed conversion. A qualified conversation means a specific user/problem, a plausible funded next step, and access to the decision maker. Traffic growth alone is not success.
+The original planning targets were eight qualified founder conversations, three paid assessments, and one production-build engagement over 90 days. These were management hypotheses, not forecasts or accepted commitments, and the distribution plan is now deferred. Reconsider any targets against actual capacity, prices, and observed conversion if marketing resumes. A qualified conversation means a specific user/problem, a plausible funded next step, and access to the decision maker. Traffic growth alone is not success.
 
 If visibility rises without inquiries, improve intent/offer/CTA fit. If inquiries are irrelevant, narrow the audience and examples. If relevant conversations do not become paid assessments, examine scope, proof, price, and trust. Avoid spending more on distribution until the lead flow is reliable.
 
 ## Execution backlog and checkpoints
 
-The estimates below are planning allowances, not delivery quotes. Technical work belongs to the implementation owner; Nicholas supplies firsthand examples and approves factual claims and actual commercial terms.
+This reconciles the original dated backlog with the completed releases and current scope. November 6 remains a proposed manual review, not an automatically scheduled task. Nicholas supplies firsthand examples and approves factual claims and actual commercial terms.
 
-| When                | Work                                                                                         | Owner                                                        | Definition of done                                                                                                                                 |
-| ------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| By November 6       | Repair contact success/failure behavior, accessible inputs, fallback; verify both inboxes    | Engineering                                                  | Success delivers a test inquiry, failure preserves draft and displays error; no false success event                                                |
-| By November 6       | Instrument inquiry events and start the private lead ledger                                  | Engineering + Nicholas                                       | Open/start/success/error events verified on both brands; page, offer, and source recorded without inquiry contents or contact details in analytics |
-| By November 6       | Record baseline, submit FST sitemap, reconcile personal inventory, set up Bing               | Engineering with account owner for any required access grant | Submitted/verified status visible; priority URLs inspected; delayed data recorded accurately                                                       |
-| By November 13      | Rewrite both heroes, home copy, descriptions, services, FAQs, and AI disclosure consistently | Nicholas + editorial/engineering                             | FST offer and personal working relationship clear in each first screen; ownership/pricing match real terms; content checks pass                    |
-| By November 13      | Choose one project and gather evidence                                                       | Nicholas                                                     | Status, contribution, constraints, screenshots, release checks, and publishable outcomes collected                                                 |
-| By November 29      | Publish first walkthrough, production guide, and anonymous personal experience               | Nicholas + editorial/engineering                             | Distinct personal/company narratives, citations where needed, relevant CTAs, live canonical/indexing checks                                        |
-| By November 29      | Run initial distribution and measure leads                                                   | Nicholas                                                     | At least four weeks of consistent records; repeated buyer objections captured                                                                      |
-| By December 29      | Complete six-week content sequence; assess coaching demand and channel quality               | Nicholas                                                     | Prioritize the offer/channel producing qualified conversations; revise or stop weak experiments                                                    |
-| By January 28, 2027 | Review 90-day pipeline and content results                                                   | Nicholas                                                     | Compare with management targets; choose next case study and focus area from actual leads and queries                                               |
+| Status                                          | Work                                                                                                        | Checkpoint                                                                                                                     |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Complete                                        | Contact behavior, accessible inputs, fallback, and production delivery                                      | Both brands deliver to the shared admin inbox; four labeled delivery tests excluded from leads.                                |
+| Published                                       | Founder positioning, personal working relationship, services, FAQs, and AI disclosure                       | Live 48-page inventory passes core checks. Anonymous acquisition facts remain bounded to the existing account.                 |
+| Published                                       | Coaching offer, production/build-versus-buy guides, Timetrack walkthrough, and personal collaboration story | Distinct pages have internal links and relevant calls to action.                                                               |
+| Implemented; measurement follow-through remains | Inquiry events and private lead reconciliation                                                              | One QA open received per brand; other event receipt and actual lead totals require reconciliation.                             |
+| Configured; final console checkpoint pending    | Google/Bing properties, sitemaps, and priority-URL checks                                                   | FST Google Success with 36 discovered pages; product-development indexed. Append remaining current console observations above. |
+| Optional manual review, November 6              | Search visibility, delivery, QA exclusions, and actual inquiries                                            | Follow the weekly review with report-specific dates; missing data remains unknown.                                             |
+| Deferred                                        | Video, posts, outreach, workshops, and a scheduled publishing sequence                                      | Resume only at Nicholas's direction; no active distribution commitment.                                                        |
+| Optional future content                         | Additional anonymous experience or project examples                                                         | Require a specific firsthand decision and publishable evidence; no extra pages for volume.                                     |
 
-First implementation scope: shared contact flow and its callers/checks; heroes and metadata; relevant `lib/content.ts` entries; minimal new coaching/guide entries; navigation/sitemap generation through the existing model; analytics events; Search Console/Bing setup. Preserve unrelated product interactions. Run lint, typecheck, build, the existing content suite, and meaningful contact-path tests when those changes are made.
+Implemented scope includes the shared contact flow and checks; heroes and metadata; relevant `lib/content.ts` entries; coaching and guide pages; navigation/sitemap generation through the existing model; analytics events; and Google/Bing setup. The finishing pass covers site content, SEO/GEO, and console verification while preserving unrelated product interactions. Core validation is complete for the live 48-page inventory; current console observations are recorded above.
 
-Decisions needed before publishing commercial promises: minimum engagement, capacity, billing model, included AI spend, ongoing support, and which project has enough evidence for the first case study. No further company names are required. The privacy choice, founder audience, and emphasis on friendly one-on-one collaboration are already settled.
+Decisions still needed before publishing more specific commercial promises include minimum engagement, capacity, pricing model, included AI spend, and ongoing support. The first walkthrough already uses Timetrack evidence. No further company names are required. The privacy choice, founder audience, and emphasis on friendly one-on-one collaboration are settled.
 
 ## Scope and limitations
 
-Completed: repository/content inspection; live sitemap, metadata, links, images, redirect and crawler checks; desktop homepage review and mobile FST review; Google performance, sitemap, personal indexing, both homepage inspections, personal AI report, both security/manual-action reports and field-data availability; Bing account availability; current primary-source and competitor research; prioritized plan.
+Completed: repository/content inspection, primary-source and competitor research, the audit and prioritized plan; published positioning, service, guide, and proof-page changes; contact reliability and production delivery to the shared admin inbox; inquiry-event implementation with limited receipt verification; Google/Bing verification and sitemap submission; live sitemap, metadata, canonical, schema, link, image, redirect, indexability, and core validation checks. The current live inventory is 48 pages. Historical desktop/mobile and console observations are recorded above, and the final console checkpoint remains open for its remaining observations.
 
-Not completed: implementation/deployment, production inquiry submission and inbox receipt, account-level analytics review, paid keyword-volume research, customer willingness-to-pay validation, exhaustive backlink audit, production field performance measurement, full accessibility/security testing, or verification of private acquisition figures. The FST indexing report is still processing. No public copy, outreach, advertising, search settings, or sitemap registrations were changed.
+Not established: complete receipt of every custom analytics event, reconciled real inquiry totals, customer willingness to pay, paid keyword volumes, an exhaustive backlink audit, production field performance, a full accessibility/security assessment, or independent verification of private acquisition figures. The final current console record is still being completed; do not substitute historical coverage-report counts for current indexing evidence. Video, social posts, advertising, and outreach are deferred and have not been carried out.
 
-Search results and AI citations are not guaranteed. The current sample is too small for ranking or conversion conclusions. The immediate risk is promoting a stronger offer before the contact-delivery behavior is fixed and verified.
+Search results and AI citations are not guaranteed. The current sample is too small for ranking or conversion conclusions. Contact delivery is verified; the remaining measurement limits are incomplete analytics-event receipt evidence, small search samples, and unreconciled customer inquiry data.

@@ -1,12 +1,14 @@
 "use client";
 
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { MONO } from "@/components/fragments/ui";
 import { useBrand, useNav } from "@/components/providers/brand-provider";
 import { useUI } from "@/components/providers/ui-provider";
 import { useHydrated } from "@/hooks/use-hydrated";
+import { defaultItemId, hrefFor } from "@/lib/navigation";
 import {
   BRANDS,
   brandForHost,
@@ -205,11 +207,14 @@ function BrandMenu({ onClose }: { onClose: () => void }) {
         animation: "popIn .16s ease",
       }}
     >
-      <button
+      <Link
+        href="/"
+        prefetch={false}
         role="menuitem"
         className="hov-row"
         style={row}
-        onClick={() => {
+        onNavigate={(event) => {
+          event.preventDefault();
           onClose();
           goWorkspace("home");
         }}
@@ -219,7 +224,7 @@ function BrandMenu({ onClose }: { onClose: () => void }) {
           {brand.short}
           <span style={sub}>home</span>
         </span>
-      </button>
+      </Link>
       <span
         aria-hidden="true"
         style={{ display: "block", height: 1, background: "var(--border)", margin: "4px 6px" }}
@@ -276,6 +281,53 @@ export function Rail() {
         const active = w.id === activeWs;
         const isHome = w.id === "home";
         const isParadox = w.id === "paradox";
+        const tileStyle: React.CSSProperties = {
+          position: "relative",
+          width: 40,
+          height: 40,
+          borderRadius: active ? 12 : 15,
+          border: "none",
+          cursor: "pointer",
+          background: isHome
+            ? MARK_BG[brand.id]
+            : isParadox
+              ? "oklch(0.06 0.014 158)"
+              : active
+                ? w.accent
+                : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
+          color: active ? "#fff" : w.accent,
+          fontWeight: 800,
+          fontSize: 13,
+          letterSpacing: ".02em",
+          boxShadow: active ? `0 6px 18px -4px ${w.accent}77` : "none",
+          transition:
+            "border-radius .25s, transform .2s, box-shadow .25s, background-color .3s, color .3s",
+          fontFamily: MONO,
+          textDecoration: "none",
+        };
+        const tileContent = (
+          <>
+            {!isHome ? (
+              <ProductMark wsId={w.id} active={active}>
+                {w.initials}
+              </ProductMark>
+            ) : null}
+            {active ? (
+              <span
+                style={{
+                  position: "absolute",
+                  left: -11,
+                  top: "50%",
+                  marginTop: -11,
+                  width: 4,
+                  height: 22,
+                  borderRadius: "0 4px 4px 0",
+                  background: w.accent,
+                }}
+              />
+            ) : null}
+          </>
+        );
         return (
           <Fragment key={w.id}>
             {i === 1 ? (
@@ -307,61 +359,34 @@ export function Rail() {
               </>
             ) : null}
             <span style={{ position: "relative", display: "flex" }}>
-              <button
-                onClick={() => (isHome ? setMenuOpen((o) => !o) : goWorkspace(w.id))}
-                title={w.name}
-                aria-label={
-                  isHome ? `${w.name} — home or switch brand` : `${w.initials} — ${w.name}`
-                }
-                aria-haspopup={isHome ? "menu" : undefined}
-                aria-expanded={isHome ? menuOpen : undefined}
-                className="hov-raise"
-                style={{
-                  position: "relative",
-                  width: 40,
-                  height: 40,
-                  borderRadius: active ? 12 : 15,
-                  border: "none",
-                  cursor: "pointer",
-                  background: isHome
-                    ? MARK_BG[brand.id]
-                    : isParadox
-                      ? "oklch(0.06 0.014 158)"
-                      : active
-                        ? w.accent
-                        : `color-mix(in srgb, ${w.accent} 13%, var(--surface2))`,
-                  color: active ? "#fff" : w.accent,
-                  fontWeight: 800,
-                  fontSize: 13,
-                  letterSpacing: ".02em",
-                  boxShadow: active ? `0 6px 18px -4px ${w.accent}77` : "none",
-                  transition:
-                    "border-radius .25s, transform .2s, box-shadow .25s, background-color .3s, color .3s",
-                  fontFamily: MONO,
-                }}
-              >
-                {isHome ? (
-                  ""
-                ) : (
-                  <ProductMark wsId={w.id} active={active}>
-                    {w.initials}
-                  </ProductMark>
-                )}
-                {active ? (
-                  <span
-                    style={{
-                      position: "absolute",
-                      left: -11,
-                      top: "50%",
-                      marginTop: -11,
-                      width: 4,
-                      height: 22,
-                      borderRadius: "0 4px 4px 0",
-                      background: w.accent,
-                    }}
-                  />
-                ) : null}
-              </button>
+              {isHome ? (
+                <button
+                  onClick={() => setMenuOpen((o) => !o)}
+                  title={w.name}
+                  aria-label={`${w.name} — home or switch brand`}
+                  aria-haspopup="menu"
+                  aria-expanded={menuOpen}
+                  className="hov-raise"
+                  style={tileStyle}
+                >
+                  {tileContent}
+                </button>
+              ) : (
+                <Link
+                  href={hrefFor(w.id, defaultItemId(w))}
+                  prefetch={false}
+                  onNavigate={(event) => {
+                    event.preventDefault();
+                    goWorkspace(w.id);
+                  }}
+                  title={w.name}
+                  aria-label={`${w.initials} — ${w.name}`}
+                  className="hov-raise"
+                  style={tileStyle}
+                >
+                  {tileContent}
+                </Link>
+              )}
               {isHome && menuOpen ? <BrandMenu onClose={closeMenu} /> : null}
             </span>
           </Fragment>

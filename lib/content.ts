@@ -222,7 +222,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             paras: [
               `At AccountTouch, I served as CTO and founding engineer and architected the platform: a cross-platform mobile app, a serverless backend, and a web portal. My ${PH.YEARS}+ years of experience span product architecture, implementation, and technical leadership.`,
               "Before that I helped scale a fintech startup from 3 people to 20+ and worked with it through an acquisition. I've also worked inside client teams and run my own studio. That experience gives us a practical starting point for talking about what your product needs now and what can wait.",
-              "Explore Paradox for interactive data and onboarding, Timetrack for activity records and reporting, Constellation for prioritization and planning, Helm for decisions across clients and AI agents, Nemo for AI memory you can take into any model, Snake n Friends for head-to-head mobile play, and Coverly for insurance policies you can actually read. Each product page explains the decisions and includes interfaces you can explore.",
             ],
           },
           {
@@ -303,14 +302,14 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             heading: "Connect the decision to a check",
             paras: [
-              "A regression test checks that the short manual entry stays in the summary's starting data. It checks behavior a person would notice: whether their work remains visible as the records move through the system.",
+              "A repeatable test checks that the short manual entry stays in the summary's starting data. It checks behavior a person would notice: whether their work remains visible as the records move through the system.",
               "This is the kind of evidence we can review together: what should happen, a concrete example, and a check that would catch the wrong result. You can change your mind about the requirement while the consequences are still easy to discuss.",
             ],
           },
           {
             heading: "Be clear about where AI fits",
             paras: [
-              "I used AI assistance while building Timetrack, including work on session attribution and reconciliation. I remain responsible for deciding which information belongs in a report and checking that it survives each step.",
+              "I used AI assistance while building Timetrack, including how session records are organized and updated. I remain responsible for deciding which information belongs in a report and checking that it survives each step.",
               "When we work on your app, we can use AI to explore and implement a change while keeping those decisions understandable. I'll explain the proposed behavior and what we've checked. If you want to use the tools yourself, we can work through the same task together.",
             ],
             links: [
@@ -352,7 +351,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             ],
           },
           {
-            heading: "“Do you only do greenfield, solo builds?”",
+            heading: "“Can you help with an app I've already started?”",
             paras: [
               "I can start with an idea, pick up an existing app, or work alongside your team. We'll look at what you already have before deciding what needs to change.",
             ],
@@ -2437,7 +2436,7 @@ const FST_HOME: Workspace = {
           heading: "AI is part of the process. So is engineering judgment.",
           paras: [
             "We use AI openly to reduce repetitive work and test ideas sooner. Nicholas directs the work and reviews the result, including data access, failure handling, testing, and deployment. A quick demo is a starting point; a release needs evidence that the important behavior works.",
-            "We agree on scope, accounts, tool costs, and handoff before work starts. Any claim about saved time or money needs a comparable scope and the full cost of delivery, review, and ongoing operation.",
+            "We agree on scope, accounts, tool costs, and handoff before work starts. You'll know which tools we use, what access they need, and what we'll check before a change reaches your users.",
           ],
           links: [{ label: "How we handle AI tools, usage, and costs", href: "/ai/resources" }],
         },
@@ -2552,7 +2551,7 @@ const FST_HOME: Workspace = {
           heading: "“Do you use AI to build my app?”",
           paras: [
             `Yes. ${PH.NAME} uses AI for planning, implementation, and review, and takes responsibility for the engineering work. We agree on tool access and costs, inspect the generated changes, and check the behavior your release needs.`,
-            "AI can reduce repetitive work and shorten feedback cycles. The quote still needs to account for design, integrations, review, testing, and operation. We don't promise a universal savings percentage or billable-time formula.",
+            "AI can reduce repetitive work and shorten feedback cycles. The quote accounts for design, integrations, review, testing, and operation, with the tools and their costs agreed before work starts.",
           ],
         },
         {
@@ -2753,8 +2752,8 @@ const SERVICES: Workspace = {
               href: "/blog/review-ai-generated-code",
             },
             {
-              label: "Timetrack: inspectable records and reporting",
-              href: "/timetrack/overview",
+              label: "Inside Timetrack: decisions and checks behind a report",
+              href: "/blog/timetrack-session-reporting",
             },
           ],
         },
@@ -2850,6 +2849,12 @@ const SERVICES: Workspace = {
           paras: [
             "Give the tool the relevant context, inspect its proposal, and compare the result with the task. Read the important changes, try the user journey, and test the failure that would matter most. Keep the change small enough to understand and undo.",
             "You'll practice asking for evidence, spotting unsupported assumptions, and deciding when to stop and investigate. If the task is ready for release, work through the existing deployment process; otherwise record the blockers and the next check.",
+          ],
+          links: [
+            {
+              label: "How Nick works through a decision with you",
+              href: new URL("/home/working-through-a-build", BRANDS.personal.url).href,
+            },
           ],
         },
         {
@@ -3021,7 +3026,7 @@ const BLOG: Workspace = {
           heading: "Start with the detail a reader could lose",
           paras: [
             "A fifteen-minute manual entry can matter even when automated sessions run for hours. Timetrack records AI coding sessions and manual activity, then turns those records into views and reports. One engineering decision is to preserve the short entry when preparing a summary, rather than take only the longest sessions.",
-            "A regression check uses ten long agent sessions and one fifteen-minute manual entry. All eleven remain in the summary's starting data. The test proves that specific behavior with sample records; it does not establish what the work achieved or what anyone should pay for it.",
+            "A repeatable check uses ten long agent sessions and one fifteen-minute manual entry. All eleven remain in the summary's starting data. The test checks that the summary retains those sample records; their duration alone does not establish what the work achieved.",
             "For a founder building an app, this is a useful review question: does the transformation preserve the information a person needs to make a decision? A clear screen can still hide an important record.",
           ],
         },
@@ -3029,7 +3034,7 @@ const BLOG: Workspace = {
           heading: "Define what the recorded time means",
           paras: [
             "Concurrent AI sessions keep their own durations. Two sessions running during the same hour can add up to more than one hour of session time. The dashboard makes overlap visible so the reader can distinguish recorded activity from elapsed human time.",
-            "Manual entries carry a separate source label. Session attribution connects the selected project to that project's client, keeping those two labels consistent. An unrecognized project can become a draft without an assigned rate, ready for review. These are explicit data rules; session duration alone is not a measure of human effort or a billing agreement.",
+            "Manual entries carry a separate source label. Session attribution connects the selected project to that project's client, keeping those two labels consistent. The labels explain where the records came from and what they belong to; session duration alone is not a measure of human effort.",
           ],
         },
         {
@@ -3067,7 +3072,7 @@ const BLOG: Workspace = {
             },
             {
               label: "Review your AI prototype before launch",
-              href: "/blog/ai-prototype-to-production",
+              href: "/services/codebase-rescue",
             },
             {
               label: "Work through a real task together",
@@ -4728,7 +4733,7 @@ const PROJECT_FRAMING: Record<
           heading: "The problem this approach addresses",
           paras: [
             "Insurance documents are long, scattered across inboxes and drawers, and hard to read when something has just gone wrong. Coverly demonstrates turning them into structured, confirmed records and answering questions from them with citations.",
-            "The examples provide discussion points for an AI product in a regulated area: where a person confirms what the model extracted, how answers are grounded in and traced to source documents, and how sensitive data is kept on the device.",
+            "The examples provide discussion points for an AI product in a regulated area: where a person confirms what the model extracted, how answers are grounded in and traced to source documents, and what data each feature uses and where it is processed.",
           ],
         },
       ],
