@@ -8,7 +8,6 @@ import { useBrand, useNav } from "@/components/providers/brand-provider";
 import { useUI } from "@/components/providers/ui-provider";
 import { useHydrated } from "@/hooks/use-hydrated";
 import { BRANDS, brandForHost, otherBrand, BRAND_PARAM, type BrandId } from "@/lib/brands";
-import { navFor } from "@/lib/navigation";
 import { ProductMark } from "./product-mark";
 
 const THEME_GLYPH: Record<string, string> = { system: "◐", light: "○", dark: "●" };
@@ -41,7 +40,7 @@ function ThemeButton() {
 
 // ---- brand switcher -------------------------------------------------------
 // The top tile is the brand's mark. Clicking it opens a small menu: home,
-// or the same page on the other brand's domain.
+// or the other brand's home page.
 
 const MARK_BG: Record<BrandId, string> = {
   personal: "url('/uploads/avatar-circle-96.png') center/cover no-repeat, #1c2435",
@@ -65,9 +64,9 @@ function BrandMark({ id, size }: { id: BrandId; size: number }) {
   );
 }
 
-/** The same page on the other brand's front door (home if it has no such page). */
-function switchHref(target: BrandId, pathname: string): string {
-  const path = navFor(target).resolvePathname(pathname) ? pathname : "/";
+/** The other brand's home page. */
+function switchHref(target: BrandId): string {
+  const path = "/";
   const { protocol, hostname, port } = window.location;
   const here = brandForHost(hostname);
   if (!here) return `${path}?${BRAND_PARAM}=${target}`; // previews: one host, cookie-picked
@@ -79,7 +78,6 @@ function switchHref(target: BrandId, pathname: string): string {
 
 function BrandMenu({ onClose }: { onClose: () => void }) {
   const brand = useBrand();
-  const pathname = usePathname();
   const { goWorkspace } = useUI();
   const ref = useRef<HTMLDivElement | null>(null);
   const other = BRANDS[otherBrand(brand.id)];
@@ -167,7 +165,7 @@ function BrandMenu({ onClose }: { onClose: () => void }) {
         role="menuitem"
         className="hov-row"
         style={row}
-        href={switchHref(other.id, pathname)}
+        href={switchHref(other.id)}
         onClick={onClose}
       >
         <BrandMark id={other.id} size={28} />

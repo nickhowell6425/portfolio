@@ -57,7 +57,7 @@ email, copy `.env.example` to `.env.local` and set `RESEND_API_KEY` (plus option
 
 - `⌘K` (or `/`) jumps to any project or feature section; `Esc` unwinds overlays.
 - Theme follows the visitor's system by default; the rail button cycles system → light → dark.
-- The top rail tile switches brands: same page on the other domain. Locally, run `pnpm dev`
+- The top rail tile switches brands: the other domain's home page. Locally, run `pnpm dev`
   and open `http://fst.localhost:3000` for Full Stack Technologies; on Vercel previews append
   `?brand=fst` (or `?brand=personal`).
 - `prefers-reduced-motion` collapses all choreography to instant states.
