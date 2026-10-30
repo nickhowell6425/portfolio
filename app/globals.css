@@ -477,21 +477,20 @@ input::placeholder {
     opacity: 1;
   }
 }
-/* Coverly's check draws itself inside the shield, then holds. */
-.cvm-check {
-  animation: cvmCheck 4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+/* The coverage shield floats as light travels around its edge. */
+.cvm-shield {
+  animation: cvmFloat 5s ease-in-out infinite;
 }
-@keyframes cvmCheck {
+.cvm-glint {
+  animation: markSignal 5s linear infinite;
+}
+@keyframes cvmFloat {
   0%,
-  8% {
-    stroke-dashoffset: 100;
-  }
-  32%,
-  86% {
-    stroke-dashoffset: 0;
-  }
   100% {
-    stroke-dashoffset: -100;
+    transform: translateY(1.5px);
+  }
+  50% {
+    transform: translateY(-1.5px);
   }
 }
 /* Coverly's typing dots while an answer is read from the policies. */
