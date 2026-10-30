@@ -4,9 +4,14 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useNav } from "@/components/providers/brand-provider";
 
+// Keyed by the sidebar's workspace: moving between home and a resource it
+// hosts (blog, services…) keeps the same nav, so nothing swaps.
 function useWsIdOf() {
-  const { resolvePathname } = useNav();
-  return (path: string) => resolvePathname(path)?.ws.id ?? null;
+  const { resolvePathname, navHostOf } = useNav();
+  return (path: string) => {
+    const ws = resolvePathname(path)?.ws;
+    return ws ? navHostOf(ws).id : null;
+  };
 }
 
 /**

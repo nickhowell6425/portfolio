@@ -42,6 +42,12 @@ export interface Nav {
   resolveSlug: (slug?: string[]) => Resolved | null;
   /** Resolve a pathname (e.g. "/paradox/overview") on the client. */
   resolvePathname: (pathname: string) => Resolved | null;
+  /**
+   * The workspace whose sidebar shows while `ws` is open. A resource the home
+   * nav links to (services, blog, AI playbook, prompts) keeps the home nav;
+   * products and home show their own.
+   */
+  navHostOf: (ws: Workspace) => Workspace;
   /** Every routable [ws, item] pair, for generateStaticParams. */
   allSlugs: () => string[][];
   /** Jump-to index: every page and component across all workspaces. */
@@ -72,6 +78,14 @@ function buildNav(brand: BrandId): Nav {
     const slug = pathname.split("/").filter(Boolean).map(decodeURIComponent);
     return resolveSlug(slug[0] === brand ? slug.slice(1) : slug);
   };
+
+  const home = workspaces[0];
+  const navHostOf = (ws: Workspace) =>
+    ws !== home &&
+    ws.items.overview?.type !== "showcase" &&
+    Object.values(home.items).some((it) => it.type === "ws" && it.ws === ws.id)
+      ? home
+      : ws;
 
   const allSlugs = () => {
     const out: string[][] = [];
@@ -134,6 +148,7 @@ function buildNav(brand: BrandId): Nav {
     workspaceById,
     resolveSlug,
     resolvePathname,
+    navHostOf,
     allSlugs,
     searchItems,
     searchResults,
