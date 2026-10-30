@@ -83,8 +83,6 @@ export interface ShowcaseSection {
   line: string;
   points: string[];
   media: ShowcaseMedia;
-  /** Gold treatment (Paradox's "divergence" colour). */
-  gold?: boolean;
 }
 
 export interface ShowcaseTile {
@@ -582,7 +580,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
               frag: "divergence",
               poster: { src: "/showcase/paradox/branches.webp", width: 560, height: 743 },
             },
-            gold: true,
           },
         ],
         faq: [
@@ -880,7 +877,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 },
               ],
             },
-            gold: true,
           },
         ],
         faq: [
@@ -1196,7 +1192,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 },
               ],
             },
-            gold: true,
           },
         ],
         faq: [
@@ -1475,7 +1470,6 @@ const PERSONAL_WORKSPACES: Workspace[] = [
                 },
               ],
             },
-            gold: true,
           },
         ],
         faq: [
@@ -1575,8 +1569,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
         summary:
           "Nemo, designed and built end to end: it imports your ChatGPT, Claude, Gemini and Grok history, distills it into identities for the people, companies and projects you talk about, and assembles a compact copy of any of them to launch into whichever model you choose. What you learn there comes back as new memories, and everything stays encrypted on your device.",
         cover: {
-          src: "/showcase/nemo/cover.webp",
-          alt: "Nemo’s identity page for Full Stack Technologies: memories, launches and context size, a health line, what Nemo knows grouped into pricing, pipeline, hiring and positioning, and a portable-context card with a Launch button",
+          src: "/showcase/nemo/identity.webp",
+          alt: "Nemo’s identity page for a studio: memories, launches and context size, a health line, what Nemo knows grouped into pricing, pipeline, hiring and positioning, and a portable-context card with a Launch button",
         },
         stack: [
           "Next.js",
@@ -1593,38 +1587,38 @@ const PERSONAL_WORKSPACES: Workspace[] = [
           {
             title: "Identity",
             line: "Who and what Nemo knows.",
-            img: "/showcase/nemo/cover.webp",
+            img: "/showcase/nemo/identity.webp",
             target: "knows",
             lead: true,
           },
           {
             title: "Knows",
             line: "Understanding, not storage.",
-            img: "/showcase/nemo/knows.webp",
+            img: "/showcase/nemo/understanding.webp",
             target: "knows",
           },
           {
             title: "Growth",
             line: "Sharper every month.",
-            img: "/showcase/nemo/growth.webp",
+            img: "/showcase/nemo/lifecycle.webp",
             target: "growth",
           },
           {
             title: "Kits",
             line: "Context packaged for a job.",
-            img: "/showcase/nemo/kits.webp",
+            img: "/showcase/nemo/launch-kits.webp",
             target: "kits",
           },
           {
             title: "Launches",
             line: "Where it went, what came back.",
-            img: "/showcase/nemo/launches.webp",
+            img: "/showcase/nemo/launch-log.webp",
             target: "launches",
           },
           {
             title: "Launch",
             line: "Into any model.",
-            img: "/showcase/nemo/launch-poster.webp",
+            img: "/showcase/nemo/assemble-poster.webp",
             target: "launch",
             contain: true,
           },
@@ -1642,7 +1636,7 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             ],
             media: {
               frag: "launch",
-              poster: { src: "/showcase/nemo/launch-poster.webp", width: 566, height: 821 },
+              poster: { src: "/showcase/nemo/assemble-poster.webp", width: 566, height: 821 },
             },
           },
           {
@@ -1673,8 +1667,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             media: {
               imgs: [
                 {
-                  src: "/showcase/nemo/knows.webp",
-                  alt: "What Nemo knows about Full Stack Technologies: a paragraph summary, four themes (pricing and terms, pipeline, hiring, positioning) and a portable-context card showing 5.1k tokens, 33 times smaller than the raw history",
+                  src: "/showcase/nemo/understanding.webp",
+                  alt: "What Nemo knows about a studio: a paragraph summary, four themes (pricing and terms, pipeline, hiring, positioning) and a portable-context card showing 5.1k tokens, 33 times smaller than the raw history",
                   width: 1136,
                   height: 480,
                 },
@@ -1694,8 +1688,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             media: {
               imgs: [
                 {
-                  src: "/showcase/nemo/growth.webp",
-                  alt: "Identity improved this month: 18 memories, 9 conversations, 2 documents and 6 launches added, Full Stack Technologies connected to Nick Howell and TwigGlue, and a learning timeline from today back to earlier in May",
+                  src: "/showcase/nemo/lifecycle.webp",
+                  alt: "Identity improved this month: 18 memories, 9 conversations, 2 documents and 6 launches added, the studio connected to its founder and its product, and a learning timeline from today back to earlier in May",
                   width: 774,
                   height: 745,
                 },
@@ -1715,8 +1709,8 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             media: {
               imgs: [
                 {
-                  src: "/showcase/nemo/kits.webp",
-                  alt: "Suggested launch kits for Full Stack Technologies: Business Strategy Review and React Native Expert Context already in Nemo, and Client Proposal Assistant ready to build",
+                  src: "/showcase/nemo/launch-kits.webp",
+                  alt: "Suggested launch kits for a studio: Business Strategy Review and Mobile Delivery Context already in Nemo, and Client Proposal Assistant ready to build",
                   width: 774,
                   height: 490,
                 },
@@ -1736,14 +1730,13 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             media: {
               imgs: [
                 {
-                  src: "/showcase/nemo/launches.webp",
-                  alt: "Conversations, documents and launches for Full Stack Technologies: a launch into Claude Opus 4.5 that captured a move to fixed-bid pricing, and a launch into ChatGPT with no new learning",
+                  src: "/showcase/nemo/launch-log.webp",
+                  alt: "Conversations, documents and launches for a studio: a launch into Claude Opus 4.5 that captured a move to fixed-bid pricing, and a launch into ChatGPT with no new learning",
                   width: 774,
                   height: 690,
                 },
               ],
             },
-            gold: true,
           },
         ],
         faq: [

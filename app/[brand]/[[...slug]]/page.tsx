@@ -277,28 +277,8 @@ export default async function WorkspacePage({ params }: Props) {
                   : "Building something with similar challenges?",
               paras: [
                 brand === "personal"
-                  ? "Explore another product here, or read my practical guides at Full Stack Technologies, the studio I lead."
-                  : "Explore the engineering services and guides behind this kind of work.",
-              ],
-              links: [
-                {
-                  label: "Web and mobile product development",
-                  href:
-                    brand === "personal"
-                      ? new URL("/services/product-development", BRANDS.fst.url).href
-                      : "/services/product-development",
-                },
-                {
-                  label: "Codebase review and rescue",
-                  href:
-                    brand === "personal"
-                      ? new URL("/services/codebase-rescue", BRANDS.fst.url).href
-                      : "/services/codebase-rescue",
-                },
-                {
-                  label: "Practical product engineering guides",
-                  href: brand === "personal" ? new URL("/blog", BRANDS.fst.url).href : "/blog",
-                },
+                  ? "Explore another product here, or get in touch about the work."
+                  : "Bring the problem and the outcome you need, and we can discuss a focused next step.",
               ],
               cta: "message",
               ctaLabel:
