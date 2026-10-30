@@ -301,23 +301,16 @@ const PERSONAL_WORKSPACES: Workspace[] = [
             links: [{ label: "Explore Timetrack's interface", href: "/timetrack/overview" }],
           },
           {
-            heading: "Put the tradeoff where you can see it",
-            paras: [
-              "The detailed report raises another useful question: should its total match the numbers someone can add up on the page? One test uses twenty sample entries of 59 seconds each. Each entry displays as 0.02 hours, so the visible rows add up to 0.40. Add the underlying seconds first and round only the total, and you get 0.33.",
-              "The report adds its displayed line values so a reader can check the total from the document itself. That is an explicit display choice, with a tradeoff: rounding many short entries can move the total away from the underlying duration. If a requirement calls for unrounded duration, we'd need a different display or rounding rule. We can discuss that with an example everyone can follow.",
-            ],
-          },
-          {
             heading: "Connect the decision to a check",
             paras: [
-              "Both examples have regression tests: one keeps the short manual entry, and one checks the total against the displayed rows. These are small checks for behavior a person would notice, not just whether the screen renders.",
+              "A regression test checks that the short manual entry stays in the summary's starting data. It checks behavior a person would notice: whether their work remains visible as the records move through the system.",
               "This is the kind of evidence we can review together: what should happen, a concrete example, and a check that would catch the wrong result. You can change your mind about the requirement while the consequences are still easy to discuss.",
             ],
           },
           {
             heading: "Be clear about where AI fits",
             paras: [
-              "I used AI assistance while building Timetrack, including work on session attribution and reconciliation. That is part of how the software was built. It doesn't decide what a recorded hour means or which rounding rule fits the report. I remain responsible for those choices and the checks around them.",
+              "I used AI assistance while building Timetrack, including work on session attribution and reconciliation. I remain responsible for deciding which information belongs in a report and checking that it survives each step.",
               "When we work on your app, we can use AI to explore and implement a change while keeping those decisions understandable. I'll explain the proposed behavior and what we've checked. If you want to use the tools yourself, we can work through the same task together.",
             ],
             links: [
@@ -2922,7 +2915,7 @@ const BLOG: Workspace = {
         {
           heading: "Inside a real build: Timetrack",
           paras: [
-            "See how session records become a report you can check: keep short manual entries visible, distinguish parallel session time from human time, and make the rounding rule explicit.",
+            "See how session records become a useful report: keep short manual entries visible, distinguish parallel session time from human time, and preserve exported documents for later review.",
           ],
           links: [
             {
@@ -3019,9 +3012,9 @@ const BLOG: Workspace = {
     "timetrack-session-reporting": {
       type: "page",
       label: "Inside Timetrack",
-      title: "Inside Timetrack: a report should explain its numbers",
+      title: "Inside Timetrack: keep the work visible",
       seoTitle: "Timetrack walkthrough: AI session records and reporting decisions",
-      desc: "A concrete engineering walkthrough: preserve short manual entries, explain parallel AI sessions, and make report totals reproducible from their displayed rows.",
+      desc: "A concrete engineering walkthrough: preserve short manual entries, explain parallel AI sessions, and keep exported reports available for review.",
       article: { published: "2026-10-30", modified: "2026-10-30" },
       sections: [
         {
@@ -3040,27 +3033,7 @@ const BLOG: Workspace = {
           ],
         },
         {
-          heading: "Make the displayed total reproducible",
-          paras: [
-            "The detailed report displays hours to two decimal places and sums those displayed line values. A reader can add the rows and reproduce the total. That choice has a visible tradeoff, demonstrated by a test with twenty entries of 59 seconds each.",
-          ],
-          table: {
-            headers: ["Calculation", "Result"],
-            rows: [
-              ["One 59-second entry, displayed to two decimal hours", "0.02 hours"],
-              ["Twenty displayed entries: 20 × 0.02", "0.40 hours"],
-              ["Underlying duration: 20 × 59 seconds", "1,180 seconds"],
-              ["Underlying duration converted to hours, then rounded once", "0.33 hours"],
-            ],
-          },
-        },
-        {
-          paras: [
-            "Rounding every short line can move the displayed total away from the underlying duration. The report favors a total that matches its visible rows. A requirement for precise aggregate duration would call for a different display or rounding rule. The useful engineering work is to name that choice and test it, rather than leave two competing totals unexplained.",
-          ],
-        },
-        {
-          heading: "Keep an exported report separate from a fresh calculation",
+          heading: "Keep an exported report available for review",
           paras: [
             "Export stores a snapshot of the report document. Opening that saved report retrieves the stored document instead of recalculating it against today's records and rules. A fresh draft can reflect later changes without silently replacing the saved document.",
             "This is a stored export snapshot, not an immutable archive: saved reports can be deleted. The broader lesson is to decide whether a historical view should show what was recorded then or what the system would calculate now.",
@@ -3069,7 +3042,7 @@ const BLOG: Workspace = {
         {
           heading: "Separate AI-assisted development from AI product features",
           paras: [
-            "Nicholas used AI assistance while building Timetrack, including work on session attribution and reconciliation. AI assistance is part of the implementation process; the meaning of a session, the display rule, and the checks around them still require engineering judgment.",
+            "Nicholas used AI assistance while building Timetrack, including work on session attribution and reconciliation. Deciding what a report should preserve and checking that behavior still require engineering judgment.",
             "The product also has separate, optional model features, including title generation and report narration. A summary can start from recorded labels with blank descriptions and next steps, without inventing a narrative. Generated prose still needs review: a model's sentence is not independent evidence that an outcome occurred.",
           ],
         },
@@ -3084,7 +3057,7 @@ const BLOG: Workspace = {
           heading: "Explore the interface, then apply the questions to your app",
           paras: [
             "The public Timetrack page includes an interactive dashboard with sample data: switch between day and week, then inspect a point on the dial. The other views illustrate the interface. That demonstration is separate from the capture, authentication, and export systems described here; clicking through it does not exercise those integrations.",
-            "For your app, choose one consequential result and trace it back to its inputs. Decide what each label means, which records must survive a summary, how totals are calculated, and what a saved document preserves. A small, repeatable check can make the next product decision much clearer.",
+            "For your app, choose one consequential result and trace it back to its inputs. Decide what each label means, which records must survive a summary, and what a saved document preserves. A small, repeatable check can make the next product decision much clearer.",
           ],
           links: [
             { label: "Explore Timetrack's sample-data interface", href: "/timetrack/overview" },
