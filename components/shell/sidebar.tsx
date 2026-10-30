@@ -74,11 +74,37 @@ export function Sidebar() {
         flex: "0 0 auto",
       }}
     >
-      <div style={{ padding: "16px 16px 14px", borderBottom: "1px solid var(--border)" }}>
-        <div style={{ fontWeight: 800, fontSize: 16.5, letterSpacing: "-.01em" }}>{W.name}</div>
-        <div style={{ color: "var(--dim)", fontSize: 12.5, marginTop: 1, textWrap: "pretty" }}>
-          {W.desc}
+      {/* same 52px as the top bar so the two bottom borders line up */}
+      <div
+        style={{
+          height: 52,
+          flex: "0 0 auto",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "0 16px",
+          borderBottom: "1px solid var(--border)",
+          minWidth: 0,
+        }}
+      >
+        <div style={{ fontWeight: 800, fontSize: 16.5, letterSpacing: "-.01em", lineHeight: 1.2 }}>
+          {W.name}
         </div>
+        {W.desc && (
+          <div
+            style={{
+              color: "var(--dim)",
+              fontSize: 12.5,
+              lineHeight: 1.25,
+              marginTop: 1,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {W.desc}
+          </div>
+        )}
       </div>
       <div style={{ flex: 1, overflowY: "auto", padding: "10px 8px 14px" }}>
         {W.groups.map((g) => (
