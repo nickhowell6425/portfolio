@@ -2758,6 +2758,17 @@ const SERVICES: Workspace = {
           ],
         },
         {
+          heading: "An illustrative review finding",
+          paras: [
+            "This hypothetical booking example shows the format of a finding. It does not describe an actual client review.",
+            "Finding: A slow response leads someone to press Save again. The app creates two bookings for one request.",
+            "Why it matters: The person cannot tell which booking is correct, and staff may act on both.",
+            "Evidence to check: Using sample data in a test environment, repeat the same submission while the first response is delayed. Compare the saved bookings and the confirmation shown.",
+            "Recommended fix: Make a repeated submission of the same request return the original booking, and show that saving is in progress.",
+            "Next step and open question: Scope the repair and repeat the check before launch. Confirm how to distinguish a retry from a new booking.",
+          ],
+        },
+        {
           heading: "Describe the failure you want solved",
           paras: [
             "Share the symptoms, the affected workflow, the stack, and the next change you need to make. Keep credentials and sensitive customer data out of the initial message.",
