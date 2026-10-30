@@ -47,6 +47,7 @@ The interfaces are shared; their presence is not a claim of adoption or client o
   Session time differs from elapsed human time; billing depends on the client agreement.
 - /constellation/overview: Multi-client priorities, plan branches, forecast ranges, and client status.
 - /helm/overview: One decision at a time across clients and AI agents, with a decision deck, client boards, plain-language rules, and scoped access.
+- /nemo/overview: Portable AI memory: imported ChatGPT, Claude, Gemini and Grok history distilled into identities, assembled into compact context for any model, encrypted on device.
 
 ## AI playbook (Full Stack Technologies only)
 
