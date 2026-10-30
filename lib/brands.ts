@@ -100,3 +100,13 @@ export const otherBrand = (id: BrandId): BrandId => (id === "personal" ? "fst" :
 
 /** Cookie/query used to pick a brand on hosts that don't identify one (Vercel previews). */
 export const BRAND_PARAM = "brand";
+
+/** Carries the theme choice across the brand switch (the brands are separate origins). */
+export const THEME_PARAM = "theme";
+
+/**
+ * Inline, pre-hydration: store a handed-off ?theme= where next-themes reads it
+ * (localStorage "theme") and drop it from the URL. Must run before next-themes'
+ * own script so the first paint is already in the right theme.
+ */
+export const THEME_HANDOFF = `try{var u=new URL(location.href),t=u.searchParams.get("${THEME_PARAM}");if(t!==null){if(t==="system"||t==="light"||t==="dark")localStorage.setItem("theme",t);u.searchParams.delete("${THEME_PARAM}");history.replaceState(history.state,"",u.pathname+u.search+u.hash)}}catch(e){}`;

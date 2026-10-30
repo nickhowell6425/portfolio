@@ -7,7 +7,14 @@ import { MONO } from "@/components/fragments/ui";
 import { useBrand, useNav } from "@/components/providers/brand-provider";
 import { useUI } from "@/components/providers/ui-provider";
 import { useHydrated } from "@/hooks/use-hydrated";
-import { BRANDS, brandForHost, otherBrand, BRAND_PARAM, type BrandId } from "@/lib/brands";
+import {
+  BRANDS,
+  brandForHost,
+  otherBrand,
+  BRAND_PARAM,
+  THEME_PARAM,
+  type BrandId,
+} from "@/lib/brands";
 import { navFor } from "@/lib/navigation";
 import { ProductMark } from "./product-mark";
 
@@ -103,22 +110,28 @@ function BrandMark({ id, size }: { id: BrandId; size: number }) {
   );
 }
 
-/** The same page on the other brand's front door (home if it has no such page). */
-function switchHref(target: BrandId, pathname: string): string {
+/**
+ * The same page on the other brand's front door (home if it has no such page).
+ * The brands live on separate origins, so the theme choice (localStorage) is
+ * carried across as ?theme= and picked up by THEME_HANDOFF in the layout.
+ */
+function switchHref(target: BrandId, pathname: string, theme: string): string {
   const path = navFor(target).resolvePathname(pathname) ? pathname : "/";
   const { protocol, hostname, port } = window.location;
   const here = brandForHost(hostname);
   if (!here) return `${path}?${BRAND_PARAM}=${target}`; // previews: one host, cookie-picked
+  const q = `?${THEME_PARAM}=${theme}`;
   if (BRANDS[here].devHosts.includes(hostname)) {
-    return `${protocol}//${BRANDS[target].devHosts[0]}${port ? `:${port}` : ""}${path}`;
+    return `${protocol}//${BRANDS[target].devHosts[0]}${port ? `:${port}` : ""}${path}${q}`;
   }
-  return `${BRANDS[target].url}${path}`;
+  return `${BRANDS[target].url}${path}${q}`;
 }
 
 function BrandMenu({ onClose }: { onClose: () => void }) {
   const brand = useBrand();
   const pathname = usePathname();
   const { goWorkspace } = useUI();
+  const { theme } = useTheme();
   const ref = useRef<HTMLDivElement | null>(null);
   const other = BRANDS[otherBrand(brand.id)];
 
@@ -205,7 +218,7 @@ function BrandMenu({ onClose }: { onClose: () => void }) {
         role="menuitem"
         className="hov-row"
         style={row}
-        href={switchHref(other.id, pathname)}
+        href={switchHref(other.id, pathname, theme ?? "system")}
         onClick={onClose}
       >
         <BrandMark id={other.id} size={28} />
