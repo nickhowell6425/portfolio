@@ -18,11 +18,23 @@ export function Sidebar() {
   const pathname = usePathname();
   const { goWorkspace, setNavOpen } = useUI();
   const { swapped } = useWsSticky();
-  const { resolvePathname, workspaceById, workspaces } = useNav();
+  const { resolvePathname, workspaceById, workspaces, navHostOf } = useNav();
 
   const resolved = resolvePathname(pathname);
-  const W = resolved?.ws ?? workspaces[0];
-  const currentItem = resolved?.itemId;
+  // the open workspace, and the one whose nav shows (home hosts its resources)
+  const open = resolved?.ws ?? workspaces[0];
+  const W = navHostOf(open);
+  const hosted = W !== open;
+  const currentItem = hosted ? undefined : resolved?.itemId;
+  // a hosted resource's own pages, listed under its link in the host nav
+  const subItems = hosted
+    ? open.groups.flatMap((g) =>
+        g.items.filter((id) => {
+          const t = open.items[id].type;
+          return t !== "ws" && t !== "anchor";
+        }),
+      )
+    : [];
 
   // feature anchors on the page being read, in sidebar (= page) order
   const sectionIds = W.groups.flatMap((g) =>
@@ -92,7 +104,9 @@ export function Sidebar() {
               const active =
                 it.type === "anchor"
                   ? it.page === currentItem && it.hash === activeSection
-                  : id === currentItem && !activeSection;
+                  : it.type === "ws"
+                    ? hosted && it.ws === open.id
+                    : id === currentItem && !activeSection;
               const target = it.type === "ws" ? workspaceById(it.ws) : null;
               const itemAccent = target ? accentText(target) : null;
               const icon =
@@ -152,14 +166,49 @@ export function Sidebar() {
                 </>
               );
               return it.type === "ws" ? (
-                <button
-                  key={id}
-                  onClick={() => goWorkspace(it.ws)}
-                  className="anim-side-item hov-accent-bg"
-                  style={style}
-                >
-                  {inner}
-                </button>
+                <div key={id}>
+                  <button
+                    onClick={() => goWorkspace(it.ws)}
+                    aria-current={active ? "page" : undefined}
+                    className="anim-side-item hov-accent-bg"
+                    style={style}
+                  >
+                    {inner}
+                  </button>
+                  {active
+                    ? subItems.map((sid) => {
+                        const sub = open.items[sid];
+                        const on = sid === resolved?.itemId;
+                        return (
+                          <Link
+                            key={sid}
+                            href={hrefFor(open.id, sid)}
+                            aria-current={on ? "page" : undefined}
+                            onClick={() => setNavOpen(false)}
+                            className="hov-accent-bg"
+                            style={{
+                              display: "block",
+                              padding: "5px 10px 5px 35px",
+                              borderRadius: 8,
+                              margin: "1px 0",
+                              fontSize: 13,
+                              fontWeight: on ? 700 : 500,
+                              color: on ? "var(--text)" : "var(--dim)",
+                              background: on
+                                ? `color-mix(in srgb, ${W.accent} 10%, transparent)`
+                                : "transparent",
+                              textDecoration: "none",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                          >
+                            {sub.label}
+                          </Link>
+                        );
+                      })
+                    : null}
+                </div>
               ) : (
                 <Link
                   key={id}
